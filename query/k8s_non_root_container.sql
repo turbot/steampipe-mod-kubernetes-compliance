@@ -1,15 +1,17 @@
 select
   -- Required Columns
-  name as resource,
+  c ->> 'name' as resource,
   case
-    when run_as_user -> 'rule' = '"MustRunAsNonRoot"' then 'ok'
+    when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
     else 'alarm'
   end as status,
   case
-    when run_as_user -> 'rule' = '"MustRunAsNonRoot"' then 'Container applications not running with root privileges.'
-    else 'Container applications running with root privileges.'
+    when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then c ->> 'name' || ' not running with root privilege.'
+    else c ->> 'name' || ' running with root privilege'
   end as reason,
   -- Additional Dimensions
+  name as pod_name,
   context_name
 from
-  kubernetes_pod_security_policy;
+  kubernetes_pod,
+  jsonb_array_elements(containers) as c;
