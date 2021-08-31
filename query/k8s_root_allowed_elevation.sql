@@ -6,8 +6,8 @@ select
     else 'alarm'
   end as status,
   case
-    when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then c ->> 'name' || ' not allowed elevation to root.'
-    else c ->> 'name' || 'allowed elevation to root.'
+    when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then c ->> 'name' || ' not allowed root elevation.'
+    else c ->> 'name' || ' allowed root elevation.'
   end as reason,
   -- Additional Dimensions
   name as pod_name,

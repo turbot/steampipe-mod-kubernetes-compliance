@@ -2,18 +2,18 @@ select
   -- Required Columns
   name as resource,
   case
-    when annotations ->> 'container.apparmor.security.beta.kubernetes.io/?' = 'runtime/default' then 'ok'
-    when security_context -> 'seLinuxOptions' ->> 'level' is not null then 'ok'
-    when security_context -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
+    when se_linux -> 'rule' = '"MustRunAs"' then 'ok'
+    when annotations -> 'apparmor.security.beta.kubernetes.io/defaultProfileName' = '"runtime/default"' then 'ok'
+    when annotations -> 'seccomp.security.alpha.kubernetes.io/defaultProfileName' = '"runtime/default"' then 'ok'
     else 'alarm'
   end as status,
   case
-    when annotations ->> 'container.apparmor.security.beta.kubernetes.io/?' = 'runtime/default' then 'Applications using AppArmor security service.'
-    when security_context -> 'seLinuxOptions' ->> 'level' is not null then 'Applications using SELinux security service.'
-    when security_context -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'Applications using seccomp security service.'
-    else 'Applications are not using any security service.'
+    when se_linux -> 'rule' = '"MustRunAs"' then 'Applications using SELinux security service.'
+    when annotations -> 'apparmor.security.beta.kubernetes.io/defaultProfileName' = '"runtime/default"' then 'Pods using AppArmor security service.'
+    when annotations -> 'seccomp.security.alpha.kubernetes.io/defaultProfileName' = '"runtime/default"' then 'Pods using Seccomp security service.'
+    else 'Pods not using securty services.'
   end as reason,
   -- Additional Dimensions
   context_name
 from
-  kubernetes_pod;
+  kubernetes_pod_security_policy;
