@@ -9,8 +9,7 @@ benchmark "kubernetes_pod_security" {
     control.k8s_immutable_container_filesystem,
     control.k8s_pod_service_account_token,
     control.k8s_privileged_container,
-    control.k8s_security_services_hardening,
-    control.k8s_default_network_policy_isolate_resources
+    control.k8s_security_services_hardening
   ]
   tags     = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -83,30 +82,6 @@ control "k8s_security_services_hardening" {
   title       = "Container applications should use security services such as SELinux or AppArmor or Seccomp"
   description = "Container applications should use security services such as SELinux or AppArmor or Seccomp."
   sql         = query.k8s_security_services_hardening.sql
-
-  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
-}
-
-control "k8s_default_network_policy_isolate_resources" {
-  title       = "Network policy should have a default policy to deny all ingress and egress traffic"
-  description = "Network policy should have a default policy to deny all ingress and egress traffic."
-  sql         = query.k8s_default_network_policy_isolate_resources.sql
-
-  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
-}
-
-control "k8s_cpu_limit" {
-  title       = "Container should have CPU request limit"
-  description = "Container should have CPU request limit."
-  sql         = query.k8s_cpu_limit.sql
-
-  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
-}
-
-control "k8s_memory_limit" {
-  title       = "Container should have Memory request limit"
-  description = "Container should have Memory request limit."
-  sql         = query.k8s_memory_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
