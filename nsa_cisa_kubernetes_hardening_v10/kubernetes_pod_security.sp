@@ -32,7 +32,7 @@ control "k8s_root_allowed_elevation" {
 
 control "k8s_allowed_host_paths" {
   title       = "Containers should use specified host paths"
-  description = "Containers should use specified host paths.."
+  description = "Containers should use specified host paths."
   sql         = query.k8s_allowed_host_paths.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
