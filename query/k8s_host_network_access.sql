@@ -6,7 +6,7 @@ select
     else 'ok'
   end as status,
   case
-    when host_network then name || 'can use the host network.'
+    when host_network then name || ' can use the host network.'
     else name || ' can not use the host network.'
   end as reason,
   -- Additional Dimensions
