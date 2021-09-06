@@ -6,8 +6,8 @@ select
     else 'alarm'
   end as status,
   case
-    when p ->> 'name' = 'https' and (p ->> 'port' = '443' or p ->> 'port' = '6443') then name || 'Kubernetes API serving on secure port.'
-    else name || 'Kubernetes API not serving on secure port.'
+    when p ->> 'name' = 'https' and (p ->> 'port' = '443' or p ->> 'port' = '6443') then name || ' Kubernetes API serving on secure port.'
+    else name || ' Kubernetes API not serving on secure port.'
   end as reason,
   -- Additional Dimensions
   context_name
