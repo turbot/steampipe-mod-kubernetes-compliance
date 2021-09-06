@@ -11,6 +11,7 @@ select
     else 'Pod can not share host process namespaces.'
   end as reason,
   -- Additional Dimensions
+  namespace,
   context_name
 from
   kubernetes_pod;

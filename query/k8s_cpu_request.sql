@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  c ->> 'name' as resource,
+  uid as resource,
   case
     when c -> 'resources' -> 'requests' ->> 'cpu' is null then 'alarm'
     else 'ok'
@@ -11,7 +11,8 @@ select
   end as reason,
   -- Additional Dimensions
   name as pod_name,
+  namespace,
   context_name
 from
-  kubernetes_pod,
-  jsonb_array_elements(containers) as c;
+  kubernetes_deployment,
+  jsonb_array_elements(template -> 'spec' -> 'containers') as c;

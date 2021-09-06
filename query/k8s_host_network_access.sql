@@ -10,6 +10,7 @@ select
     else name || ' can not use the host network.'
   end as reason,
   -- Additional Dimensions
+  namespace,
   context_name
 from
   kubernetes_pod;
