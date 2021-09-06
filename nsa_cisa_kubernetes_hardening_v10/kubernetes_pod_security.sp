@@ -49,7 +49,7 @@ control "k8s_host_network_access" {
 control "k8s_hostpid_hostipc_namesapce_privilege" {
   title       = "Containers should not share host process namespaces"
   description = "If the host’s process namespace is shared with containers, it would basically allow these to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them. This could allow for the host itself being shut down, which could be extremely serious, particularly in a multi-tenanted environment. You should not share the host’s process namespace with the containers running on it."
-  sql  = query.k8s_hostpid_hostipc_namesapce_privilege.sql
+  sql        = query.k8s_hostpid_hostipc_namesapce_privilege.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
