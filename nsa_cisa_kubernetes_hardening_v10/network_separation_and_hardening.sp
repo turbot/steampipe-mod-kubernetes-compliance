@@ -39,32 +39,32 @@ control "k8s_default_network_policy_deny_egress" {
 }
 
 control "k8s_cpu_limit" {
-  title       = "Container should have CPU limit"
-  description = "Container should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  title       = "Containers should have CPU limit"
+  description = "Containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
   sql         = query.k8s_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_memory_limit" {
-  title       = "Container should have Memory limit"
-  description = "Container should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  title       = "Containers should have Memory limit"
+  description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
   sql         = query.k8s_memory_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_cpu_request" {
-  title       = "Container should have CPU request"
-  description = "Container should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  title       = "Containers should have CPU request"
+  description = "Containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   sql         = query.k8s_cpu_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_memory_request" {
-  title       = "Container should have Memory request"
-  description = "Container should have Memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  title       = "Containers should have Memory request"
+  description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   sql         = query.k8s_memory_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
