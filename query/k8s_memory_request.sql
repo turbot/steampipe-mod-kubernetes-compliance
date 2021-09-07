@@ -6,8 +6,8 @@ select
     else 'ok'
   end as status,
   case
-    when c -> 'resources' -> 'requests' ->> 'memory' is null then c ->> 'name' || ' do not have memory request.'
-    else c ->> 'name' || ' has memory request of ' || (c -> 'resources' -> 'requests' ->> 'memory') || '.'
+    when c -> 'resources' -> 'requests' ->> 'memory' is null then c ->> 'name' || ' does not have a memory request.'
+    else c ->> 'name' || ' has a memory request of ' || (c -> 'resources' -> 'requests' ->> 'memory') || '.'
   end as reason,
   -- Additional Dimensions
   name as pod_name,

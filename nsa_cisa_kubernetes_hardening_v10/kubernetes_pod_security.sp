@@ -1,14 +1,14 @@
 benchmark "kubernetes_pod_security" {
   title    = "Kubernetes Pod security"
   children = [
-    control.k8s_non_root_container,
-    control.k8s_root_allowed_elevation,
     control.k8s_allowed_host_paths,
     control.k8s_host_network_access,
     control.k8s_hostpid_hostipc_namesapce_privilege,
     control.k8s_immutable_container_filesystem,
+    control.k8s_non_root_container,
     control.k8s_pod_service_account_token,
     control.k8s_privileged_container,
+    control.k8s_root_allowed_elevation,
     control.k8s_security_services_hardening
   ]
   tags     = local.nsa_cisa_kubernetes_hardening_v10_common_tags

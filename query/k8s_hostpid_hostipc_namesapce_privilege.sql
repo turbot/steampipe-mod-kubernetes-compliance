@@ -8,7 +8,7 @@ select
   case
     when host_pid then name || ' can share host pid namespaces.'
     when host_ipc then name || ' can share host ipc namespaces.'
-    else 'Pod can not share host process namespaces.'
+    else 'Pod cannot share host process namespaces.'
   end as reason,
   -- Additional Dimensions
   namespace,

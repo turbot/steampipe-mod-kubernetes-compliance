@@ -8,9 +8,9 @@ Run individual configuration, compliance and security controls or full complianc
 
 ## References
 
-[Kubernetes](https://kubernetes.io/)
+[Kubernetes](https://kubernetes.io/) also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications.
 
-[NSA & CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF)
+[NSA & CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF) describes the complexities of securely managing Kubernetes an open-source, container-orchestration system used to automate deploying, scaling, and managing containerized applications.
 
 [Steampipe](https://steampipe.io) is an open source CLI to instantly query cloud APIs using SQL.
 
@@ -24,27 +24,32 @@ Run individual configuration, compliance and security controls or full complianc
 ## Get started
 
 Install the Kubernetes plugin with [Steampipe](https://steampipe.io):
+
 ```shell
 steampipe plugin install kubernetes
 ```
 
 Clone:
+
 ```sh
 git clone https://github.com/turbot/steampipe-mod-kubernetes-compliance.git
 cd steampipe-kubernetes-compliance
 ```
 
 Run all benchmarks:
+
 ```shell
 steampipe check all
 ```
 
 Run a single benchmark:
+
 ```shell
 steampipe check benchmark.nsa_cisa_kubernetes_hardening_v10
 ```
 
 Run a specific control:
+
 ```shell
 steampipe check control.k8s_non_root_container
 ```
@@ -59,5 +64,5 @@ No extra configuration is required.
 
 ## Get involved
 
-* Contribute: [GitHub Repo](https://github.com/turbot/steampipe-mod-kubernetes-compliance)
-* Community: [Slack Channel](https://join.slack.com/t/steampipe/shared_invite/zt-oij778tv-lYyRTWOTMQYBVAbtPSWs3g)
+- Contribute: [GitHub Repo](https://github.com/turbot/steampipe-mod-kubernetes-compliance)
+- Community: [Slack Channel](https://join.slack.com/t/steampipe/shared_invite/zt-oij778tv-lYyRTWOTMQYBVAbtPSWs3g)
