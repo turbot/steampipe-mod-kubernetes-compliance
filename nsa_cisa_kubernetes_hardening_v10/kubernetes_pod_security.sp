@@ -23,8 +23,8 @@ control "k8s_non_root_container" {
 }
 
 control "k8s_root_allowed_elevation" {
-  title       = "Container should not have privilege escalation"
-  description = "Container should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
+  title       = "Containers should not have privilege escalation"
+  description = "Containers should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
   sql         = query.k8s_root_allowed_elevation.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
@@ -40,7 +40,7 @@ control "k8s_allowed_host_paths" {
 
 control "k8s_host_network_access" {
   title       = "Host network access should be disabled for the containers"
-  description = "HostNetwork controls whether the pod may use the node network namespace. Doing so gives the pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other pods on the same node."
+  description = "Host network controls whether the pod may use the node network namespace. Doing so gives the pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other pods on the same node."
   sql         = query.k8s_host_network_access.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
@@ -79,7 +79,7 @@ control "k8s_privileged_container" {
 }
 
 control "k8s_security_services_hardening" {
-  title       = "Container applications should use security services such as SELinux or AppArmor or Seccomp"
+  title       = "Containerized applications should use security services such as SELinux or AppArmor or Seccomp"
   description = "The underlying host OS needs to be secured in order to prevent container breaches from affecting the host. For this, Linux provides several out-of-the-box security modules. Some of the popular ones are SELinux, AppArmor and seccomp."
   sql         = query.k8s_security_services_hardening.sql
 
