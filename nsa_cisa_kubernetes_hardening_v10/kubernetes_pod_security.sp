@@ -172,7 +172,7 @@ control "k8s_deployment_immutable_container_filesystem" {
 
 control "k8s_daemonset_immutable_container_filesystem" {
   title       = "Containers in daemonset defination should always run with a read only root file system"
-  description = "Containers in daemonset defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from "owning" the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
+  description = "Containers in daemonset defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
   sql         = query.k8s_immutable_container_filesystem_deamonset.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
@@ -188,7 +188,7 @@ control "k8s_job_immutable_container_filesystem" {
 
 control "k8s_replicaset_immutable_container_filesystem" {
   title       = "Containers in replicaset defination should always run with a read only root file system"
-  description = "Containers in replicaset defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from "owning" the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
+  description = "Containers in replicaset defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
   sql         = query.k8s_replicaset_immutable_container_filesystem.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
@@ -196,7 +196,7 @@ control "k8s_replicaset_immutable_container_filesystem" {
 
 control "k8s_replication_controller_immutable_container_filesystem" {
   title       = "Containers in replication controller defination should always run with a read only root file system"
-  description = "Containers in replication controller defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from "owning" the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
+  description = "Containers in replication controller defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
   sql         = query.k8s_replication_controller_immutable_container_filesystem.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
@@ -204,7 +204,7 @@ control "k8s_replication_controller_immutable_container_filesystem" {
 
 control "k8s_pod_service_account_token" {
   title       = "Automatic mapping of the service account tokens should be disabled in pod"
-  description = "By default, Kubernetes automatically provisions a service account when creating a Pod and mounts the account’s secret token within the Pod at runtime. Many containerized applications do not require direct access to the service account as Kubernetes orchestration occurs transparently in the background. If an application is compromised, account tokens in Pods can be gleaned by cyber actors and used to further compromise the cluster. When an application does not need to access the service account directly, Kubernetes administrators should ensure that Pod specifications disable the secret token being mounted. "
+  description = "By default, Kubernetes automatically provisions a service account when creating a Pod and mounts the account’s secret token within the Pod at runtime. Many containerized applications do not require direct access to the service account as Kubernetes orchestration occurs transparently in the background. If an application is compromised, account tokens in Pods can be gleaned by cyber actors and used to further compromise the cluster. When an application does not need to access the service account directly, Kubernetes administrators should ensure that Pod specifications disable the secret token being mounted."
   sql         = query.k8s_pod_service_account_token.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
