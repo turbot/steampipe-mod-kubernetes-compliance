@@ -173,7 +173,7 @@ control "k8s_deployment_immutable_container_filesystem" {
 control "k8s_daemonset_immutable_container_filesystem" {
   title       = "Containers in daemonset defination should always run with a read only root file system"
   description = "Containers in daemonset defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
-  sql         = query.k8s_immutable_container_filesystem_deamonset.sql
+  sql         = query.k8s_daemonset_immutable_container_filesystem.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
