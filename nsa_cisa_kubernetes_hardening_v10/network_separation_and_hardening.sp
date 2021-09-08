@@ -2,14 +2,29 @@ benchmark "network_separation_and_hardening" {
   title = "Network separation and hardening "
   children = [
     control.k8s_api_serve_on_secure_port,
-    control.k8s_cpu_limit,
-    control.k8s_cpu_request,
+    control.k8s_daemonset_cpu_limit,
+    control.k8s_deployment_cpu_limit,
+    control.k8s_job_cpu_limit,
+    control.k8s_replicaset_cpu_limit,
+    control.k8s_replication_controller_cpu_limit,
+    control.k8s_daemonset_cpu_request,
+    control.k8s_deployment_cpu_request,
+    control.k8s_job_cpu_request,
+    control.k8s_replicaset_cpu_request,
+    control.k8s_replication_controller_cpu_request,
     control.k8s_default_network_policy_deny_all_ingress_egress,
     control.k8s_default_network_policy_deny_egress,
     control.k8s_default_network_policy_deny_ingress,
-    control.k8s_memory_limit,
-    control.k8s_memory_request,
-
+    control.k8s_daemonset_memory_limit,
+    control.k8s_deployment_memory_limit,
+    control.k8s_job_memory_limit,
+    control.k8s_replicaset_memory_limit,
+    control.k8s_replication_controller_memory_limit,
+    control.k8s_daemonset_memory_request,
+    control.k8s_deployment_memory_request,
+    control.k8s_job_memory_request,
+    control.k8s_replicaset_memory_request,
+    control.k8s_replication_controller_memory_request,
   ]
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -38,38 +53,165 @@ control "k8s_default_network_policy_deny_egress" {
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_cpu_limit" {
+control "k8s_daemonset_cpu_limit" {
   title       = "Containers should have CPU limit"
   description = "Containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
-  sql         = query.k8s_cpu_limit.sql
+  sql         = query.k8s_daemonset_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_memory_limit" {
-  title       = "Containers should have Memory limit"
-  description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
-  sql         = query.k8s_memory_limit.sql
+control "k8s_deployment_cpu_limit" {
+  title       = "Containers should have CPU limit"
+  description = "Containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  sql         = query.k8s_deployment_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_cpu_request" {
+control "k8s_job_cpu_limit" {
+  title       = "Containers should have CPU limit"
+  description = "Containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  sql         = query.k8s_job_cpu_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replicaset_cpu_limit" {
+  title       = "Containers should have CPU limit"
+  description = "Containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  sql         = query.k8s_replicaset_cpu_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replication_controller_cpu_limit" {
+  title       = "Containers should have CPU limit"
+  description = "Containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  sql         = query.k8s_replication_controller_cpu_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_daemonset_cpu_request" {
   title       = "Containers should have CPU request"
   description = "Containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
-  sql         = query.k8s_cpu_request.sql
+  sql         = query.k8s_daemonset_cpu_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_memory_request" {
+control "k8s_deployment_cpu_request" {
+  title       = "Containers should have CPU request"
+  description = "Containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  sql         = query.k8s_deployment_cpu_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_job_cpu_request" {
+  title       = "Containers should have CPU request"
+  description = "Containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  sql         = query.k8s_job_cpu_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replicaset_cpu_request" {
+  title       = "Containers should have CPU request"
+  description = "Containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  sql         = query.k8s_replicaset_cpu_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replication_controller_cpu_request" {
+  title       = "Containers should have CPU request"
+  description = "Containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  sql         = query.k8s_replication_controller_cpu_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_daemonset_memory_limit" {
+  title       = "Containers should have Memory limit"
+  description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  sql         = query.k8s_daemonset_memory_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_deployment_memory_limit" {
+  title       = "Containers should have Memory limit"
+  description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  sql         = query.k8s_deployment_memory_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_job_memory_limit" {
+  title       = "Containers should have Memory limit"
+  description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  sql         = query.k8s_job_memory_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replicaset_memory_limit" {
+  title       = "Containers should have Memory limit"
+  description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  sql         = query.k8s_replicaset_memory_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replication_controller_memory_limit" {
+  title       = "Containers should have Memory limit"
+  description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  sql         = query.k8s_replication_controller_memory_limit.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_daemonset_memory_request" {
   title       = "Containers should have Memory request"
   description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
-  sql         = query.k8s_memory_request.sql
+  sql         = query.k8s_daemonset_memory_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
+control "k8s_deployment_memory_request" {
+  title       = "Containers should have Memory request"
+  description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  sql         = query.k8s_deployment_memory_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_job_memory_request" {
+  title       = "Containers should have Memory request"
+  description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  sql         = query.k8s_job_memory_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replicaset_memory_request" {
+  title       = "Containers should have Memory request"
+  description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  sql         = query.k8s_replicaset_memory_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "k8s_replication_controller_memory_request" {
+  title       = "Containers should have Memory request"
+  description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  sql         = query.k8s_replication_controller_memory_request.sql
+
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
 control "k8s_api_serve_on_secure_port" {
   title       = "Kubernetes API should serve on secure port"
   description = "Kubernetes API should serve on port 443 or port 6443, protected by TLS. Once TLS is established, the HTTP request moves to the Authentication step. If the request cannot be authenticated, it is rejected with HTTP status code 401."
