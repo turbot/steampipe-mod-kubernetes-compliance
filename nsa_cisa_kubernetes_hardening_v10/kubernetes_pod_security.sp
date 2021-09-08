@@ -101,7 +101,7 @@ control "k8s_job_root_allowed_elevation" {
 control "k8s_replicaset_root_allowed_elevation" {
   title       = "Containers in replicaset defination should not have privilege escalation"
   description = "Containers in replicaset defination should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
-  sql         = query.k8s__replicaset_root_allowed_elevation.sql
+  sql         = query.k8s_replicaset_root_allowed_elevation.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
