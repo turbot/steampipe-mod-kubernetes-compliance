@@ -1,5 +1,5 @@
 benchmark "kubernetes_pod_security" {
-  title    = "Kubernetes Pod security"
+  title = "Kubernetes Pod security"
   children = [
     control.k8s_daemonset_immutable_container_filesystem,
     control.k8s_daemonset_non_root_container,
@@ -31,7 +31,7 @@ benchmark "kubernetes_pod_security" {
     control.k8s_security_services_hardening,
     control.k8s_service_account_token,
   ]
-  tags     = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_deployment_non_root_container" {
@@ -149,7 +149,7 @@ control "k8s_pod_security_policy_host_network_access" {
 control "k8s_pod_hostpid_hostipc_namesapce_privilege" {
   title       = "Containers should not share host process namespaces in pod"
   description = "If the host’s process namespace is shared with containers, it would basically allow these to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them. This could allow for the host itself being shut down, which could be extremely serious, particularly in a multi-tenanted environment. You should not share the host’s process namespace with the containers running on it."
-  sql        = query.k8s_pod_hostpid_hostipc_namesapce_privilege.sql
+  sql         = query.k8s_pod_hostpid_hostipc_namesapce_privilege.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -157,7 +157,7 @@ control "k8s_pod_hostpid_hostipc_namesapce_privilege" {
 control "k8s_pod_security_policy_hostpid_hostipc_namesapce_privilege" {
   title       = "Containers should not share host process namespaces in pod security policy"
   description = "If the host’s process namespace is shared with containers, it would basically allow these to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them. This could allow for the host itself being shut down, which could be extremely serious, particularly in a multi-tenanted environment. You should not share the host’s process namespace with the containers running on it."
-  sql        = query.k8s_pod_security_policy_hostpid_hostipc_namesapce_privilege.sql
+  sql         = query.k8s_pod_security_policy_hostpid_hostipc_namesapce_privilege.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -180,7 +180,7 @@ control "k8s_daemonset_immutable_container_filesystem" {
 
 control "k8s_job_immutable_container_filesystem" {
   title       = "Containers in job defination should always run with a read only root file system"
-  description = "Containers in job defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from "owning" the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
+  description = "Containers in job defination should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
   sql         = query.k8s_job_immutable_container_filesystem.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
