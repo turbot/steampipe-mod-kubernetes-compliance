@@ -2,13 +2,11 @@
 
 Multiple checks covering industry defined security best practices for Kubernetes. Includes support for National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
 
-**Includes support for v1.0 NSA and CISA Cybersecurity Technical Report:**
-
 ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console.png)
 
 Includes support for:
 
-- [NSA and CISA](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF)
+- [v1.0 NSA and CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF)
 
 ## Quick start
 

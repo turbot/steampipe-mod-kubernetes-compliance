@@ -54,160 +54,160 @@ control "k8s_default_network_policy_deny_egress" {
 }
 
 control "k8s_daemonset_cpu_limit" {
-  title       = "Containers in daemonset definition should have CPU limit"
-  description = "Daemonset definition containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  title       = "Daemonset definition containers should have a CPU limit"
+  description = "Containers in daemonset definition should have CPU limit which restricts the container to use no more than a given amount of CPU."
   sql         = query.k8s_daemonset_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_deployment_cpu_limit" {
-  title       = "Containers in deployment definition should have CPU limit"
-  description = "Deployment definition containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  title       = "Deployment definition containers should have a CPU limit"
+  description = "Containers in deployment definition should have CPU limit which restricts the container to use no more than a given amount of CPU."
   sql         = query.k8s_deployment_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_job_cpu_limit" {
-  title       = "Containers in job definition should have CPU limit"
-  description = "Job definition containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  title       = "Job definition containers should have a CPU limit"
+  description = "Containers in job definition should have CPU limit which restricts the container to use no more than a given amount of CPU."
   sql         = query.k8s_job_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replicaset_cpu_limit" {
-  title       = "Containers in replicaset definition should have CPU limit"
-  description = "Replicaset definition containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  title       = "Replicaset definition containers should have a CPU limit"
+  description = "Containers in replicaset definition should have CPU limit which restricts the container to use no more than a given amount of CPU."
   sql         = query.k8s_replicaset_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replication_controller_cpu_limit" {
-  title       = "Containers in replication controller definition should have CPU limit"
-  description = "Replication controller definition containers should have a CPU limit which restricts the container to use no more than a given amount of CPU."
+  title       = "Replication controller definition containers should have a CPU limit"
+  description = "Containers in replication controller definition should have CPU limits which restricts the container to use no more than a given amount of CPU."
   sql         = query.k8s_replication_controller_cpu_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_daemonset_cpu_request" {
-  title       = "Containers in daemonset definition should have CPU request"
-  description = "Daemonset definition containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  title       = "Daemonset definition containers should have a CPU request"
+  description = "Containers in daemonset definition should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   sql         = query.k8s_daemonset_cpu_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_deployment_cpu_request" {
-  title       = "Containers in deployment definition should have CPU request"
-  description = "Deployment definition containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  title       = "Deployment definition containers should have a CPU request"
+  description = "Containers in deployment definition should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   sql         = query.k8s_deployment_cpu_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_job_cpu_request" {
-  title       = "Containers in job definition should have CPU request"
-  description = "Job definition containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  title       = "Job definition containers should have a CPU request"
+  description = "Containers in job definition should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   sql         = query.k8s_job_cpu_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replicaset_cpu_request" {
-  title       = "Containers in replicaset definition should have CPU request"
-  description = "Replicaset definition containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  title       = "Replicaset definition containers should have a CPU request"
+  description = "Containers in replicaset definition should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   sql         = query.k8s_replicaset_cpu_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replication_controller_cpu_request" {
-  title       = "Containers in replication controller definition should have CPU request"
-  description = "Replication controller definition containers should have a CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
+  title       = "Replication controller definition containers should have a CPU request"
+  description = "Containers in replication controller definition should have CPU requests. If required Kubernetes will make sure your containers get the CPU they requested."
   sql         = query.k8s_replication_controller_cpu_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_daemonset_memory_limit" {
-  title       = "Containers in daemonset definition should have memory limit"
-  description = "Daemonset definition containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  title       = "Daemonset definition containers should have a memory limit"
+  description = "Containers in daemonset definition should have memory limit which restricts the container to use no more than a given amount of user or system memory."
   sql         = query.k8s_daemonset_memory_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_deployment_memory_limit" {
-  title       = "Containers in deployment definition should have memory limit"
-  description = "Deployment definition containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  title       = "Deployment definition containers should have a memory limit"
+  description = "Containers in deployment definition should have memory limit which restricts the container to use no more than a given amount of user or system memory."
   sql         = query.k8s_deployment_memory_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_job_memory_limit" {
-  title       = "Containers in job definition should have memory limit"
-  description = "Job definition containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  title       = "Job definition containers should have a memory limit"
+  description = "Containers in job definition should have memory limit which restricts the container to use no more than a given amount of user or system memory."
   sql         = query.k8s_job_memory_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replicaset_memory_limit" {
-  title       = "Containers in replicaset definition should have memory limit"
-  description = "Replicaset definition containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  title       = "Replicaset definition containers should have a memory limit"
+  description = "Containers in replicaset definition should have memory limit which restricts the container to use no more than a given amount of user or system memory."
   sql         = query.k8s_replicaset_memory_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replication_controller_memory_limit" {
-  title       = "Containers in replication controller definition should have memory limit"
-  description = "Replication controller definition containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
+  title       = "Replication controller definition containers should have a memory limit"
+  description = "Containers in replication controller definition should have memory limit which restricts the container to use no more than a given amount of user or system memory."
   sql         = query.k8s_replication_controller_memory_limit.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_daemonset_memory_request" {
-  title       = "Containers in daemonset definition should have memory request"
-  description = "Daemonset definition containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  title       = "Daemonset definition containers should have memory request"
+  description = "Containers in daemonset definition should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   sql         = query.k8s_daemonset_memory_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_deployment_memory_request" {
-  title       = "Containers in deployment definition should have memory request"
-  description = "Deployment definition containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  title       = "Deployment definition containers should have memory request"
+  description = "Containers in deployment definition should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   sql         = query.k8s_deployment_memory_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_job_memory_request" {
-  title       = "Containers in job definition should have memory request"
-  description = "Job definition containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  title       = "Job definition containers should have memory request"
+  description = "Containers in job definition should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   sql         = query.k8s_job_memory_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replicaset_memory_request" {
-  title       = "Containers in replicaset definition should have memory request"
-  description = "Replicaset definition containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  title       = "Replicaset definition containers should have memory request"
+  description = "Containers in replicaset definition should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   sql         = query.k8s_replicaset_memory_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_replication_controller_memory_request" {
-  title       = "Containers in replication controller definition should have memory request"
-  description = "Replication controller definition containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
+  title       = "Replication controller definition containers should have memory request"
+  description = "Containers in replication controller definition should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   sql         = query.k8s_replication_controller_memory_request.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags

@@ -2,7 +2,7 @@ To get the latest version of the offical guide, please visit [here](https://medi
 
 ## Overview
 
-Cybersecurity Technical Report for Kubernetes hardening. The hardening guidance detailed in this report is designed to help organizations handle associated risks and enjoy the benefits of using this technology.
+Kubernetes is an open-source system that automates the deployment, scaling, and management of applications run in containers, and is often hosted in a cloud environment. The hardening guidance detailed in this report is designed to help organizations handle associated risks and enjoy the benefits of using this technology.
 
 ## Control Categories
 
