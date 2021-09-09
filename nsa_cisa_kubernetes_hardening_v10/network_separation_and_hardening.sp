@@ -1,5 +1,5 @@
 benchmark "network_separation_and_hardening" {
-  title = "Network Separation and Hardening "
+  title = "Network Separation and Hardening"
   children = [
     control.k8s_api_serve_on_secure_port,
     control.k8s_daemonset_cpu_limit,
