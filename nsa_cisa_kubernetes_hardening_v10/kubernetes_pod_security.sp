@@ -4,15 +4,15 @@ benchmark "kubernetes_pod_security" {
     control.k8s_daemonset_immutable_container_filesystem,
     control.k8s_daemonset_non_root_container,
     control.k8s_daemonset_privileged_container,
-    control.k8s_daemonset_root_allowed_elevation,
+    control.k8s_daemonset_containers_privilege_escalation_disabled,
     control.k8s_deployment_immutable_container_filesystem,
     control.k8s_deployment_non_root_container,
     control.k8s_deployment_privileged_container,
-    control.k8s_deployment_root_allowed_elevation,
+    control.k8s_deployment_containers_privilege_escalation_disabled,
     control.k8s_job_immutable_container_filesystem,
     control.k8s_job_non_root_container,
     control.k8s_job_privileged_container,
-    control.k8s_job_root_allowed_elevation,
+    control.k8s_job_containers_privilege_escalation_disabled,
     control.k8s_pod_host_network_access,
     control.k8s_pod_hostpid_hostipc_namesapce_privilege,
     control.k8s_pod_security_policy_allowed_host_paths,
@@ -23,11 +23,11 @@ benchmark "kubernetes_pod_security" {
     control.k8s_replicaset_immutable_container_filesystem,
     control.k8s_replicaset_non_root_container,
     control.k8s_replicaset_privileged_container,
-    control.k8s_replicaset_root_allowed_elevation,
+    control.k8s_replicaset_containers_privilege_escalation_disabled,
     control.k8s_replication_controller_immutable_container_filesystem,
     control.k8s_replication_controller_non_root_container,
     control.k8s_replication_controller_privileged_container,
-    control.k8s_replication_controller_root_allowed_elevation,
+    control.k8s_replication_controller_containers_privilege_escalation_disabled,
     control.k8s_security_services_hardening,
     control.k8s_service_account_token_disabled,
   ]
@@ -74,42 +74,42 @@ control "k8s_replication_controller_non_root_container" {
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_deployment_root_allowed_elevation" {
+control "k8s_deployment_containers_privilege_escalation_disabled" {
   title       = "Containers in deployment definition should not have privilege escalation"
   description = "Deployment definition containers should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
-  sql         = query.k8s_deployment_root_allowed_elevation.sql
+  sql         = query.k8s_deployment_containers_privilege_escalation_disabled.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_daemonset_root_allowed_elevation" {
+control "k8s_daemonset_containers_privilege_escalation_disabled" {
   title       = "Containers in daemonset definition should not have privilege escalation"
   description = "Daemonset definition containers should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
-  sql         = query.k8s_daemonset_root_allowed_elevation.sql
+  sql         = query.k8s_daemonset_containers_privilege_escalation_disabled.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_job_root_allowed_elevation" {
+control "k8s_job_containers_privilege_escalation_disabled" {
   title       = "Containers in job definition should not have privilege escalation"
   description = "Job definition containers should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
-  sql         = query.k8s_job_root_allowed_elevation.sql
+  sql         = query.k8s_job_containers_privilege_escalation_disabled.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_replicaset_root_allowed_elevation" {
+control "k8s_replicaset_containers_privilege_escalation_disabled" {
   title       = "Containers in replicaset definition should not have privilege escalation"
   description = "Replicaset definition containers should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
-  sql         = query.k8s_replicaset_root_allowed_elevation.sql
+  sql         = query.k8s_replicaset_containers_privilege_escalation_disabled.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
-control "k8s_replication_controller_root_allowed_elevation" {
+control "k8s_replication_controller_containers_privilege_escalation_disabled" {
   title       = "Containers in replication controller definition should not have privilege escalation"
   description = "Replication controller definition containers should not have privilege escalation. In case of a container breakout, the root user can access and execute anything on the underlying host as a highly privileged user as well. This means filesystem mounts are at risk, access to username/passwords which are configured on the host to connect to other services installing unwanted malware and accessing other cloud resources."
-  sql         = query.k8s_replication_controller_root_allowed_elevation.sql
+  sql         = query.k8s_replication_controller_containers_privilege_escalation_disabled.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
