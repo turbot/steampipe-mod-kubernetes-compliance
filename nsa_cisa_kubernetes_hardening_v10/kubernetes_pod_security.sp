@@ -1,5 +1,5 @@
 benchmark "kubernetes_pod_security" {
-  title = "Kubernetes Pod security"
+  title = "Kubernetes Pod Security"
   children = [
     control.k8s_daemonset_immutable_container_filesystem,
     control.k8s_daemonset_non_root_container,
