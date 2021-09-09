@@ -115,7 +115,7 @@ control "k8s_replication_controller_containers_privilege_escalation_disabled" {
 }
 
 control "k8s_pod_security_policy_allowed_host_paths" {
-  title       = "Containers should use specified host paths in pod security policy"
+  title       = "Containers should use specified host paths in Pod Security Policy"
   description = "Allowed host paths specifies a list of host paths that are allowed to be used by hostPath volumes. An empty list means there is no restriction on host paths used. This is defined as a list of objects with a single pathPrefix field, which allows hostPath volumes to mount a path that begins with an allowed prefix, and a readOnly field indicating it must be mounted read-only."
   sql         = query.k8s_pod_security_policy_allowed_host_paths.sql
 
@@ -123,7 +123,7 @@ control "k8s_pod_security_policy_allowed_host_paths" {
 }
 
 control "k8s_pod_volume_host_paths" {
-  title       = "Host path volume should not mounted any specific path in pod volume"
+  title       = "Host path volume should not mounted any specific path in Pod volume"
   description = "Containers should not able to access any specific paths of the host file system until there is a specific reason."
   sql         = query.k8s_pod_volume_host_paths.sql
 
@@ -131,7 +131,7 @@ control "k8s_pod_volume_host_paths" {
 }
 
 control "k8s_pod_host_network_access_disabled" {
-  title       = "Host network access should be disabled for the containers in pod"
+  title       = "Host network access should be disabled for the containers in Pod"
   description = "Pod host network controls whether the Pod may use the node network namespace. Doing so gives the Pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other Pods on the same node."
   sql         = query.k8s_pod_host_network_access_disabled.sql
 
@@ -139,15 +139,15 @@ control "k8s_pod_host_network_access_disabled" {
 }
 
 control "k8s_pod_security_policy_host_network_access_disabled" {
-  title       = "Host network access should be disabled for the containers in pod security policy"
-  description = "Pod Security Policy host network controls whether the Pod may use the node network namespace. Doing so gives the pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other pods on the same node."
+  title       = "Host network access should be disabled for the containers in Pod Security Policy"
+  description = "Pod Security Policy host network controls whether the Pod may use the node network namespace. Doing so gives the Pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other Pods on the same node."
   sql         = query.k8s_pod_security_policy_host_network_access_disabled.sql
 
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "k8s_pod_hostpid_hostipc_namesapce_privilege_disabled" {
-  title       = "Containers should not share host process namespaces in pod"
+  title       = "Containers should not share host process namespaces in Pod"
   description = "In Pod if the host’s process namespace is shared with containers, it would basically allow these to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them. This could allow for the host itself being shut down, which could be extremely serious, particularly in a multi-tenanted environment. You should not share the host’s process namespace with the containers running on it."
   sql         = query.k8s_pod_hostpid_hostipc_namesapce_privilege_disabled.sql
 
@@ -155,7 +155,7 @@ control "k8s_pod_hostpid_hostipc_namesapce_privilege_disabled" {
 }
 
 control "k8s_pod_security_policy_hostpid_hostipc_namesapce_privilege_disabled" {
-  title       = "Containers should not share host process namespaces in pod security policy"
+  title       = "Containers should not share host process namespaces in Pod Security Policy"
   description = "In Pod security policy if the host’s process namespace is shared with containers, it would basically allow these to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them. This could allow for the host itself being shut down, which could be extremely serious, particularly in a multi-tenanted environment. You should not share the host’s process namespace with the containers running on it."
   sql         = query.k8s_pod_security_policy_hostpid_hostipc_namesapce_privilege_disabled.sql
 
@@ -203,7 +203,7 @@ control "k8s_replication_controller_immutable_container_filesystem" {
 }
 
 control "k8s_pod_service_account_token_disabled" {
-  title       = "Automatic mapping of the service account tokens should be disabled in pod"
+  title       = "Automatic mapping of the service account tokens should be disabled in Pod"
   description = "In Pod automatic mapping of service account token should be disabled. Many containerized applications do not require direct access to the service account as Kubernetes orchestration occurs transparently in the background. If an application is compromised, account tokens in Pods can be gleaned by cyber actors and used to further compromise the cluster. When an application does not need to access the service account directly, Kubernetes administrators should ensure that Pod specifications disable the secret token being mounted."
   sql         = query.k8s_pod_service_account_token_disabled.sql
 
