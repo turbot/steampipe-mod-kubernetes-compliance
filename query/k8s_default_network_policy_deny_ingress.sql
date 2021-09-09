@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  name as resource,
+  namespace as resource,
   case
     when policy_types @> '["Ingress"]' and pod_selector = '{}' and ingress is null then 'ok'
     else 'alarm'
