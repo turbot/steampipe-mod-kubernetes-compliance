@@ -1,13 +1,13 @@
 select
   -- Required Columns
-  name as resource,
+  uid as resource,
   case
     when allowed_host_paths is null then 'alarm'
     else 'ok'
   end as status,
   case
-    when allowed_host_paths is null then 'Containers can use all host paths.'
-    else 'Containers using specified host path.'
+    when allowed_host_paths is null then 'Pod security policy allows containers to use hostPath mounts.'
+    else 'Pod security policy restricts containers to only specific hostPath mounts.'
   end as reason,
   -- Additional Dimensions
   context_name
