@@ -90,9 +90,11 @@ benchmark "nsa_cisa_v10_containers_privilege_escalation_disabled" {
   title       = "Containers should not allow privilege escalation"
   description = "Containers should not allow privilege escalation. A container running with the `allowPrivilegeEscalation` flag set to true may have processes that can gain more privileges than their parent."
   children = [
-    control.nsa_cisa_v10_deployment_containers_privilege_escalation_disabled,
     control.nsa_cisa_v10_daemonset_containers_privilege_escalation_disabled,
+    control.nsa_cisa_v10_deployment_containers_privilege_escalation_disabled,
     control.nsa_cisa_v10_job_containers_privilege_escalation_disabled,
+    control.nsa_cisa_v10_pod_containers_privilege_escalation_disabled,
+    control.nsa_cisa_v10_pod_security_policy_containers_privilege_escalation_disabled,
     control.nsa_cisa_v10_replicaset_containers_privilege_escalation_disabled,
     control.nsa_cisa_v10_replication_controller_containers_privilege_escalation_disabled,
   ]
@@ -102,6 +104,20 @@ benchmark "nsa_cisa_v10_containers_privilege_escalation_disabled" {
 locals {
   title_containers_privilege_escalation_disabled = "__KIND__ containers should not allow privilege escalation"
   desc_containers_privilege_escalation_disabled = "Containers in a __KIND__ should not allow privilege escalation.  A container running with the `allowPrivilegeEscalation` flag set to true may have processes that can gain more privileges than their parent."
+}
+
+control "nsa_cisa_v10_pod_containers_privilege_escalation_disabled" {
+  title       = replace(local.title_containers_privilege_escalation_disabled, "__KIND__", "Pod")
+  description = replace(local.desc_containers_privilege_escalation_disabled, "__KIND__", "Pod")
+  sql         = query.pod_containers_privilege_escalation_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_pod_security_policy_containers_privilege_escalation_disabled" {
+  title       = "Pod Security Policy should prohibit privilege escalation"
+  description = "Pod Security Policy should prohibit privilege escalation". replace(local.desc_containers_privilege_escalation_disabled, "__KIND__", "Pod")
+  sql         = query.pod_security_policy_containers_privilege_escalation_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "nsa_cisa_v10_deployment_containers_privilege_escalation_disabled" {
@@ -176,6 +192,11 @@ benchmark "nsa_cisa_v10_host_network_access_disabled" {
   children = [
     control.nsa_cisa_v10_pod_security_policy_host_network_access_disabled,
     control.nsa_cisa_v10_pod_host_network_access_disabled,
+    control.nsa_cisa_v10_daemonset_host_network_access_disabled,
+    control.nsa_cisa_v10_deployment_host_network_access_disabled,
+    control.nsa_cisa_v10_job_host_network_access_disabled,
+    control.nsa_cisa_v10_replicaset_host_network_access_disabled,
+    control.nsa_cisa_v10_replication_controller_host_network_access_disabled,
   ]
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -201,6 +222,41 @@ control "nsa_cisa_v10_pod_security_policy_host_network_access_disabled" {
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
+control "nsa_cisa_v10_deployment_host_network_access_disabled" {
+  title       = replace(local.title_host_network_access_disabled, "__KIND__", "Deployment")
+  description = replace(local.desc_host_network_access_disabled, "__KIND__", "Deployment")
+  sql         = query.deployment_host_network_access_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_daemonset_host_network_access_disabled" {
+  title       = replace(local.title_host_network_access_disabled, "__KIND__", "DaemonSet")
+  description = replace(local.desc_host_network_access_disabled, "__KIND__", "DaemonSet")
+  sql         = query.daemonset_host_network_access_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_job_host_network_access_disabled" {
+  title       = replace(local.title_host_network_access_disabled, "__KIND__", "Job")
+  description = replace(local.desc_host_network_access_disabled, "__KIND__", "Job")
+  sql         = query.job_host_network_access_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_replicaset_host_network_access_disabled" {
+  title       = replace(local.title_host_network_access_disabled, "__KIND__", "ReplicaSet")
+  description = replace(local.desc_host_network_access_disabled, "__KIND__", "ReplicaSet")
+  sql         = query.replicaset_host_network_access_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_replication_controller_host_network_access_disabled" {
+  title       = replace(local.title_host_network_access_disabled, "__KIND__", "ReplicationController")
+  description = replace(local.desc_host_network_access_disabled, "__KIND__", "ReplicationController")
+  sql         = query.replication_controller_host_network_access_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
 ########################################################
 benchmark "nsa_cisa_v10_hostpid_hostipc_namespace_privilege_disabled" {
   title       = "Containers should not share the host process namespace"
@@ -208,6 +264,11 @@ benchmark "nsa_cisa_v10_hostpid_hostipc_namespace_privilege_disabled" {
   children    = [
     control.nsa_cisa_v10_pod_security_policy_hostpid_hostipc_namespace_privilege_disabled,
     control.nsa_cisa_v10_pod_hostpid_hostipc_namespace_privilege_disabled,
+    control.nsa_cisa_v10_daemonset_hostpid_hostipc_namespace_privilege_disabled,
+    control.nsa_cisa_v10_deployment_hostpid_hostipc_namespace_privilege_disabled,
+    control.nsa_cisa_v10_job_hostpid_hostipc_namespace_privilege_disabled,
+    control.nsa_cisa_v10_replicaset_hostpid_hostipc_namespace_privilege_disabled,
+    control.nsa_cisa_v10_replication_controller_hostpid_hostipc_namespace_privilege_disabled,
   ]
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -231,14 +292,51 @@ control "nsa_cisa_v10_pod_security_policy_hostpid_hostipc_namespace_privilege_di
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
+control "nsa_cisa_v10_deployment_hostpid_hostipc_namespace_privilege_disabled" {
+  title       = replace(local.title_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "Deployment")
+  description = replace(local.desc_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "Deployment")
+  sql         = query.deployment_hostpid_hostipc_namespace_privilege_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_daemonset_hostpid_hostipc_namespace_privilege_disabled" {
+  title       = replace(local.title_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "DaemonSet")
+  description = replace(local.desc_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "DaemonSet")
+  sql         = query.daemonset_hostpid_hostipc_namespace_privilege_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_job_hostpid_hostipc_namespace_privilege_disabled" {
+  title       = replace(local.title_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "Job")
+  description = replace(local.desc_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "Job")
+  sql         = query.job_hostpid_hostipc_namespace_privilege_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_replicaset_hostpid_hostipc_namespace_privilege_disabled" {
+  title       = replace(local.title_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "ReplicaSet")
+  description = replace(local.desc_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "ReplicaSet")
+  sql         = query.replicaset_hostpid_hostipc_namespace_privilege_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_replication_controller_hostpid_hostipc_namespace_privilege_disabled" {
+  title       = replace(local.title_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "ReplicationController")
+  description = replace(local.desc_hostpid_hostipc_namespace_privilege_disabled, "__KIND__", "ReplicationController")
+  sql         = query.replication_controller_hostpid_hostipc_namespace_privilege_disabled.sql
+  tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
 ########################################################
 benchmark "nsa_cisa_v10_immutable_container_filesystem" {
   title       = "Containers should run with a read only root file system"
   description = "Containers should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
   children = [
-    control.nsa_cisa_v10_deployment_immutable_container_filesystem,
     control.nsa_cisa_v10_daemonset_immutable_container_filesystem,
+    control.nsa_cisa_v10_deployment_immutable_container_filesystem,
     control.nsa_cisa_v10_job_immutable_container_filesystem,
+    control.nsa_cisa_v10_pod_immutable_container_filesystem,
+    control.nsa_cisa_v10_pod_security_policy_immutable_container_filesystem,
     control.nsa_cisa_v10_replicaset_immutable_container_filesystem,
     control.nsa_cisa_v10_replication_controller_immutable_container_filesystem,
   ]
@@ -248,6 +346,20 @@ benchmark "nsa_cisa_v10_immutable_container_filesystem" {
 locals {
   title_immutable_container_filesystem = "__KIND__ containers should run with a read only root file system"
   desc_immutable_container_filesystem = "Containers in a __KIND__ should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
+}
+
+control "nsa_cisa_v10_pod_immutable_container_filesystem" {
+  title       = replace(local.desc_immutable_container_filesystem, "__KIND__", "Pod")
+  description = replace(local.desc_immutable_container_filesystem, "__KIND__", "Pod")
+  sql         = query.pod_immutable_container_filesystem.sql
+  tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_pod_security_policy_immutable_container_filesystem" {
+  title       = "Pod Security Policy should force containers to run with read only root file system"
+  description = "Pod Security Policy should force containers to run with read only root file system". replace(local.desc_immutable_container_filesystem, "__KIND__", "Pod")
+  sql         = query.pod_security_policy_immutable_container_filesystem.sql
+  tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "nsa_cisa_v10_deployment_immutable_container_filesystem" {
@@ -319,9 +431,11 @@ benchmark "nsa_cisa_v10_containers_privilege_disabled" {
   title       = "Containers should not have privileged access"
   description = "Containers should not have privileged access. To prevent security issues, it is recommended that you do not run privileged containers in your environment. Instead, provide granular permissions and capabilities to the container environment. Giving containers full access to the host can create security flaws in your production environment."
   children = [
-    control.nsa_cisa_v10_deployment_containers_privilege_disabled,
     control.nsa_cisa_v10_daemonset_containers_privilege_disabled,
+    control.nsa_cisa_v10_deployment_containers_privilege_disabled,
     control.nsa_cisa_v10_job_containers_privilege_disabled,
+    control.nsa_cisa_v10_pod_containers_privilege_disabled,
+    control.nsa_cisa_v10_pod_security_policy_containers_privilege_disabled,
     control.nsa_cisa_v10_replicaset_containers_privilege_disabled,
     control.nsa_cisa_v10_replication_controller_containers_privilege_disabled,
   ]
@@ -331,6 +445,20 @@ benchmark "nsa_cisa_v10_containers_privilege_disabled" {
 locals {
   title_containers_privilege_disabled = "__KIND__ containers should not have privileged access"
   desc_containers_privilege_disabled = "Containers in a __KIND__ should not have privileged access. To prevent security issues, it is recommended that you do not run privileged containers in your environment. Instead, provide granular permissions and capabilities to the container environment. Giving containers full access to the host can create security flaws in your production environment."
+}
+
+control "nsa_cisa_v10_pod_containers_privilege_disabled" {
+  title       = replace(local.desc_containers_privilege_disabled, "__KIND__", "Pod")
+  description = replace(local.desc_containers_privilege_disabled, "__KIND__", "Pod")
+  sql         = query.pod_containers_privilege_disabled.sql
+  tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
+}
+
+control "nsa_cisa_v10_pod_security_policy_containers_privilege_disabled" {
+  title       = "Pod Security Policy should prohibit containers to run with privilege access"
+  description = "Pod Security Policy should prohibit containers to run with privilege access". replace(local.desc_containers_privilege_disabled, "__KIND__", "Pod")
+  sql         = query.pod_security_policy_containers_privilege_disabled.sql
+  tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
 control "nsa_cisa_v10_deployment_containers_privilege_disabled" {
