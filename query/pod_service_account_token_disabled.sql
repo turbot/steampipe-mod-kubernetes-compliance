@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  name as resource,
+  uid as resource,
   case
     when automount_service_account_token then 'alarm'
     else 'ok'

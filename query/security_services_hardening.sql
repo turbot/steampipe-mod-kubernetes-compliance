@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  name as resource,
+  uid as resource,
   case
     when se_linux -> 'rule' = '"MustRunAs"' then 'ok'
     when annotations -> 'apparmor.security.beta.kubernetes.io/defaultProfileName' = '"runtime/default"' then 'ok'

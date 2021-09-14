@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  name as resource,
+  uid as resource,
   case
     when host_network then 'alarm'
     else 'ok'
