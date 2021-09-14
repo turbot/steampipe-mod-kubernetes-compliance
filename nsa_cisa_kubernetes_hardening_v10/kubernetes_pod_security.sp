@@ -115,7 +115,7 @@ control "nsa_cisa_v10_pod_containers_privilege_escalation_disabled" {
 
 control "nsa_cisa_v10_pod_security_policy_containers_privilege_escalation_disabled" {
   title       = "Pod Security Policy should prohibit privilege escalation"
-  description = "Pod Security Policy should prohibit privilege escalation". replace(local.desc_containers_privilege_escalation_disabled, "__KIND__", "Pod")
+  description = "Pod Security Policy should prohibit privilege escalation. ${replace(local.desc_containers_privilege_escalation_disabled, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_containers_privilege_escalation_disabled.sql
   tags = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -357,7 +357,7 @@ control "nsa_cisa_v10_pod_immutable_container_filesystem" {
 
 control "nsa_cisa_v10_pod_security_policy_immutable_container_filesystem" {
   title       = "Pod Security Policy should force containers to run with read only root file system"
-  description = "Pod Security Policy should force containers to run with read only root file system". replace(local.desc_immutable_container_filesystem, "__KIND__", "Pod")
+  description = "Pod Security Policy should force containers to run with read only root file system. ${replace(local.desc_immutable_container_filesystem, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_immutable_container_filesystem.sql
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
@@ -456,7 +456,7 @@ control "nsa_cisa_v10_pod_containers_privilege_disabled" {
 
 control "nsa_cisa_v10_pod_security_policy_containers_privilege_disabled" {
   title       = "Pod Security Policy should prohibit containers to run with privilege access"
-  description = "Pod Security Policy should prohibit containers to run with privilege access". replace(local.desc_containers_privilege_disabled, "__KIND__", "Pod")
+  description = "Pod Security Policy should prohibit containers to run with privilege access. ${replace(local.desc_containers_privilege_disabled, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_containers_privilege_disabled.sql
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
