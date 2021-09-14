@@ -1,15 +1,16 @@
 
 with default_deny_egress_count as (
-  select 
+  select
     ns.uid,
     ns.name as namespace,
     ns.context_name,
     count(pol.*) as num_netpol,
+    -- Get the count of default deny Egress policy assoicated to each namespace
     COUNT(*) FILTER (where policy_types @> '["Egress"]' and pod_selector = '{}' and egress is null) AS num_default_deny
   from kubernetes_namespace as ns
   left join kubernetes_network_policy as pol on pol.namespace = ns.name
   group by
-    ns.name, 
+    ns.name,
     ns.uid,
     ns.context_name
 )

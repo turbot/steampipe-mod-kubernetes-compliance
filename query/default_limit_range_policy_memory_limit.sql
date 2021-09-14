@@ -16,8 +16,8 @@ select
     else 'ok'
   end as status,
   case
-    when default_limit ->> 'memory' is null then n.name || ' dont have default limit range policy memory limit.'
-    else n.name || ' has default limit range policy memory limit.'
+    when default_limit ->> 'memory' is null then n.name || ' do not have default LimitRange policy for memory limit.'
+    else n.name || ' has default LimitRange policy for memory limit.'
   end as reason,
   -- Additional Dimensions
   n.context_name

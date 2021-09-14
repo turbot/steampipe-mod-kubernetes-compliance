@@ -6,8 +6,8 @@ select
     else 'ok'
   end as status,
   case
-    when q.spec_hard -> 'requests.memory' is null and q.spec_hard -> 'memory' is null then n.name || ' dont have resource quota memory request.'
-    else n.name || ' have resource quota memory request.'
+    when q.spec_hard -> 'requests.memory' is null and q.spec_hard -> 'memory' is null then n.name || ' do not have ResourceQuota for memory request.'
+    else n.name || ' have ResourceQuota for memory request.'
   end as reason,
   -- Additional Dimensions
   n.context_name

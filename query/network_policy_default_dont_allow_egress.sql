@@ -1,15 +1,16 @@
 
 with default_allows_all_egress_count as (
-  select 
+  select
     namespace,
     name,
     uid,
     context_name,
+    -- Get the count of default allow Egress policy
     count(*) filter (where rule = '{}') as num_allow_all_rules
-  from 
+  from
     kubernetes_network_policy
     left join jsonb_array_elements(egress) as rule on true
-  group by  
+  group by
     namespace,
     name,
     uid,
@@ -17,17 +18,18 @@ with default_allows_all_egress_count as (
     rule,
     policy_types
 )
-select 
+select
   uid as resource,
+  case
+    when num_allow_all_rules > 0 then 'alarm'
+    else 'ok'
+  end as status,
   case
     when num_allow_all_rules > 0 then name || ' allows all egress'
     else name || ' does not allow all egress'
   end as reason,
-  case
-    when num_allow_all_rules > 0 then 'alarm' 
-    else 'ok'
-  end as status,
   namespace,
   context_name
-from default_allows_all_egress_count 
+from
+  default_allows_all_egress_count;
 

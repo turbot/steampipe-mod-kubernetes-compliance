@@ -6,8 +6,8 @@ select
     else 'ok'
   end as status,
   case
-    when q.spec_hard -> 'limits.memory' is null then n.name || ' dont have resource quota memory limit.'
-    else n.name || ' have resource quota memory limit.'
+    when q.spec_hard -> 'limits.memory' is null then n.name || ' do not have ResourceQuota for memory limit.'
+    else n.name || ' have ResourceQuota for memory limit.'
   end as reason,
   -- Additional Dimensions
   n.context_name

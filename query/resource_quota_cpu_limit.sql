@@ -6,8 +6,8 @@ select
     else 'ok'
   end as status,
   case
-    when q.spec_hard -> 'limits.cpu' is null then n.name || ' dont have resource quota CPU limit.'
-    else n.name || ' have resource quota CPU limit.'
+    when q.spec_hard -> 'limits.cpu' is null then n.name || ' do not have ResourceQuota for CPU limit.'
+    else n.name || ' have ResourceQuota for CPU limit.'
   end as reason,
   -- Additional Dimensions
   n.context_name
