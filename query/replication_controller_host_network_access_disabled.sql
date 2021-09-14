@@ -6,8 +6,8 @@
     else 'ok'
   end as status,
   case
-    when template -> 'spec' ->> 'hostNetwork' = 'true' then 'Replication controller pods using host network.'
-    else 'Replication controller pods not using host network.'
+    when template -> 'spec' ->> 'hostNetwork' = 'true' then 'ReplicationController pods using host network.'
+    else 'ReplicationController pods not using host network.'
   end as reason,
   -- Additional Dimensions
   name as pod_name,

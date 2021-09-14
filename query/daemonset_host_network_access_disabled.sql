@@ -6,8 +6,8 @@
     else 'ok'
   end as status,
   case
-    when template -> 'spec' ->> 'hostNetwork' = 'true' then 'Daemonset pods using host network.'
-    else 'Daemonset pods not using host network.'
+    when template -> 'spec' ->> 'hostNetwork' = 'true' then 'DaemonSet pods using host network.'
+    else 'DaemonSet pods not using host network.'
   end as reason,
   -- Additional Dimensions
   name as pod_name,
