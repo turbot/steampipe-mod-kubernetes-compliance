@@ -61,7 +61,7 @@ benchmark "nsa_cisa_v10_cpu_limit" {
   description = "Containers should have CPU limit which restricts the container to use no more than a given amount of CPU."
   children = [
     control.nsa_cisa_v10_daemonset_cpu_limit,
-    control.nsa_cisa_v10_default_limit_range_policy_cpu_limit,
+    control.nsa_cisa_v10_limit_range_default_cpu_limit,
     control.nsa_cisa_v10_deployment_cpu_limit,
     control.nsa_cisa_v10_job_cpu_limit,
     control.nsa_cisa_v10_replicaset_cpu_limit,
@@ -76,10 +76,10 @@ locals {
   desc_container_cpu_limit = "Containers in a __KIND__  should have CPU limit which restricts the container to use no more than a given amount of CPU."
 }
 
-control "nsa_cisa_v10_default_limit_range_policy_cpu_limit" {
+control "nsa_cisa_v10_limit_range_default_cpu_limit" {
   title       = "Namespaces should have default CPU limit in limitRange policy"
   description = "Administrators should use default limitRange policy for CPU limit for each namespaces."
-  sql         = query.default_limit_range_policy_cpu_limit.sql
+  sql         = query.limit_range_default_cpu_limit.sql
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
@@ -131,7 +131,7 @@ benchmark "nsa_cisa_v10_cpu_request" {
   description = "Containers should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   children = [
     control.nsa_cisa_v10_daemonset_cpu_request,
-    control.nsa_cisa_v10_default_limit_range_policy_cpu_request,
+    control.nsa_cisa_v10_limit_range_default_cpu_request,
     control.nsa_cisa_v10_deployment_cpu_request,
     control.nsa_cisa_v10_job_cpu_request,
     control.nsa_cisa_v10_replicaset_cpu_request,
@@ -146,10 +146,10 @@ locals {
   desc_container_cpu_request = "Containers in a __KIND__ should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
 }
 
-control "nsa_cisa_v10_default_limit_range_policy_cpu_request" {
+control "nsa_cisa_v10_limit_range_default_cpu_request" {
   title       = "Namespaces should have default CPU request in limitRange policy"
   description = "Administrators should use default limitRange policy for CPU request for each namespaces."
-  sql         = query.default_limit_range_policy_cpu_request.sql
+  sql         = query.limit_range_default_cpu_request.sql
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
@@ -201,7 +201,7 @@ benchmark "nsa_cisa_v10_memory_limit" {
   description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
   children = [
     control.nsa_cisa_v10_daemonset_memory_limit,
-    control.nsa_cisa_v10_default_limit_range_policy_memory_limit,
+    control.nsa_cisa_v10_limit_range_default_memory_limit,
     control.nsa_cisa_v10_deployment_memory_limit,
     control.nsa_cisa_v10_job_memory_limit,
     control.nsa_cisa_v10_replicaset_memory_limit,
@@ -216,10 +216,10 @@ locals {
   desc_container_memory_limit = "Containers in a __KIND__ should have memory limit which restricts the container to use no more than a given amount of user or system memory."
 }
 
-control "nsa_cisa_v10_default_limit_range_policy_memory_limit" {
+control "nsa_cisa_v10_limit_range_default_memory_limit" {
   title       = "Namespaces should have default memory limit in limitRange policy"
   description = "Administrators should use default limitRange policy for memory limit for each namespaces."
-  sql         = query.default_limit_range_policy_memory_limit.sql
+  sql         = query.limit_range_default_memory_limit.sql
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 
@@ -271,7 +271,7 @@ benchmark "nsa_cisa_v10_memory_request" {
   description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   children = [
     control.nsa_cisa_v10_daemonset_memory_request,
-    control.nsa_cisa_v10_default_limit_range_policy_memory_request,
+    control.nsa_cisa_v10_limit_range_default_memory_request,
     control.nsa_cisa_v10_deployment_memory_request,
     control.nsa_cisa_v10_job_memory_request,
     control.nsa_cisa_v10_replicaset_memory_request,
@@ -286,10 +286,10 @@ locals {
   desc_container_memory_request = "Containers in a __KIND__ should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
 }
 
-control "nsa_cisa_v10_default_limit_range_policy_memory_request" {
+control "nsa_cisa_v10_limit_range_default_memory_request" {
   title       = "Namespaces should have default memory request in limitRange policy"
   description = "Administrators should use default limitRange policy for memory request for each namespaces."
-  sql         = query.default_limit_range_policy_memory_request.sql
+  sql         = query.limit_range_default_memory_request.sql
   tags        = local.nsa_cisa_kubernetes_hardening_v10_common_tags
 }
 

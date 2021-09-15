@@ -16,8 +16,8 @@ select
     else 'ok'
   end as status,
   case
-    when default_request ->> 'cpu' is null then n.name || ' do not have default LimitRange policy for CPU request.'
-    else n.name || ' has default LimitRange policy for CPU request.'
+    when default_request ->> 'cpu' is null then n.name || ' do not have LimitRange default CPU request.'
+    else n.name || ' has LimitRange default CPU request.'
   end as reason,
   -- Additional Dimensions
   n.context_name

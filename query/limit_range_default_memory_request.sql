@@ -12,12 +12,12 @@ select
   -- Required Columns
   n.uid as resource,
   case
-    when default_limit ->> 'cpu' is null then 'alarm'
+    when default_request ->> 'memory' is null then 'alarm'
     else 'ok'
   end as status,
   case
-    when default_limit ->> 'cpu' is null then n.name || ' do not have default LimitRange policy for CPU limit.'
-    else n.name || ' has default LimitRange policy for CPU limit.'
+    when default_request ->> 'memory' is null then n.name || ' do not have LimitRange default memory request.'
+    else n.name || ' has LimitRange default memory request.'
   end as reason,
   -- Additional Dimensions
   n.context_name
