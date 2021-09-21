@@ -17,13 +17,13 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_limit" {
   description = "Containers should have CPU limit which restricts the container to use no more than a given amount of CPU."
   tags        = local.nsa_cisa_v1_common_tags
   children    = [
-    control.nsa_cisa_v1_network_hardening_cpu_limit_daemonset,
-    control.nsa_cisa_v1_network_hardening_cpu_limit_deployment,
-    control.nsa_cisa_v1_network_hardening_cpu_limit_job,
-    control.nsa_cisa_v1_network_hardening_limit_range_default_cpu_limit_namespace,
-    control.nsa_cisa_v1_network_hardening_resource_quota_cpu_limit_namespace,
-    control.nsa_cisa_v1_network_hardening_cpu_limit_replicaset,
-    control.nsa_cisa_v1_network_hardening_cpu_limit_replication_controller,
+    control.daemonset_cpu_limit,
+    control.deployment_cpu_limit,
+    control.job_cpu_limit,
+    control.namespace_limit_range_default_cpu_limit,
+    control.namespace_resource_quota_cpu_limit,
+    control.replicaset_cpu_limit,
+    control.replication_controller_cpu_limit,
   ]
 }
 
@@ -32,49 +32,49 @@ locals {
   desc_container_cpu_limit  = "Containers in a __KIND__  should have CPU limit which restricts the container to use no more than a given amount of CPU."
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_limit_daemonset" {
+control "daemonset_cpu_limit" {
   title       = replace(local.title_container_cpu_limit, "__KIND__", "DaemonSet")
   description = replace(local.desc_container_cpu_limit, "__KIND__", "DaemonSet")
   sql         = query.daemonset_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_limit_deployment" {
+control "deployment_cpu_limit" {
   title       = replace(local.title_container_cpu_limit, "__KIND__", "Deployment")
   description = replace(local.desc_container_cpu_limit, "__KIND__", "Deployment")
   sql         = query.deployment_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_limit_job" {
+control "job_cpu_limit" {
   title       = replace(local.title_container_cpu_limit, "__KIND__", "Job")
   description = replace(local.desc_container_cpu_limit, "__KIND__", "Job")
   sql         = query.job_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_limit_range_default_cpu_limit_namespace" {
+control "namespace_limit_range_default_cpu_limit" {
   title       = "Namespaces should have default CPU limit in limitRange policy"
   description = "Administrators should use default limitRange policy for CPU limit for each namespaces."
   sql         = query.namespace_limit_range_default_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_resource_quota_cpu_limit_namespace" {
+control "namespace_resource_quota_cpu_limit" {
   title       = "Namespaces should be restricted on CPU usage with resourceQuota CPU limit"
   description = "Administrators should use resourceQuota CPU limit to restrict namespaces CPU usage."
   sql         = query.namespace_resource_quota_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_limit_replicaset" {
+control "replicaset_cpu_limit" {
   title       = replace(local.title_container_cpu_limit, "__KIND__", "ReplicaSet")
   description = replace(local.desc_container_cpu_limit, "__KIND__", "ReplicaSet")
   sql         = query.replicaset_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_limit_replication_controller" {
+control "replication_controller_cpu_limit" {
   title       = replace(local.title_container_cpu_limit, "__KIND__", "ReplicationController")
   description = replace(local.desc_container_cpu_limit, "__KIND__", "ReplicationController")
   sql         = query.replication_controller_cpu_limit.sql
@@ -87,13 +87,13 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_request" {
   description = "Containers should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   tags        = local.nsa_cisa_v1_common_tags
   children    = [
-    control.nsa_cisa_v1_network_hardening_cpu_request_daemonset,
-    control.nsa_cisa_v1_network_hardening_cpu_request_deployment,
-    control.nsa_cisa_v1_network_hardening_cpu_request_job,
-    control.nsa_cisa_v1_network_hardening_limit_range_default_cpu_request_namespace,
-    control.nsa_cisa_v1_network_hardening_resource_quota_cpu_request_namespace,
-    control.nsa_cisa_v1_network_hardening_cpu_request_replicaset,
-    control.nsa_cisa_v1_network_hardening_cpu_request_replication_controller,
+    control.daemonset_cpu_request,
+    control.deployment_cpu_request,
+    control.job_cpu_request,
+    control.namespace_limit_range_default_cpu_request,
+    control.namespace_resource_quota_cpu_request,
+    control.replicaset_cpu_request,
+    control.replication_controller_cpu_request,
   ]
 }
 
@@ -102,49 +102,49 @@ locals {
   desc_container_cpu_request  = "Containers in a __KIND__ should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_request_daemonset" {
+control "daemonset_cpu_request" {
   title       = replace(local.title_container_cpu_request, "__KIND__", "DaemonSet")
   description = replace(local.desc_container_cpu_request, "__KIND__", "DaemonSet")
   sql         = query.daemonset_cpu_request.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_request_deployment" {
+control "deployment_cpu_request" {
   title       = replace(local.title_container_cpu_request, "__KIND__", "Deployment")
   description = replace(local.desc_container_cpu_request, "__KIND__", "Deployment")
   sql         = query.deployment_cpu_request.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_request_job" {
+control "job_cpu_request" {
   title       = replace(local.title_container_cpu_request, "__KIND__", "Job")
   description = replace(local.desc_container_cpu_request, "__KIND__", "Job")
   sql         = query.job_cpu_request.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_limit_range_default_cpu_request_namespace" {
+control "namespace_limit_range_default_cpu_request" {
   title       = "Namespaces should have default CPU request in limitRange policy"
   description = "Administrators should use default limitRange policy for CPU request for each namespaces."
   sql         = query.namespace_limit_range_default_cpu_request.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_resource_quota_cpu_request_namespace" {
+control "namespace_resource_quota_cpu_request" {
   title       = "Namespaces should have resourceQuota CPU request"
   description = "Administrators should use resourceQuota CPU request for each namespaces."
   sql         = query.namespace_resource_quota_cpu_request.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_request_replicaset" {
+control "replicaset_cpu_request" {
   title       = replace(local.title_container_cpu_request, "__KIND__", "ReplicaSet")
   description = replace(local.desc_container_cpu_request, "__KIND__", "ReplicaSet")
   sql         = query.replicaset_cpu_request.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "nsa_cisa_v1_network_hardening_cpu_request_replication_controller" {
+control "replication_controller_cpu_request" {
   title       = replace(local.title_container_cpu_request, "__KIND__", "ReplicationController")
   description = replace(local.desc_container_cpu_request, "__KIND__", "ReplicationController")
   sql         = query.replication_controller_cpu_request.sql
