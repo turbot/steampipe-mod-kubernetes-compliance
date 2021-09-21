@@ -1,5 +1,5 @@
 benchmark "nsa_cisa_v1_network_hardening" {
-  title    = "NSA and CISA v1.0 Network Separation and Hardening"
+  title    = "Network Separation and Hardening"
   tags     = local.nsa_cisa_v1_common_tags
   children = [
     benchmark.nsa_cisa_v1_network_hardening_cpu_limit,

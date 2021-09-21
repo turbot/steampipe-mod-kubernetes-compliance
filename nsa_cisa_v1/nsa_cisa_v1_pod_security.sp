@@ -1,5 +1,5 @@
 benchmark "nsa_cisa_v1_pod_security" {
-  title = "NSA and CISA v1.0 Kubernetes Pod Security"
+  title = "Kubernetes Pod Security"
   tags  = local.nsa_cisa_v1_common_tags
   children = [
     benchmark.nsa_cisa_v1_pod_security_container_disallow_host_path,
