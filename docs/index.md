@@ -45,13 +45,13 @@ steampipe check all
 Run a single benchmark:
 
 ```shell
-steampipe check benchmark.nsa_cisa_kubernetes_hardening_v1
+steampipe check benchmark.nsa_cisa_v1_pod_security
 ```
 
 Run a specific control:
 
 ```shell
-steampipe check control.k8s_non_root_container
+steampipe check control.nsa_cisa_v1_pod_security_container_privilege_disabled_daemonset
 ```
 
 ### Credentials
