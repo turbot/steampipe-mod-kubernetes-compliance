@@ -44,7 +44,7 @@ steampipe check all
 Run an individual benchmark:
 
 ```shell
-steampipe check benchmark.kubernetes_pod_security
+steampipe check benchmark.nsa_cisa_v1_pod_security
 ```
 
 Use Steampipe introspection to view all current controls:
@@ -56,7 +56,7 @@ steampipe query "select resource_name from steampipe_control;"
 Run a specific control:
 
 ```shell
-steampipe check control.k8s_non_root_container
+steampipe check control.nsa_cisa_v1_pod_non_root_container
 ```
 
 ## Contributing
