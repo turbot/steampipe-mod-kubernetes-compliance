@@ -17,7 +17,7 @@ brew tap turbot/tap
 brew install steampipe
 
 steampipe -v
-steampipe version 0.7.3
+steampipe version 0.8.2
 ```
 
 2. Install the Kubernetes plugin

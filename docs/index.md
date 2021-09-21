@@ -45,7 +45,7 @@ steampipe check all
 Run a single benchmark:
 
 ```shell
-steampipe check benchmark.nsa_cisa_kubernetes_hardening_v10
+steampipe check benchmark.nsa_cisa_kubernetes_hardening_v1
 ```
 
 Run a specific control:
