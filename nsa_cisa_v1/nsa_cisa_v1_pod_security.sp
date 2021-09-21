@@ -5,7 +5,7 @@ benchmark "nsa_cisa_v1_pod_security" {
     benchmark.nsa_cisa_v1_pod_security_container_disallow_host_path,
     benchmark.nsa_cisa_v1_pod_security_container_privilege_disabled,
     benchmark.nsa_cisa_v1_pod_security_container_privilege_escalation_disabled,
-    benchmark.nsa_cisa_v1_pod_security_container_security_services_hardening,
+    benchmark.nsa_cisa_v1_pod_security_container_security_service_hardening,
     benchmark.nsa_cisa_v1_pod_security_host_network_access_disabled,
     benchmark.nsa_cisa_v1_pod_security_hostpid_hostipc_sharing_disabled,
     benchmark.nsa_cisa_v1_pod_security_immutable_container_filesystem,
@@ -185,7 +185,7 @@ control "nsa_cisa_v1_pod_security_container_privilege_escalation_disabled_replic
 }
 
 // Security services hardening benchmark
-benchmark "nsa_cisa_v1_pod_security_container_security_service_hardening_pod_security_policy" {
+benchmark "nsa_cisa_v1_pod_security_container_security_service_hardening" {
   title       = "Containerized applications should use security services"
   description = "Linux provides several out-of-the-box security modules. Some of the popular ones are SELinux, AppArmor and Seccomp. Containerized applications should use these security services."
   tags        = local.nsa_cisa_v1_common_tags
