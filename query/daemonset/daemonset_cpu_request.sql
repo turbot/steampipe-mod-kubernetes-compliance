@@ -16,3 +16,6 @@ select
 from
   kubernetes_daemonset,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+
+
+
