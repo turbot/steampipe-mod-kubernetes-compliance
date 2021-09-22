@@ -11,7 +11,6 @@ benchmark "nsa_cisa_v1_network_hardening" {
   ]
 }
 
-// CPU limit benchmark
 benchmark "nsa_cisa_v1_network_hardening_cpu_limit" {
   title       = "Containers should have a CPU limit"
   description = "Containers should have CPU limit which restricts the container to use no more than a given amount of CPU."
@@ -27,7 +26,6 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_limit" {
   ]
 }
 
-// CPU request benchmark
 benchmark "nsa_cisa_v1_network_hardening_cpu_request" {
   title       = "Containers should have a CPU request"
   description = "Containers should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
@@ -43,7 +41,6 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_request" {
   ]
 }
 
-// Endpoint api serve on secure port benchmark
 benchmark "nsa_cisa_v1_network_hardening_api_serve_on_secure_port_endpoint" {
   title       = "Kubernetes API should serve on secure port"
   description = "Kubernetes API should serve on port 443 or port 6443, protected by TLS. Once TLS is established, the HTTP request moves to the authentication step. If the request cannot be authenticated, it is rejected with HTTP status code 401."
@@ -53,7 +50,6 @@ benchmark "nsa_cisa_v1_network_hardening_api_serve_on_secure_port_endpoint" {
   ]
 }
 
-// Memory limit benchmark
 benchmark "nsa_cisa_v1_network_hardening_memory_limit" {
   title       = "Containers should have a memory limit"
   description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
@@ -69,7 +65,6 @@ benchmark "nsa_cisa_v1_network_hardening_memory_limit" {
   ]
 }
 
-// Memory request benchmark
 benchmark "nsa_cisa_v1_network_hardening_memory_request" {
   title       = "Containers should have a memory request"
   description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
@@ -85,7 +80,6 @@ benchmark "nsa_cisa_v1_network_hardening_memory_request" {
   ]
 }
 
-// Network policy default deny benchmark
 benchmark "nsa_cisa_v1_network_hardening_default_deny_network_policy" {
   title       = "Network policy should have a default policy to deny all ingress and egress traffic"
   description = "Administrators should use a default policy selecting all Pods to deny all ingress and egress traffic and ensure any unselected Pods are isolated. Additional policies could then relax these restrictions for permissible connections."

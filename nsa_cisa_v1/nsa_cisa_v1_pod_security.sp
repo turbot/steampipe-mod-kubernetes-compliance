@@ -14,7 +14,6 @@ benchmark "nsa_cisa_v1_pod_security" {
   ]
 }
 
-// Container disallow host path benchmark
 benchmark "nsa_cisa_v1_pod_security_container_disallow_host_path" {
   title       = "Containers should not use hostPath mounts"
   description = "Containers should not able to access any specific paths of the host file system. There are many ways a container with unrestricted access to the host filesystem can escalate privileges, including reading data from other containers, and abusing the credentials of system services, such as Kubelet."
@@ -25,7 +24,6 @@ benchmark "nsa_cisa_v1_pod_security_container_disallow_host_path" {
   ]
 }
 
-// Container privilege disabled benchmark
 benchmark "nsa_cisa_v1_pod_security_container_privilege_disabled" {
   title       = "Containers should not have privileged access"
   description = "Containers should not have privileged access. To prevent security issues, it is recommended that you do not run privileged containers in your environment. Instead, provide granular permissions and capabilities to the container environment. Giving containers full access to the host can create security flaws in your production environment."
@@ -41,7 +39,6 @@ benchmark "nsa_cisa_v1_pod_security_container_privilege_disabled" {
   ]
 }
 
-// Container privilege escalation disabled benchmark
 benchmark "nsa_cisa_v1_pod_security_container_privilege_escalation_disabled" {
   title       = "Containers should not allow privilege escalation"
   description = "Containers should not allow privilege escalation. A container running with the `allowPrivilegeEscalation` flag set to true may have processes that can gain more privileges than their parent."
@@ -57,7 +54,6 @@ benchmark "nsa_cisa_v1_pod_security_container_privilege_escalation_disabled" {
   ]
 }
 
-// Security services hardening benchmark
 benchmark "nsa_cisa_v1_pod_security_container_security_service_hardening" {
   title       = "Containerized applications should use security services"
   description = "Linux provides several out-of-the-box security modules. Some of the popular ones are SELinux, AppArmor and Seccomp. Containerized applications should use these security services."
@@ -67,7 +63,6 @@ benchmark "nsa_cisa_v1_pod_security_container_security_service_hardening" {
   ]
 }
 
-// Host network access disabled benchmark
 benchmark "nsa_cisa_v1_pod_security_host_network_access_disabled" {
   title       = "Containers should not run with host network access"
   description = "Pod host network controls whether the Pod may use the node network namespace. Doing so gives the Pod access to the loopback device, services listening on localhost, and could be used to snoop on network activity of other Pods on the same node."
@@ -83,7 +78,6 @@ benchmark "nsa_cisa_v1_pod_security_host_network_access_disabled" {
   ]
 }
 
-// Host process namespace privilege disabled benchmark
 benchmark "nsa_cisa_v1_pod_security_hostpid_hostipc_sharing_disabled" {
   title       = "Containers should not share the host process namespace"
   description = "Containers should not share the host process PID or IPC namespace. Sharing the host’s process namespace allows the container to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them."
@@ -99,7 +93,6 @@ benchmark "nsa_cisa_v1_pod_security_hostpid_hostipc_sharing_disabled" {
   ]
 }
 
-// Immutable container filesystem benchmark
 benchmark "nsa_cisa_v1_pod_security_immutable_container_filesystem" {
   title       = "Containers should run with a read only root file system"
   description = "Containers should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
@@ -115,7 +108,6 @@ benchmark "nsa_cisa_v1_pod_security_immutable_container_filesystem" {
   ]
 }
 
-// Non root container benchmark
 benchmark "nsa_cisa_v1_pod_security_non_root_container" {
   title       = "Containers should not run with root privileges"
   description = "Containers should not be deployed with root privileges. By default, many container services run as the privileged root user, and applications execute inside the container as root despite not requiring privileged execution. Preventing root execution by using non-root containers or a rootless container engine limits the impact of a container compromise."
@@ -131,7 +123,6 @@ benchmark "nsa_cisa_v1_pod_security_non_root_container" {
   ]
 }
 
-// Service account token disabled benchmark
 benchmark "nsa_cisa_v1_pod_security_service_account_token_disabled" {
   title       = "Automatic mapping of the service account tokens should be disabled"
   description = local.desc_service_account_token_disabled
