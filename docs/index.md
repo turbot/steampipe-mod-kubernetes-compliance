@@ -45,13 +45,13 @@ steampipe check all
 Run a single benchmark:
 
 ```shell
-steampipe check benchmark.nsa_cisa_v1_pod_security
+steampipe check benchmark.nsa_cisa_v1_network_hardening_cpu_limit
 ```
 
 Run a specific control:
 
 ```shell
-steampipe check control.nsa_cisa_v1_pod_security_container_privilege_disabled_daemonset
+steampipe check control.daemonset_cpu_limit
 ```
 
 ### Credentials
