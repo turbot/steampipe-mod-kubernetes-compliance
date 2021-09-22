@@ -18,8 +18,8 @@ Run individual controls or full compliance benchmarks for `NSA and CISA Kubernet
 
 ## Documentation
 
-- **[Benchmarks and controls →](https://hub.steampipe.io/mods/turbot/kubernetes-compliance/controls)**
-- **[Named queries →](https://hub.steampipe.io/mods/turbot/kubernetes-compliance/queries)**
+- **[Benchmarks and controls →](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls)**
+- **[Named queries →](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/queries)**
 
 ## Get started
 
