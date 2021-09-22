@@ -7,14 +7,14 @@ control "pod_security_policy_allowed_host_path" {
 
 control "pod_security_policy_container_privilege_disabled" {
   title       = "Pod Security Policy should prohibit containers to run with privilege access"
-  description = "Pod Security Policy `privileged` controls whether the Pod containers may run with `privileged` access. ${replace(local.desc_container_privilege_disabled, "__KIND__", "Pod")}"
+  description = "Pod Security Policy `privileged` controls whether the Pod containers may run with `privileged` access. ${replace(local.container_privilege_disabled_desc, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_container_privilege_disabled.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
 control "pod_security_policy_container_privilege_escalation_disabled" {
   title       = "Pod Security Policy should prohibit privilege escalation"
-  description = "Pod Security Policy `allowPrivilegeEscalation` controls whether the Pod containers may request for privilege escalation. ${replace(local.desc_container_privilege_escalation_disabled, "__KIND__", "Pod")}"
+  description = "Pod Security Policy `allowPrivilegeEscalation` controls whether the Pod containers may request for privilege escalation. ${replace(local.container_privilege_escalation_disabled_desc, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_container_privilege_escalation_disabled.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
@@ -35,21 +35,21 @@ control "pod_security_policy_host_network_access_disabled" {
 
 control "pod_security_policy_hostpid_hostipc_sharing_disabled" {
   title       = "Pod Security Policy should prohibit containers from sharing the host process namespaces"
-  description = "Pod Security Policy `hostPID` and `hostIPC` controls whether the Pod may share the host process namespaces. ${replace(local.desc_hostpid_hostipc_sharing_disabled, "__KIND__", "Pod")}"
+  description = "Pod Security Policy `hostPID` and `hostIPC` controls whether the Pod may share the host process namespaces. ${replace(local.hostpid_hostipc_sharing_disabled_desc, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_hostpid_hostipc_sharing_disabled.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
 control "pod_security_policy_immutable_container_filesystem" {
   title       = "Pod Security Policy should force containers to run with read only root file system"
-  description = "Pod Security Policy `readOnlyRootFilesystem` controls whether the Pod containers run with read only root file system. ${replace(local.desc_immutable_container_filesystem, "__KIND__", "Pod")}"
+  description = "Pod Security Policy `readOnlyRootFilesystem` controls whether the Pod containers run with read only root file system. ${replace(local.immutable_container_filesystem_desc, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_immutable_container_filesystem.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
 
 control "pod_security_policy_non_root_container" {
   title       = "Pod Security Policy should prohibit containers from running as root"
-  description = "Pod Security Policy should prohibit containers from running as root. ${replace(local.desc_non_root_container, "__KIND__", "Pod")}"
+  description = "Pod Security Policy should prohibit containers from running as root. ${replace(local.non_root_container_desc, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_non_root_container.sql
   tags        = local.nsa_cisa_v1_common_tags
 }

@@ -125,7 +125,7 @@ benchmark "nsa_cisa_v1_pod_security_non_root_container" {
 
 benchmark "nsa_cisa_v1_pod_security_service_account_token_disabled" {
   title       = "Automatic mapping of the service account tokens should be disabled"
-  description = local.desc_service_account_token_disabled
+  description = local.service_account_token_disabled_desc
   tags        = local.nsa_cisa_v1_common_tags
   children = [
     control.pod_service_account_token_disabled,
