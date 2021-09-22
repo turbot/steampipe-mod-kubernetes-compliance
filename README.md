@@ -2,7 +2,7 @@
 
 Multiple checks covering industry defined security best practices for Kubernetes. Includes support for National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
 
- <!-- ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console.png) -->
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console.png)
 
 Includes support for:
 
@@ -17,7 +17,7 @@ brew tap turbot/tap
 brew install steampipe
 
 steampipe -v
-steampipe version 0.7.3
+steampipe version 0.8.2
 ```
 
 2. Install the Kubernetes plugin
@@ -44,7 +44,7 @@ steampipe check all
 Run an individual benchmark:
 
 ```shell
-steampipe check benchmark.kubernetes_pod_security
+steampipe check benchmark.nsa_cisa_v1_network_hardening_cpu_limit
 ```
 
 Use Steampipe introspection to view all current controls:
@@ -56,7 +56,7 @@ steampipe query "select resource_name from steampipe_control;"
 Run a specific control:
 
 ```shell
-steampipe check control.k8s_non_root_container
+steampipe check control.daemonset_cpu_limit
 ```
 
 ## Contributing

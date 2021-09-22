@@ -4,7 +4,7 @@ repository: "https://github.com/turbot/steampipe-mod-kubernetes-compliance.git"
 
 # Kubernetes Compliance Mod
 
-Run individual configuration, compliance and security controls or full compliance benchmarks for Kubernetes across all providers.
+Run individual controls or full compliance benchmarks for `NSA and CISA Kubernetes Hardening Guidance` across all of your Kubernetes clusters.
 
 ## References
 
@@ -45,13 +45,13 @@ steampipe check all
 Run a single benchmark:
 
 ```shell
-steampipe check benchmark.nsa_cisa_kubernetes_hardening_v10
+steampipe check benchmark.nsa_cisa_v1_network_hardening_cpu_limit
 ```
 
 Run a specific control:
 
 ```shell
-steampipe check control.k8s_non_root_container
+steampipe check control.daemonset_cpu_limit
 ```
 
 ### Credentials
