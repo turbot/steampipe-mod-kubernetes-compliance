@@ -4,7 +4,7 @@ repository: "https://github.com/turbot/steampipe-mod-kubernetes-compliance.git"
 
 # Kubernetes Compliance Mod
 
-Run individual controls or full compliance benchmarks for NSA CISA Kubernetes Hardening Guidance across all of your Kubernetes clusters using Steampipe.
+Run individual configuration, compliance and security controls or full compliance benchmarks for Kubernetes across all providers.
 
 ## References
 
