@@ -6,6 +6,8 @@ repository: "https://github.com/turbot/steampipe-mod-kubernetes-compliance.git"
 
 Run individual controls or full compliance benchmarks for `NSA and CISA Kubernetes Hardening Guidance` across all of your Kubernetes clusters.
 
+![image](https://github.com/turbot/steampipe-mod-kubernetes-compliance/blob/main/docs/kubernetes-compliance-mod-console.png)
+
 ## References
 
 [Kubernetes](https://kubernetes.io/) also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications.
