@@ -47,6 +47,13 @@ control "pod_non_root_container" {
   tags        = local.nsa_cisa_v1_common_tags
 }
 
+control "pod_service_account_not_exist" {
+  title       = "Pods should not refer to a non existing service account"
+  description = local.pod_service_account_not_exist_desc
+  sql         = query.pod_service_account_not_exist.sql
+  tags        = local.extra_checks_tags
+}
+
 control "pod_service_account_token_disabled" {
   title       = "Automatic mapping of the service account tokens should be disabled in Pod"
   description = local.service_account_token_disabled_desc

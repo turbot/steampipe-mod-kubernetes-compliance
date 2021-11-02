@@ -14,5 +14,5 @@ select
   p.context_name
 from
   kubernetes_pod p 
-  left join kubernetes_service_account a 
-  on p.service_account_name = a.name;
+left join kubernetes_service_account a 
+on p.service_account_name = a.name;
