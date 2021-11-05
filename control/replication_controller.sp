@@ -67,3 +67,17 @@ control "replication_controller_non_root_container" {
   sql         = query.replication_controller_non_root_container.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
+
+control "replication_controller_container_readiness_probe" {
+  title       = "Replicaset containers should have readiness probe."
+  description = "Replicaset containers should have readiness probe."
+  sql         = query.replication_controller_container_readiness_probe.sql
+  tags        = local.extra_checks_tags
+}
+
+control "replication_controller_container_liveness_probe" {
+  title       = "Replication controller containers should have liveness probe."
+  description = "Replication controller containers should have liveness probe."
+  sql         = query.replication_controller_container_liveness_probe.sql
+  tags        = local.extra_checks_tags
+}

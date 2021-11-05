@@ -67,3 +67,17 @@ control "replicaset_non_root_container" {
   sql         = query.replicaset_non_root_container.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
+
+control "replicaset_container_readiness_probe" {
+  title       = "Replicaset containers should have readiness probe."
+  description = "Replicaset containers should have readiness probe."
+  sql         = query.pod_container_readiness_probe.sql
+  tags        = local.extra_checks_tags
+}
+
+control "replicaset_container_liveness_probe" {
+  title       = "Replicaset containers should have liveness probe."
+  description = "Replicaset containers should have liveness probe."
+  sql         = query.replicaset_container_liveness_probe.sql
+  tags        = local.extra_checks_tags
+}

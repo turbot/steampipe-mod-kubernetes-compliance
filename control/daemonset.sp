@@ -67,3 +67,17 @@ control "daemonset_non_root_container" {
   sql         = query.daemonset_non_root_container.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
+
+control "daemonset_container_readiness_probe" {
+  title       = "Daemonset containers should have readiness probe."
+  description = "Daemonset containers should have readiness probe."
+  sql         = query.daemonset_container_readiness_probe.sql
+  tags        = local.extra_checks_tags
+}
+
+control "daemonset_container_liveness_probe" {
+  title       = "Daemonset containers should have liveness probe."
+  description = "Daemonset containers should have liveness probe."
+  sql         = query.daemonset_container_liveness_probe.sql
+  tags        = local.extra_checks_tags
+}

@@ -67,3 +67,17 @@ control "deployment_non_root_container" {
   sql         = query.deployment_non_root_container.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
+
+control "deployment_container_readiness_probe" {
+  title       = "Deployment containers should have readiness probe."
+  description = "Deployment containers should have readiness probe."
+  sql         = query.deployment_container_readiness_probe.sql
+  tags        = local.extra_checks_tags
+}
+
+control "deployment_container_liveness_probe" {
+  title       = "Deployment containers should have liveness probe."
+  description = "Deployment containers should have liveness probe."
+  sql         = query.deployment_container_liveness_probe.sql
+  tags        = local.extra_checks_tags
+}

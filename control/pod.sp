@@ -60,3 +60,17 @@ control "pod_service_account_token_disabled" {
   sql         = query.pod_service_account_token_disabled.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
+
+control "pod_container_readiness_probe" {
+  title       = "Pod containers should have readiness probe."
+  description = "Pod containers should have readiness probe."
+  sql         = query.pod_container_readiness_probe.sql
+  tags        = local.extra_checks_tags
+}
+
+control "pod_container_liveness_probe" {
+  title       = "Pod containers should have liveness probe."
+  description = "Pod containers should have liveness probe."
+  sql         = query.pod_container_liveness_probe.sql
+  tags        = local.extra_checks_tags
+}

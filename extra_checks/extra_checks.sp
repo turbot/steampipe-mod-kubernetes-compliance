@@ -11,6 +11,8 @@ benchmark "extra_checks" {
   tags          = local.extra_checks_tags
   children = [
     control.pod_service_account_not_exist,
-    control.service_type_forbidden
+    control.service_type_forbidden,
+    benchmark.container_liveness_probe,
+    benchmark.container_readiness_probe,
      ]
 }

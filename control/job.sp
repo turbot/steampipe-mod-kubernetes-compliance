@@ -67,3 +67,17 @@ control "job_non_root_container" {
   sql         = query.job_non_root_container.sql
   tags        = local.nsa_cisa_v1_common_tags
 }
+
+control "job_container_readiness_probe" {
+  title       = "Job containers should have readiness probe."
+  description = "Job containers should have readiness probe."
+  sql         = query.job_container_readiness_probe.sql
+  tags        = local.extra_checks_tags
+}
+
+control "job_container_liveness_probe" {
+  title       = "Job containers should have liveness probe."
+  description = "Job containers should have liveness probe."
+  sql         = query.job_container_liveness_probe.sql
+  tags        = local.extra_checks_tags
+}
