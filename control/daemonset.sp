@@ -70,14 +70,14 @@ control "daemonset_non_root_container" {
 
 control "daemonset_container_readiness_probe" {
   title       = "Daemonset containers should have readiness probe"
-  description = "Containers in daemonset definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill it’s work."
+  description = "Containers in Daemonset definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill it’s work."
   sql         = query.daemonset_container_readiness_probe.sql
   tags        = local.extra_checks_tags
 }
 
 control "daemonset_container_liveness_probe" {
   title       = "Daemonset containers should have liveness probe"
-  description = "Containers in daemonset definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn’t the case, kubernetes will eventually restart the container."
+  description = "Containers in Daemonset definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn’t the case, kubernetes will eventually restart the container."
   sql         = query.daemonset_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
