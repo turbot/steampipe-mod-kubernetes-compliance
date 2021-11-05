@@ -69,15 +69,15 @@ control "replicaset_non_root_container" {
 }
 
 control "replicaset_container_readiness_probe" {
-  title       = "Replicaset containers should have readiness probe."
-  description = "Replicaset containers should have readiness probe."
-  sql         = query.pod_container_readiness_probe.sql
+  title       = "Replicaset containers should have readiness probe"
+  description = "Containers in Replicaset definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill it’s work."
+  sql         = query.replicaset_container_readiness_probe.sql
   tags        = local.extra_checks_tags
 }
 
 control "replicaset_container_liveness_probe" {
-  title       = "Replicaset containers should have liveness probe."
-  description = "Replicaset containers should have liveness probe."
+  title       = "Replicaset containers should have liveness probe"
+  description = "Containers in Replicaset definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn’t the case, kubernetes will eventually restart the container."
   sql         = query.replicaset_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }

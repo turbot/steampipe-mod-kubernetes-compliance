@@ -69,15 +69,15 @@ control "job_non_root_container" {
 }
 
 control "job_container_readiness_probe" {
-  title       = "Job containers should have readiness probe."
-  description = "Job containers should have readiness probe."
+  title       = "Job containers should have readiness probe"
+  description = "Containers in Job definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill it’s work."
   sql         = query.job_container_readiness_probe.sql
   tags        = local.extra_checks_tags
 }
 
 control "job_container_liveness_probe" {
-  title       = "Job containers should have liveness probe."
-  description = "Job containers should have liveness probe."
+  title       = "Job containers should have liveness probe"
+  description = "Containers in Job definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn’t the case, kubernetes will eventually restart the container."
   sql         = query.job_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
