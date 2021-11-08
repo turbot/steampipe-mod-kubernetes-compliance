@@ -2,13 +2,12 @@ select
   -- Required Columns
   name as resource,
   case
-    when host_pid or host_ipc then 'alarm'
+    when host_ipc then 'alarm'
     else 'ok'
   end as status,
   case
-    when host_pid then 'Pods can share host PID namespaces.'
     when host_ipc then 'Pods can share host IPC namespaces.'
-    else 'Pod cannot share host process namespaces.'
+    else 'Pod cannot share host IPC namespaces.'
   end as reason,
   -- Additional Dimensions
   context_name

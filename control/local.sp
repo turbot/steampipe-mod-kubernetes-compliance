@@ -26,6 +26,12 @@ locals {
   hostpid_hostipc_sharing_disabled_title = "__KIND__ containers should not share the host process namespace"
   hostpid_hostipc_sharing_disabled_desc  = "Containers in a __KIND__ should not share the host process PID or IPC namespace.  Sharing the host’s process namespace allows the container to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them."
 
+  hostpid_sharing_disabled_title = "__KIND__ containers should not share the host process ID namespace"
+  hostpid_sharing_disabled_desc  = "Containers in a __KIND__ should not share the host process ID namespace.  Sharing the host’s process namespace allows the container to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them."
+
+  hostipc_sharing_disabled_title = "__KIND__ containers should not share the host process IPC namespace"
+  hostipc_sharing_disabled_desc  = "Containers in a __KIND__ should not share the host process IPC namespace.  Sharing the host’s process namespace allows the container to see all of the processes on the host system. This reduces the benefit of process level isolation between the host and the containers. Under these circumstances a malicious user who has access to a container could get access to processes on the host itself, manipulate them, and even be able to kill them."
+
   immutable_container_filesystem_title = "__KIND__ containers should run with a read only root file system"
   immutable_container_filesystem_desc  = "Containers in a __KIND__ should always run with a read only root file system. Using an immutable root filesystem and a verified boot mechanism prevents against attackers from owning the machine through permanent local changes. An immutable root filesystem can also prevent malicious binaries from writing to the host system."
 

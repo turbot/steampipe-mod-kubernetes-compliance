@@ -10,12 +10,14 @@ benchmark "extra_checks" {
   documentation = file("./extra_checks/docs/extra_checks_overview.md")
   tags          = local.extra_checks_tags
   children = [
+    benchmark.cis_v120,
+    benchmark.container_liveness_probe,
+    benchmark.container_privilege_port_mapped,
+    benchmark.container_readiness_probe,
     control.deployment_replica_minimum_3,
     control.pod_service_account_not_exist,
     control.service_type_forbidden,
-    benchmark.container_liveness_probe,
-    benchmark.container_readiness_probe,
-    benchmark.container_privilege_port_mapped,
-    benchmark.cis_benchmark_section_5,
+    
+    
      ]
 }
