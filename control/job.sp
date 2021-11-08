@@ -81,3 +81,17 @@ control "job_container_liveness_probe" {
   sql         = query.job_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
+
+control "job_container_privilege_port_mapped" {
+  title       = "Job containers should not mapped with privilege port"
+  description = "Privileged ports `0 to 1024` should not mapped with Job containers. Normal users and processes are not allowed to use them for various security reasons."
+  sql         = query.job_container_privilege_port_mapped.sql
+  tags        = local.extra_checks_tags
+}
+
+control "job_default_namesapce_used" {
+  title       = "Job definition should not use default namespace"
+  description = "Default namespace should not be used by Job definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
+  sql         = query.job_default_namesapce_used.sql
+  tags        = local.extra_checks_tags
+}

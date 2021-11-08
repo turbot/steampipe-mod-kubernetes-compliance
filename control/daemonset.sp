@@ -81,3 +81,17 @@ control "daemonset_container_liveness_probe" {
   sql         = query.daemonset_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
+
+control "daemonset_container_privilege_port_mapped" {
+  title       = "Daemonset containers should not mapped with privilege port"
+  description = "Privileged ports `0 to 1024` should not mapped with Daemonset containers. Normal users and processes are not allowed to use them for various security reasons."
+  sql         = query.daemonset_container_privilege_port_mapped.sql
+  tags        = local.extra_checks_tags
+}
+
+control "daemonset_default_namesapce_used" {
+  title       = "Daemonset definition should not use default namespace"
+  description = "Default namespace should not be used by Daemonset definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
+  sql         = query.daemonset_default_namesapce_used.sql
+  tags        = local.extra_checks_tags
+}

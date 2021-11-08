@@ -81,3 +81,17 @@ control "replicaset_container_liveness_probe" {
   sql         = query.replicaset_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
+
+control "replicaset_container_privilege_port_mapped" {
+  title       = "Replicaset containers should not mapped with privilege port"
+  description = "Privileged ports `0 to 1024` should not mapped with Replicaset containers. Normal users and processes are not allowed to use them for various security reasons."
+  sql         = query.replicaset_container_privilege_port_mapped.sql
+  tags        = local.extra_checks_tags
+}
+
+control "replicaset_default_namesapce_used" {
+  title       = "Replicaset definition should not use default namespace"
+  description = "Default namespace should not be used by Replicaset definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
+  sql         = query.replicaset_default_namesapce_used.sql
+  tags        = local.extra_checks_tags
+}

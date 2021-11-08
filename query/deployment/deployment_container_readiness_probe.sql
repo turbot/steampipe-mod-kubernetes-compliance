@@ -6,7 +6,7 @@ select
     else 'alarm'
   end as status,
   case
-    when c -> 'readinessProbe' is not null then c ->> 'name' || ' have readiness probe.'
+    when c -> 'readinessProbe' is not null then c ->> 'name' || ' has readiness probe.'
     else c ->> 'name' || ' does not have readiness probe.'
   end as reason,
   -- Additional Dimensionss

@@ -81,3 +81,24 @@ control "deployment_container_liveness_probe" {
   sql         = query.deployment_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
+
+control "deployment_container_privilege_port_mapped" {
+  title       = "Deployment containers should not mapped with privilege port"
+  description = "Privileged ports `0 to 1024` should not mapped with Deployment containers. Normal users and processes are not allowed to use them for various security reasons."
+  sql         = query.deployment_container_privilege_port_mapped.sql
+  tags        = local.extra_checks_tags
+}
+
+control "deployment_default_namesapce_used" {
+  title       = "Deployment definition should not use default namespace"
+  description = "Default namespace should not be used by Deployment definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
+  sql         = query.deployment_default_namesapce_used.sql
+  tags        = local.extra_checks_tags
+}
+
+control "deployment_replica_minimum_3" {
+  title       = "Deployment should have minimum 3 replica"
+  description = "Replicas in the deployment should be at least 3 to increase the fault tolerance of the deployment."
+  sql         = query.deployment_replica_minimum_3.sql
+  tags        = local.extra_checks_tags
+}

@@ -74,3 +74,24 @@ control "pod_container_liveness_probe" {
   sql         = query.pod_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
+
+control "pod_container_privilege_port_mapped" {
+  title       = "Pod containers should not mapped with privilege port"
+  description = "Privileged ports `0 to 1024` should not mapped with Pod containers. Normal users and processes are not allowed to use them for various security reasons."
+  sql         = query.pod_container_privilege_port_mapped.sql
+  tags        = local.extra_checks_tags
+}
+
+control "pod_default_namesapce_used" {
+  title       = "Pods should not use default namespace"
+  description = "Default namespace should not be used by Pods. Placing objects in this namespace makes application of RBAC and other controls more difficult."
+  sql         = query.pod_default_namesapce_used.sql
+  tags        = local.extra_checks_tags
+}
+
+control "pod_default_seccomp_profile_enabled" {
+  title       = "seccomp profile docker/default should be enabled in your pod definitions"
+  description = "Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
+  sql         = query.pod_default_seccomp_profile_enabled.sql
+  tags        = local.extra_checks_tags
+}

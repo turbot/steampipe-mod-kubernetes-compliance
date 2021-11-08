@@ -1,6 +1,6 @@
 benchmark "container_liveness_probe" {
   title       = "Containers should have liveness probe"
-  description = "The liveness probe indicates whether the container is running. If the liveness probe fails, the kubelet kills the container, and the container is subjected to its restart policy. If a container does not provide a liveness probe, the default state is `Success`."
+  description = "The kubelet uses liveness probes to know when to restart a container. For example, liveness probes could catch a deadlock, where an application is running, but unable to make progress. Restarting a container in such a state can help to make the application more available despite bugs."
   tags        = local.extra_checks_tags
   children = [
     control.daemonset_container_liveness_probe,

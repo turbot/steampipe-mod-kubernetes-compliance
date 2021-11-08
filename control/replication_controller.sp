@@ -81,3 +81,17 @@ control "replication_controller_container_liveness_probe" {
   sql         = query.replication_controller_container_liveness_probe.sql
   tags        = local.extra_checks_tags
 }
+
+control "replication_controller_container_privilege_port_mapped" {
+  title       = "Replication controller containers should not mapped with privilege port"
+  description = "Privileged ports `0 to 1024` should not mapped with Replication controller containers. Normal users and processes are not allowed to use them for various security reasons."
+  sql         = query.replication_controller_container_privilege_port_mapped.sql
+  tags        = local.extra_checks_tags
+}
+
+control "replication_controller_default_namesapce_used" {
+  title       = "Replication controller definition should not use default namespace"
+  description = "Default namespace should not be used by Replication controller definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
+  sql         = query.replication_controller_default_namesapce_used.sql
+  tags        = local.extra_checks_tags
+}
