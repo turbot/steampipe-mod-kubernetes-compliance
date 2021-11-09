@@ -40,21 +40,6 @@ control "pod_security_policy_hostpid_hostipc_sharing_disabled" {
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "pod_security_policy_hostpid_sharing_disabled" {
-  title       = "Pod Security Policy should prohibit containers from sharing the host process ID"
-  description = "Pod Security Policy `hostPID` controls whether the Pod may share the host process namespaces. ${replace(local.hostpid_sharing_disabled_desc, "__KIND__", "Pod")}"
-  sql         = query.pod_security_policy_hostpid_sharing_disabled.sql
-  tags        = local.extra_checks_tags
-}
-
-control "pod_security_policy_hostipc_sharing_disabled" {
-  title       = "Pod Security Policy should prohibit containers from sharing the host process IPC"
-  description = "Pod Security Policy `hostIPC` controls whether the Pod may share the host process namespaces. ${replace(local.hostipc_sharing_disabled_desc, "__KIND__", "Pod")}"
-  sql         = query.pod_security_policy_hostipc_sharing_disabled.sql
-  tags        = local.nsa_cisa_v1_common_tags
-}
-
-
 control "pod_security_policy_immutable_container_filesystem" {
   title       = "Pod Security Policy should force containers to run with read only root file system"
   description = "Pod Security Policy `readOnlyRootFilesystem` controls whether the Pod containers run with read only root file system. ${replace(local.immutable_container_filesystem_desc, "__KIND__", "Pod")}"

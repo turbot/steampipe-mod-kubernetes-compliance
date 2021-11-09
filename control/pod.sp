@@ -33,20 +33,6 @@ control "pod_hostpid_hostipc_sharing_disabled" {
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "pod_hostpid_sharing_disabled" {
-  title       = replace(local.hostpid_sharing_disabled_title, "__KIND__", "Pod")
-  description = replace(local.hostpid_sharing_disabled_desc, "__KIND__", "Pod")
-  sql         = query.pod_hostpid_sharing_disabled.sql
-  tags        = local.extra_checks_tags
-}
-
-control "pod_hostipc_sharing_disabled" {
-  title       = replace(local.hostipc_sharing_disabled_title, "__KIND__", "Pod")
-  description = replace(local.hostipc_sharing_disabled_desc, "__KIND__", "Pod")
-  sql         = query.pod_hostipc_sharing_disabled.sql
-  tags        = local.nsa_cisa_v1_common_tags
-}
-
 control "pod_immutable_container_filesystem" {
   title       = replace(local.immutable_container_filesystem_title, "__KIND__", "Pod")
   description = replace(local.immutable_container_filesystem_desc, "__KIND__", "Pod")
@@ -100,12 +86,5 @@ control "pod_default_namesapce_used" {
   title       = "Pods should not use default namespace"
   description = "Default namespace should not be used by Pods. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.pod_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
-}
-
-control "pod_default_seccomp_profile_enabled" {
-  title       = "Pod definitions should use seccomp docker/default profile"
-  description = "Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
-  sql         = query.pod_default_seccomp_profile_enabled.sql
   tags        = local.extra_checks_tags
 }

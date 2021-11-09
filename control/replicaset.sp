@@ -54,21 +54,6 @@ control "replicaset_hostpid_hostipc_sharing_disabled" {
   tags        = local.nsa_cisa_v1_common_tags
 }
 
-control "replicaset_hostpid_sharing_disabled" {
-  title       = replace(local.hostpid_sharing_disabled_title, "__KIND__", "ReplicaSet")
-  description = replace(local.hostpid_sharing_disabled_desc, "__KIND__", "ReplicaSet")
-  sql         = query.replicaset_hostpid_sharing_disabled.sql
-  tags        = local.extra_checks_tags
-}
-
-control "replicaset_hostipc_sharing_disabled" {
-  title       = replace(local.hostipc_sharing_disabled_title, "__KIND__", "ReplicaSet")
-  description = replace(local.hostipc_sharing_disabled_desc, "__KIND__", "ReplicaSet")
-  sql         = query.replicaset_hostipc_sharing_disabled.sql
-  tags        = local.nsa_cisa_v1_common_tags
-}
-
-
 control "replicaset_immutable_container_filesystem" {
   title       = replace(local.immutable_container_filesystem_title, "__KIND__", "ReplicaSet")
   description = replace(local.immutable_container_filesystem_desc, "__KIND__", "ReplicaSet")
