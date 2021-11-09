@@ -83,8 +83,8 @@ control "daemonset_container_liveness_probe" {
 }
 
 control "daemonset_container_privilege_port_mapped" {
-  title       = "DaemonSet containers should not mapped with privilege ports"
-  description = "Privileged ports `0 to 1024` should not mapped with DaemonSet containers. Normal users and processes are not allowed to use them for various security reasons."
+  title       = "DaemonSet containers should not be mapped with privilege ports"
+  description = "Privileged ports `0 to 1024` should not be mapped with DaemonSet containers. Normal users and processes are not allowed to use them for various security reasons."
   sql         = query.daemonset_container_privilege_port_mapped.sql
   tags        = local.extra_checks_tags
 }

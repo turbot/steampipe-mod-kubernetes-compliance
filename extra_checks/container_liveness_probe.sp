@@ -8,6 +8,6 @@ benchmark "container_liveness_probe" {
     control.job_container_liveness_probe,
     control.pod_container_liveness_probe,
     control.replicaset_container_liveness_probe,
-    control.replication_controller_container_liveness_probe,
+    control.replication_controller_container_liveness_probe
   ]
 }
