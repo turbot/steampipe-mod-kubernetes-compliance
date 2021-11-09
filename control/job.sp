@@ -83,8 +83,8 @@ control "job_container_liveness_probe" {
 }
 
 control "job_container_privilege_port_mapped" {
-  title       = "Job containers should not mapped with privilege ports"
-  description = "Privileged ports `0 to 1024` should not mapped with Job containers. Normal users and processes are not allowed to use them for various security reasons."
+  title       = "Job containers should not be mapped with privilege ports"
+  description = "Privileged ports `0 to 1024` should not be mapped with Job containers. Normal users and processes are not allowed to use them for various security reasons."
   sql         = query.job_container_privilege_port_mapped.sql
   tags        = local.extra_checks_tags
 }

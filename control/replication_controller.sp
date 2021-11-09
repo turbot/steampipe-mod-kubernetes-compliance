@@ -83,8 +83,8 @@ control "replication_controller_container_liveness_probe" {
 }
 
 control "replication_controller_container_privilege_port_mapped" {
-  title       = "ReplicationController containers should not mapped with privilege ports"
-  description = "Privileged ports `0 to 1024` should not mapped with ReplicationController containers. Normal users and processes are not allowed to use them for various security reasons."
+  title       = "ReplicationController containers should not be mapped with privilege ports"
+  description = "Privileged ports `0 to 1024` should not be mapped with ReplicationController containers. Normal users and processes are not allowed to use them for various security reasons."
   sql         = query.replication_controller_container_privilege_port_mapped.sql
   tags        = local.extra_checks_tags
 }
