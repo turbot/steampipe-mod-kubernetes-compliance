@@ -46,6 +46,7 @@ benchmark "cis_v120_5_3_2" {
   ]
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "2"
     cis_item_id = "5.3.2"
     cis_type    = "manual"
   })
@@ -65,6 +66,7 @@ benchmark "cis_v120_5_7_4" {
   ]
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "2"
     cis_item_id = "5.7.4"
     cis_type    = "manual"
   })
@@ -76,6 +78,7 @@ control "cis_v120_5_2_1" {
   sql         = query.pod_security_policy_container_privilege_disabled.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "1"
     cis_item_id = "5.2.1"
     cis_type    = "automated"
   })
@@ -87,6 +90,7 @@ control "cis_v120_5_2_5" {
   sql         = query.pod_security_policy_container_privilege_escalation_disabled.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "1"
     cis_item_id = "5.2.5"
     cis_type    = "automated"
   })
@@ -98,6 +102,7 @@ control "cis_v120_5_2_4" {
   sql         = query.pod_security_policy_host_network_access_disabled.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "1"
     cis_item_id = "5.2.4"
     cis_type    = "automated"
   })
@@ -109,6 +114,7 @@ control "cis_v120_5_2_2" {
   sql         = query.pod_security_policy_hostpid_sharing_disabled.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "1"
     cis_item_id = "5.2.2"
     cis_type    = "automated"
   })
@@ -120,6 +126,7 @@ control "cis_v120_5_2_3" {
   sql         = query.pod_security_policy_hostipc_sharing_disabled.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "1"
     cis_item_id = "5.2.3"
     cis_type    = "automated"
   })
@@ -131,6 +138,7 @@ control "cis_v120_5_2_6" {
   sql         = query.pod_security_policy_non_root_container.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "2"
     cis_item_id = "5.2.6"
     cis_type    = "automated"
   })
@@ -142,6 +150,7 @@ control "cis_v120_5_1_6" {
   sql         = query.pod_service_account_token_disabled.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "1"
     cis_item_id = "5.1.6"
     cis_type    = "manual"
   })
@@ -153,6 +162,7 @@ control "cis_v120_5_7_2" {
   sql         = query.pod_default_seccomp_profile_enabled.sql
   tags = merge(local.cis_v120_common_tags, {
     cis_section_id = "5"
+    cis_level   = "2"
     cis_item_id = "5.7.2"
     cis_type    = "manual"
   })
