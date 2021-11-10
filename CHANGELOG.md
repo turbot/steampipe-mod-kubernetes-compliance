@@ -1,3 +1,10 @@
+## v0.3 [2021-11-10]
+
+_What's new?_
+
+- Added: CIS v1.0.0 for Kubernetes v1.20 benchmark (`steampipe check kubernetes_compliance.benchmark.cis_kubernetes_v120`)
+- Added: Extra Checks benchmark (`steampipe check kubernetes_compliance.benchmark.extra_checks`) to provide additional information around other Kubernetes compliance best practices
+
 ## v0.2 [2021-09-22]
 
 _Bug fixes_
