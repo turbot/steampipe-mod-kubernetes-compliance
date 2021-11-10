@@ -1,4 +1,4 @@
-  select
+select
   -- Required Columns
   uid as resource,
   case

@@ -6,8 +6,8 @@
     else 'ok'
   end as status,
   case
-    when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicationController pods share host pid namespaces.'
-    when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicationController pods share host ipc namespaces.'
+    when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicationController pods share host PID namespaces.'
+    when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicationController pods share host IPC namespaces.'
     else 'ReplicationController pods cannot share host process namespaces.'
   end as reason,
   -- Additional Dimensions

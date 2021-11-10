@@ -1,4 +1,4 @@
-  select
+select
   -- Required Columns
   name as resource,
   case
