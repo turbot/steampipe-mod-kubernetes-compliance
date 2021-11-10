@@ -8,7 +8,7 @@ control "daemonset_cpu_limit" {
   description = replace(local.container_cpu_limit_desc, "__KIND__", "DaemonSet")
   sql         = query.daemonset_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
-
+}
 
 control "daemonset_cpu_request" {
   title       = replace(local.container_cpu_request_title, "__KIND__", "DaemonSet")
