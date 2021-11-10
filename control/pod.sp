@@ -1,3 +1,8 @@
+locals {
+  pod_common_tags = {
+  }
+}
+
 control "pod_volume_host_path" {
   title       = replace(local.container_disallow_host_path_title, "__KIND__", "Pod")
   description = replace(local.container_disallow_host_path_desc, "__KIND__", "Pod")
@@ -86,5 +91,7 @@ control "pod_default_namesapce_used" {
   title       = "Pods should not use default namespace"
   description = "Default namespace should not be used by Pods. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.pod_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
+  tags = merge(local.pod_common_tags, {
+   cis = "true"
+  })
 }

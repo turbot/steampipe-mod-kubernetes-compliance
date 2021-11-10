@@ -1,3 +1,8 @@
+locals {
+  replication_controller_common_tags = {
+  }
+}
+
 control "replication_controller_cpu_limit" {
   title       = replace(local.container_cpu_limit_title, "__KIND__", "ReplicationController")
   description = replace(local.container_cpu_limit_desc, "__KIND__", "ReplicationController")
@@ -93,5 +98,7 @@ control "replication_controller_default_namesapce_used" {
   title       = "ReplicationController definition should not use default namespace"
   description = "Default namespace should not be used by ReplicationController definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.replication_controller_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
+  tags = merge(local.replication_controller_common_tags, {
+   cis = "true"
+  })
 }

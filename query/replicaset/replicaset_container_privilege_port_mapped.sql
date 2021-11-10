@@ -16,6 +16,6 @@ select
   namespace,
   context_name
 from
-   kubernetes_replicaset,
+  kubernetes_replicaset,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c,
   jsonb_array_elements(c -> 'ports') as p;

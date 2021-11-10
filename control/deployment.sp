@@ -1,3 +1,8 @@
+locals {
+  deployment_common_tags = {
+  }
+}
+
 control "deployment_cpu_limit" {
   title       = replace(local.container_cpu_limit_title, "__KIND__", "Deployment")
   description = replace(local.container_cpu_limit_desc, "__KIND__", "Deployment")
@@ -93,7 +98,9 @@ control "deployment_default_namesapce_used" {
   title       = "Deployment definition should not use default namespace"
   description = "Default namespace should not be used by deployment definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.deployment_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
+  tags = merge(local.deployment_common_tags, {
+   cis = "true"
+  })
 }
 
 control "deployment_replica_minimum_3" {

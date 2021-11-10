@@ -16,6 +16,6 @@ select
   namespace,
   context_name
 from
-   kubernetes_job,
+  kubernetes_job,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c,
   jsonb_array_elements(c -> 'ports') as p;

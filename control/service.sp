@@ -1,3 +1,8 @@
+locals {
+  service_common_tags = {
+  }
+}
+
 control "service_type_forbidden" {
   title       = "Containers should not be exposed through a forbidden service type"
   description = local.service_type_forbidden_desc
@@ -9,5 +14,7 @@ control "service_default_namesapce_used" {
   title       = "Services should not use default namespace"
   description = "Default namespace should not be used by services. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.service_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
+  tags = merge(local.service_common_tags, {
+   cis = "true"
+  })
 }

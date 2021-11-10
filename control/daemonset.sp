@@ -1,9 +1,14 @@
+locals {
+  daemonset_common_tags = {
+  }
+}
+
 control "daemonset_cpu_limit" {
   title       = replace(local.container_cpu_limit_title, "__KIND__", "DaemonSet")
   description = replace(local.container_cpu_limit_desc, "__KIND__", "DaemonSet")
   sql         = query.daemonset_cpu_limit.sql
   tags        = local.nsa_cisa_v1_common_tags
-}
+
 
 control "daemonset_cpu_request" {
   title       = replace(local.container_cpu_request_title, "__KIND__", "DaemonSet")
@@ -93,5 +98,7 @@ control "daemonset_default_namesapce_used" {
   title       = "DaemonSet definition should not use default namespace"
   description = "Default namespace should not be used by DaemonSet definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.daemonset_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
+  tags = merge(local.daemonset_common_tags, {
+   cis = "true"
+  })
 }

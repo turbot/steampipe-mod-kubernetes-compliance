@@ -1,3 +1,8 @@
+locals {
+  replicaset_common_tags = {
+  }
+}
+
 control "replicaset_cpu_limit" {
   title       = replace(local.container_cpu_limit_title, "__KIND__", "ReplicaSet")
   description = replace(local.container_cpu_limit_desc, "__KIND__", "ReplicaSet")
@@ -93,5 +98,7 @@ control "replicaset_default_namesapce_used" {
   title       = "ReplicaSet definition should not use default namespace"
   description = "Default namespace should not be used by ReplicaSet definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.replicaset_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
+  tags = merge(local.replicaset_common_tags, {
+   cis = "true"
+  })
 }

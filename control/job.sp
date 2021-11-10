@@ -1,3 +1,8 @@
+locals {
+  job_common_tags = {
+  }
+}
+
 control "job_cpu_limit" {
   title       = replace(local.container_cpu_limit_title, "__KIND__", "Job")
   description = replace(local.container_cpu_limit_desc, "__KIND__", "Job")
@@ -93,5 +98,7 @@ control "job_default_namesapce_used" {
   title       = "Job definition should not use default namespace"
   description = "Default namespace should not be used by Job definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.job_default_namesapce_used.sql
-  tags        = local.extra_checks_tags
+  tags = merge(local.job_common_tags, {
+   cis = "true"
+  })
 }
