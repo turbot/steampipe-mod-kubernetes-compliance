@@ -1,4 +1,3 @@
-
 with default_allows_all_ingress_count as (
   select
     namespace,

@@ -12,6 +12,8 @@ Run individual controls or full compliance benchmarks for `NSA and CISA Kubernet
 
 [NSA & CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF) describes the complexities of securely managing Kubernetes an open-source, container-orchestration system used to automate deploying, scaling, and managing containerized applications.
 
+[CIS Kubernetes Benchmarks](https://www.cisecurity.org) provide a predefined set of compliance and security best-practice checks for Kubernetes clusters.
+
 [Steampipe](https://steampipe.io) is an open source CLI to instantly query cloud APIs using SQL.
 
 [Steampipe Mods](https://steampipe.io/docs/reference/mod-resources#mod) are collections of `named queries`, and codified `controls` that can be used to test current configuration of your cloud resources against a desired configuration.

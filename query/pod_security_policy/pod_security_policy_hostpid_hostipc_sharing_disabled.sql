@@ -6,8 +6,8 @@ select
     else 'ok'
   end as status,
   case
-    when host_pid then 'Pods can share host pid namespaces.'
-    when host_ipc then 'Pods can share host ipc namespaces.'
+    when host_pid then 'Pods can share host PID namespaces.'
+    when host_ipc then 'Pods can share host IPC namespaces.'
     else 'Pod cannot share host process namespaces.'
   end as reason,
   -- Additional Dimensions

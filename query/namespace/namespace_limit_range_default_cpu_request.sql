@@ -7,7 +7,6 @@ with default_limit_range as (
     kubernetes_limit_range,
     jsonb_array_elements(spec_limits) as l
 )
-
 select
   -- Required Columns
   n.uid as resource,
