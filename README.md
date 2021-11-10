@@ -1,12 +1,14 @@
 # Kubernetes Compliance Scanning Tool
 
-Multiple checks covering industry defined security best practices for Kubernetes. Includes support for National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
+Multiple checks covering industry defined security best practices for Kubernetes. Includes support for CIS, National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
 
 ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console.png)
 
 Includes support for:
 
 - [v1.0 NSA and CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF)
+
+- [CIS Kubernetes Benchmarks](https://www.cisecurity.org)
 
 ## Quick start
 
@@ -17,7 +19,7 @@ brew tap turbot/tap
 brew install steampipe
 
 steampipe -v
-steampipe version 0.8.2
+steampipe version 0.9.0
 ```
 
 2. Install the Kubernetes plugin
