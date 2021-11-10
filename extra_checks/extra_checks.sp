@@ -15,6 +15,6 @@ benchmark "extra_checks" {
     benchmark.container_readiness_probe,
     control.deployment_replica_minimum_3,
     control.pod_service_account_not_exist,
-    control.service_type_forbidden,
+    control.service_type_forbidden
      ]
 }

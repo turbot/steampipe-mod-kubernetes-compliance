@@ -24,6 +24,8 @@ benchmark "cis_v100_5" {
   description = "This section contains recommendations for various Kubernetes policies which are important to the security of the environment."
   tags        = local.cis_kubernetes_v120_v100_5_common_tags
   children = [
+    benchmark.cis_v100_5_3_2,
+    benchmark.cis_v100_5_7_4,
     control.cis_v100_5_1_6,
     control.cis_v100_5_2_1,
     control.cis_v100_5_2_2,
@@ -31,9 +33,7 @@ benchmark "cis_v100_5" {
     control.cis_v100_5_2_4,
     control.cis_v100_5_2_5,
     control.cis_v100_5_2_6,
-    benchmark.cis_v100_5_3_2,
-    control.cis_v100_5_7_2,
-    benchmark.cis_v100_5_7_4,
+    control.cis_v100_5_7_2
   ]
 }
 
@@ -45,7 +45,7 @@ benchmark "cis_v100_5_3_2" {
     control.network_policy_default_deny_egress,
     control.network_policy_default_deny_ingress,
     control.network_policy_default_dont_allow_egress,
-    control.network_policy_default_dont_allow_ingress,
+    control.network_policy_default_dont_allow_ingress
   ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"
@@ -65,7 +65,7 @@ benchmark "cis_v100_5_7_4" {
     control.pod_default_namesapce_used,
     control.replicaset_default_namesapce_used,
     control.replication_controller_default_namesapce_used,
-    control.service_default_namesapce_used,
+    control.service_default_namesapce_used
   ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"

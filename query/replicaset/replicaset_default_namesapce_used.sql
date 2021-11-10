@@ -6,8 +6,8 @@ select
     else 'ok'
   end as status,
   case
-    when namespace = 'default' then name || ' using default namespace.'
-    else name || ' not using default namespace.'
+    when namespace = 'default' then name || ' uses default namespace.'
+    else name || ' not using the default namespace.'
   end as reason,
   -- Additional Dimensionss
   namespace,

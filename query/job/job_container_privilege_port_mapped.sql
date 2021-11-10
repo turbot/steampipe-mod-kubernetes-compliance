@@ -8,8 +8,8 @@ select
   end as status,
   case
     When p ->> 'name' is null then 'No port mapped.'
-    when cast(p ->> 'containerPort' as integer) <= 1024 then p ->> 'name'|| ' mapped with privileged port.'
-    else p ->> 'name' || ' not mapped with privileged port.'
+    when cast(p ->> 'containerPort' as integer) <= 1024 then p ->> 'name'|| ' mapped with a privileged port.'
+    else p ->> 'name' || ' not mapped with a privileged port.'
   end as reason,
   -- Additional Dimensions
   name as pod_name,

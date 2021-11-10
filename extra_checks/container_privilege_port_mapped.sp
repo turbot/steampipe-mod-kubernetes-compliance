@@ -1,6 +1,6 @@
 benchmark "container_privilege_port_mapped" {
   title       = "Privileged ports should not be mapped with containers"
-  description = "The TCP/IP port numbers `O to 1024` are considered privileged ports and should not be mapped with container for security reasons."
+  description = "TCP/IP port numbers `0 to 1024` are considered privileged ports and should not be mapped with containers for security reasons."
   tags        = local.extra_checks_tags
   children = [
     control.daemonset_container_privilege_port_mapped,
