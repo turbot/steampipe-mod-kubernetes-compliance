@@ -1,5 +1,6 @@
 locals {
   deployment_common_tags = {
+    plugin = "kubernetes"
   }
 }
 

@@ -1,5 +1,6 @@
 locals {
   job_common_tags = {
+    plugin = "kubernetes"
   }
 }
 

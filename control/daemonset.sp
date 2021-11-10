@@ -1,5 +1,6 @@
 locals {
   daemonset_common_tags = {
+    plugin = "kubernetes"
   }
 }
 
@@ -99,6 +100,6 @@ control "daemonset_default_namesapce_used" {
   description = "Default namespace should not be used by DaemonSet definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   sql         = query.daemonset_default_namesapce_used.sql
   tags = merge(local.daemonset_common_tags, {
-   cis = "true"
+   cis    = "true"
   })
 }

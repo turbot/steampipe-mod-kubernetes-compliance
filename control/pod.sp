@@ -1,5 +1,6 @@
 locals {
   pod_common_tags = {
+    plugin = "kubernetes"
   }
 }
 

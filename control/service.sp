@@ -1,5 +1,6 @@
 locals {
   service_common_tags = {
+    plugin = "kubernetes"
   }
 }
 
