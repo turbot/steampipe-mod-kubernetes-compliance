@@ -1,4 +1,3 @@
-
 with default_deny_ingress_count as (
   select
     ns.uid,

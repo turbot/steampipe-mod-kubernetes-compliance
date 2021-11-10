@@ -1,4 +1,4 @@
-    select
+select
   -- Required Columns
   c ->> 'name' as resource,
   case
