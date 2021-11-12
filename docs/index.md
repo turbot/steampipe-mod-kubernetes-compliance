@@ -6,7 +6,7 @@ repository: "https://github.com/turbot/steampipe-mod-kubernetes-compliance.git"
 
 Run individual controls or full compliance benchmarks for `NSA and CISA Kubernetes Hardening Guidance` across all of your Kubernetes clusters.
 
-![image](https://github.com/turbot/steampipe-mod-kubernetes-compliance/blob/main/docs/kubernetes-compliance-mod-console.png)
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console-output.png)
 
 ## References
 
