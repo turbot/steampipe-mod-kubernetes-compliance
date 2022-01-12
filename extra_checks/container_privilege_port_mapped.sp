@@ -8,6 +8,7 @@ benchmark "container_privilege_port_mapped" {
     control.job_container_privilege_port_mapped,
     control.pod_container_privilege_port_mapped,
     control.replicaset_container_privilege_port_mapped,
-    control.replication_controller_container_privilege_port_mapped
+    control.replication_controller_container_privilege_port_mapped,
+    control.stateful_set_container_privilege_port_mapped
   ]
 }

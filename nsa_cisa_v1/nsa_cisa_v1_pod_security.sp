@@ -36,6 +36,7 @@ benchmark "nsa_cisa_v1_pod_security_container_privilege_disabled" {
     control.pod_security_policy_container_privilege_disabled,
     control.replicaset_container_privilege_disabled,
     control.replication_controller_container_privilege_disabled,
+    control.stateful_set_container_privilege_disabled,
   ]
 }
 
@@ -51,6 +52,7 @@ benchmark "nsa_cisa_v1_pod_security_container_privilege_escalation_disabled" {
     control.pod_security_policy_container_privilege_escalation_disabled,
     control.replicaset_container_privilege_escalation_disabled,
     control.replication_controller_container_privilege_escalation_disabled,
+    control.stateful_set_container_privilege_escalation_disabled,
   ]
 }
 
@@ -75,6 +77,7 @@ benchmark "nsa_cisa_v1_pod_security_host_network_access_disabled" {
     control.pod_security_policy_host_network_access_disabled,
     control.replicaset_host_network_access_disabled,
     control.replication_controller_host_network_access_disabled,
+    control.stateful_set_host_network_access_disabled,
   ]
 }
 
@@ -90,6 +93,7 @@ benchmark "nsa_cisa_v1_pod_security_hostpid_hostipc_sharing_disabled" {
     control.pod_security_policy_hostpid_hostipc_sharing_disabled,
     control.replicaset_hostpid_hostipc_sharing_disabled,
     control.replication_controller_hostpid_hostipc_sharing_disabled,
+    control.stateful_set_hostpid_hostipc_sharing_disabled,
   ]
 }
 
@@ -105,6 +109,7 @@ benchmark "nsa_cisa_v1_pod_security_immutable_container_filesystem" {
     control.pod_security_policy_immutable_container_filesystem,
     control.replicaset_immutable_container_filesystem,
     control.replication_controller_immutable_container_filesystem,
+    control.stateful_set_immutable_container_filesystem,
   ]
 }
 
@@ -120,6 +125,7 @@ benchmark "nsa_cisa_v1_pod_security_non_root_container" {
     control.pod_security_policy_non_root_container,
     control.replicaset_non_root_container,
     control.replication_controller_non_root_container,
+    control.stateful_set_non_root_container,
   ]
 }
 

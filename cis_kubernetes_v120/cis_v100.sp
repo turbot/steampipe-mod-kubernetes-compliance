@@ -65,7 +65,8 @@ benchmark "cis_v100_5_7_4" {
     control.pod_default_namesapce_used,
     control.replicaset_default_namesapce_used,
     control.replication_controller_default_namesapce_used,
-    control.service_default_namesapce_used
+    control.service_default_namesapce_used,
+    control.stateful_set_default_namesapce_used
   ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"

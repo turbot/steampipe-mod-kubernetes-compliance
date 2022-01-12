@@ -23,6 +23,7 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_limit" {
     control.namespace_resource_quota_cpu_limit,
     control.replicaset_cpu_limit,
     control.replication_controller_cpu_limit,
+    control.stateful_set_cpu_limit,
   ]
 }
 
@@ -38,6 +39,7 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_request" {
     control.namespace_resource_quota_cpu_request,
     control.replicaset_cpu_request,
     control.replication_controller_cpu_request,
+    control.stateful_set_cpu_request,
   ]
 }
 
@@ -62,6 +64,7 @@ benchmark "nsa_cisa_v1_network_hardening_memory_limit" {
     control.namespace_resource_quota_memory_limit,
     control.replicaset_memory_limit,
     control.replication_controller_memory_limit,
+    control.stateful_set_memory_limit,
   ]
 }
 
@@ -77,6 +80,7 @@ benchmark "nsa_cisa_v1_network_hardening_memory_request" {
     control.namespace_resource_quota_memory_request,
     control.replicaset_memory_request,
     control.replication_controller_memory_request,
+    control.stateful_set_memory_request,
   ]
 }
 
