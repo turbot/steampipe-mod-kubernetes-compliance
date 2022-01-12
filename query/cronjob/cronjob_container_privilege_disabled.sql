@@ -14,6 +14,6 @@ select
   namespace,
   context_name
 from
-  kubernetes_cron_job,
+  kubernetes_cronjob,
   jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
 

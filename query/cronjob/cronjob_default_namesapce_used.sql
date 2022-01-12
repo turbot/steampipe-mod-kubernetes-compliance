@@ -13,4 +13,4 @@ select
   namespace,
   context_name
 from
-  kubernetes_deployment;
+  kubernetes_cronjob;

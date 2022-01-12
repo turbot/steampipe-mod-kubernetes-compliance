@@ -59,6 +59,7 @@ benchmark "cis_v100_5_7_4" {
   description   = "Kubernetes provides a default namespace, where objects are placed if no namespace is specified for them. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_7_4.md")
   children = [
+    control.cronjob_default_namesapce_used,
     control.daemonset_default_namesapce_used,
     control.deployment_default_namesapce_used,
     control.job_default_namesapce_used,
@@ -66,7 +67,7 @@ benchmark "cis_v100_5_7_4" {
     control.replicaset_default_namesapce_used,
     control.replication_controller_default_namesapce_used,
     control.service_default_namesapce_used,
-    control.stateful_set_default_namesapce_used
+    control.statefulset_default_namesapce_used
   ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"

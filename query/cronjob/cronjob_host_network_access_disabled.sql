@@ -2,16 +2,16 @@ select
   -- Required Columns
   uid as resource,
   case
-    when template -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
+    when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
     else 'ok'
   end as status,
   case
-    when template -> 'spec' ->> 'hostNetwork' = 'true' then 'Deployment pods using host network.'
-    else 'Deployment pods not using host network.'
+    when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork' = 'true' then 'CronJob pods using host network.'
+    else 'CronJob pods not using host network.'
   end as reason,
   -- Additional Dimensions
   name as pod_name,
   namespace,
   context_name
 from
-  kubernetes_deployment;
+  kubernetes_cronjob;
