@@ -110,3 +110,12 @@ control "deployment_replica_minimum_3" {
   sql         = query.deployment_replica_minimum_3.sql
   tags        = local.extra_checks_tags
 }
+
+control "deployment_default_seccomp_profile_enabled" {
+  title         = "Seccomp profile is set to docker/default in Deployment definition"
+  description   = "In Deployment definition Seccomp profile should be set to docker/default. Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
+  sql           = query.deployment_default_seccomp_profile_enabled.sql
+  tags = merge(local.deployment_common_tags, {
+   cis = "true"
+  })
+}
