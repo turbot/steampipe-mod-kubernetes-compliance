@@ -10,7 +10,7 @@ benchmark "nsa_cisa_v1_pod_security" {
     benchmark.nsa_cisa_v1_pod_security_hostpid_hostipc_sharing_disabled,
     benchmark.nsa_cisa_v1_pod_security_immutable_container_filesystem,
     benchmark.nsa_cisa_v1_pod_security_non_root_container,
-    benchmark.nsa_cisa_v1_pod_security_service_account_token_disabled,
+    benchmark.nsa_cisa_v1_pod_security_service_account_token_disabled
   ]
 }
 
@@ -20,7 +20,7 @@ benchmark "nsa_cisa_v1_pod_security_container_disallow_host_path" {
   tags        = local.nsa_cisa_v1_common_tags
   children = [
     control.pod_security_policy_allowed_host_path,
-    control.pod_volume_host_path,
+    control.pod_volume_host_path
   ]
 }
 
@@ -37,7 +37,7 @@ benchmark "nsa_cisa_v1_pod_security_container_privilege_disabled" {
     control.pod_security_policy_container_privilege_disabled,
     control.replicaset_container_privilege_disabled,
     control.replication_controller_container_privilege_disabled,
-    control.statefulset_container_privilege_disabled,
+    control.statefulset_container_privilege_disabled
   ]
 }
 
@@ -54,7 +54,7 @@ benchmark "nsa_cisa_v1_pod_security_container_privilege_escalation_disabled" {
     control.pod_security_policy_container_privilege_escalation_disabled,
     control.replicaset_container_privilege_escalation_disabled,
     control.replication_controller_container_privilege_escalation_disabled,
-    control.statefulset_container_privilege_escalation_disabled,
+    control.statefulset_container_privilege_escalation_disabled
   ]
 }
 
@@ -80,7 +80,7 @@ benchmark "nsa_cisa_v1_pod_security_host_network_access_disabled" {
     control.pod_security_policy_host_network_access_disabled,
     control.replicaset_host_network_access_disabled,
     control.replication_controller_host_network_access_disabled,
-    control.statefulset_host_network_access_disabled,
+    control.statefulset_host_network_access_disabled
   ]
 }
 
@@ -97,7 +97,7 @@ benchmark "nsa_cisa_v1_pod_security_hostpid_hostipc_sharing_disabled" {
     control.pod_security_policy_hostpid_hostipc_sharing_disabled,
     control.replicaset_hostpid_hostipc_sharing_disabled,
     control.replication_controller_hostpid_hostipc_sharing_disabled,
-    control.statefulset_hostpid_hostipc_sharing_disabled,
+    control.statefulset_hostpid_hostipc_sharing_disabled
   ]
 }
 
@@ -114,7 +114,7 @@ benchmark "nsa_cisa_v1_pod_security_immutable_container_filesystem" {
     control.pod_security_policy_immutable_container_filesystem,
     control.replicaset_immutable_container_filesystem,
     control.replication_controller_immutable_container_filesystem,
-    control.statefulset_immutable_container_filesystem,
+    control.statefulset_immutable_container_filesystem
   ]
 }
 
@@ -131,7 +131,7 @@ benchmark "nsa_cisa_v1_pod_security_non_root_container" {
     control.pod_security_policy_non_root_container,
     control.replicaset_non_root_container,
     control.replication_controller_non_root_container,
-    control.statefulset_non_root_container,
+    control.statefulset_non_root_container
   ]
 }
 
@@ -141,6 +141,6 @@ benchmark "nsa_cisa_v1_pod_security_service_account_token_disabled" {
   tags        = local.nsa_cisa_v1_common_tags
   children = [
     control.pod_service_account_token_disabled,
-    control.service_account_token_disabled,
+    control.service_account_token_disabled
   ]
 }
