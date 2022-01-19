@@ -2,7 +2,7 @@
 
 _What's new?_
 
-- Added a new benchmark (`cis_v100_5_7_2`) to the `CIS v1.0.0 for Kubernetes v1.20` benchmark
+- Added a new benchmark (`cis_v100_5_7_2`) to the `CIS v1.0.0 for Kubernetes v1.20` benchmark ([#13](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/13))
 - Added new controls for `CronJob`, `ConfigMap`, `Ingress`, `Role`, `RoleBinding`, `Secret` and `StatefulSet` resource types to `CIS v1.0.0 for Kubernetes v1.20`, `Extra Checks` and `NSA CISA Kubernetes Hardening Guidance v1` benchmarks ([#13](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/13))
 
 ## v0.4 [2021-11-12]
