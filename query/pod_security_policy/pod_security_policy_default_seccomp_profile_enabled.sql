@@ -7,7 +7,7 @@ select
   end as status,
   case
     when annotations -> 'seccomp.security.alpha.kubernetes.io/defaultProfileName' = '"docker/default"' then name || ' seccompProfile enabled.'
-    else name || ' seccompProfile not enabled.'
+    else name || ' seccompProfile disabled.'
   end as reason,
   -- Additional Dimensions
   context_name

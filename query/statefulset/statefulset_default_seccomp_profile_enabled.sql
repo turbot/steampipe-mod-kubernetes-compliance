@@ -7,7 +7,7 @@ select
   end as status,
   case
     when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then name || ' seccompProfile enabled.'
-    else name || ' seccompProfile not enabled.'
+    else name || ' seccompProfile disabled.'
   end as reason,
   -- Additional Dimensions
   context_name

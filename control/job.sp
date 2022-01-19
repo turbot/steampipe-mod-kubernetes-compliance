@@ -106,7 +106,7 @@ control "job_default_namesapce_used" {
 
 control "job_default_seccomp_profile_enabled" {
   title         = "Seccomp profile is set to docker/default in Job definition"
-  description   = "In Job definition Seccomp profile should be set to docker/default. Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
+  description   = "In Job definition seccomp profile should be set to docker/default. Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
   sql           = query.job_default_seccomp_profile_enabled.sql
   tags = merge(local.job_common_tags, {
    cis = "true"
