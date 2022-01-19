@@ -1,3 +1,9 @@
+## v0.5 [2022-01-19]
+
+_What's new?_
+
+- Added: `CIS v1.0.0 for Kubernetes v1.20` and `NSA CISA Kubernetes Hardening Guidance v1` benchmarks now include new controls for `CronJob`, `ConfigMap`, `Ingress`, `Role`, `RoleBinding` and `StatefulSet` resource types ([#13](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/13))
+
 ## v0.4 [2021-11-12]
 
 _Enhancements_
