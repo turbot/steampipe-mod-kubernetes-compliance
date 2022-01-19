@@ -25,6 +25,7 @@ benchmark "cis_v100_5" {
   tags        = local.cis_kubernetes_v120_v100_5_common_tags
   children = [
     benchmark.cis_v100_5_3_2,
+    benchmark.cis_v100_5_7_2,
     benchmark.cis_v100_5_7_4,
     control.cis_v100_5_1_6,
     control.cis_v100_5_2_1,
@@ -32,8 +33,8 @@ benchmark "cis_v100_5" {
     control.cis_v100_5_2_3,
     control.cis_v100_5_2_4,
     control.cis_v100_5_2_5,
-    control.cis_v100_5_2_6,
-    control.cis_v100_5_7_2
+    control.cis_v100_5_2_6
+    
   ]
 }
 
@@ -59,13 +60,21 @@ benchmark "cis_v100_5_7_4" {
   description   = "Kubernetes provides a default namespace, where objects are placed if no namespace is specified for them. Placing objects in this namespace makes application of RBAC and other controls more difficult."
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_7_4.md")
   children = [
+    control.config_map_default_namesapce_used,
+    control.cronjob_default_namesapce_used,
     control.daemonset_default_namesapce_used,
     control.deployment_default_namesapce_used,
+    control.ingress_default_namesapce_used,
     control.job_default_namesapce_used,
     control.pod_default_namesapce_used,
     control.replicaset_default_namesapce_used,
     control.replication_controller_default_namesapce_used,
-    control.service_default_namesapce_used
+    control.role_binding_default_namesapce_used,
+    control.role_default_namesapce_used,
+    control.secret_default_namesapce_used,
+    control.service_account_default_namesapce_used,
+    control.service_default_namesapce_used,
+    control.statefulset_default_namesapce_used
   ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"
@@ -158,11 +167,21 @@ control "cis_v100_5_1_6" {
   })
 }
 
-control "cis_v100_5_7_2" {
+benchmark "cis_v100_5_7_2" {
   title         = "5.7.2 Ensure that the seccomp profile is set to docker/default in your Pod definitions"
   description   = "Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
-  sql           = query.pod_default_seccomp_profile_enabled.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_7_2.md")
+  children = [
+    control.cronjob_default_seccomp_profile_enabled,
+    control.daemonset_default_seccomp_profile_enabled,
+    control.deployment_default_seccomp_profile_enabled,
+    control.job_default_seccomp_profile_enabled,
+    control.pod_default_seccomp_profile_enabled,
+    control.pod_security_policy_default_seccomp_profile_enabled,
+    control.replicaset_default_seccomp_profile_enabled,
+    control.replication_controller_default_seccomp_profile_enabled,
+    control.statefulset_default_seccomp_profile_enabled
+  ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"
     cis_item_id = "5.7.2"

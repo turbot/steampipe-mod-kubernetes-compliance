@@ -103,3 +103,12 @@ control "replication_controller_default_namesapce_used" {
    cis = "true"
   })
 }
+
+control "replication_controller_default_seccomp_profile_enabled" {
+  title         = "Seccomp profile is set to docker/default in your Replication Controller definition"
+  description   = "In Replication Controller definition seccomp profile should be set to docker/default. Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
+  sql           = query.replication_controller_default_seccomp_profile_enabled.sql
+  tags = merge(local.replication_controller_common_tags, {
+   cis = "true"
+  })
+}
