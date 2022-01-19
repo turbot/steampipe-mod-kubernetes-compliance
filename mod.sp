@@ -12,4 +12,9 @@ mod "kubernetes_compliance" {
     description = "Run individual controls or full compliance benchmarks for CIS, NSA CISA Kubernetes Hardening Guidance across all of your Kubernetes clusters using Steampipe."
     image       = "/images/mods/turbot/kubernetes-compliance-social-graphic.png"
   }
+  requires {
+    plugin "kubernetes" {
+      version = "0.4.0"
+    }
+  }
 }
