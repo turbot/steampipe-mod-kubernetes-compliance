@@ -1,3 +1,9 @@
+locals {
+  pod_security_policy_common_tags = {
+    plugin = "kubernetes"
+  }
+}
+
 control "pod_security_policy_allowed_host_path" {
   title       = "Pod Security Policy should prohibit hostPaths volumes"
   description = "The Pod Security Policy `allowedHostPaths` specifies a list of host paths that are allowed to be used by hostPath volumes. An empty list means there is no restriction on host paths used. This is defined as a list of objects with a single pathPrefix field, which allows hostPath volumes to mount a path that begins with an allowed prefix, and a readOnly field indicating it must be mounted read-only."
@@ -52,4 +58,13 @@ control "pod_security_policy_non_root_container" {
   description = "Pod Security Policy should prohibit containers from running as root. ${replace(local.non_root_container_desc, "__KIND__", "Pod")}"
   sql         = query.pod_security_policy_non_root_container.sql
   tags        = local.nsa_cisa_v1_common_tags
+}
+
+control "pod_security_policy_default_seccomp_profile_enabled" {
+  title         = "Seccomp profile is set to docker/default in Pod security policy"
+  description   = "In Pod security policy seccomp profile should be set to docker/default. Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
+  sql           = query.pod_security_policy_default_seccomp_profile_enabled.sql
+  tags = merge(local.pod_security_policy_common_tags, {
+   cis = "true"
+  })
 }

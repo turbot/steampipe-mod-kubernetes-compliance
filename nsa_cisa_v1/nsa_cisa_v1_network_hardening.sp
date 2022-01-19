@@ -7,7 +7,7 @@ benchmark "nsa_cisa_v1_network_hardening" {
     benchmark.nsa_cisa_v1_network_hardening_api_serve_on_secure_port_endpoint,
     benchmark.nsa_cisa_v1_network_hardening_memory_limit,
     benchmark.nsa_cisa_v1_network_hardening_memory_request,
-    benchmark.nsa_cisa_v1_network_hardening_default_deny_network_policy,
+    benchmark.nsa_cisa_v1_network_hardening_default_deny_network_policy
   ]
 }
 
@@ -16,6 +16,7 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_limit" {
   description = "Containers should have CPU limit which restricts the container to use no more than a given amount of CPU."
   tags        = local.nsa_cisa_v1_common_tags
   children = [
+    control.cronjob_cpu_limit,
     control.daemonset_cpu_limit,
     control.deployment_cpu_limit,
     control.job_cpu_limit,
@@ -23,6 +24,7 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_limit" {
     control.namespace_resource_quota_cpu_limit,
     control.replicaset_cpu_limit,
     control.replication_controller_cpu_limit,
+    control.statefulset_cpu_limit
   ]
 }
 
@@ -31,6 +33,7 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_request" {
   description = "Containers should have CPU request. If required Kubernetes will make sure your containers get the CPU they requested."
   tags        = local.nsa_cisa_v1_common_tags
   children = [
+    control.cronjob_cpu_request,
     control.daemonset_cpu_request,
     control.deployment_cpu_request,
     control.job_cpu_request,
@@ -38,6 +41,7 @@ benchmark "nsa_cisa_v1_network_hardening_cpu_request" {
     control.namespace_resource_quota_cpu_request,
     control.replicaset_cpu_request,
     control.replication_controller_cpu_request,
+    control.statefulset_cpu_request
   ]
 }
 
@@ -55,6 +59,7 @@ benchmark "nsa_cisa_v1_network_hardening_memory_limit" {
   description = "Containers should have a memory limit which restricts the container to use no more than a given amount of user or system memory."
   tags        = local.nsa_cisa_v1_common_tags
   children = [
+    control.cronjob_memory_limit,
     control.daemonset_memory_limit,
     control.deployment_memory_limit,
     control.job_memory_limit,
@@ -62,6 +67,7 @@ benchmark "nsa_cisa_v1_network_hardening_memory_limit" {
     control.namespace_resource_quota_memory_limit,
     control.replicaset_memory_limit,
     control.replication_controller_memory_limit,
+    control.statefulset_memory_limit
   ]
 }
 
@@ -70,6 +76,7 @@ benchmark "nsa_cisa_v1_network_hardening_memory_request" {
   description = "Containers should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
   tags        = local.nsa_cisa_v1_common_tags
   children = [
+    control.cronjob_memory_request,
     control.daemonset_memory_request,
     control.deployment_memory_request,
     control.job_memory_request,
@@ -77,6 +84,7 @@ benchmark "nsa_cisa_v1_network_hardening_memory_request" {
     control.namespace_resource_quota_memory_request,
     control.replicaset_memory_request,
     control.replication_controller_memory_request,
+    control.statefulset_memory_request
   ]
 }
 
@@ -88,6 +96,6 @@ benchmark "nsa_cisa_v1_network_hardening_default_deny_network_policy" {
     control.network_policy_default_deny_egress,
     control.network_policy_default_deny_ingress,
     control.network_policy_default_dont_allow_egress,
-    control.network_policy_default_dont_allow_ingress,
+    control.network_policy_default_dont_allow_ingress
   ]
 }
