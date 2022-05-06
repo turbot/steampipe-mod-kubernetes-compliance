@@ -1,10 +1,10 @@
 locals {
-  cis_kubernetes_v120_v100_common_tags = merge(local.cis_kubernetes_v120_common_tags,{
+  cis_kubernetes_v120_v100_common_tags = merge(local.cis_kubernetes_v120_common_tags, {
     cis_version = "v1.0.0"
   })
 }
 
-locals{
+locals {
   cis_kubernetes_v120_v100_5_common_tags = merge(local.cis_kubernetes_v120_v100_common_tags, {
     cis_section_id = "5"
   })
@@ -13,16 +13,18 @@ locals{
 benchmark "cis_v100" {
   title         = "CIS v1.0.0"
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_overview.md")
-  tags          = local.cis_kubernetes_v120_v100_common_tags
   children = [
     benchmark.cis_v100_5
   ]
+
+  tags = merge(local.cis_kubernetes_v120_v100_common_tags, {
+    type = "Benchmark"
+  })
 }
 
 benchmark "cis_v100_5" {
   title       = "5 Policies"
   description = "This section contains recommendations for various Kubernetes policies which are important to the security of the environment."
-  tags        = local.cis_kubernetes_v120_v100_5_common_tags
   children = [
     benchmark.cis_v100_5_3_2,
     benchmark.cis_v100_5_7_2,
@@ -34,8 +36,12 @@ benchmark "cis_v100_5" {
     control.cis_v100_5_2_4,
     control.cis_v100_5_2_5,
     control.cis_v100_5_2_6
-    
+
   ]
+
+  tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
+    type = "Benchmark"
+  })
 }
 
 benchmark "cis_v100_5_3_2" {
@@ -49,6 +55,7 @@ benchmark "cis_v100_5_3_2" {
     control.network_policy_default_dont_allow_ingress
   ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
+    type        = "Benchmark"
     cis_level   = "2"
     cis_item_id = "5.3.2"
     cis_type    = "manual"
@@ -77,6 +84,7 @@ benchmark "cis_v100_5_7_4" {
     control.statefulset_default_namesapce_used
   ]
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
+    type        = "Benchmark"
     cis_level   = "2"
     cis_item_id = "5.7.4"
     cis_type    = "manual"
