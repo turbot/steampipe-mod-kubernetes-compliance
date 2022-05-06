@@ -103,10 +103,10 @@ control "daemonset_container_privilege_port_mapped" {
   tags        = local.extra_checks_daemonset_common_tags
 }
 
-control "daemonset_default_namesapce_used" {
+control "daemonset_default_namespace_used" {
   title       = "DaemonSet definition should not use default namespace"
   description = "Default namespace should not be used by DaemonSet definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.daemonset_default_namesapce_used.sql
+  sql         = query.daemonset_default_namespace_used.sql
 
   tags = merge(local.cis_kubernetes_v120_common_tags, {
     cis     = "true"

@@ -96,10 +96,10 @@ control "pod_container_privilege_port_mapped" {
   tags        = local.extra_checks_pod_common_tags
 }
 
-control "pod_default_namesapce_used" {
+control "pod_default_namespace_used" {
   title       = "Pods should not use default namespace"
   description = "Default namespace should not be used by Pods. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.pod_default_namesapce_used.sql
+  sql         = query.pod_default_namespace_used.sql
   tags = merge(local.pod_common_tags, {
     cis = "true"
   })

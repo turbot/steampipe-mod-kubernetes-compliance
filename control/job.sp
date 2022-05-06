@@ -95,10 +95,10 @@ control "job_container_privilege_port_mapped" {
   tags        = local.extra_checks_tags
 }
 
-control "job_default_namesapce_used" {
+control "job_default_namespace_used" {
   title       = "Job definition should not use default namespace"
   description = "Default namespace should not be used by Job definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.job_default_namesapce_used.sql
+  sql         = query.job_default_namespace_used.sql
   tags = merge(local.job_common_tags, {
    cis = "true"
   })

@@ -9,7 +9,7 @@ control "cronjob_cpu_limit" {
   description = replace(local.container_cpu_limit_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_cpu_limit.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -19,7 +19,7 @@ control "cronjob_cpu_request" {
   description = replace(local.container_cpu_request_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_cpu_request.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -29,7 +29,7 @@ control "cronjob_memory_limit" {
   description = replace(local.container_memory_limit_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_memory_limit.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -39,7 +39,7 @@ control "cronjob_memory_request" {
   description = replace(local.container_memory_request_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_memory_request.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -49,7 +49,7 @@ control "cronjob_container_privilege_disabled" {
   description = replace(local.container_privilege_disabled_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_container_privilege_disabled.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -59,7 +59,7 @@ control "cronjob_container_privilege_escalation_disabled" {
   description = replace(local.container_privilege_escalation_disabled_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_container_privilege_escalation_disabled.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -69,7 +69,7 @@ control "cronjob_host_network_access_disabled" {
   description = replace(local.host_network_access_disabled_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_host_network_access_disabled.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -79,7 +79,7 @@ control "cronjob_hostpid_hostipc_sharing_disabled" {
   description = replace(local.hostpid_hostipc_sharing_disabled_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_hostpid_hostipc_sharing_disabled.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -89,7 +89,7 @@ control "cronjob_immutable_container_filesystem" {
   description = replace(local.immutable_container_filesystem_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_immutable_container_filesystem.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -99,7 +99,7 @@ control "cronjob_non_root_container" {
   description = replace(local.non_root_container_desc, "__KIND__", "CronJob")
   sql         = query.cronjob_non_root_container.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     nsa_cisa_v1 = "true"
   })
 }
@@ -109,7 +109,7 @@ control "cronjob_container_readiness_probe" {
   description = "Containers in CronJob definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill its work."
   sql         = query.cronjob_container_readiness_probe.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     extra_checks = "true"
   })
 }
@@ -119,7 +119,7 @@ control "cronjob_container_liveness_probe" {
   description = "Containers in CronJob definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn’t the case, kubernetes will eventually restart the container."
   sql         = query.cronjob_container_liveness_probe.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     extra_checks = "true"
   })
 }
@@ -129,15 +129,15 @@ control "cronjob_container_privilege_port_mapped" {
   description = "Privileged ports `0 to 1024` should not be mapped with CronJob containers. Normal users and processes are not allowed to use them for various security reasons."
   sql         = query.cronjob_container_privilege_port_mapped.sql
 
-  tags = merge(local.cornjob_common_tags, {
+  tags = merge(local.cronjob_common_tags, {
     extra_checks = "true"
   })
 }
 
-control "cronjob_default_namesapce_used" {
+control "cronjob_default_namespace_used" {
   title       = "CronJob definition should not use default namespace"
   description = "Default namespace should not be used by CronJob definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.cronjob_default_namesapce_used.sql
+  sql         = query.cronjob_default_namespace_used.sql
 
   tags = merge(local.cronjob_common_tags, {
     cis = "true"

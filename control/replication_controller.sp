@@ -95,10 +95,10 @@ control "replication_controller_container_privilege_port_mapped" {
   tags        = local.extra_checks_tags
 }
 
-control "replication_controller_default_namesapce_used" {
+control "replication_controller_default_namespace_used" {
   title       = "ReplicationController definition should not use default namespace"
   description = "Default namespace should not be used by ReplicationController definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.replication_controller_default_namesapce_used.sql
+  sql         = query.replication_controller_default_namespace_used.sql
   tags = merge(local.replication_controller_common_tags, {
    cis = "true"
   })

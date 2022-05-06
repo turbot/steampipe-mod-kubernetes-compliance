@@ -95,10 +95,10 @@ control "statefulset_container_privilege_port_mapped" {
   tags        = local.extra_checks_tags
 }
 
-control "statefulset_default_namesapce_used" {
+control "statefulset_default_namespace_used" {
   title       = "StatefulSet definition should not use default namespace"
   description = "Default namespace should not be used by StatefulSet definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.statefulset_default_namesapce_used.sql
+  sql         = query.statefulset_default_namespace_used.sql
   tags = merge(local.statefulset_common_tags, {
    cis = "true"
   })

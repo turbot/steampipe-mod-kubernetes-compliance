@@ -95,10 +95,10 @@ control "replicaset_container_privilege_port_mapped" {
   tags        = local.extra_checks_tags
 }
 
-control "replicaset_default_namesapce_used" {
+control "replicaset_default_namespace_used" {
   title       = "ReplicaSet definition should not use default namespace"
   description = "Default namespace should not be used by ReplicaSet definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.replicaset_default_namesapce_used.sql
+  sql         = query.replicaset_default_namespace_used.sql
   tags = merge(local.replicaset_common_tags, {
    cis = "true"
   })
