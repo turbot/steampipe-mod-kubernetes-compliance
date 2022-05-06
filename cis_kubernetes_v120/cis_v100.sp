@@ -36,7 +36,6 @@ benchmark "cis_v100_5" {
     control.cis_v100_5_2_4,
     control.cis_v100_5_2_5,
     control.cis_v100_5_2_6
-
   ]
 
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
@@ -54,6 +53,7 @@ benchmark "cis_v100_5_3_2" {
     control.network_policy_default_dont_allow_egress,
     control.network_policy_default_dont_allow_ingress
   ]
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     type        = "Benchmark"
     cis_level   = "2"
@@ -83,6 +83,7 @@ benchmark "cis_v100_5_7_4" {
     control.service_default_namesapce_used,
     control.statefulset_default_namesapce_used
   ]
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     type        = "Benchmark"
     cis_level   = "2"
@@ -96,6 +97,7 @@ control "cis_v100_5_2_1" {
   description   = "Privileged containers have access to all Linux Kernel capabilities and devices. A container running with full privileges can do almost everything that the host can do. This flag exists to allow special use-cases, like manipulating the network stack and accessing devices. There should be at least one PodSecurityPolicy (PSP) defined which does not permit privileged containers."
   sql           = query.pod_security_policy_container_privilege_disabled.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_2_1.md")
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "1"
     cis_item_id = "5.2.1"
@@ -108,6 +110,7 @@ control "cis_v100_5_2_5" {
   description   = "A container running with the `allowPrivilegeEscalation` flag set to true may have processes that can gain more privileges than their parent. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to allow privilege escalation. The option exists (and is defaulted to true) to permit setuid binaries to run."
   sql           = query.pod_security_policy_container_privilege_escalation_disabled.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_2_5.md")
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "1"
     cis_item_id = "5.2.5"
@@ -120,6 +123,7 @@ control "cis_v100_5_2_4" {
   description   = "A container running in the host's network namespace could access the local loopback device, and could access network traffic to and from other pods. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host network namespace."
   sql           = query.pod_security_policy_host_network_access_disabled.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_2_4.md")
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "1"
     cis_item_id = "5.2.4"
@@ -132,6 +136,7 @@ control "cis_v100_5_2_2" {
   description   = "A container running in the host's PID namespace can inspect processes running outside the container. If the container also has access to ptrace capabilities this can be used to escalate privileges outside of the container. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host PID namespace."
   sql           = query.pod_security_policy_hostpid_sharing_disabled.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_2_2.md")
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "1"
     cis_item_id = "5.2.2"
@@ -144,6 +149,7 @@ control "cis_v100_5_2_3" {
   description   = "A container running in the host's IPC namespace can use IPC to interact with processes outside the container. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host IPC namespace."
   sql           = query.pod_security_policy_hostipc_sharing_disabled.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_2_3.md")
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "1"
     cis_item_id = "5.2.3"
@@ -156,6 +162,7 @@ control "cis_v100_5_2_6" {
   description   = "Containers may run as any Linux user. Containers which run as the root user, whilst constrained by Container Runtime security features still have a escalated likelihood of container breakout. There should be at least one PodSecurityPolicy (PSP) defined which does not permit root users in a container."
   sql           = query.pod_security_policy_non_root_container.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_2_6.md")
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"
     cis_item_id = "5.2.6"
@@ -168,6 +175,7 @@ control "cis_v100_5_1_6" {
   description   = "Mounting service account tokens inside pods can provide an avenue for privilege escalation attacks where an attacker is able to compromise a single pod in the cluster. Avoiding mounting these tokens removes this attack avenue."
   sql           = query.pod_service_account_token_disabled.sql
   documentation = file("./cis_kubernetes_v120/docs/cis_v100_5_1_6.md")
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "1"
     cis_item_id = "5.1.6"
@@ -190,6 +198,7 @@ benchmark "cis_v100_5_7_2" {
     control.replication_controller_default_seccomp_profile_enabled,
     control.statefulset_default_seccomp_profile_enabled
   ]
+
   tags = merge(local.cis_kubernetes_v120_v100_5_common_tags, {
     cis_level   = "2"
     cis_item_id = "5.7.2"
