@@ -3,7 +3,6 @@ locals {
   })
 }
 
-
 benchmark "nsa_cisa_v1_network_hardening" {
   title = "Network Separation and Hardening"
   children = [
