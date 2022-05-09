@@ -2,6 +2,7 @@ locals {
   daemonset_common_tags = merge(local.kubernetes_compliance_common_tags, {
     service = "Kubernetes/DaemonSet"
   })
+}
 
 control "daemonset_cpu_limit" {
   title       = replace(local.container_cpu_limit_title, "__KIND__", "DaemonSet")
