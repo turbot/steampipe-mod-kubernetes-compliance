@@ -1,3 +1,14 @@
+## v0.6 [2022-05-09]
+
+_Enhancements_
+
+- Added `category`, `service`, and `type` tags to benchmarks and controls. ([#18](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/18))
+
+_Breaking changes_
+
+- Updated all CIS Kubernetes v1.20 v1.0.0 filenames, benchmarks, and controls to include the Kubernetes version for future version compatibility. ([#18](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/18))
+- Fixed all typos in control and query names namesapce->namespace. ([#18](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/18))
+
 ## v0.5 [2022-01-19]
 
 _What's new?_
