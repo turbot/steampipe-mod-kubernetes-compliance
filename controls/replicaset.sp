@@ -1,12 +1,6 @@
-# locals {
-#   replicaset_common_tags = {
-#     plugin = "kubernetes"
-#   }
-# }
-
 locals {
   replicaset_common_tags = merge(local.kubernetes_compliance_common_tags, {
-    service = "Kubernetes/Deployment"
+    service = "Kubernetes/ReplicaSet"
   })
 }
 
