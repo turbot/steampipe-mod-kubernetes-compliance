@@ -1,3 +1,12 @@
+// Benchmarks and controls for specific services should override the "service" tag
+locals {
+  kubernetes_compliance_common_tags = {
+    category = "Compliance"
+    plugin   = "kubernetes"
+    service  = "Kubernetes"
+  }
+}
+
 mod "kubernetes_compliance" {
   # hub metadata
   title         = "Kubernetes Compliance"
