@@ -1,4 +1,4 @@
-# Kubernetes Compliance Scanning Tool
+# Kubernetes Compliance Mod for Steampipe
 
 Multiple checks covering industry defined security best practices for Kubernetes. Includes support for CIS, National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
 
