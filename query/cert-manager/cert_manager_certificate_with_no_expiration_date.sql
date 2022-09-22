@@ -7,7 +7,7 @@ select
     'ok'
   end as status,
   case when "spec_renewBefore" is null then
-    name || ' with no expiration date.'
+    name || ' has no expiration date.'
   else
     name || ' has expiration date.'
   end as reason,
