@@ -8,7 +8,8 @@ benchmark "cert_manager_best_practices" {
   title = "cert-manager"
   // documentation = file("./nsa_cisa_v1/docs/nsa_cisa_v1_overview.md")
   children = [
-    control.cert_manager_certificate_with_no_expiry
+    control.cert_manager_certificate_with_no_expiry,
+    control.cert_manager_certificate_expired
   ]
 
   tags = merge(local.cert_manager_common_tags, {
@@ -20,4 +21,10 @@ control "cert_manager_certificate_with_no_expiry" {
   title       = "Certificate with no expiry"
   description = "Certificate with no expiry."
   query       = query.cert_manager_certificate_with_no_expiry
+}
+
+control "cert_manager_certificate_expired" {
+  title       = "Certificate expired"
+  description = "Certificate expired."
+  query       = query.cert_manager_certificate_expired
 }
