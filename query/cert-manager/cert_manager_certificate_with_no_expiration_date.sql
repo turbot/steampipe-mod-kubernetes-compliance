@@ -7,9 +7,9 @@ select
     'ok'
   end as status,
   case when "spec_renewBefore" is null then
-    name || ' with no expiry.'
+    name || ' with no expiration date.'
   else
-    name || ' has expiry time.'
+    name || ' has expiration date.'
   end as reason,
   -- Additional Dimensionss
   namespace
