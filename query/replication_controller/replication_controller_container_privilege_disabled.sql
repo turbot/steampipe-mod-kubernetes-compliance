@@ -1,18 +1,21 @@
 select
   -- Required Columns
   uid as resource,
-  case
-    when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
-    else 'ok'
+  case when c -> 'securityContext' ->> 'privileged' = 'true' then
+    'alarm'
+  else
+    'ok'
   end as status,
-  case
-    when c -> 'securityContext' ->> 'privileged' = 'true' then c ->> 'name' || ' privileged container.'
-    else c ->> 'name' || ' not privileged container.'
+  case when c -> 'securityContext' ->> 'privileged' = 'true' then
+    c ->> 'name' || ' privileged container.'
+  else
+    c ->> 'name' || ' not privileged container.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as replication_controller_name,
   namespace,
   context_name
 from
   kubernetes_replication_controller,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+

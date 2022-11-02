@@ -1,18 +1,21 @@
 select
   -- Required Columns
   uid as resource,
-  case
-    when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
-    else 'alarm'
+  case when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then
+    'ok'
+  else
+    'alarm'
   end as status,
-  case
-    when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read only root file system.'
-    else c ->> 'name' || ' not running with read only root file system.'
+  case when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then
+    c ->> 'name' || ' running with read only root file system.'
+  else
+    c ->> 'name' || ' not running with read only root file system.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as replicaset_name,
   namespace,
   context_name
 from
   kubernetes_replicaset,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+
