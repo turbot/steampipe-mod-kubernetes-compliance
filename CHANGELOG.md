@@ -1,3 +1,9 @@
+## v0.6 [2022-11-22]
+
+_Bug fixes_
+
+- Fixed `pod_service_account_token_disabled`, `pod_security_policy_*` and `service_account_token_disabled` queries to include the name of the relevant resource in the `Reason` column of the compliance report. ([#23](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/23))
+
 ## v0.6 [2022-05-09]
 
 _Enhancements_
