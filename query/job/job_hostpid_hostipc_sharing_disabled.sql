@@ -11,8 +11,9 @@ select
     else 'Job pods cannot share host process namespaces.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as job_name,
   namespace,
   context_name
 from
   kubernetes_job;
+

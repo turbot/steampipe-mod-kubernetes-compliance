@@ -10,8 +10,9 @@ select
     else 'Job pods not using host network.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as job_name,
   namespace,
   context_name
 from
   kubernetes_job;
+

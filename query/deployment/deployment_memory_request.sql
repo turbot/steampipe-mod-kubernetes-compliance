@@ -10,9 +10,10 @@ select
     else c ->> 'name' || ' has a memory request of ' || (c -> 'resources' -> 'requests' ->> 'memory') || '.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as deployment_name,
   namespace,
   context_name
 from
   kubernetes_deployment,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+

@@ -10,7 +10,7 @@ select
     else c ->> 'name' || ' not privileged container.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as cronjob_name,
   namespace,
   context_name
 from

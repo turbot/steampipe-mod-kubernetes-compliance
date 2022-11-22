@@ -2,7 +2,7 @@ select
   -- Required Columns
   uid as resource,
   case
-    when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID' = 'true' 
+    when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID' = 'true'
     or job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
     else 'ok'
   end as status,
@@ -12,8 +12,9 @@ select
     else 'CronJob pods cannot share host process namespaces.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as cronjob_name,
   namespace,
   context_name
 from
   kubernetes_cronjob;
+

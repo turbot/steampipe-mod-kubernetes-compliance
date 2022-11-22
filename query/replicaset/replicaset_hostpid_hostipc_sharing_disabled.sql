@@ -11,8 +11,9 @@ select
     else 'ReplicaSet pods cannot share host process namespaces.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as replicaset_name,
   namespace,
   context_name
 from
   kubernetes_replicaset;
+

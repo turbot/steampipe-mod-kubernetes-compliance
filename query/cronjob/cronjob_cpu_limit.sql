@@ -10,9 +10,10 @@ select
     else c ->> 'name' || ' has a CPU limit of ' || (c -> 'resources' -> 'limits' ->> 'cpu') || '.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as cronjob_name,
   namespace,
   context_name
 from
   kubernetes_cronjob,
   jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
+

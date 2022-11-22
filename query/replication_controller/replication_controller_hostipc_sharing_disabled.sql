@@ -1,4 +1,4 @@
-    select
+select
   -- Required Columns
   uid as resource,
   case
@@ -10,8 +10,9 @@
     else 'ReplicationController pods cannot share host IPC namespaces.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as replication_controller_name,
   namespace,
   context_name
 from
   kubernetes_replication_controller;
+

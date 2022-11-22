@@ -10,9 +10,10 @@ select
     else c ->> 'name' || ' does not have liveness probe.'
   end as reason,
   -- Additional Dimensionss
-  name as pod_name,
+  name as daemonset_name,
   namespace,
   context_name
 from
   kubernetes_daemonset,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+

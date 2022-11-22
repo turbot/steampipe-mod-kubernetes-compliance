@@ -10,9 +10,10 @@ select
     else c ->> 'name' || ' running with root privilege.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as job_name,
   namespace,
   context_name
 from
   kubernetes_job,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+
