@@ -10,9 +10,10 @@ select
     else c ->> 'name' || ' does not have readiness probe.'
   end as reason,
   -- Additional Dimensionss
-  name as pod_name,
+  name as cronjob_name,
   namespace,
   context_name
 from
   kubernetes_cronjob,
   jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
+

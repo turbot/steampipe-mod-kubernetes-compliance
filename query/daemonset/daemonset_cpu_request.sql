@@ -10,12 +10,10 @@ select
     else c ->> 'name' || ' has a CPU request of ' || (c -> 'resources' -> 'requests' ->> 'cpu') || '.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as daemonset_name,
   namespace,
   context_name
 from
   kubernetes_daemonset,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
-
-
 

@@ -6,8 +6,8 @@ select
     else 'alarm'
   end as status,
   case
-    when read_only_root_filesystem then 'Containers running with read only root file system.'
-    else 'Containers not running with read only root file system.'
+    when read_only_root_filesystem then 'Pod security policy ' || name || ' containers running with read only root file system.'
+    else 'Pod security policy ' || name || ' containers not running with read only root file system.'
   end as reason,
   -- Additional Dimensions
   context_name

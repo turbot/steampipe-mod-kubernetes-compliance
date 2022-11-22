@@ -10,8 +10,9 @@ select
     else 'StatefulSet pods not using host network.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as statefulset_name,
   namespace,
   context_name
 from
   kubernetes_stateful_set;
+

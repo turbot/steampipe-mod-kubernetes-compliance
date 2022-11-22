@@ -11,8 +11,9 @@ select
     else 'Deployment pods cannot share host process namespaces.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as deployment_name,
   namespace,
   context_name
 from
   kubernetes_deployment;
+

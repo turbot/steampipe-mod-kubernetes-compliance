@@ -10,9 +10,10 @@ select
     else c ->> 'name' || ' not running with read only root file system.'
   end as reason,
   -- Additional Dimensions
-  name as pod_name,
+  name as daemonset_name,
   namespace,
   context_name
 from
   kubernetes_daemonset,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+
