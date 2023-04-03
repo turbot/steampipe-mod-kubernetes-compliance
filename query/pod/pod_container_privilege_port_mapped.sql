@@ -14,7 +14,11 @@ select
   -- Additional Dimensions
   name as pod_name,
   namespace,
-  context_name
+  context_name,
+  case
+    when manifest_file_path is null then 'Deployed'
+    else 'Manifest'
+  end as source
 from
   kubernetes_pod,
   jsonb_array_elements(containers) as c,

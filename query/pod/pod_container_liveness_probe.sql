@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  uid as resource,
+  name ||  '_' || namespace as resource,
   case
     when c -> 'livenessProbe' is not null then 'ok'
     else 'alarm'
@@ -12,7 +12,11 @@ select
   -- Additional Dimensions
   name as pod_name,
   namespace,
-  context_name
+  context_name,
+  case
+    when manifest_file_path is null then 'Deployed'
+    else 'Manifest'
+  end as source
 from
   kubernetes_pod,
   jsonb_array_elements(containers) as c;

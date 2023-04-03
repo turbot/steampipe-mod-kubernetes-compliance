@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  uid as resource,
+  name ||  '_' || namespace as resource,
   case
     when automount_service_account_token then 'alarm'
     else 'ok'
@@ -10,6 +10,10 @@ select
     else name || ' service account token will not be automatically mounted.'
   end as reason,
   -- Additional Dimensions
-  context_name
+  context_name,
+  case
+    when manifest_file_path is null then 'Deployed'
+    else 'Manifest'
+  end as source
 from
   kubernetes_pod;

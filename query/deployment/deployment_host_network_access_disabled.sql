@@ -1,6 +1,6 @@
 select
   -- Required Columns
-  uid as resource,
+  name ||  '_' || namespace as resource,
   case
     when template -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
     else 'ok'
@@ -12,7 +12,11 @@ select
   -- Additional Dimensions
   name as deployment_name,
   namespace,
-  context_name
+  context_name,
+  case
+    when manifest_file_path is null then 'Deployed'
+    else 'Manifest'
+  end as source
 from
   kubernetes_deployment;
 
