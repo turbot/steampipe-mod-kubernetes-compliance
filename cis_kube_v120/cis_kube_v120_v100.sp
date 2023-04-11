@@ -69,7 +69,7 @@ benchmark "cis_kube_v120_v100_5_1" {
 control "cis_kube_v120_v100_5_1_6" {
   title         = "5.1.6 Ensure that Service Account Tokens are only mounted where necessary"
   description   = "Mounting service account tokens inside pods can provide an avenue for privilege escalation attacks where an attacker is able to compromise a single pod in the cluster. Avoiding mounting these tokens removes this attack avenue."
-  sql           = query.pod_service_account_token_disabled.sql
+  query         = query.pod_service_account_token_disabled
   documentation = file("./cis_kube_v120/docs/cis_kube_v120_v100_5_1_6.md")
 
   tags = merge(local.cis_kube_v120_v100_5_1_common_tags, {
@@ -100,7 +100,7 @@ benchmark "cis_kube_v120_v100_5_2" {
 control "cis_kube_v120_v100_5_2_1" {
   title         = "5.2.1 Minimize the admission of privileged containers"
   description   = "Privileged containers have access to all Linux Kernel capabilities and devices. A container running with full privileges can do almost everything that the host can do. This flag exists to allow special use-cases, like manipulating the network stack and accessing devices. There should be at least one PodSecurityPolicy (PSP) defined which does not permit privileged containers."
-  sql           = query.pod_security_policy_container_privilege_disabled.sql
+  query         = query.pod_security_policy_container_privilege_disabled
   documentation = file("./cis_kube_v120/docs/cis_kube_v120_v100_5_2_1.md")
 
   tags = merge(local.cis_kube_v120_v100_5_2_common_tags, {
@@ -114,7 +114,7 @@ control "cis_kube_v120_v100_5_2_1" {
 control "cis_kube_v120_v100_5_2_2" {
   title         = "5.2.2 Minimize the admission of containers wishing to share the host process ID namespace"
   description   = "A container running in the host's PID namespace can inspect processes running outside the container. If the container also has access to ptrace capabilities this can be used to escalate privileges outside of the container. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host PID namespace."
-  sql           = query.pod_security_policy_hostpid_sharing_disabled.sql
+  query         = query.pod_security_policy_hostpid_sharing_disabled
   documentation = file("./cis_kube_v120/docs/cis_kube_v120_v100_5_2_2.md")
 
   tags = merge(local.cis_kube_v120_v100_5_2_common_tags, {
@@ -128,7 +128,7 @@ control "cis_kube_v120_v100_5_2_2" {
 control "cis_kube_v120_v100_5_2_3" {
   title         = "5.2.3 Minimize the admission of containers wishing to share the host IPC namespace"
   description   = "A container running in the host's IPC namespace can use IPC to interact with processes outside the container. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host IPC namespace."
-  sql           = query.pod_security_policy_hostipc_sharing_disabled.sql
+  query         = query.pod_security_policy_hostipc_sharing_disabled
   documentation = file("./cis_kube_v120/docs/cis_kube_v120_v100_5_2_3.md")
 
   tags = merge(local.cis_kube_v120_v100_5_2_common_tags, {
@@ -142,7 +142,7 @@ control "cis_kube_v120_v100_5_2_3" {
 control "cis_kube_v120_v100_5_2_4" {
   title         = "5.2.4 Minimize the admission of containers wishing to share the host network namespace"
   description   = "A container running in the host's network namespace could access the local loopback device, and could access network traffic to and from other pods. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host network namespace."
-  sql           = query.pod_security_policy_host_network_access_disabled.sql
+  query         = query.pod_security_policy_host_network_access_disabled
   documentation = file("./cis_kube_v120/docs/cis_kube_v120_v100_5_2_4.md")
 
   tags = merge(local.cis_kube_v120_v100_5_2_common_tags, {
@@ -156,7 +156,7 @@ control "cis_kube_v120_v100_5_2_4" {
 control "cis_kube_v120_v100_5_2_5" {
   title         = "5.2.5 Minimize the admission of containers with allowPrivilegeEscalation"
   description   = "A container running with the `allowPrivilegeEscalation` flag set to true may have processes that can gain more privileges than their parent. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to allow privilege escalation. The option exists (and is defaulted to true) to permit setuid binaries to run."
-  sql           = query.pod_security_policy_container_privilege_escalation_disabled.sql
+  query         = query.pod_security_policy_container_privilege_escalation_disabled
   documentation = file("./cis_kube_v120/docs/cis_kube_v120_v100_5_2_5.md")
 
   tags = merge(local.cis_kube_v120_v100_5_2_common_tags, {
@@ -170,7 +170,7 @@ control "cis_kube_v120_v100_5_2_5" {
 control "cis_kube_v120_v100_5_2_6" {
   title         = "5.2.6 Minimize the admission of root containers"
   description   = "Containers may run as any Linux user. Containers which run as the root user, whilst constrained by Container Runtime security features still have a escalated likelihood of container breakout. There should be at least one PodSecurityPolicy (PSP) defined which does not permit root users in a container."
-  sql           = query.pod_security_policy_non_root_container.sql
+  query         = query.pod_security_policy_non_root_container
   documentation = file("./cis_kube_v120/docs/cis_kube_v120_v100_5_2_6.md")
 
   tags = merge(local.cis_kube_v120_v100_5_2_common_tags, {
