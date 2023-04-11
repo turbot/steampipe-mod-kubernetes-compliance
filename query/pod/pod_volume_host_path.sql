@@ -11,11 +11,7 @@ select
   end as reason,
   -- Additional Dimensions
   namespace,
-  context_name,
-  case
-    when manifest_file_path is null then 'Deployed'
-    else 'Manifest'
-  end as source
+  context_name
 from
   kubernetes_pod,
   jsonb_array_elements(volumes) as v;

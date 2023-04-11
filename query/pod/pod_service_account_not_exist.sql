@@ -1,6 +1,9 @@
 select
   -- Required Columns
-  distinct(p.name ||  '_' || p.namespace) as resource,
+  distinct case
+    when p.manifest_file_path is null then p.uid
+    else p.manifest_file_path || '-' || p.start_line
+  end as resource,
   case
     when service_account_name is not null and service_account_name <> '' then 'ok'
     else 'alarm'
@@ -11,11 +14,7 @@ select
   end as reason,
   -- Additional Dimensions
   p.namespace,
-  p.context_name,
-  case
-    when p.manifest_file_path is null then 'Deployed'
-    else 'Manifest'
-  end as source
+  p.context_name
 from
   kubernetes_pod p 
   left join kubernetes_service_account a on p.service_account_name = a.name;
