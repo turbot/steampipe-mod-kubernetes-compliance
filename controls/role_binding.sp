@@ -7,7 +7,7 @@ locals {
 control "role_binding_default_namespace_used" {
   title       = "RoleBinding definition should not use default namespace"
   description = "Default namespace should not be used by RoleBinding definition. Placing objects in this namespace makes application of RBAC and other controls more difficult."
-  sql         = query.role_binding_default_namespace_used.sql
+  query       = query.role_binding_default_namespace_used
 
   tags = merge(local.role_binding_common_tags, {
     cis = "true"
