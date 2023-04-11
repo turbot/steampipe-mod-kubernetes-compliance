@@ -1,8 +1,8 @@
 select
   -- Required Columns
   case
-    when manifest_file_path is null then uid
-    else manifest_file_path || '-' || start_line
+    when path is null then uid
+    else path || '-' || start_line
   end as resource,
   case
     when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then 'ok'

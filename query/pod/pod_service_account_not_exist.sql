@@ -1,8 +1,8 @@
 select
   -- Required Columns
   distinct case
-    when p.manifest_file_path is null then p.uid
-    else p.manifest_file_path || '-' || p.start_line
+    when p.path is null then p.uid
+    else p.path || '-' || p.start_line
   end as resource,
   case
     when service_account_name is not null and service_account_name <> '' then 'ok'
