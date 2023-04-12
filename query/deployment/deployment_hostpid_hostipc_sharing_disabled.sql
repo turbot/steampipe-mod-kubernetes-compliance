@@ -1,9 +1,6 @@
 select
   -- Required Columns
-  case
-    when path is null then uid
-    else path || '-' || start_line
-  end as resource,
+  coalesce(uid, concat(path, ':', start_line)) as resource,
   case
     when template -> 'spec' ->> 'hostPID' = 'true' or template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
     else 'ok'
@@ -16,7 +13,8 @@ select
   -- Additional Dimensions
   name as deployment_name,
   namespace,
-  context_name
+  context_name,
+  source
 from
   kubernetes_deployment;
 

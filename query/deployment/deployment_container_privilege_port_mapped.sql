@@ -14,7 +14,8 @@ select
   -- Additional Dimensions
   name as deployment_name,
   namespace,
-  context_name
+  context_name,
+  source
 from
   kubernetes_deployment,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c,

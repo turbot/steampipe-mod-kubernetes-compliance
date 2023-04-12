@@ -1,9 +1,6 @@
 select
   -- Required Columns
-  case
-    when path is null then uid
-    else path || '-' || start_line
-  end as resource,
+  coalesce(uid, concat(path, ':', start_line)) as resource,
   case
     when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then 'ok'
     else 'alarm'
@@ -15,7 +12,8 @@ select
   -- Additional Dimensions
   name as deployment_name,
   namespace,
-  context_name
+  context_name,
+  source
 from
   kubernetes_deployment,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;

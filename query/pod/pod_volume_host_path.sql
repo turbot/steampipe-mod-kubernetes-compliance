@@ -11,7 +11,8 @@ select
   end as reason,
   -- Additional Dimensions
   namespace,
-  context_name
+  context_name,
+  source
 from
   kubernetes_pod,
   jsonb_array_elements(volumes) as v;

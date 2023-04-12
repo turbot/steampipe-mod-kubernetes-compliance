@@ -1,9 +1,6 @@
 select
   -- Required Columns
-  case
-    when path is null then uid
-    else path || '-' || start_line
-  end as resource,
+  coalesce(uid, concat(path, ':', start_line)) as resource,
   case
     when security_context -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
     else 'alarm'
@@ -14,6 +11,7 @@ select
   end as reason,
   -- Additional Dimensions
   namespace,
-  context_name
+  context_name,
+  source
 from
   kubernetes_pod;

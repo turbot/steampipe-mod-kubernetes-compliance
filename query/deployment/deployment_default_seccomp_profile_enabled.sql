@@ -1,9 +1,6 @@
 select
   -- Required Columns
-  case
-    when path is null then uid
-    else path || '-' || start_line
-  end as resource,
+  coalesce(uid, concat(path, ':', start_line)) as resource,
   case
     when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
     else 'alarm'
@@ -13,7 +10,8 @@ select
     else name || ' seccompProfile disabled.'
   end as reason,
   -- Additional Dimensions
-  context_name
+  context_name,
+  source
 from
   kubernetes_deployment,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
