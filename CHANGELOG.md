@@ -1,3 +1,9 @@
+## v0.8 [2023-04-13]
+
+_Bug fixes_
+
+- Fixed the structure and the order of sub-benchmarks and controls of `cis_kube_v120_v100_5` benchmark based on the CIS documentation. ([#30](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/30))
+
 ## v0.7 [2022-11-22]
 
 _Bug fixes_
