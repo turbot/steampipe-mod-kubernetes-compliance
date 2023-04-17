@@ -11,7 +11,7 @@ select
   end as reason,
   -- Additional Dimensions
   namespace,
-  context_name,
-  source
+  coalesce(context_name, '') as context_name,
+  source_type
 from
   kubernetes_pod;

@@ -14,8 +14,8 @@ select
   -- Additional Dimensions
   name as pod_name,
   namespace,
-  context_name,
-  source
+  coalesce(context_name, '') as context_name,
+  source_type
 from
   kubernetes_pod,
   jsonb_array_elements(containers) as c,

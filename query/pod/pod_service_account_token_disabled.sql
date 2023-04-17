@@ -10,7 +10,7 @@ select
     else name || ' service account token will not be automatically mounted.'
   end as reason,
   -- Additional Dimensions
-  context_name,
-  source
+  coalesce(context_name, '') as context_name,
+  source_type
 from
   kubernetes_pod;

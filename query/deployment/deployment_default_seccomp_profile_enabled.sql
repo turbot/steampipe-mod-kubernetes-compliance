@@ -10,8 +10,8 @@ select
     else name || ' seccompProfile disabled.'
   end as reason,
   -- Additional Dimensions
-  context_name,
-  source
+  coalesce(context_name, '') as context_name,
+  source_type
 from
   kubernetes_deployment,
   jsonb_array_elements(template -> 'spec' -> 'containers') as c;
