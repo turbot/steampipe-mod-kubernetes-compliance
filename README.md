@@ -81,6 +81,32 @@ This mod uses the credentials configured in the [Steampipe Kubernetes plugin](ht
 
 No extra configuration is required.
 
+### Common and Tag Dimensions
+
+The benchmark queries use common properties (like `connection_name`, `context_name` and `namespace`) and tags are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
+
+- Copy and rename the `steampipe.spvars.example` file to `steampipe.spvars`, and then modify the variable values inside that file
+
+- Pass in a value on the command line:
+
+  ```shell
+  steampipe check benchmark.cis_kube_v120 --var 'common_dimensions=["connection_name", "context_name", "namespace"]'
+  ```
+
+  ```shell
+  steampipe check benchmark.cis_kube_v120 --var 'tag_dimensions=["Environment", "Owner"]'
+  ```
+
+- Set an environment variable:
+
+  ```shell
+  SP_VAR_common_dimensions='["connection_name", "context_name", "namespace"]' steampipe check control.cis_kube_v120_v100_5_2_1
+  ```
+
+  ```shell
+  SP_VAR_tag_dimensions='["Environment", "Owner"]' steampipe check control.cis_kube_v120_v100_5_2_1
+  ```
+
 ## Contributing
 
 If you have an idea for additional controls or just want to help maintain and extend this mod ([or others](https://github.com/topics/steampipe-mod)) we would love you to join the community and start contributing.
