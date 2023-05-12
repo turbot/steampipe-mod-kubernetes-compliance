@@ -2,4 +2,4 @@ To obtain the latest version of this guide, please visit http://www.cisecurity.o
 
 ## Overview
 
-CIS Kubernetes v1.20 benchmark provides prescriptive guidance for establishing a secure configuration posture for Kubernetes 1.19 - 1.20.
+CIS v1.7.0 benchmark provides prescriptive guidance for establishing a secure configuration posture for Kubernetes v1.25.
