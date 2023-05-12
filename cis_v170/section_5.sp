@@ -39,11 +39,26 @@ benchmark "cis_v170_5" {
 benchmark "cis_v170_5_1" {
   title = "5.1 RBAC and Service Accounts"
   children = [
+    control.cis_v170_5_1_3,
     control.cis_v170_5_1_6
   ]
 
   tags = merge(local.cis_v170_5_1_common_tags, {
     type = "Benchmark"
+  })
+}
+
+control "cis_v170_5_1_3" {
+  title         = "5.1.3 Minimize wildcard use in Roles and ClusterRoles"
+  description   = "The principle of least privilege recommends that users are provided only the access required for their role and nothing more. The use of wildcard rights grants is likely to provide excessive rights to the Kubernetes API."
+  query         = query.role_wildcards_used
+  documentation = file("./cis_v170/docs/cis_v170_5_1_3.md")
+
+  tags = merge(local.cis_v170_5_1_common_tags, {
+    cis_level   = "1"
+    cis_item_id = "5.1.3"
+    cis_type    = "manual"
+    service     = "Kubernetes/Role"
   })
 }
 
