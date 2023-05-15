@@ -2,8 +2,8 @@ select
   -- Required Columns
   uid as resource,
   case
-    when rule ->> 'apiGroups' like '%*%' 
-      or rule ->> 'resources' like '%*%' 
+    when rule ->> 'apiGroups' like '%*%'
+      or rule ->> 'resources' like '%*%'
       or rule ->> 'verbs' like '%*%' then 'alarm'
     else 'ok'
   end as status,
@@ -11,7 +11,7 @@ select
     when rule ->> 'apiGroups' like '%*%' then 'api groups uses wildcard.'
     when rule ->> 'resources' like '%*%' then 'resources uses wildcard.'
     when rule ->> 'verbs' like '%*%' then 'actions uses wildcard.'
-    else 'no wildcard.'
+    else 'no wildcard used.'
   end as reason,
   -- Additional Dimensions
   name as role_name,
@@ -19,7 +19,7 @@ select
 from
   kubernetes_cluster_role,
   jsonb_array_elements(rules) rule
-where 
+where
   name not like '%system%'
 group by
   uid,
