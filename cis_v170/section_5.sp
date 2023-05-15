@@ -9,10 +9,6 @@ locals {
     cis_section_id = "5.1"
   })
 
-  cis_v170_5_2_common_tags = merge(local.cis_v170_5_common_tags, {
-    cis_section_id = "5.2"
-  })
-
   cis_v170_5_3_common_tags = merge(local.cis_v170_5_common_tags, {
     cis_section_id = "5.3"
   })
