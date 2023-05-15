@@ -6,6 +6,7 @@ query "network_policy_default_dont_allow_ingress" {
         name,
         uid,
         context_name,
+        _ctx,
         tags,
         -- Get the count of default allow Ingress policy
         count(*) filter (where rule = '{}') as num_allow_all_rules
@@ -19,7 +20,8 @@ query "network_policy_default_dont_allow_ingress" {
         context_name,
         rule,
         policy_types,
-        tags
+        tags,
+        _ctx
     )
     select
       uid as resource,
@@ -48,6 +50,7 @@ query "network_policy_default_dont_allow_egress" {
         uid,
         context_name,
         tags,
+        _ctx,
         -- Get the count of default allow Egress policy
         count(*) filter (where rule = '{}') as num_allow_all_rules
       from
@@ -60,7 +63,8 @@ query "network_policy_default_dont_allow_egress" {
         context_name,
         rule,
         policy_types,
-        tags
+        tags,
+        _ctx
     )
     select
       uid as resource,
@@ -89,6 +93,7 @@ query "network_policy_default_deny_ingress" {
         ns.context_name,
         count(pol.*) as num_netpol,
         ns.tags,
+        ns._ctx,
         -- Get the count of default deny Ingress policy assoicated to each namespace
         COUNT(*) FILTER (where policy_types @> '["Ingress"]' and pod_selector = '{}' and ingress is null) AS num_default_deny
       from kubernetes_namespace as ns
@@ -97,7 +102,8 @@ query "network_policy_default_deny_ingress" {
         ns.name,
         ns.uid,
         ns.context_name,
-        ns.tags
+        ns.tags,
+        ns._ctx
     )
     select
       uid as resource,
@@ -120,6 +126,7 @@ query "network_policy_default_deny_egress" {
         ns.uid,
         ns.name as namespace,
         ns.context_name,
+        ns._ctx,
         count(pol.*) as num_netpol,
         ns.tags,
         -- Get the count of default deny Egress policy assoicated to each namespace
@@ -130,7 +137,8 @@ query "network_policy_default_deny_egress" {
         ns.name,
         ns.uid,
         ns.context_name,
-        ns.tags
+        ns.tags,
+        ns._ctx
     )
     select
       uid as resource,
