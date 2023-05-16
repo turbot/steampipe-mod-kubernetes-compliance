@@ -125,7 +125,6 @@ benchmark "cis_v170_5_7_2" {
     control.deployment_default_seccomp_profile_enabled,
     control.job_default_seccomp_profile_enabled,
     control.pod_default_seccomp_profile_enabled,
-    control.pod_security_policy_default_seccomp_profile_enabled,
     control.replicaset_default_seccomp_profile_enabled,
     control.replication_controller_default_seccomp_profile_enabled,
     control.statefulset_default_seccomp_profile_enabled
