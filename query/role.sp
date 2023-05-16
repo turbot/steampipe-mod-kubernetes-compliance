@@ -30,10 +30,10 @@ query "role_wildcards_used" {
         else 'ok'
       end as status,
       case
-        when rule ->> 'apiGroups' like '%*%' then name || 'api groups uses wildcard.'
-        when rule ->> 'resources' like '%*%' then name || 'resources uses wildcard.'
-        when rule ->> 'verbs' like '%*%' then name || 'actions uses wildcard.'
-        else name || 'uses no wildcards.'
+        when rule ->> 'apiGroups' like '%*%' then name || ' api groups uses wildcard.'
+        when rule ->> 'resources' like '%*%' then name || ' resources uses wildcard.'
+        when rule ->> 'verbs' like '%*%' then name || ' actions uses wildcard.'
+        else name || ' uses no wildcards.'
       end as reason,
       -- Additional Dimensions
       name as role_name
