@@ -22,7 +22,7 @@ variable "tag_dimensions" {
   description = "A list of tags to add as dimensions to each control."
   # A list of tag names to include as dimensions for resources that support
   # tags (e.g. "Owner", "Environment"). Default to empty since tag names are
-  # a personal choice - for commonly used tag names see
+  # a personal choice.
   default = []
 }
 
@@ -52,18 +52,16 @@ locals {
   tag_dimensions_qualifier_sql = <<-EOQ
   %{~for dim in var.tag_dimensions},  __QUALIFIER__tags ->> '${dim}' as "${replace(dim, "\"", "\"\"")}"%{endfor~}
   EOQ
-
 }
 
 locals {
-
+  
   # Local internal variable with the full SQL select clause for common
   # dimensions. Do not edit directly.
   common_dimensions_sql               = replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "")
   common_dimensions_namespace_sql     = replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "")
   common_dimensions_non_namespace_sql = replace(local.common_dimensions_non_namespace_qualifier_sql, "__QUALIFIER__", "")
   tag_dimensions_sql                  = replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "")
-
 }
 
 mod "kubernetes_compliance" {
