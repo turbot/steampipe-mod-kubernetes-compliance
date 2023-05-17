@@ -46,7 +46,7 @@ benchmark "cis_v170_5_1" {
 
 control "cis_v170_5_1_3" {
   title         = "5.1.3 Minimize wildcard use in Roles and ClusterRoles"
-  description   = "The principle of least privilege recommends that users are provided only the access required for their role and nothing more. The use of wildcard rights grants is likely to provide excessive rights to the Kubernetes API."
+  description   = "Kubernetes Roles and ClusterRoles provide access to resources based on sets of objects and actions that can be taken on those objects. It is possible to set either of these to be the wildcard \"*\" which matches all items. Use of wildcards is not optimal from a security perspective as it may allow for inadvertent access to be granted when new resources are added to the Kubernetes API either as CRDs or in later versions of the product."
   query         = query.role_with_wildcards_used
   documentation = file("./cis_v170/docs/cis_v170_5_1_3.md")
 
@@ -60,7 +60,7 @@ control "cis_v170_5_1_3" {
 
 control "cis_v170_5_1_6" {
   title         = "5.1.6 Ensure that Service Account Tokens are only mounted where necessary"
-  description   = "Mounting service account tokens inside pods can provide an avenue for privilege escalation attacks where an attacker is able to compromise a single pod in the cluster. Avoiding mounting these tokens removes this attack avenue."
+  description   = "Service accounts tokens should not be mounted in pods except where the workload running in the pod explicitly needs to communicate with the API server."
   query         = query.pod_service_account_token_disabled
   documentation = file("./cis_v170/docs/cis_v170_5_1_6.md")
 
@@ -85,7 +85,7 @@ benchmark "cis_v170_5_3" {
 
 benchmark "cis_v170_5_3_2" {
   title         = "5.3.2 Ensure that all Namespaces have Network Policies defined"
-  description   = "Administrators should use default policies to isolate traffic in your cluster network. Running different applications on the same Kubernetes cluster creates a risk of one compromised application attacking a neighboring application. Network segmentation is important to ensure that containers can communicate only with those they are supposed to. A network policy is a specification of how selections of pods are allowed to communicate with each other and other network endpoints."
+  description   = "Use network policies to isolate traffic in your cluster network."
   documentation = file("./cis_v170/docs/cis_v170_5_3_2.md")
   children = [
     control.network_policy_default_deny_egress,
@@ -103,8 +103,9 @@ benchmark "cis_v170_5_3_2" {
 }
 
 benchmark "cis_v170_5_7" {
-  title       = "5.7 General Policies"
-  description = "These policies relate to general cluster management topics, like namespace best practices and policies applied to pod objects in the cluster."
+  title         = "5.7 General Policies"
+  description   = "These policies relate to general cluster management topics, like namespace best practices and policies applied to pod objects in the cluster."
+  documentation = file("./cis_v170/docs/cis_v170_5_7.md")
   children = [
     benchmark.cis_v170_5_7_2,
     benchmark.cis_v170_5_7_4
@@ -117,7 +118,7 @@ benchmark "cis_v170_5_7" {
 
 benchmark "cis_v170_5_7_2" {
   title         = "5.7.2 Ensure that the seccomp profile is set to docker/default in your Pod definitions"
-  description   = "Seccomp (secure computing mode) is used to restrict the set of system calls applications can make, allowing cluster administrators greater control over the security of workloads running in the cluster. Kubernetes disables seccomp profiles by default for historical reasons. It should be enabled to ensure that the workloads have restricted actions available within the container."
+  description   = "Enable `docker/default` seccomp profile in your pod definitions."
   documentation = file("./cis_v170/docs/cis_v170_5_7_2.md")
   children = [
     control.cronjob_default_seccomp_profile_enabled,

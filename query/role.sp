@@ -21,7 +21,6 @@ query "role_default_namespace_used" {
 query "role_with_wildcards_used" {
   sql = <<-EOQ
     select
-      -- Required Columns
       uid as resource,
       case
         when rule ->> 'apiGroups' like '%*%'
@@ -35,7 +34,6 @@ query "role_with_wildcards_used" {
         when rule ->> 'verbs' like '%*%' then name || ' actions uses wildcard.'
         else name || ' uses no wildcard.'
       end as reason,
-      -- Additional Dimensions
       name as role_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_non_namespace_sql}
