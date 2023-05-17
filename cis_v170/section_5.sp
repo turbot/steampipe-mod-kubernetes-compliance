@@ -33,7 +33,9 @@ benchmark "cis_v170_5" {
 }
 
 benchmark "cis_v170_5_1" {
-  title = "5.1 RBAC and Service Accounts"
+  title         = "5.1 RBAC and Service Accounts"
+  description   = "This section contains recommendations for various Kubernetes RBAC policies which can also govern the behavior of software resources, that Kubernetes identifies as service accounts."
+  documentation = file("./cis_v170/docs/cis_v170_5_1.md")
   children = [
     control.cis_v170_5_1_3,
     control.cis_v170_5_1_6
@@ -73,7 +75,9 @@ control "cis_v170_5_1_6" {
 }
 
 benchmark "cis_v170_5_3" {
-  title = "5.3 Network Policies and CNI"
+  title         = "5.3 Network Policies and CNI"
+  description   = "This section contains recommendations for network policies and the Container Network Interface (CNI). It recommends implementing network policies ensuring that only authorized connections are allowed."
+  documentation = file("./cis_v170/docs/cis_v170_5_3.md")
   children = [
     benchmark.cis_v170_5_3_2
   ]
