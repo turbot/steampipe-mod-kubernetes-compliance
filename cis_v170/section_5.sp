@@ -47,7 +47,7 @@ benchmark "cis_v170_5_1" {
 control "cis_v170_5_1_3" {
   title         = "5.1.3 Minimize wildcard use in Roles and ClusterRoles"
   description   = "The principle of least privilege recommends that users are provided only the access required for their role and nothing more. The use of wildcard rights grants is likely to provide excessive rights to the Kubernetes API."
-  query         = query.role_wildcards_used
+  query         = query.role_with_wildcards_used
   documentation = file("./cis_v170/docs/cis_v170_5_1_3.md")
 
   tags = merge(local.cis_v170_5_1_common_tags, {
