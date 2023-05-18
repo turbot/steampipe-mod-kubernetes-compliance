@@ -1,3 +1,13 @@
+## v0.9 [2023-05-18]
+
+_What's new?_
+
+- Added CIS v1.7.0 for Kubernetes v1.25 benchmark (`steampipe check benchmark.cis_v170`). ([#35](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/35))
+
+_Bug fixes_
+
+- Fixed dashboard localhost URLs in README and index doc. ([#37](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/37))
+
 ## v0.8 [2023-04-13]
 
 _Bug fixes_
