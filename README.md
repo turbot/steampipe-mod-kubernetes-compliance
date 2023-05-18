@@ -12,7 +12,7 @@ Includes support for:
 
 * [v1.0 NSA and CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF)
 * [CIS Kubernetes v1.20](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls/benchmark.cis_kube_v120)
-* [CIS Kubernetes v1.7.0](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls/benchmark.cis_v170) 🚀 New!
+* [CIS v1.7.0](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls/benchmark.cis_v170) 🚀 New!
 
 ## Getting started
 
