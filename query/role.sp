@@ -29,9 +29,9 @@ query "role_with_wildcards_used" {
         else 'ok'
       end as status,
       case
-        when rule ->> 'apiGroups' like '%*%' then name || ' api groups uses wildcard.'
-        when rule ->> 'resources' like '%*%' then name || ' resources uses wildcard.'
-        when rule ->> 'verbs' like '%*%' then name || ' actions uses wildcard.'
+        when rule ->> 'apiGroups' like '%*%' then name || ' api groups use wildcards.'
+        when rule ->> 'resources' like '%*%' then name || ' resources use wildcards.'
+        when rule ->> 'verbs' like '%*%' then name || ' actions use wildcards.'
         else name || ' uses no wildcard.'
       end as reason,
       name as role_name
