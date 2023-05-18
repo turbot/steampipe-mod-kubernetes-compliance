@@ -1,8 +1,7 @@
 query "deployment_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
@@ -11,8 +10,9 @@ query "deployment_default_seccomp_profile_enabled" {
         when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then name || ' seccompProfile enabled.'
         else name || ' seccompProfile disabled.'
       end as reason,
-      -- Additional Dimensions
-      context_name
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -22,7 +22,7 @@ query "deployment_default_seccomp_profile_enabled" {
 query "deployment_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
         else 'ok'
@@ -33,7 +33,7 @@ query "deployment_hostipc_sharing_disabled" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment;
   EOQ
@@ -42,7 +42,7 @@ query "deployment_hostipc_sharing_disabled" {
 query "deployment_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -53,7 +53,7 @@ query "deployment_default_namespace_used" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment;
   EOQ
@@ -62,7 +62,7 @@ query "deployment_default_namespace_used" {
 query "deployment_hostpid_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostPID' = 'true' then 'alarm'
         else 'ok'
@@ -73,7 +73,7 @@ query "deployment_hostpid_sharing_disabled" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment;
   EOQ
@@ -82,7 +82,7 @@ query "deployment_hostpid_sharing_disabled" {
 query "deployment_replica_minimum_3" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when replicas < 3 then 'alarm'
         else 'ok'
@@ -90,7 +90,7 @@ query "deployment_replica_minimum_3" {
       name || ' has ' || replicas || ' replica.' as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment;
   EOQ
@@ -99,7 +99,7 @@ query "deployment_replica_minimum_3" {
 query "deployment_immutable_container_filesystem" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
         else 'alarm'
@@ -110,7 +110,7 @@ query "deployment_immutable_container_filesystem" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -120,7 +120,7 @@ query "deployment_immutable_container_filesystem" {
 query "deployment_cpu_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -131,7 +131,7 @@ query "deployment_cpu_request" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -141,7 +141,7 @@ query "deployment_cpu_request" {
 query "deployment_container_privilege_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
         else 'ok'
@@ -152,7 +152,7 @@ query "deployment_container_privilege_disabled" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -162,7 +162,7 @@ query "deployment_container_privilege_disabled" {
 query "deployment_memory_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -173,7 +173,7 @@ query "deployment_memory_request" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -183,7 +183,7 @@ query "deployment_memory_request" {
 query "deployment_cpu_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -194,7 +194,7 @@ query "deployment_cpu_limit" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -217,7 +217,7 @@ query "deployment_container_privilege_port_mapped" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c,
@@ -228,7 +228,7 @@ query "deployment_container_privilege_port_mapped" {
 query "deployment_container_liveness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'livenessProbe' is not null then 'ok'
         else 'alarm'
@@ -239,7 +239,7 @@ query "deployment_container_liveness_probe" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -249,7 +249,7 @@ query "deployment_container_liveness_probe" {
 query "deployment_memory_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -260,7 +260,7 @@ query "deployment_memory_limit" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -270,7 +270,7 @@ query "deployment_memory_limit" {
 query "deployment_host_network_access_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
         else 'ok'
@@ -281,7 +281,7 @@ query "deployment_host_network_access_disabled" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment;
   EOQ
@@ -290,7 +290,7 @@ query "deployment_host_network_access_disabled" {
 query "deployment_container_readiness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'readinessProbe' is not null then 'ok'
         else 'alarm'
@@ -301,7 +301,7 @@ query "deployment_container_readiness_probe" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -311,7 +311,7 @@ query "deployment_container_readiness_probe" {
 query "deployment_non_root_container" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
         else 'alarm'
@@ -322,7 +322,7 @@ query "deployment_non_root_container" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -332,7 +332,7 @@ query "deployment_non_root_container" {
 query "deployment_container_privilege_escalation_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then 'ok'
         else 'alarm'
@@ -343,7 +343,7 @@ query "deployment_container_privilege_escalation_disabled" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -353,7 +353,7 @@ query "deployment_container_privilege_escalation_disabled" {
 query "deployment_hostpid_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostPID' = 'true' or template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
         else 'ok'
@@ -365,7 +365,7 @@ query "deployment_hostpid_hostipc_sharing_disabled" {
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_deployment;
   EOQ

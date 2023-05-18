@@ -33,19 +33,32 @@ locals {
   # dimensions using a table name qualifier if required. Do not edit directly.
   common_dimensions_qualifier_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__namespace%{endif~}
+  EOQ
+
+  common_dimensions_qualifier_source_type_sql = <<-EOQ
+  %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__namespace%{endif~}
+  %{~if contains(var.common_dimensions, "source_type")}, __QUALIFIER__source_type%{endif~}
   EOQ
 
   common_dimensions_qualifier_namespace_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__name%{endif~}
   EOQ
 
   common_dimensions_non_namespace_qualifier_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  EOQ
+
+  common_dimensions_non_namespace_qualifier_source_type_sql = <<-EOQ
+  %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  %{~if contains(var.common_dimensions, "source_type")}, __QUALIFIER__source_type%{endif~}
   EOQ
 
   # Local internal variable to build the SQL select clause for tag
@@ -59,10 +72,12 @@ locals {
 
   # Local internal variable with the full SQL select clause for common
   # dimensions. Do not edit directly.
-  common_dimensions_sql               = replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "")
-  common_dimensions_namespace_sql     = replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "")
-  common_dimensions_non_namespace_sql = replace(local.common_dimensions_non_namespace_qualifier_sql, "__QUALIFIER__", "")
-  tag_dimensions_sql                  = replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "")
+  common_dimensions_sql                           = replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "")
+  common_dimensions_source_type_sql               = replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "")
+  common_dimensions_namespace_sql                 = replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "")
+  common_dimensions_non_namespace_sql             = replace(local.common_dimensions_non_namespace_qualifier_sql, "__QUALIFIER__", "")
+  common_dimensions_non_namespace_source_type_sql = replace(local.common_dimensions_non_namespace_qualifier_source_type_sql, "__QUALIFIER__", "")
+  tag_dimensions_sql                              = replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "")
 }
 
 mod "kubernetes_compliance" {
