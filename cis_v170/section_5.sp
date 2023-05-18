@@ -139,6 +139,7 @@ benchmark "cis_v170_5_7_2" {
     cis_level   = "2"
     cis_item_id = "5.7.2"
     cis_type    = "manual"
+    type        = "Benchmark"
   })
 }
 
