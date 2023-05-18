@@ -3,6 +3,8 @@
 _What's new?_
 
 - Added CIS v1.7.0 for Kubernetes v1.25 benchmark (`steampipe check benchmark.cis_v170`). ([#35](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/35))
+- Added `connection_name`, `context_name` and `namespace` in the common dimensions to group and filter findings. (see [var.common_dimensions](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/variables)) ([#34](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/34))
+- Added `tags` as dimensions to group and filter findings. (see [var.tag_dimensions](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/variables)) ([#34](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/34))
 
 _Bug fixes_
 
