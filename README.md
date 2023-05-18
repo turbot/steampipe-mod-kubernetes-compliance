@@ -11,7 +11,8 @@ Or in a terminal:
 Includes support for:
 
 * [v1.0 NSA and CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF)
-* [CIS Kubernetes Benchmarks](https://www.cisecurity.org)
+* [CIS Kubernetes v1.20](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls/benchmark.cis_kube_v120)
+* [CIS v1.7.0](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls/benchmark.cis_v170) 🚀 New!
 
 ## Getting started
 
@@ -46,7 +47,7 @@ steampipe dashboard
 ```
 
 By default, the dashboard interface will then be launched in a new browser
-window at https://localhost:9194. From here, you can run benchmarks by
+window at http://localhost:9194. From here, you can run benchmarks by
 selecting one or searching for a specific one.
 
 Instead of running benchmarks in a dashboard, you can also run them within your
@@ -80,6 +81,32 @@ This mod uses the credentials configured in the [Steampipe Kubernetes plugin](ht
 ### Configuration
 
 No extra configuration is required.
+
+### Common and Tag Dimensions
+
+The benchmark queries use common properties (like `connection_name`, `context_name` and `namespace`) and tags are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
+
+- Copy and rename the `steampipe.spvars.example` file to `steampipe.spvars`, and then modify the variable values inside that file
+
+- Pass in a value on the command line:
+
+  ```shell
+  steampipe check benchmark.cis_kube_v120 --var 'common_dimensions=["connection_name", "context_name", "namespace"]'
+  ```
+
+  ```shell
+  steampipe check benchmark.cis_kube_v120 --var 'tag_dimensions=["Environment", "Owner"]'
+  ```
+
+- Set an environment variable:
+
+  ```shell
+  SP_VAR_common_dimensions='["connection_name", "context_name", "namespace"]' steampipe check control.cis_kube_v120_v100_5_2_1
+  ```
+
+  ```shell
+  SP_VAR_tag_dimensions='["Environment", "Owner"]' steampipe check control.cis_kube_v120_v100_5_2_1
+  ```
 
 ## Contributing
 
