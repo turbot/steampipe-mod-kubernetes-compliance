@@ -304,7 +304,7 @@ query "pod_service_account_not_exist" {
       end as reason,
       p.name as pod_name
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "p.")}
-      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "p.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "p.")}
     from
       kubernetes_pod p
       left join kubernetes_service_account a on p.service_account_name = a.name;

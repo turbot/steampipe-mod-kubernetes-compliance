@@ -33,31 +33,31 @@ locals {
   # dimensions using a table name qualifier if required. Do not edit directly.
   common_dimensions_qualifier_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__context_name%{endif~}
   %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__namespace%{endif~}
   EOQ
 
   common_dimensions_qualifier_source_type_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, coalesce(__QUALIFIER__context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__namespace%{endif~}
   %{~if contains(var.common_dimensions, "source_type")}, __QUALIFIER__source_type%{endif~}
   EOQ
 
   common_dimensions_qualifier_namespace_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__context_name%{endif~}
   %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__name%{endif~}
   EOQ
 
   common_dimensions_non_namespace_qualifier_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__context_name%{endif~}
   EOQ
 
   common_dimensions_non_namespace_qualifier_source_type_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
-  %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__coalesce(p.context_name, '') as context_name%{endif~}
+  %{~if contains(var.common_dimensions, "context_name")}, coalesce(__QUALIFIER__context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "source_type")}, __QUALIFIER__source_type%{endif~}
   EOQ
 
