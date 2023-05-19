@@ -1,7 +1,7 @@
 query "role_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -12,7 +12,7 @@ query "role_default_namespace_used" {
       end as reason,
       name as role_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_role;
   EOQ
@@ -21,7 +21,7 @@ query "role_default_namespace_used" {
 query "role_with_wildcards_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when rule ->> 'apiGroups' like '%*%'
           or rule ->> 'resources' like '%*%'
@@ -36,7 +36,7 @@ query "role_with_wildcards_used" {
       end as reason,
       name as role_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_sql}
+      ${local.common_dimensions_non_namespace_source_type_sql}
     from
       kubernetes_cluster_role,
       jsonb_array_elements(rules) rule

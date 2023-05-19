@@ -14,7 +14,7 @@ variable "common_dimensions" {
   # - connection_name (_ctx ->> 'connection_name')
   # - context_name
   # - namespace
-  default = ["context_name", "namespace"]
+  default = ["context_name", "namespace", "source_type"]
 }
 
 variable "tag_dimensions" {
@@ -55,7 +55,7 @@ locals {
   %{~if contains(var.common_dimensions, "context_name")}, __QUALIFIER__context_name%{endif~}
   EOQ
 
-  common_dimensions_non_namespace_qualifier_source_type_sql = <<-EOQ
+  common_dimensions_non_namespace_source_type_qualifier_sql = <<-EOQ
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
   %{~if contains(var.common_dimensions, "context_name")}, coalesce(__QUALIFIER__context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "source_type")}, __QUALIFIER__source_type%{endif~}
@@ -76,7 +76,7 @@ locals {
   common_dimensions_source_type_sql               = replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "")
   common_dimensions_namespace_sql                 = replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "")
   common_dimensions_non_namespace_sql             = replace(local.common_dimensions_non_namespace_qualifier_sql, "__QUALIFIER__", "")
-  common_dimensions_non_namespace_source_type_sql = replace(local.common_dimensions_non_namespace_qualifier_source_type_sql, "__QUALIFIER__", "")
+  common_dimensions_non_namespace_source_type_sql = replace(local.common_dimensions_non_namespace_source_type_qualifier_sql, "__QUALIFIER__", "")
   tag_dimensions_sql                              = replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "")
 }
 
@@ -96,7 +96,7 @@ mod "kubernetes_compliance" {
   }
   requires {
     plugin "kubernetes" {
-      version = "0.4.0"
+      min_version = "0.4.0"
     }
   }
 }

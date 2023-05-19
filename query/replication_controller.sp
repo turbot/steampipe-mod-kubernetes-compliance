@@ -1,7 +1,7 @@
 query "replication_controller_container_readiness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'readinessProbe' is not null then 'ok'
         else 'alarm'
@@ -12,7 +12,7 @@ query "replication_controller_container_readiness_probe" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -22,7 +22,7 @@ query "replication_controller_container_readiness_probe" {
 query "replication_controller_host_network_access_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
         else 'ok'
@@ -33,7 +33,7 @@ query "replication_controller_host_network_access_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -42,7 +42,7 @@ query "replication_controller_host_network_access_disabled" {
 query "replication_controller_non_root_container" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
         else 'alarm'
@@ -53,7 +53,7 @@ query "replication_controller_non_root_container" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -63,7 +63,7 @@ query "replication_controller_non_root_container" {
 query "replication_controller_memory_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -74,7 +74,7 @@ query "replication_controller_memory_request" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -84,7 +84,7 @@ query "replication_controller_memory_request" {
 query "replication_controller_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -95,7 +95,7 @@ query "replication_controller_default_namespace_used" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -104,7 +104,7 @@ query "replication_controller_default_namespace_used" {
 query "replication_controller_cpu_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -115,7 +115,7 @@ query "replication_controller_cpu_request" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -125,7 +125,7 @@ query "replication_controller_cpu_request" {
 query "replication_controller_hostpid_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostPID' = 'true' or template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
         else 'ok'
@@ -137,7 +137,7 @@ query "replication_controller_hostpid_hostipc_sharing_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -146,7 +146,7 @@ query "replication_controller_hostpid_hostipc_sharing_disabled" {
 query "replication_controller_hostpid_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostPID' = 'true' then 'alarm'
         else 'ok'
@@ -157,7 +157,7 @@ query "replication_controller_hostpid_sharing_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -166,7 +166,7 @@ query "replication_controller_hostpid_sharing_disabled" {
 query "replication_controller_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
         else 'ok'
@@ -177,7 +177,7 @@ query "replication_controller_hostipc_sharing_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -199,7 +199,7 @@ query "replication_controller_container_privilege_port_mapped" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c,
@@ -210,7 +210,7 @@ query "replication_controller_container_privilege_port_mapped" {
 query "replication_controller_container_privilege_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
         else 'ok'
@@ -221,7 +221,7 @@ query "replication_controller_container_privilege_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -231,7 +231,7 @@ query "replication_controller_container_privilege_disabled" {
 query "replication_controller_container_liveness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'livenessProbe' is not null then 'ok'
         else 'alarm'
@@ -242,7 +242,7 @@ query "replication_controller_container_liveness_probe" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -252,7 +252,7 @@ query "replication_controller_container_liveness_probe" {
 query "replication_controller_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
@@ -263,7 +263,7 @@ query "replication_controller_default_seccomp_profile_enabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -273,7 +273,7 @@ query "replication_controller_default_seccomp_profile_enabled" {
 query "replication_controller_container_privilege_escalation_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then 'ok'
         else 'alarm'
@@ -284,7 +284,7 @@ query "replication_controller_container_privilege_escalation_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -294,7 +294,7 @@ query "replication_controller_container_privilege_escalation_disabled" {
 query "replication_controller_cpu_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -305,7 +305,7 @@ query "replication_controller_cpu_limit" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -315,7 +315,7 @@ query "replication_controller_cpu_limit" {
 query "replication_controller_immutable_container_filesystem" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
         else 'alarm'
@@ -326,7 +326,7 @@ query "replication_controller_immutable_container_filesystem" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -336,7 +336,7 @@ query "replication_controller_immutable_container_filesystem" {
 query "replication_controller_memory_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -347,7 +347,7 @@ query "replication_controller_memory_limit" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;

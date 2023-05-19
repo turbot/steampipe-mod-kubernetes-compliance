@@ -1,7 +1,7 @@
 query "statefulset_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
@@ -12,7 +12,7 @@ query "statefulset_default_seccomp_profile_enabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -22,7 +22,7 @@ query "statefulset_default_seccomp_profile_enabled" {
 query "statefulset_non_root_container" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
         else 'alarm'
@@ -33,7 +33,7 @@ query "statefulset_non_root_container" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -43,7 +43,7 @@ query "statefulset_non_root_container" {
 query "statefulset_memory_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -54,7 +54,7 @@ query "statefulset_memory_limit" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -64,7 +64,7 @@ query "statefulset_memory_limit" {
 query "statefulset_immutable_container_filesystem" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
         else 'alarm'
@@ -75,7 +75,7 @@ query "statefulset_immutable_container_filesystem" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -85,7 +85,7 @@ query "statefulset_immutable_container_filesystem" {
 query "statefulset_host_network_access_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
         else 'ok'
@@ -96,7 +96,7 @@ query "statefulset_host_network_access_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set;
   EOQ
@@ -105,7 +105,7 @@ query "statefulset_host_network_access_disabled" {
 query "statefulset_container_privilege_escalation_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then 'ok'
         else 'alarm'
@@ -116,7 +116,7 @@ query "statefulset_container_privilege_escalation_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -126,7 +126,7 @@ query "statefulset_container_privilege_escalation_disabled" {
 query "statefulset_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -137,7 +137,7 @@ query "statefulset_default_namespace_used" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set;
   EOQ
@@ -146,7 +146,7 @@ query "statefulset_default_namespace_used" {
 query "statefulset_cpu_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -157,7 +157,7 @@ query "statefulset_cpu_request" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
 
     from
       kubernetes_stateful_set,
@@ -168,7 +168,7 @@ query "statefulset_cpu_request" {
 query "statefulset_memory_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -179,7 +179,7 @@ query "statefulset_memory_request" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -189,7 +189,7 @@ query "statefulset_memory_request" {
 query "statefulset_container_liveness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'livenessProbe' is not null then 'ok'
         else 'alarm'
@@ -200,7 +200,7 @@ query "statefulset_container_liveness_probe" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -210,7 +210,7 @@ query "statefulset_container_liveness_probe" {
 query "statefulset_container_readiness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'readinessProbe' is not null then 'ok'
         else 'alarm'
@@ -221,7 +221,7 @@ query "statefulset_container_readiness_probe" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -231,7 +231,7 @@ query "statefulset_container_readiness_probe" {
 query "statefulset_cpu_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -242,7 +242,7 @@ query "statefulset_cpu_limit" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -265,7 +265,7 @@ query "statefulset_container_privilege_port_mapped" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c,
@@ -276,7 +276,7 @@ query "statefulset_container_privilege_port_mapped" {
 query "statefulset_hostpid_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostPID' = 'true' or template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
         else 'ok'
@@ -288,7 +288,7 @@ query "statefulset_hostpid_hostipc_sharing_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set;
   EOQ
@@ -297,7 +297,7 @@ query "statefulset_hostpid_hostipc_sharing_disabled" {
 query "statefulset_container_privilege_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
         else 'ok'
@@ -308,7 +308,7 @@ query "statefulset_container_privilege_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;

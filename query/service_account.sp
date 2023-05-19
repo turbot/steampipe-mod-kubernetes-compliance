@@ -12,7 +12,7 @@ query "service_account_token_disabled" {
       end as reason,
       name as service_account_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_service_account;
   EOQ
@@ -21,7 +21,7 @@ query "service_account_token_disabled" {
 query "service_account_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -32,7 +32,7 @@ query "service_account_default_namespace_used" {
       end as reason,
       name as service_account_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_service_account;
   EOQ

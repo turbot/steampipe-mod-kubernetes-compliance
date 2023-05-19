@@ -1,7 +1,7 @@
 query "config_map_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -11,7 +11,7 @@ query "config_map_default_namespace_used" {
         else name || ' not using the default namespace.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_config_map;
   EOQ
