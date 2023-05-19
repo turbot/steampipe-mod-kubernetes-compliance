@@ -1,7 +1,7 @@
 query "endpoint_api_serve_on_secure_port" {
   sql = <<-EOQ
     select
-      split_part(context_name,'_',4) as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when p ->> 'name' = 'https' and (p ->> 'port' = '443' or p ->> 'port' = '6443') then 'ok'
         else 'alarm'
@@ -12,7 +12,7 @@ query "endpoint_api_serve_on_secure_port" {
       end as reason,
       name as endpoint_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       kubernetes_endpoint,
       jsonb_array_elements(subsets) as s,
