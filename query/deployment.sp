@@ -204,7 +204,10 @@ query "deployment_cpu_limit" {
 query "deployment_container_privilege_port_mapped" {
   sql = <<-EOQ
     select
-      c ->> 'name' as resource,
+      case
+        when source_type = 'deployed' then c ->> 'name'
+        else concat(path, ':', start_line)
+      end as resource,
       case
         when p ->> 'name' is null then 'skip'
         when cast(p ->> 'containerPort' as integer) <= 1024 then 'alarm'
