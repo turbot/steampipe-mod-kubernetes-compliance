@@ -14,6 +14,7 @@ variable "common_dimensions" {
   # - connection_name (_ctx ->> 'connection_name')
   # - context_name
   # - namespace
+  # - source_type
   default = ["context_name", "namespace", "source_type"]
 }
 
