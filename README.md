@@ -91,7 +91,7 @@ The benchmark queries use common properties (like `connection_name`, `context_na
 - Pass in a value on the command line:
 
   ```shell
-  steampipe check benchmark.cis_kube_v120 --var 'common_dimensions=["connection_name", "context_name", "namespace"]'
+  steampipe check benchmark.cis_kube_v120 --var 'common_dimensions=["connection_name", "context_name", "namespace", "source_type"]'
   ```
 
   ```shell
@@ -101,7 +101,7 @@ The benchmark queries use common properties (like `connection_name`, `context_na
 - Set an environment variable:
 
   ```shell
-  SP_VAR_common_dimensions='["connection_name", "context_name", "namespace"]' steampipe check control.cis_kube_v120_v100_5_2_1
+  SP_VAR_common_dimensions='["connection_name", "context_name", "namespace", "source_type"]' steampipe check control.cis_kube_v120_v100_5_2_1
   ```
 
   ```shell
