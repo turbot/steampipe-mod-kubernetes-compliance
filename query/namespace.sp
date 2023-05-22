@@ -10,7 +10,7 @@ query "namespace_limit_range_default_memory_limit" {
         jsonb_array_elements(spec_limits) as l
     )
     select
-      n.uid as resource,
+      coalesce(n.uid, concat(n.path, ':', n.start_line)) as resource,
       case
         when default_limit ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -20,7 +20,7 @@ query "namespace_limit_range_default_memory_limit" {
         else n.name || ' has LimitRange default memory limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -31,7 +31,7 @@ query "namespace_limit_range_default_memory_limit" {
 query "namespace_resource_quota_memory_limit" {
   sql = <<-EOQ
     select
-      distinct(n.uid) as resource,
+      distinct(coalesce(n.uid, concat(n.path, ':', n.start_line))) as resource,
       case
         when q.spec_hard -> 'limits.memory' is null then 'alarm'
         else 'ok'
@@ -41,7 +41,7 @@ query "namespace_resource_quota_memory_limit" {
         else n.name || ' have ResourceQuota for memory limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q
@@ -52,7 +52,7 @@ query "namespace_resource_quota_memory_limit" {
 query "namespace_resource_quota_cpu_limit" {
   sql = <<-EOQ
     select
-      distinct(n.uid) as resource,
+      distinct(coalesce(n.uid, concat(n.path, ':', n.start_line))) as resource,
       case
         when q.spec_hard -> 'limits.cpu' is null then 'alarm'
         else 'ok'
@@ -62,7 +62,7 @@ query "namespace_resource_quota_cpu_limit" {
         else n.name || ' have ResourceQuota for CPU limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q
@@ -82,7 +82,7 @@ query "namespace_limit_range_default_memory_request" {
         jsonb_array_elements(spec_limits) as l
     )
     select
-      n.uid as resource,
+      coalesce(n.uid, concat(n.path, ':', n.start_line)) as resource,
       case
         when default_request ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -92,7 +92,7 @@ query "namespace_limit_range_default_memory_request" {
         else n.name || ' has LimitRange default memory request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -107,12 +107,12 @@ query "namespace_limit_range_default_cpu_request" {
         namespace,
         l -> 'default' as default_limit,
         l -> 'defaultRequest' as default_request
-        from
+      from
         kubernetes_limit_range,
         jsonb_array_elements(spec_limits) as l
     )
     select
-      n.uid as resource,
+      coalesce(n.uid, concat(n.path, ':', n.start_line)) as resource,
       case
         when default_request ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -122,7 +122,7 @@ query "namespace_limit_range_default_cpu_request" {
         else n.name || ' has LimitRange default CPU request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -133,7 +133,7 @@ query "namespace_limit_range_default_cpu_request" {
 query "namespace_resource_quota_memory_request" {
   sql = <<-EOQ
     select
-      distinct(n.uid) as resource,
+      distinct(coalesce(n.uid, concat(n.path, ':', n.start_line))) as resource,
       case
         when q.spec_hard -> 'requests.memory' is null and q.spec_hard -> 'memory' is null then 'alarm'
         else 'ok'
@@ -143,7 +143,7 @@ query "namespace_resource_quota_memory_request" {
         else n.name || ' have ResourceQuota for memory request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q
@@ -163,7 +163,7 @@ query "namespace_limit_range_default_cpu_limit" {
         jsonb_array_elements(spec_limits) as l
     )
     select
-      n.uid as resource,
+      coalesce(n.uid, concat(n.path, ':', n.start_line)) as resource,
       case
         when default_limit ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -173,7 +173,7 @@ query "namespace_limit_range_default_cpu_limit" {
         else n.name || ' has LimitRange default CPU limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -184,7 +184,7 @@ query "namespace_limit_range_default_cpu_limit" {
 query "namespace_resource_quota_cpu_request" {
   sql = <<-EOQ
     select
-      distinct(n.uid) as resource,
+      distinct(coalesce(n.uid, concat(n.path, ':', n.start_line))) as resource,
       case
         when q.spec_hard -> 'requests.cpu' is null and q.spec_hard -> 'cpu' is null then 'alarm'
         else 'ok'
@@ -194,7 +194,7 @@ query "namespace_resource_quota_cpu_request" {
         else n.name || ' have ResourceQuota for CPU request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_namespace_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q

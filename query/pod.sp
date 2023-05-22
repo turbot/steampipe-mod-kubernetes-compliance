@@ -235,7 +235,7 @@ query "pod_hostpid_sharing_disabled" {
 query "pod_volume_host_path" {
   sql = <<-EOQ
     select
-      distinct(name) as resource,
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
         when v -> 'hostPath' -> 'path' is null then 'ok'
         else 'alarm'
