@@ -17,4 +17,3 @@ query "ingress_default_namespace_used" {
       kubernetes_ingress;
   EOQ
 }
-

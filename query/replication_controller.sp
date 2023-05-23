@@ -255,7 +255,7 @@ query "replication_controller_container_liveness_probe" {
 query "replication_controller_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
         when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
