@@ -59,7 +59,7 @@ Run all benchmarks:
 steampipe check all
 ```
 
-Run an single benchmark:
+Run a single benchmark::
 
 ```sh
 steampipe check benchmark.nsa_cisa_v1_network_hardening_cpu_limit

@@ -110,7 +110,7 @@ query "network_policy_default_deny_ingress" {
         pol.start_line,
         pol.source_type,
         -- Get the count of default deny Ingress policy assoicated to each namespace
-        COUNT(*) FILTER (where policy_types @> '["Ingress"]' and pod_selector = '{}' and ingress is null) AS num_default_deny
+        count(*) filter (where policy_types @> '["Ingress"]' and pod_selector = '{}' and ingress is null) AS num_default_deny
       from kubernetes_namespace as ns
       left join kubernetes_network_policy as pol on pol.namespace = ns.name
       group by
