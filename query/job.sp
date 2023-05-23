@@ -194,7 +194,7 @@ query "job_container_readiness_probe" {
 query "job_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
         when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
