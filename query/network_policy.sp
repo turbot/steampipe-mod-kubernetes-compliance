@@ -131,7 +131,7 @@ query "network_policy_default_deny_ingress" {
       end as status,
       namespace || ' has ' || num_default_deny || ' default deny ingress policies.' as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
+      ${local.common_dimensions_source_type_sql}
     from
       default_deny_ingress_count;
   EOQ
