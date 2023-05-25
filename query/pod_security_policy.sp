@@ -11,7 +11,7 @@ query "pod_security_policy_host_network_access_disabled" {
         else 'Pod security policy ' || name || ' pods cannot use the host network.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -30,7 +30,7 @@ query "pod_security_policy_allowed_host_path" {
         else 'Pod security policy ' || name || ' containers using specified host path.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -49,7 +49,7 @@ query "pod_security_policy_container_privilege_escalation_disabled" {
         else 'Pod security policy ' || name || ' pods can request to allow privilege escalation.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -68,7 +68,7 @@ query "pod_security_policy_non_root_container" {
         else 'Pod security policy ' || name || ' does not restrict containers to run as non-root user.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -88,7 +88,7 @@ query "pod_security_policy_hostpid_hostipc_sharing_disabled" {
         else 'Pod security policy ' || name || ' pods cannot share host process namespaces.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -107,7 +107,7 @@ query "pod_security_policy_immutable_container_filesystem" {
         else 'Pod security policy ' || name || ' containers not running with read only root file system.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -126,7 +126,7 @@ query "pod_security_policy_container_privilege_disabled" {
         else 'Pod security policy ' || name || ' pods can not run privileged containers.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -145,7 +145,7 @@ query "pod_security_policy_hostipc_sharing_disabled" {
         else 'Pod security policy ' || name || ' pods cannot share host IPC namespaces.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -164,7 +164,7 @@ query "pod_security_policy_hostpid_sharing_disabled" {
         else 'Pod security policy ' || name || ' pods cannot share host PID namespaces.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -187,7 +187,7 @@ query "pod_security_policy_security_services_hardening" {
         else 'Pod security policy ' || name || ' not using securty services.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ
@@ -206,7 +206,7 @@ query "pod_security_policy_default_seccomp_profile_enabled" {
         else name || ' seccompProfile disabled.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_pod_security_policy;
   EOQ

@@ -84,7 +84,7 @@ No extra configuration is required.
 
 ### Common and Tag Dimensions
 
-The benchmark queries use common properties (like `connection_name`, `context_name` and `namespace`) and tags are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
+The benchmark queries use common properties (like `connection_name`, `context_name`, `namespace` and `source_type`) and tags are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
 
 - Copy and rename the `steampipe.spvars.example` file to `steampipe.spvars`, and then modify the variable values inside that file
 

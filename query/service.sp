@@ -11,7 +11,7 @@ query "service_default_namespace_used" {
         else name || ' not using the default namespace.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_service;
   EOQ
@@ -30,7 +30,7 @@ query "service_type_forbidden" {
         else 'Containers using ' || name || ' service not exposed through a forbidden service type.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_service;
   EOQ

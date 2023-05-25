@@ -12,7 +12,7 @@ query "endpoint_api_serve_on_secure_port" {
       end as reason,
       name as endpoint_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_endpoint,
       jsonb_array_elements(subsets) as s,

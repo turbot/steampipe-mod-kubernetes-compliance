@@ -20,7 +20,7 @@ query "namespace_limit_range_default_memory_limit" {
         else n.name || ' has LimitRange default memory limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -41,7 +41,7 @@ query "namespace_resource_quota_memory_limit" {
         else n.name || ' have ResourceQuota for memory limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q
@@ -62,7 +62,7 @@ query "namespace_resource_quota_cpu_limit" {
         else n.name || ' have ResourceQuota for CPU limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q
@@ -92,7 +92,7 @@ query "namespace_limit_range_default_memory_request" {
         else n.name || ' has LimitRange default memory request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -122,7 +122,7 @@ query "namespace_limit_range_default_cpu_request" {
         else n.name || ' has LimitRange default CPU request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -143,7 +143,7 @@ query "namespace_resource_quota_memory_request" {
         else n.name || ' have ResourceQuota for memory request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q
@@ -173,7 +173,7 @@ query "namespace_limit_range_default_cpu_limit" {
         else n.name || ' has LimitRange default CPU limit.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join default_limit_range r
@@ -194,7 +194,7 @@ query "namespace_resource_quota_cpu_request" {
         else n.name || ' have ResourceQuota for CPU request.'
       end as reason
       ${replace(local.tag_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
-      ${replace(local.common_dimensions_qualifier_source_type_sql, "__QUALIFIER__", "n.")}
+      ${replace(local.common_dimensions_qualifier_sql, "__QUALIFIER__", "n.")}
     from
       kubernetes_namespace n
       left join kubernetes_resource_quota q

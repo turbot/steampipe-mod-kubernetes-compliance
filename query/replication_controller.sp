@@ -12,7 +12,7 @@ query "replication_controller_container_readiness_probe" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -33,7 +33,7 @@ query "replication_controller_host_network_access_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -53,7 +53,7 @@ query "replication_controller_non_root_container" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -74,7 +74,7 @@ query "replication_controller_memory_request" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -95,7 +95,7 @@ query "replication_controller_default_namespace_used" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -115,7 +115,7 @@ query "replication_controller_cpu_request" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -137,7 +137,7 @@ query "replication_controller_hostpid_hostipc_sharing_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -157,7 +157,7 @@ query "replication_controller_hostpid_sharing_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -177,7 +177,7 @@ query "replication_controller_hostipc_sharing_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller;
   EOQ
@@ -202,7 +202,7 @@ query "replication_controller_container_privilege_port_mapped" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c,
@@ -224,7 +224,7 @@ query "replication_controller_container_privilege_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -245,7 +245,7 @@ query "replication_controller_container_liveness_probe" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -266,7 +266,7 @@ query "replication_controller_default_seccomp_profile_enabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -287,7 +287,7 @@ query "replication_controller_container_privilege_escalation_disabled" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -308,7 +308,7 @@ query "replication_controller_cpu_limit" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -329,7 +329,7 @@ query "replication_controller_immutable_container_filesystem" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -350,7 +350,7 @@ query "replication_controller_memory_limit" {
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replication_controller,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;

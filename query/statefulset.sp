@@ -12,7 +12,7 @@ query "statefulset_default_seccomp_profile_enabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -33,7 +33,7 @@ query "statefulset_non_root_container" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -54,7 +54,7 @@ query "statefulset_memory_limit" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -75,7 +75,7 @@ query "statefulset_immutable_container_filesystem" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -96,7 +96,7 @@ query "statefulset_host_network_access_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set;
   EOQ
@@ -116,7 +116,7 @@ query "statefulset_container_privilege_escalation_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -137,7 +137,7 @@ query "statefulset_default_namespace_used" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set;
   EOQ
@@ -157,7 +157,7 @@ query "statefulset_cpu_request" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
 
     from
       kubernetes_stateful_set,
@@ -179,7 +179,7 @@ query "statefulset_memory_request" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -200,7 +200,7 @@ query "statefulset_container_liveness_probe" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -221,7 +221,7 @@ query "statefulset_container_readiness_probe" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -242,7 +242,7 @@ query "statefulset_cpu_limit" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -268,7 +268,7 @@ query "statefulset_container_privilege_port_mapped" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c,
@@ -291,7 +291,7 @@ query "statefulset_hostpid_hostipc_sharing_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set;
   EOQ
@@ -311,7 +311,7 @@ query "statefulset_container_privilege_disabled" {
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;

@@ -41,7 +41,7 @@ query "network_policy_default_dont_allow_ingress" {
       end as reason,
       name as network_policy_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       default_allows_all_ingress_count p;
   EOQ
@@ -90,7 +90,7 @@ query "network_policy_default_dont_allow_egress" {
       end as reason,
       name as network_policy_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       default_allows_all_egress_count;
   EOQ
@@ -131,7 +131,7 @@ query "network_policy_default_deny_ingress" {
       end as status,
       namespace || ' has ' || num_default_deny || ' default deny ingress policies.' as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       default_deny_ingress_count;
   EOQ
@@ -172,7 +172,7 @@ query "network_policy_default_deny_egress" {
       end as status,
       namespace || ' has ' || num_default_deny || ' default deny egress policies.' as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       default_deny_egress_count;
   EOQ

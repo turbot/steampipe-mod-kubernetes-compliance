@@ -12,7 +12,7 @@ query "role_default_namespace_used" {
       end as reason,
       name as role_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_role;
   EOQ
@@ -36,7 +36,7 @@ query "role_with_wildcards_used" {
       end as reason,
       name as role_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_non_namespace_source_type_sql}
+      ${local.common_dimensions_non_namespace_sql}
     from
       kubernetes_cluster_role,
       jsonb_array_elements(rules) rule

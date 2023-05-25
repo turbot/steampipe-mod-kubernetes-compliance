@@ -12,7 +12,7 @@ query "cronjob_cpu_limit" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -38,7 +38,7 @@ query "cronjob_container_privilege_port_mapped" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c,
@@ -60,7 +60,7 @@ query "cronjob_container_privilege_disabled" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -81,7 +81,7 @@ query "cronjob_memory_request" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -102,7 +102,7 @@ query "cronjob_immutable_container_filesystem" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -123,7 +123,7 @@ query "cronjob_host_network_access_disabled" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob;
   EOQ
@@ -143,7 +143,7 @@ query "cronjob_memory_limit" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -164,7 +164,7 @@ query "cronjob_container_readiness_probe" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -185,7 +185,7 @@ query "cronjob_container_privilege_escalation_disabled" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -206,7 +206,7 @@ query "cronjob_cpu_request" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -227,7 +227,7 @@ query "cronjob_container_liveness_probe" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -248,7 +248,7 @@ query "cronjob_non_root_container" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -269,7 +269,7 @@ query "cronjob_default_seccomp_profile_enabled" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -292,7 +292,7 @@ query "cronjob_hostpid_hostipc_sharing_disabled" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob;
   EOQ
@@ -312,7 +312,7 @@ query "cronjob_default_namespace_used" {
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob;
   EOQ

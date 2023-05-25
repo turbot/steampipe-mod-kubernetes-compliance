@@ -11,7 +11,7 @@ query "config_map_default_namespace_used" {
         else name || ' not using the default namespace.'
       end as reason
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_config_map;
   EOQ

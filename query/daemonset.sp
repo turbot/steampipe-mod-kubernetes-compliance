@@ -12,7 +12,7 @@ query "daemonset_cpu_request" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -33,7 +33,7 @@ query "daemonset_container_readiness_probe" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -54,7 +54,7 @@ query "daemonset_memory_limit" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -75,7 +75,7 @@ query "daemonset_immutable_container_filesystem" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -96,7 +96,7 @@ query "daemonset_container_liveness_probe" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -122,7 +122,7 @@ query "daemonset_container_privilege_port_mapped" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c,
@@ -144,7 +144,7 @@ query "daemonset_host_network_access_disabled" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset;
   EOQ
@@ -165,7 +165,7 @@ query "daemonset_hostpid_hostipc_sharing_disabled" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset;
   EOQ
@@ -185,7 +185,7 @@ query "daemonset_memory_request" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -206,7 +206,7 @@ query "daemonset_default_seccomp_profile_enabled" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -227,7 +227,7 @@ query "daemonset_cpu_limit" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -248,7 +248,7 @@ query "daemonset_hostpid_sharing_disabled" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset;
   EOQ
@@ -268,7 +268,7 @@ query "daemonset_hostipc_sharing_disabled" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset;
   EOQ
@@ -288,7 +288,7 @@ query "daemonset_container_privilege_escalation_disabled" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -309,7 +309,7 @@ query "daemonset_non_root_container" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -330,7 +330,7 @@ query "daemonset_container_privilege_disabled" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -351,7 +351,7 @@ query "daemonset_default_namespace_used" {
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
-      ${local.common_dimensions_source_type_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset;
   EOQ
