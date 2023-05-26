@@ -106,22 +106,22 @@ query "network_policy_default_deny_ingress" {
         count(pol.*) as num_netpol,
         ns.tags,
         ns._ctx,
-        pol.path,
-        pol.start_line,
-        pol.source_type,
+        ns.path,
+        ns.start_line,
+        ns.source_type,
         -- Get the count of default deny Ingress policy assoicated to each namespace
         count(*) filter (where policy_types @> '["Ingress"]' and pod_selector = '{}' and ingress is null) AS num_default_deny
       from kubernetes_namespace as ns
-      left join kubernetes_network_policy as pol on pol.namespace = ns.name
+      left join kubernetes_network_policy as pol on pol.namespace = ns.name and pol.source_type = ns.source_type
       group by
         ns.name,
         ns.uid,
         ns.context_name,
         ns.tags,
         ns._ctx,
-        pol.path,
-        pol.start_line,
-        pol.source_type
+        ns.path,
+        ns.start_line,
+        ns.source_type
     )
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -147,22 +147,22 @@ query "network_policy_default_deny_egress" {
         ns._ctx,
         count(pol.*) as num_netpol,
         ns.tags,
-        pol.path,
-        pol.start_line,
-        pol.source_type,
+        ns.path,
+        ns.start_line,
+        ns.source_type,
         -- Get the count of default deny Egress policy assoicated to each namespace
         COUNT(*) FILTER (where policy_types @> '["Egress"]' and pod_selector = '{}' and egress is null) AS num_default_deny
       from kubernetes_namespace as ns
-      left join kubernetes_network_policy as pol on pol.namespace = ns.name
+      left join kubernetes_network_policy as pol on pol.namespace = ns.name and pol.source_type = ns.source_type
       group by
         ns.name,
         ns.uid,
         ns.context_name,
         ns.tags,
         ns._ctx,
-        pol.path,
-        pol.start_line,
-        pol.source_type
+        ns.path,
+        ns.start_line,
+        ns.source_type
     )
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
