@@ -49,6 +49,7 @@ query "role_with_wildcards_used" {
       role_name,
       path,
       start_line,
+      end_line,
       source_type,
       context_name;
   EOQ

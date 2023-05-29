@@ -10,6 +10,7 @@ query "network_policy_default_dont_allow_ingress" {
         tags,
         p.path,
         p.start_line,
+        p.end_line,
         p.source_type,
         -- Get the count of default allow Ingress policy
         count(*) filter (where rule = '{}') as num_allow_all_rules
@@ -27,6 +28,7 @@ query "network_policy_default_dont_allow_ingress" {
         _ctx,
         p.path,
         p.start_line,
+        p.end_line,
         p.source_type
     )
     select
@@ -59,6 +61,7 @@ query "network_policy_default_dont_allow_egress" {
         _ctx,
         p.path,
         p.start_line,
+        p.end_line,
         p.source_type,
         -- Get the count of default allow Egress policy
         count(*) filter (where rule = '{}') as num_allow_all_rules
@@ -76,6 +79,7 @@ query "network_policy_default_dont_allow_egress" {
         _ctx,
         p.path,
         p.start_line,
+        p.end_line,
         p.source_type
     )
     select
@@ -108,6 +112,7 @@ query "network_policy_default_deny_ingress" {
         ns._ctx,
         ns.path,
         ns.start_line,
+        ns.end_line,
         ns.source_type,
         -- Get the count of default deny Ingress policy assoicated to each namespace
         count(*) filter (where policy_types @> '["Ingress"]' and pod_selector = '{}' and ingress is null) AS num_default_deny
@@ -121,6 +126,7 @@ query "network_policy_default_deny_ingress" {
         ns._ctx,
         ns.path,
         ns.start_line,
+        ns.end_line,
         ns.source_type
     )
     select
@@ -149,6 +155,7 @@ query "network_policy_default_deny_egress" {
         ns.tags,
         ns.path,
         ns.start_line,
+        ns.end_line,
         ns.source_type,
         -- Get the count of default deny Egress policy assoicated to each namespace
         COUNT(*) FILTER (where policy_types @> '["Egress"]' and pod_selector = '{}' and egress is null) AS num_default_deny
@@ -162,6 +169,7 @@ query "network_policy_default_deny_egress" {
         ns._ctx,
         ns.path,
         ns.start_line,
+        ns.end_line,
         ns.source_type
     )
     select

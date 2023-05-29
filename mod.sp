@@ -33,6 +33,9 @@ locals {
   # Local internal variable to build the SQL select clause for common
   # dimensions using a table name qualifier if required. Do not edit directly.
   common_dimensions_qualifier_sql = <<-EOQ
+  %{~if contains(var.common_dimensions, "path")}, coalesce(__QUALIFIER__path, '') as path%{endif~}
+  %{~if contains(var.common_dimensions, "start_line")}, __QUALIFIER__start_line%{endif~}
+  %{~if contains(var.common_dimensions, "end_line")}, __QUALIFIER__end_line%{endif~}
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
   %{~if contains(var.common_dimensions, "context_name")}, coalesce(__QUALIFIER__context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__namespace%{endif~}
@@ -40,6 +43,9 @@ locals {
   EOQ
 
   common_dimensions_qualifier_namespace_sql = <<-EOQ
+  %{~if contains(var.common_dimensions, "path")}, coalesce(__QUALIFIER__path, '') as path%{endif~}
+  %{~if contains(var.common_dimensions, "start_line")}, __QUALIFIER__start_line%{endif~}
+  %{~if contains(var.common_dimensions, "end_line")}, __QUALIFIER__end_line%{endif~}
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
   %{~if contains(var.common_dimensions, "context_name")}, coalesce(__QUALIFIER__context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "namespace")}, __QUALIFIER__name%{endif~}
@@ -47,6 +53,9 @@ locals {
   EOQ
 
   common_dimensions_non_namespace_qualifier_sql = <<-EOQ
+  %{~if contains(var.common_dimensions, "path")}, coalesce(__QUALIFIER__path, '') as path%{endif~}
+  %{~if contains(var.common_dimensions, "start_line")}, __QUALIFIER__start_line%{endif~}
+  %{~if contains(var.common_dimensions, "end_line")}, __QUALIFIER__end_line%{endif~}
   %{~if contains(var.common_dimensions, "connection_name")}, __QUALIFIER___ctx ->> 'connection_name' as connection_name%{endif~}
   %{~if contains(var.common_dimensions, "context_name")}, coalesce(__QUALIFIER__context_name, '') as context_name%{endif~}
   %{~if contains(var.common_dimensions, "source_type")}, __QUALIFIER__source_type%{endif~}
