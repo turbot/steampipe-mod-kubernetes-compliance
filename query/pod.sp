@@ -276,7 +276,7 @@ query "pod_hostipc_sharing_disabled" {
 query "pod_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when security_context -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
