@@ -1,7 +1,7 @@
 query "service_account_token_disabled" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when automount_service_account_token then 'alarm'
         else 'ok'
@@ -21,7 +21,7 @@ query "service_account_token_disabled" {
 query "service_account_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'

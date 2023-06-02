@@ -1,7 +1,7 @@
 query "endpoint_api_serve_on_secure_port" {
   sql = <<-EOQ
     select
-      split_part(context_name,'_',4) as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when p ->> 'name' = 'https' and (p ->> 'port' = '443' or p ->> 'port' = '6443') then 'ok'
         else 'alarm'

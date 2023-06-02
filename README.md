@@ -1,6 +1,6 @@
 # Kubernetes Compliance Mod for Steampipe
 
-Multiple checks covering industry defined security best practices for Kubernetes. Includes support for CIS, National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
+Multiple checks covering industry defined security best practices for Kubernetes. The mod supports parsing and analyzing Kubernetes manifest files, allowing you to assess compliance directly on your configuration files before deployment. Includes support for CIS, National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
 
 Run checks in a dashboard:
 ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_nsa_csa_v1.png)
@@ -59,7 +59,7 @@ Run all benchmarks:
 steampipe check all
 ```
 
-Run an single benchmark:
+Run a single benchmark::
 
 ```sh
 steampipe check benchmark.nsa_cisa_v1_network_hardening_cpu_limit
@@ -84,14 +84,14 @@ No extra configuration is required.
 
 ### Common and Tag Dimensions
 
-The benchmark queries use common properties (like `connection_name`, `context_name` and `namespace`) and tags are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
+The benchmark queries use common properties (like `connection_name`, `context_name`, `namespace`, `path` and `source_type`) and tags are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
 
 - Copy and rename the `steampipe.spvars.example` file to `steampipe.spvars`, and then modify the variable values inside that file
 
 - Pass in a value on the command line:
 
   ```shell
-  steampipe check benchmark.cis_kube_v120 --var 'common_dimensions=["connection_name", "context_name", "namespace"]'
+  steampipe check benchmark.cis_kube_v120 --var 'common_dimensions=["connection_name", "context_name", "namespace", "path", "source_type"]'
   ```
 
   ```shell
@@ -101,7 +101,7 @@ The benchmark queries use common properties (like `connection_name`, `context_na
 - Set an environment variable:
 
   ```shell
-  SP_VAR_common_dimensions='["connection_name", "context_name", "namespace"]' steampipe check control.cis_kube_v120_v100_5_2_1
+  SP_VAR_common_dimensions='["connection_name", "context_name", "namespace", "path", "source_type"]' steampipe check control.cis_kube_v120_v100_5_2_1
   ```
 
   ```shell

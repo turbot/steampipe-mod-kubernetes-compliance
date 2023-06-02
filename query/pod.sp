@@ -1,7 +1,7 @@
 query "pod_container_privilege_escalation_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then 'ok'
         else 'alarm'
@@ -22,14 +22,17 @@ query "pod_container_privilege_escalation_disabled" {
 query "pod_container_privilege_port_mapped" {
   sql = <<-EOQ
     select
-      c ->> 'name' as resource,
       case
-        When p ->> 'name' is null then 'skip'
+        when source_type = 'deployed' then c ->> 'name'
+        else concat(path, ':', start_line)
+      end as resource,
+      case
+        when p ->> 'name' is null then 'skip'
         when cast(p ->> 'containerPort' as integer) <= 1024 then 'alarm'
         else 'ok'
       end as status,
       case
-        When p ->> 'name' is null then 'No port mapped.'
+        when p ->> 'name' is null then 'No port mapped.'
         when cast(p ->> 'containerPort' as integer) <= 1024 then p ->> 'name'|| ' mapped with a privileged port.'
         else p ->> 'name' || ' not mapped with a privileged port.'
       end as reason,
@@ -46,7 +49,7 @@ query "pod_container_privilege_port_mapped" {
 query "pod_container_readiness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'readinessProbe' is not null then 'ok'
         else 'alarm'
@@ -67,7 +70,7 @@ query "pod_container_readiness_probe" {
 query "pod_immutable_container_filesystem" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
         else 'alarm'
@@ -88,7 +91,7 @@ query "pod_immutable_container_filesystem" {
 query "pod_non_root_container" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
         else 'alarm'
@@ -109,7 +112,7 @@ query "pod_non_root_container" {
 query "pod_container_privilege_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
         else 'ok'
@@ -130,7 +133,7 @@ query "pod_container_privilege_disabled" {
 query "pod_container_liveness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'livenessProbe' is not null then 'ok'
         else 'alarm'
@@ -151,7 +154,7 @@ query "pod_container_liveness_probe" {
 query "pod_hostpid_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_pid or host_ipc then 'alarm'
         else 'ok'
@@ -172,7 +175,7 @@ query "pod_hostpid_hostipc_sharing_disabled" {
 query "pod_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -192,7 +195,7 @@ query "pod_default_namespace_used" {
 query "pod_service_account_token_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when automount_service_account_token then 'alarm'
         else 'ok'
@@ -212,7 +215,7 @@ query "pod_service_account_token_disabled" {
 query "pod_hostpid_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_pid then 'alarm'
         else 'ok'
@@ -232,7 +235,7 @@ query "pod_hostpid_sharing_disabled" {
 query "pod_volume_host_path" {
   sql = <<-EOQ
     select
-      distinct(name) as resource,
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
         when v -> 'hostPath' -> 'path' is null then 'ok'
         else 'alarm'
@@ -253,7 +256,7 @@ query "pod_volume_host_path" {
 query "pod_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_ipc then 'alarm'
         else 'ok'
@@ -273,7 +276,7 @@ query "pod_hostipc_sharing_disabled" {
 query "pod_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when security_context -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
@@ -293,7 +296,7 @@ query "pod_default_seccomp_profile_enabled" {
 query "pod_service_account_not_exist" {
   sql = <<-EOQ
     select
-      distinct(p.uid) as resource,
+      coalesce(p.uid, concat(p.path, ':', p.start_line)) as resource,
       case
         when service_account_name is not null and service_account_name <> '' then 'ok'
         else 'alarm'
@@ -314,7 +317,7 @@ query "pod_service_account_not_exist" {
 query "pod_host_network_access_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_network then 'alarm'
         else 'ok'
