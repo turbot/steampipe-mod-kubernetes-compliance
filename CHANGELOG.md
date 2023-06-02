@@ -1,3 +1,9 @@
+## v0.10 [2023-06-02]
+
+_What's new?_
+
+- Added `path` and `source_type` in the common dimensions to group and filter findings. (see [var.common_dimensions](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/variables)) ([#41](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/41))
+
 ## v0.9 [2023-05-18]
 
 _What's new?_
