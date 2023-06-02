@@ -9,3 +9,7 @@
 *.swp
 
 .DS_Store
+
+# Steampipe variable files
+*.spvars
+*.auto.spvars

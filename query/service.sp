@@ -1,7 +1,7 @@
 query "service_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -20,7 +20,7 @@ query "service_default_namespace_used" {
 query "service_type_forbidden" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when type in ('NodePort','LoadBalancer') then 'alarm'
         else 'ok'

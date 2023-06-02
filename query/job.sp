@@ -1,7 +1,7 @@
 query "job_container_privilege_escalation_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'allowPrivilegeEscalation' = 'false' then 'ok'
         else 'alarm'
@@ -22,7 +22,7 @@ query "job_container_privilege_escalation_disabled" {
 query "job_container_liveness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'livenessProbe' is not null then 'ok'
         else 'alarm'
@@ -43,7 +43,7 @@ query "job_container_liveness_probe" {
 query "job_memory_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -64,7 +64,7 @@ query "job_memory_limit" {
 query "job_host_network_access_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
         else 'ok'
@@ -84,7 +84,7 @@ query "job_host_network_access_disabled" {
 query "job_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -104,7 +104,10 @@ query "job_default_namespace_used" {
 query "job_container_privilege_port_mapped" {
   sql = <<-EOQ
     select
-      c ->> 'name' as resource,
+      case
+        when source_type = 'deployed' then c ->> 'name'
+        else concat(path, ':', start_line)
+      end as resource,
       case
         when p ->> 'name' is null then 'skip'
         when cast(p ->> 'containerPort' as integer) <= 1024 then 'alarm'
@@ -128,7 +131,7 @@ query "job_container_privilege_port_mapped" {
 query "job_immutable_container_filesystem" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
         else 'alarm'
@@ -149,7 +152,7 @@ query "job_immutable_container_filesystem" {
 query "job_memory_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'memory' is null then 'alarm'
         else 'ok'
@@ -170,7 +173,7 @@ query "job_memory_request" {
 query "job_container_readiness_probe" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'readinessProbe' is not null then 'ok'
         else 'alarm'
@@ -191,7 +194,7 @@ query "job_container_readiness_probe" {
 query "job_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
         when c -> 'securityContext' -> 'seccompProfile' ->> 'type' = 'RuntimeDefault' then 'ok'
         else 'alarm'
@@ -212,7 +215,7 @@ query "job_default_seccomp_profile_enabled" {
 query "job_non_root_container" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
         else 'alarm'
@@ -233,7 +236,7 @@ query "job_non_root_container" {
 query "job_hostpid_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostPID' = 'true' or template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
         else 'ok'
@@ -254,7 +257,7 @@ query "job_hostpid_hostipc_sharing_disabled" {
 query "job_cpu_request" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'requests' ->> 'cpu' is null then 'alarm'
         else 'ok'
@@ -275,7 +278,7 @@ query "job_cpu_request" {
 query "job_hostpid_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostPID' = 'true' then 'alarm'
         else 'ok'
@@ -295,7 +298,7 @@ query "job_hostpid_sharing_disabled" {
 query "job_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
         else 'ok'
@@ -315,7 +318,7 @@ query "job_hostipc_sharing_disabled" {
 query "job_container_privilege_disabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
         else 'ok'
@@ -336,7 +339,7 @@ query "job_container_privilege_disabled" {
 query "job_cpu_limit" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when c -> 'resources' -> 'limits' ->> 'cpu' is null then 'alarm'
         else 'ok'

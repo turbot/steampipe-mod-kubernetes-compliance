@@ -1,7 +1,7 @@
 query "pod_security_policy_host_network_access_disabled" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_network then 'alarm'
         else 'ok'
@@ -20,7 +20,7 @@ query "pod_security_policy_host_network_access_disabled" {
 query "pod_security_policy_allowed_host_path" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when allowed_host_paths is null then 'alarm'
         else 'ok'
@@ -39,7 +39,7 @@ query "pod_security_policy_allowed_host_path" {
 query "pod_security_policy_container_privilege_escalation_disabled" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when not allow_privilege_escalation then 'ok'
         else 'alarm'
@@ -58,7 +58,7 @@ query "pod_security_policy_container_privilege_escalation_disabled" {
 query "pod_security_policy_non_root_container" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when run_as_user ->> 'rule' = 'MustRunAsNonRoot' then 'ok'
         else 'alarm'
@@ -77,7 +77,7 @@ query "pod_security_policy_non_root_container" {
 query "pod_security_policy_hostpid_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_pid or host_ipc then 'alarm'
         else 'ok'
@@ -97,7 +97,7 @@ query "pod_security_policy_hostpid_hostipc_sharing_disabled" {
 query "pod_security_policy_immutable_container_filesystem" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when read_only_root_filesystem then 'ok'
         else 'alarm'
@@ -116,7 +116,7 @@ query "pod_security_policy_immutable_container_filesystem" {
 query "pod_security_policy_container_privilege_disabled" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when privileged then 'alarm'
         else 'ok'
@@ -135,7 +135,7 @@ query "pod_security_policy_container_privilege_disabled" {
 query "pod_security_policy_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_ipc then 'alarm'
         else 'ok'
@@ -154,7 +154,7 @@ query "pod_security_policy_hostipc_sharing_disabled" {
 query "pod_security_policy_hostpid_sharing_disabled" {
   sql = <<-EOQ
     select
-      name as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when host_pid then 'alarm'
         else 'ok'
@@ -173,7 +173,7 @@ query "pod_security_policy_hostpid_sharing_disabled" {
 query "pod_security_policy_security_services_hardening" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when se_linux -> 'rule' = '"MustRunAs"' then 'ok'
         when annotations -> 'apparmor.security.beta.kubernetes.io/defaultProfileName' = '"runtime/default"' then 'ok'
@@ -196,7 +196,7 @@ query "pod_security_policy_security_services_hardening" {
 query "pod_security_policy_default_seccomp_profile_enabled" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when annotations -> 'seccomp.security.alpha.kubernetes.io/defaultProfileName' = '"docker/default"' then 'ok'
         else 'alarm'

@@ -1,7 +1,7 @@
 query "role_default_namespace_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when namespace = 'default' then 'alarm'
         else 'ok'
@@ -21,7 +21,7 @@ query "role_default_namespace_used" {
 query "role_with_wildcards_used" {
   sql = <<-EOQ
     select
-      uid as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when rule ->> 'apiGroups' like '%*%'
           or rule ->> 'resources' like '%*%'
@@ -47,6 +47,10 @@ query "role_with_wildcards_used" {
       status,
       reason,
       role_name,
+      path,
+      start_line,
+      end_line,
+      source_type,
       context_name;
   EOQ
 }
