@@ -18,7 +18,7 @@ benchmark "all_controls_pod_security_policy" {
     control.pod_security_policy_hostpid_sharing_disabled,
     control.pod_security_policy_immutable_container_filesystem,
     control.pod_security_policy_non_root_container,
-    control.pod_security_policy_security_services_hardening,
+    control.pod_security_policy_security_services_hardening
   ]
 
   tags = merge(local.all_controls_pod_security_policy_common_tags, {

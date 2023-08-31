@@ -22,7 +22,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_immutable_container_filesystem,
     control.replicaset_memory_limit,
     control.replicaset_memory_request,
-    control.replicaset_non_root_container,
+    control.replicaset_non_root_container
   ]
 
   tags = merge(local.all_controls_replicaset_common_tags, {

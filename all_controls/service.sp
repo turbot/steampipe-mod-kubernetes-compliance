@@ -6,7 +6,7 @@ locals {
 
 benchmark "all_controls_service" {
   title       = "Service"
-  description = "This section contains recommendations for configuring ReplicationController resources."
+  description = "This section contains recommendations for configuring Service resources."
   children = [
     control.service_default_namespace_used,
     control.service_type_forbidden
