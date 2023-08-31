@@ -4,8 +4,8 @@ locals {
 }
 
 benchmark "all_controls_role_binding" {
-  title       = "RoleBinding"
-  description = "This section contains recommendations for configuring RoleBinding resources."
+  title       = "Role Binding"
+  description = "This section contains recommendations for configuring Role Binding resources."
   children = [
     control.role_binding_default_namespace_used
   ]

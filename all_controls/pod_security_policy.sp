@@ -4,8 +4,8 @@ locals {
 }
 
 benchmark "all_controls_pod_security_policy" {
-  title       = "PodSecurityPolicy"
-  description = "This section contains recommendations for configuring PodSecurityPolicy resources."
+  title       = "Pod Security Policy"
+  description = "This section contains recommendations for configuring Pod Security Policy resources."
   children = [
     control.pod_security_policy_allowed_host_path,
     control.pod_security_policy_container_privilege_disabled,

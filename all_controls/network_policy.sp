@@ -4,8 +4,8 @@ locals {
 }
 
 benchmark "all_controls_network_policy" {
-  title       = "NetworkPolicy"
-  description = "This section contains recommendations for configuring NetworkPolicy resources."
+  title       = "Network Policy"
+  description = "This section contains recommendations for configuring Network Policy resources."
   children = [
     control.network_policy_default_deny_egress,
     control.network_policy_default_deny_ingress,
