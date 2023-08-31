@@ -234,46 +234,6 @@ query "daemonset_cpu_limit" {
   EOQ
 }
 
-query "daemonset_hostpid_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'DaemonSet pods share host PID namespaces.'
-        else 'DaemonSet pods cannot share host PID namespaces.'
-      end as reason,
-      name as daemonset_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_daemonset;
-  EOQ
-}
-
-query "daemonset_hostipc_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'DaemonSet pods share host IPC namespaces.'
-        else 'DaemonSet pods cannot share host IPC namespaces.'
-      end as reason,
-      name as daemonset_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_daemonset;
-  EOQ
-}
-
 query "daemonset_container_privilege_escalation_disabled" {
   sql = <<-EOQ
     select

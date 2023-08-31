@@ -143,46 +143,6 @@ query "replication_controller_hostpid_hostipc_sharing_disabled" {
   EOQ
 }
 
-query "replication_controller_hostpid_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicationController pods share host PID namespaces.'
-        else 'ReplicationController pods cannot share host PID namespaces.'
-      end as reason,
-      name as replication_controller_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_replication_controller;
-  EOQ
-}
-
-query "replication_controller_hostipc_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicationController pods share host IPC namespaces.'
-        else 'ReplicationController pods cannot share host IPC namespaces.'
-      end as reason,
-      name as replication_controller_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_replication_controller;
-  EOQ
-}
-
 query "replication_controller_container_privilege_port_mapped" {
   sql = <<-EOQ
     select
