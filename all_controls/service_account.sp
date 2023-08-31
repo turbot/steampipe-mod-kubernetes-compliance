@@ -1,5 +1,6 @@
 locals {
   all_controls_service_account_common_tags = merge(local.all_controls_common_tags, {
+    service = "Kubernetes/ServiceAccount"
   })
 }
 

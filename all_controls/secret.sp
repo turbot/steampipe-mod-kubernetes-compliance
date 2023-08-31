@@ -1,5 +1,6 @@
 locals {
   all_controls_secret_common_tags = merge(local.all_controls_common_tags, {
+    service = "Kubernetes/Secret"
   })
 }
 

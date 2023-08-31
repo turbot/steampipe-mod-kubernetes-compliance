@@ -1,5 +1,6 @@
 locals {
   all_controls_role_binding_common_tags = merge(local.all_controls_common_tags, {
+    service = "Kubernetes/RoleBinding"
   })
 }
 
