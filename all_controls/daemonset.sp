@@ -5,8 +5,8 @@ locals {
 }
 
 benchmark "all_controls_daemonset" {
-  title       = "Daemonset"
-  description = "This section contains recommendations for configuring Daemonset resources."
+  title       = "DaemonSet"
+  description = "This section contains recommendations for configuring DaemonSet resources."
   children = [
     control.daemonset_container_liveness_probe,
     control.daemonset_container_privilege_disabled,

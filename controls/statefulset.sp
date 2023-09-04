@@ -109,9 +109,7 @@ control "statefulset_container_readiness_probe" {
   description = "Containers in StatefulSet definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill it’s work."
   query       = query.statefulset_container_readiness_probe
 
-  tags = merge(local.statefulset_common_tags, {
-    extra_checks = "true"
-  })
+  tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_liveness_probe" {
@@ -119,9 +117,7 @@ control "statefulset_container_liveness_probe" {
   description = "Containers in StatefulSet definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn’t the case, kubernetes will eventually restart the container."
   query       = query.statefulset_container_liveness_probe
 
-  tags = merge(local.statefulset_common_tags, {
-    extra_checks = "true"
-  })
+  tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_privilege_port_mapped" {
@@ -129,9 +125,7 @@ control "statefulset_container_privilege_port_mapped" {
   description = "Privileged ports `0 to 1024` should not be mapped with StatefulSet containers. Normal users and processes are not allowed to use them for various security reasons."
   query       = query.statefulset_container_privilege_port_mapped
 
-  tags = merge(local.statefulset_common_tags, {
-    extra_checks = "true"
-  })
+  tags = local.statefulset_common_tags
 }
 
 control "statefulset_default_namespace_used" {

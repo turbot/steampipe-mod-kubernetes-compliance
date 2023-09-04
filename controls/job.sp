@@ -109,9 +109,7 @@ control "job_container_readiness_probe" {
   description = "Containers in Job definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill it’s work."
   query       = query.job_container_readiness_probe
 
-  tags = merge(local.job_common_tags, {
-    extra_checks = "true"
-  })
+  tags = local.job_common_tags
 }
 
 control "job_container_liveness_probe" {
@@ -119,9 +117,7 @@ control "job_container_liveness_probe" {
   description = "Containers in Job definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn’t the case, kubernetes will eventually restart the container."
   query       = query.job_container_liveness_probe
 
-  tags = merge(local.job_common_tags, {
-    extra_checks = "true"
-  })
+  tags = local.job_common_tags
 }
 
 control "job_container_privilege_port_mapped" {
