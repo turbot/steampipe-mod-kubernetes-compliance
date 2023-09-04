@@ -124,7 +124,8 @@ control "job_container_privilege_port_mapped" {
   title       = "Job containers should not be mapped with privilege ports"
   description = "Privileged ports `0 to 1024` should not be mapped with Job containers. Normal users and processes are not allowed to use them for various security reasons."
   query       = query.job_container_privilege_port_mapped
-  tags        = local.extra_checks_tags
+
+  tags = local.job_common_tags
 }
 
 control "job_default_namespace_used" {
