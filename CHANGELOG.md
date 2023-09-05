@@ -1,3 +1,13 @@
+## v0.11 [2023-09-05]
+
+_Breaking changes_
+
+- The `Other Compliance Checks` benchmark (`steampipe check benchmark.other_checks`) has been removed and replaced by the new `All Controls` benchmark (`steampipe check benchmark.all_controls`). This new benchmark includes 154 service-specific controls. ([#47](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/47))
+
+_Bug fixes_
+
+- Fixed the `namespace_*` queries to use the correct common dimensions. ([#49](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/49))
+
 ## v0.10 [2023-06-02]
 
 _Dependencies_
