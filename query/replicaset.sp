@@ -254,26 +254,6 @@ query "replicaset_host_network_access_disabled" {
   EOQ
 }
 
-query "replicaset_hostpid_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicaSet pods share host PID namespaces.'
-        else 'ReplicaSet pods cannot share host PID namespaces.'
-      end as reason,
-      name as replicaset_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_replicaset;
-  EOQ
-}
-
 query "replicaset_hostpid_hostipc_sharing_disabled" {
   sql = <<-EOQ
     select
@@ -313,26 +293,6 @@ query "replicaset_container_readiness_probe" {
     from
       kubernetes_replicaset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
-  EOQ
-}
-
-query "replicaset_hostipc_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicaSet pods share host IPC namespaces.'
-        else 'ReplicaSet pods cannot share host IPC namespaces.'
-      end as reason,
-      name as replicaset_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_replicaset;
   EOQ
 }
 

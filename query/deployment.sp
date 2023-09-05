@@ -19,26 +19,6 @@ query "deployment_default_seccomp_profile_enabled" {
   EOQ
 }
 
-query "deployment_hostipc_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'Deployment pods share host IPC namespaces.'
-        else 'Deployment pods cannot share host IPC namespaces.'
-      end as reason,
-      name as deployment_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_deployment;
-  EOQ
-}
-
 query "deployment_default_namespace_used" {
   sql = <<-EOQ
     select
@@ -50,26 +30,6 @@ query "deployment_default_namespace_used" {
       case
         when namespace = 'default' then name || ' uses default namespace.'
         else name || ' not using the default namespace.'
-      end as reason,
-      name as deployment_name
-      ${local.tag_dimensions_sql}
-      ${local.common_dimensions_sql}
-    from
-      kubernetes_deployment;
-  EOQ
-}
-
-query "deployment_hostpid_sharing_disabled" {
-  sql = <<-EOQ
-    select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'alarm'
-        else 'ok'
-      end as status,
-      case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'Deployment pods share host PID namespaces.'
-        else 'Deployment pods cannot share host PID namespaces.'
       end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
