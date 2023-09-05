@@ -105,9 +105,9 @@ control "pod_security_policy_hostpid_sharing_disabled" {
 }
 
 control "pod_security_policy_hostipc_sharing_disabled" {
-  title         = "Minimize the admission of containers wishing to share the host IPC namespace"
-  description   = "A container running in the host's IPC namespace can use IPC to interact with processes outside the container. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host IPC namespace."
-  query         = query.pod_security_policy_hostipc_sharing_disabled
+  title       = "Minimize the admission of containers wishing to share the host IPC namespace"
+  description = "A container running in the host's IPC namespace can use IPC to interact with processes outside the container. There should be at least one PodSecurityPolicy (PSP) defined which does not permit containers to share the host IPC namespace."
+  query       = query.pod_security_policy_hostipc_sharing_disabled
 
   tags = merge(local.pod_security_policy_common_tags, {
     cis = "true"
