@@ -294,3 +294,23 @@ query "pod_host_network_access_disabled" {
   EOQ
 }
 
+query "pod_containers_with_added_capabilities" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then name || ' without added capability.'
+        else name || ' with added capability.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
