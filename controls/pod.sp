@@ -133,12 +133,10 @@ control "pod_default_seccomp_profile_enabled" {
   })
 }
 
-control "pod_containers_with_added_capabilities" {
+control "pod_container_with_added_capabilities" {
   title       = "Pod containers should minimize the admission of containers with added capability"
   description = "Containers in Pods should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
-  query       = query.pod_containers_with_added_capabilities
+  query       = query.pod_container_with_added_capabilities
 
-  tags = merge(local.pod_common_tags, {
-    cis = "true"
-  })
+  tags = local.pod_common_tags
 }

@@ -317,3 +317,24 @@ query "cronjob_default_namespace_used" {
       kubernetes_cronjob;
   EOQ
 }
+
+query "cronjob_container_with_added_capabilities" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then name || ' without added capability.'
+        else name || ' with added capability.'
+      end as reason,
+      name as cronjob_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_cronjob,
+      jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
+  EOQ
+}

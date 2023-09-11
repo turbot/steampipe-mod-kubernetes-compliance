@@ -155,3 +155,11 @@ control "deployment_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "deployment_container_with_added_capabilities" {
+  title       = "Deployment containers should minimize the admission of containers with added capability"
+  description = "Containers in Deployment should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  query       = query.deployment_container_with_added_capabilities
+
+  tags = local.deployment_common_tags
+}

@@ -13,6 +13,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_privilege_escalation_disabled,
     control.cronjob_container_privilege_port_mapped,
     control.cronjob_container_readiness_probe,
+    control.cronjob_container_with_added_capabilities,
     control.cronjob_cpu_limit,
     control.cronjob_cpu_request,
     control.cronjob_default_namespace_used,

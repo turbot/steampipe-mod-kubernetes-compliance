@@ -317,3 +317,24 @@ query "statefulset_container_privilege_disabled" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "statefulset_container_with_added_capabilities" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then name || ' without added capability.'
+        else name || ' with added capability.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

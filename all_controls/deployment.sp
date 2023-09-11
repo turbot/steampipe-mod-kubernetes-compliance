@@ -13,6 +13,7 @@ benchmark "all_controls_deployment" {
     control.deployment_container_privilege_escalation_disabled,
     control.deployment_container_privilege_port_mapped,
     control.deployment_container_readiness_probe,
+    control.deployment_container_with_added_capabilities,
     control.deployment_cpu_limit,
     control.deployment_cpu_request,
     control.deployment_default_namespace_used,

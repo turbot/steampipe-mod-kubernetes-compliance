@@ -8,6 +8,7 @@ benchmark "all_controls_replication_controller" {
   title       = "ReplicationController"
   description = "This section contains recommendations for configuring ReplicationController resources."
   children = [
+    control.replication_controller_container_with_added_capabilities,
     control.replication_controller_container_liveness_probe,
     control.replication_controller_container_privilege_disabled,
     control.replication_controller_container_privilege_escalation_disabled,

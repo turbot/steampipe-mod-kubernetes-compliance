@@ -147,3 +147,11 @@ control "cronjob_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "cronjob_container_with_added_capabilities" {
+  title       = "CronJob containers should not have added capabilities"
+  description = "Containers in CronJob definition should not have added capabilities. Added capabilities can provide container processes with escalated privileges which can be used to access sensitive host resources or perform operations outside of the container."
+  query       = query.cronjob_container_with_added_capabilities
+
+  tags = local.cronjob_common_tags
+}

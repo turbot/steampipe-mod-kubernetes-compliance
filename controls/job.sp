@@ -147,3 +147,11 @@ control "job_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "job_container_with_added_capabilities" {
+  title       = "Job containers should minimize the admission of containers with added capability"
+  description = "Containers in Job should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  query       = query.pod_container_with_added_capabilities
+
+  tags = local.job_common_tags
+}

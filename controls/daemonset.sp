@@ -147,3 +147,11 @@ control "daemonset_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "daemonset_container_with_added_capabilities" {
+  title       = "DaemonSet containers should minimize the admission of containers with added capability"
+  description = "Containers in DaemonSet should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  query       = query.daemonset_container_with_added_capabilities
+
+  tags = local.daemonset_common_tags
+}

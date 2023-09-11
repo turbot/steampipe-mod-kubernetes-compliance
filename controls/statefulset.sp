@@ -147,3 +147,11 @@ control "statefulset_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "statefulset_container_with_added_capabilities" {
+  title       = "StatefulSet containers should minimize the admission of containers with added capability"
+  description = "Containers in StatefulSet should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  query       = query.statefulset_container_with_added_capabilities
+
+  tags = local.statefulset_common_tags
+}

@@ -294,7 +294,7 @@ query "pod_host_network_access_disabled" {
   EOQ
 }
 
-query "pod_containers_with_added_capabilities" {
+query "pod_container_with_added_capabilities" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,

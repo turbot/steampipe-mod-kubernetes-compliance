@@ -13,6 +13,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_privilege_escalation_disabled,
     control.statefulset_container_privilege_port_mapped,
     control.statefulset_container_readiness_probe,
+    control.statefulset_container_with_added_capabilities,
     control.statefulset_cpu_limit,
     control.statefulset_cpu_request,
     control.statefulset_default_namespace_used,

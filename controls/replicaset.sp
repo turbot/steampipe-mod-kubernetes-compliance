@@ -147,3 +147,11 @@ control "replicaset_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "replicaset_container_with_added_capabilities" {
+  title       = "ReplicaSet containers should minimize the admission of containers with added capability"
+  description = "Containers in ReplicaSet should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  query       = query.replicaset_container_with_added_capabilities
+
+  tags = local.replicaset_common_tags
+}

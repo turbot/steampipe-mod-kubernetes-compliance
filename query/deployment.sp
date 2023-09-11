@@ -334,3 +334,23 @@ query "deployment_hostpid_hostipc_sharing_disabled" {
   EOQ
 }
 
+query "deployment_container_with_added_capabilities" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then name || ' without added capability.'
+        else name || ' with added capability.'
+      end as reason,
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

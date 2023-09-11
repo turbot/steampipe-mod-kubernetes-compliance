@@ -147,3 +147,11 @@ control "replication_controller_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "replication_controller_container_with_added_capabilities" {
+  title       = "Replication Controller containers should minimize the admission of containers with added capability"
+  description = "Containers in Replication Controller should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  query       = query.replication_controller_container_with_added_capabilities
+
+  tags = local.replication_controller_common_tags
+}
