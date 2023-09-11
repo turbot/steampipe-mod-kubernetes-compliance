@@ -51,6 +51,8 @@ query "role_with_wildcards_used" {
       start_line,
       end_line,
       source_type,
-      context_name;
+      context_name,
+      tags,
+      _ctx;
   EOQ
 }
