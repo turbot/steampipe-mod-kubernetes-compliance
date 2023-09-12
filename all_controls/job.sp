@@ -8,6 +8,9 @@ benchmark "all_controls_job" {
   title       = "Job"
   description = "This section contains recommendations for configuring Job resources."
   children = [
+    control.job_container_admission_capability_restricted,
+    control.job_container_image_pull_policy_always,
+    control.job_container_image_tag_specified,
     control.job_container_liveness_probe,
     control.job_container_privilege_disabled,
     control.job_container_privilege_escalation_disabled,

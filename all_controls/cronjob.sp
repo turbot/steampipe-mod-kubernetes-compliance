@@ -8,6 +8,9 @@ benchmark "all_controls_cronjob" {
   title       = "CronJob"
   description = "This section contains recommendations for configuring CronJob resources."
   children = [
+    control.cronjob_container_admission_capability_restricted,
+    control.cronjob_container_image_pull_policy_always,
+    control.cronjob_container_image_tag_specified,
     control.cronjob_container_liveness_probe,
     control.cronjob_container_privilege_disabled,
     control.cronjob_container_privilege_escalation_disabled,

@@ -163,3 +163,27 @@ control "cronjob_container_security_context_exists" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_image_tag_specified" {
+  title       = "CronJob containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the containers in the CronJob have image tag fixed not latest or blank."
+  query       = query.cronjob_container_image_tag_specified
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_image_pull_policy_always" {
+  title       = "CronJob containers have image pull policy set to Always"
+  description = "This check ensures that the containers in the CronJob have image pull policy set to Always."
+  query       = query.cronjob_container_image_pull_policy_always
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_admission_capability_restricted" {
+  title       = "CronJob containers should have admission capability restricted"
+  description = "This check ensures that the containers in the CronJob have admission capability restricted."
+  query       = query.cronjob_container_admission_capability_restricted
+
+  tags = local.cronjob_common_tags
+}

@@ -8,6 +8,9 @@ benchmark "all_controls_pod" {
   title       = "Pod"
   description = "This section contains recommendations for configuring Pod resources."
   children = [
+    control.pod_container_admission_capability_restricted,
+    control.pod_container_image_pull_policy_always,
+    control.pod_container_image_tag_specified,
     control.pod_container_liveness_probe,
     control.pod_container_privilege_disabled,
     control.pod_container_privilege_escalation_disabled,

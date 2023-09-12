@@ -8,6 +8,9 @@ benchmark "all_controls_daemonset" {
   title       = "DaemonSet"
   description = "This section contains recommendations for configuring DaemonSet resources."
   children = [
+    control.daemonset_container_admission_capability_restricted,
+    control.daemonset_container_image_pull_policy_always,
+    control.daemonset_container_image_tag_specified,
     control.daemonset_container_liveness_probe,
     control.daemonset_container_privilege_disabled,
     control.daemonset_container_privilege_escalation_disabled,

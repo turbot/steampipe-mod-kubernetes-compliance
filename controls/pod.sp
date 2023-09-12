@@ -148,3 +148,27 @@ control "pod_container_security_context_exists" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_image_tag_specified" {
+  title       = "Pod containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the containers in the Pod have image tag fixed not latest or blank."
+  query       = query.pod_container_image_tag_specified
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_image_pull_policy_always" {
+  title       = "Pod containers have image pull policy set to Always"
+  description = "This check ensures that the containers in the Pod have image pull policy set to Always."
+  query       = query.pod_container_image_pull_policy_always
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_admission_capability_restricted" {
+  title       = "Pod containers should have admission capability restricted"
+  description = "This check ensures that the containers in the Pod have admission capability restricted."
+  query       = query.pod_container_admission_capability_restricted
+
+  tags = local.pod_common_tags
+}

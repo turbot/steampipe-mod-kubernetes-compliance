@@ -151,7 +151,7 @@ control "job_default_seccomp_profile_enabled" {
 control "job_container_with_added_capabilities" {
   title       = "Job containers should minimize the admission of containers with added capability"
   description = "Containers in Job should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
-  query       = query.pod_container_with_added_capabilities
+  query       = query.job_container_with_added_capabilities
 
   tags = local.job_common_tags
 }
@@ -160,6 +160,30 @@ control "job_container_security_context_exists" {
   title       = "Job containers should have security context defined"
   description = "This check ensures that the containers in a Job definition have security context defined."
   query       = query.job_container_security_context_exists
+
+  tags = local.job_common_tags
+}
+
+control "job_container_image_tag_specified" {
+  title       = "Job containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the containers in the Job have image tag fixed not latest or blank."
+  query       = query.job_container_image_tag_specified
+
+  tags = local.job_common_tags
+}
+
+control "job_container_image_pull_policy_always" {
+  title       = "Job containers have image pull policy set to Always"
+  description = "This check ensures that the containers in the Job have image pull policy set to Always."
+  query       = query.job_container_image_pull_policy_always
+
+  tags = local.job_common_tags
+}
+
+control "job_container_admission_capability_restricted" {
+  title       = "Job containers should have admission capability restricted"
+  description = "This check ensures that the containers in the Job have admission capability restricted."
+  query       = query.job_container_admission_capability_restricted
 
   tags = local.job_common_tags
 }

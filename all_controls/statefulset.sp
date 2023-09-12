@@ -8,6 +8,9 @@ benchmark "all_controls_statefulset" {
   title       = "StatefulSet"
   description = "This section contains recommendations for configuring StatefulSet resources."
   children = [
+    control.statefulset_container_admission_capability_restricted,
+    control.statefulset_container_image_pull_policy_always,
+    control.statefulset_container_image_tag_specified,
     control.statefulset_container_liveness_probe,
     control.statefulset_container_privilege_disabled,
     control.statefulset_container_privilege_escalation_disabled,

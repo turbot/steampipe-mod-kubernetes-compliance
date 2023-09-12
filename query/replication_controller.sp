@@ -358,3 +358,86 @@ query "replication_controller_container_security_context_exists" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "replication_controller_container_image_tag_specified" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+        case
+          when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+          when c ->> 'image' like '%@%' then 'ok'
+          when (
+            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+          ) in ('latest', '') then 'alarm'
+          else 'ok'
+        end
+      as status,
+        case
+          when c ->> 'image' is null or c ->> 'image' = '' then 'no image specified.'
+          when c ->> 'image' like '%@%' then 'image with digest specified.'
+          when (
+            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+          ) in ('latest', '') then 'image with tag latest or no tag specified.'
+          else 'image with tag specified.'
+        end
+      as reason,
+      name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replication_controller,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replication_controller_container_image_pull_policy_always" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+        case
+          when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+          when c ->> 'imagePullPolicy' is null and (
+            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+          ) not in ('latest', '') then 'alarm'
+          when c ->> 'imagePullPolicy' <> 'Always' then 'alarm'
+          else 'ok'
+        end
+      as status,
+        case
+          when c ->> 'image' is null or c ->> 'image' = '' then ' no image specified.'
+          when c ->> 'imagePullPolicy' is null and (
+            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+          ) not in ('latest', '') then ' image pull policy is not specified.'
+          when c ->> 'imagePullPolicy' <> 'Always' then ' image pull policy is not set to Always.'
+          else ' image pull policy is set to Always.'
+        end
+      as reason,
+      name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replication_controller,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replication_controller_container_admission_capability_restricted" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+        case
+          when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null) and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then 'ok'
+          else 'alarm'
+        end
+      as status,
+        case
+          when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null) and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then ' admission capability is restricted.'
+          else ' admission capability is not restricted.'
+        end
+      as reason,
+      name as replication_controller_name
+    from
+      kubernetes_replication_controller,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

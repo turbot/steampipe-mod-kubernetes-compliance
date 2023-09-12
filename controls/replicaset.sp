@@ -163,3 +163,27 @@ control "replicaset_container_security_context_exists" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_image_tag_specified" {
+  title       = "ReplicaSet containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the containers in the ReplicaSet have image tag fixed not latest or blank."
+  query       = query.replicaset_container_image_tag_specified
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_image_pull_policy_always" {
+  title       = "ReplicaSet containers have image pull policy set to Always"
+  description = "This check ensures that the containers in the ReplicaSet have image pull policy set to Always."
+  query       = query.replicaset_container_image_pull_policy_always
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_admission_capability_restricted" {
+  title       = "ReplicaSet containers should have admission capability restricted"
+  description = "This check ensures that the containers in the ReplicaSet have admission capability restricted."
+  query       = query.replicaset_container_admission_capability_restricted
+
+  tags = local.replicaset_common_tags
+}

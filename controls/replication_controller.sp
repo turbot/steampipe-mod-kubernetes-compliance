@@ -163,3 +163,27 @@ control "replication_controller_container_security_context_exists" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_image_tag_specified" {
+  title       = "Replication Controller containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the containers in the Replication Controller have image tag fixed not latest or blank."
+  query       = query.replication_controller_container_image_tag_specified
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_image_pull_policy_always" {
+  title       = "Replication Controller containers have image pull policy set to Always"
+  description = "This check ensures that the containers in the Replication Controller have image pull policy set to Always."
+  query       = query.replication_controller_container_image_pull_policy_always
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_admission_capability_restricted" {
+  title       = "Replication Controller containers should have admission capability restricted"
+  description = "This check ensures that the containers in the Replication Controller have admission capability restricted."
+  query       = query.replication_controller_container_admission_capability_restricted
+
+  tags = local.replication_controller_common_tags
+}

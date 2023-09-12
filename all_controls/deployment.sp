@@ -8,6 +8,9 @@ benchmark "all_controls_deployment" {
   title       = "Deployment"
   description = "This section contains recommendations for configuring Deployment resources."
   children = [
+    control.deployment_container_admission_capability_restricted,
+    control.deployment_container_image_pull_policy_always,
+    control.deployment_container_image_tag_specified,
     control.deployment_container_liveness_probe,
     control.deployment_container_privilege_disabled,
     control.deployment_container_privilege_escalation_disabled,
