@@ -140,3 +140,11 @@ control "pod_container_with_added_capabilities" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_security_context_exists" {
+  title       = "Pod containers should have security context"
+  description = "This check ensures that the containers in the Pod have security context defined."
+  query       = query.pod_container_security_context_exists
+
+  tags = local.pod_common_tags
+}

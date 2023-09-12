@@ -13,6 +13,7 @@ benchmark "all_controls_pod" {
     control.pod_container_privilege_escalation_disabled,
     control.pod_container_privilege_port_mapped,
     control.pod_container_readiness_probe,
+    control.pod_container_security_context_exists,
     control.pod_container_with_added_capabilities,
     control.pod_default_namespace_used,
     control.pod_default_seccomp_profile_enabled,

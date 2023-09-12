@@ -13,6 +13,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_privilege_escalation_disabled,
     control.replicaset_container_privilege_port_mapped,
     control.replicaset_container_readiness_probe,
+    control.replicaset_container_security_context_exists,
     control.replicaset_container_with_added_capabilities,
     control.replicaset_cpu_limit,
     control.replicaset_cpu_request,

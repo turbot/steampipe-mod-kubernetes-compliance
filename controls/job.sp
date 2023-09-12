@@ -155,3 +155,11 @@ control "job_container_with_added_capabilities" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_security_context_exists" {
+  title       = "Job containers should have security context defined"
+  description = "This check ensures that the containers in a Job definition have security context defined."
+  query       = query.job_container_security_context_exists
+
+  tags = local.job_common_tags
+}

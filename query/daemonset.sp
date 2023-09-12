@@ -337,3 +337,24 @@ query "daemonset_container_with_added_capabilities" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "daemonset_container_security_context_exists" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' is not null then name || ' security context exists.'
+        else name || ' security context does not exist.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

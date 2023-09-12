@@ -155,3 +155,11 @@ control "replicaset_container_with_added_capabilities" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_security_context_exists" {
+  title       = "ReplicaSet containers should have security context"
+  description = "This check ensures that ReplicaSet containers have security context defined."
+  query       = query.replicaset_container_security_context_exists
+
+  tags = local.replicaset_common_tags
+}

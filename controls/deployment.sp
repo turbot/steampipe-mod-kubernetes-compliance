@@ -163,3 +163,11 @@ control "deployment_container_with_added_capabilities" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_security_context_exists" {
+  title       = "Deployment containers should have security context defined"
+  description = "This check ensures that the containers in a Deployment definition have security context defined."
+  query       = query.deployment_container_security_context_exists
+
+  tags = local.deployment_common_tags
+}

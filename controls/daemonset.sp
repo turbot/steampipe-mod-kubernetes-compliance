@@ -155,3 +155,11 @@ control "daemonset_container_with_added_capabilities" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_security_context_exists" {
+  title       = "DaemonSet containers should have security context defined"
+  description = "This check ensures that the containers in a DaemonSet definition have security context defined."
+  query       = query.daemonset_container_security_context_exists
+
+  tags = local.daemonset_common_tags
+}

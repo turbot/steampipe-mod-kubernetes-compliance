@@ -13,6 +13,7 @@ benchmark "all_controls_job" {
     control.job_container_privilege_escalation_disabled,
     control.job_container_privilege_port_mapped,
     control.job_container_readiness_probe,
+    control.job_container_security_context_exists,
     control.job_container_with_added_capabilities,
     control.job_cpu_limit,
     control.job_cpu_request,

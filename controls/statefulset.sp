@@ -155,3 +155,11 @@ control "statefulset_container_with_added_capabilities" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_security_context_exists" {
+  title       = "Containers in StatefulSet should have securityContext defined"
+  description = "This check ensures that the container is running with a defined security context."
+  query       = query.statefulset_container_security_context_exists
+
+  tags = local.statefulset_common_tags
+}

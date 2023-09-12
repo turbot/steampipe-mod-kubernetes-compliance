@@ -155,3 +155,11 @@ control "cronjob_container_with_added_capabilities" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_security_context_exists" {
+  title       = "CronJob containers should have security context defined"
+  description = "This check ensures that the containers in a CronJob definition have security context defined."
+  query       = query.cronjob_container_security_context_exists
+
+  tags = local.cronjob_common_tags
+}

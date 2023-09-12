@@ -13,6 +13,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_privilege_escalation_disabled,
     control.daemonset_container_privilege_port_mapped,
     control.daemonset_container_readiness_probe,
+    control.daemonset_container_security_context_exists,
     control.daemonset_container_with_added_capabilities,
     control.daemonset_cpu_limit,
     control.daemonset_cpu_request,

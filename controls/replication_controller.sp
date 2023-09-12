@@ -155,3 +155,11 @@ control "replication_controller_container_with_added_capabilities" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_security_context_exists" {
+  title       = "Replication Controller containers should have securityContext defined"
+  description = "This check ensures that the container is running with a defined security context."
+  query       = query.replication_controller_container_security_context_exists
+
+  tags = local.replication_controller_common_tags
+}
