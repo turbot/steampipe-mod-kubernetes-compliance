@@ -187,3 +187,11 @@ control "statefulset_container_admission_capability_restricted" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_encryption_providers_configured" {
+  title       = "StatefulSet containers should have encryption providers configured appropriately"
+  description = "This check ensures that the containers in the StatefulSet have encryption providers configured appropriately."
+  query       = query.statefulset_container_encryption_providers_configured
+
+  tags = local.statefulset_common_tags
+}

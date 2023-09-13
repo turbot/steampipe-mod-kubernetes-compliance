@@ -172,3 +172,11 @@ control "pod_container_admission_capability_restricted" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_encryption_providers_configured" {
+  title       = "Pod containers should have encryption providers configured appropriately"
+  description = "This check ensures that the containers in the Pod have encryption providers configured appropriately."
+  query       = query.pod_container_encryption_providers_configured
+
+  tags = local.pod_common_tags
+}

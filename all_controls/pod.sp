@@ -20,6 +20,7 @@ benchmark "all_controls_pod" {
     control.pod_container_with_added_capabilities,
     control.pod_default_namespace_used,
     control.pod_default_seccomp_profile_enabled,
+    control.pod_container_encryption_providers_configured,
     control.pod_host_network_access_disabled,
     control.pod_hostpid_hostipc_sharing_disabled,
     control.pod_immutable_container_filesystem,

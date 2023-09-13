@@ -187,3 +187,11 @@ control "replicaset_container_admission_capability_restricted" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_encryption_providers_configured" {
+  title       = "ReplicaSet containers should have encryption providers configured appropriately"
+  description = "This check ensures that the containers in the ReplicaSet have encryption providers configured appropriately."
+  query       = query.replicaset_container_encryption_providers_configured
+
+  tags = local.replicaset_common_tags
+}

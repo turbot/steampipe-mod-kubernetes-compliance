@@ -9,6 +9,7 @@ benchmark "all_controls_replication_controller" {
   description = "This section contains recommendations for configuring ReplicationController resources."
   children = [
     control.replication_controller_container_admission_capability_restricted,
+    control.replication_controller_container_encryption_providers_configured,
     control.replication_controller_container_image_pull_policy_always,
     control.replication_controller_container_image_tag_specified,
     control.replication_controller_container_liveness_probe,

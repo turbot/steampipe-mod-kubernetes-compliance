@@ -458,3 +458,24 @@ query "deployment_container_admission_capability_restricted" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "deployment_container_encryption_providers_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]' and (c -> 'command') @> '["--encryption-provider-config"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]' and (c -> 'command') @> '["--encryption-provider-config"]' then c ->> 'name' || ' encryption providers configured appropriately.'
+        else c ->> 'name' || ' encryption providers not configured appropriately.'
+      end as reason,
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

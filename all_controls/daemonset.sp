@@ -9,6 +9,7 @@ benchmark "all_controls_daemonset" {
   description = "This section contains recommendations for configuring DaemonSet resources."
   children = [
     control.daemonset_container_admission_capability_restricted,
+    control.daemonset_container_encryption_providers_configured,
     control.daemonset_container_image_pull_policy_always,
     control.daemonset_container_image_tag_specified,
     control.daemonset_container_liveness_probe,

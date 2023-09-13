@@ -187,3 +187,11 @@ control "replication_controller_container_admission_capability_restricted" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_encryption_providers_configured" {
+  title       = "Replication Controller containers should have encryption providers configured appropriately"
+  description = "This check ensures that the containers in the Replication Controller have encryption providers configured appropriately."
+  query       = query.replication_controller_container_encryption_providers_configured
+
+  tags = local.replication_controller_common_tags
+}

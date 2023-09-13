@@ -418,3 +418,24 @@ query "pod_container_admission_capability_restricted" {
       jsonb_array_elements(containers) as c;
   EOQ
 }
+
+query "pod_container_encryption_providers_configured_appropriately" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]' and (c -> 'command') @> '["--encryption-provider-config"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]' and (c -> 'command') @> '["--encryption-provider-config"]' then c ->> 'name' || ' encryption providers configured appropriately.'
+        else c ->> 'name' || ' encryption providers not configured appropriately.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}

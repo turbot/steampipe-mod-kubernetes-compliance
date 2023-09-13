@@ -187,3 +187,11 @@ control "job_container_admission_capability_restricted" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_encryption_providers_configured" {
+  title       = "Job containers should have encryption providers configured appropriately"
+  description = "This check ensures that the containers in the Job have encryption providers configured appropriately."
+  query       = query.job_container_encryption_providers_configured
+
+  tags = local.job_common_tags
+}

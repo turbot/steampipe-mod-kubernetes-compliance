@@ -187,3 +187,11 @@ control "daemonset_container_admission_capability_restricted" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_encryption_providers_configured" {
+  title       = "DaemonSet containers should have encryption providers configured appropriately"
+  description = "This check ensures that the containers in the DaemonSet have encryption providers configured appropriately."
+  query       = query.daemonset_container_encryption_providers_configured
+
+  tags = local.daemonset_common_tags
+}

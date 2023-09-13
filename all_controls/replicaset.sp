@@ -9,6 +9,7 @@ benchmark "all_controls_replicaset" {
   description = "This section contains recommendations for configuring ReplicaSet resources."
   children = [
     control.replicaset_container_admission_capability_restricted,
+    control.replicaset_container_encryption_providers_configured,
     control.replicaset_container_image_pull_policy_always,
     control.replicaset_container_image_tag_specified,
     control.replicaset_container_liveness_probe,
