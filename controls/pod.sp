@@ -180,3 +180,59 @@ control "pod_container_encryption_providers_configured" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_sys_admin_capability_disabled" {
+  title       = "Pod containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the Pod does not use CAP_SYS_ADMIN linux capability."
+  query       = query.pod_container_sys_admin_capability_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_memory_limit" {
+  title       = replace(local.container_memory_limit_title, "__KIND__", "Pod")
+  description = replace(local.container_memory_limit_desc, "__KIND__", "Pod")
+  query       = query.pod_container_memory_limit
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_memory_request" {
+  title       = replace(local.container_memory_request_title, "__KIND__", "Pod")
+  description = replace(local.container_memory_request_desc, "__KIND__", "Pod")
+  query       = query.pod_container_memory_request
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_capabilities_drop_all" {
+  title       = "Pod containers should minimize it's admission with capabilities assigned"
+  description = "This check ensures that the Pod container minimize it's admission with capabilities assigned."
+  query       = query.pod_container_capabilities_drop_all
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_arg_peer_client_cert_auth_enabled" {
+  title       = "Pod containers peer client cert auth should be enabled"
+  description = "This check ensures that the Pod container peer client cert auth is enabled."
+  query       = query.pod_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_rotate_certificate_enabled" {
+  title       = "Pod containers certificate rotation should be enabled"
+  description = "This check ensures that the Pod container  certificate rotation is enabled."
+  query       = query.pod_container_rotate_certificate_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_event_qps_less_then_5" {
+  title       = "Pod containers argument event qps should be less than 5"
+  description = "This check ensures that the Pod container argument event qps is less than 5."
+  query       = query.pod_container_argument_event_qps_less_then_5
+
+  tags = local.pod_common_tags
+}

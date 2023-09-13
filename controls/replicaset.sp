@@ -195,3 +195,43 @@ control "replicaset_container_encryption_providers_configured" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_sys_admin_capability_disabled" {
+  title       = "ReplicaSet containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the ReplicaSet does not use CAP_SYS_ADMIN linux capability."
+  query       = query.replicaset_container_sys_admin_capability_disabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_capabilities_drop_all" {
+  title       = "ReplicaSet containers should minimize it's admission with capabilities assigned"
+  description = "This check ensures that the ReplicaSet container minimize it's admission with capabilities assigned."
+  query       = query.replicaset_container_capabilities_drop_all
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_arg_peer_client_cert_auth_enabled" {
+  title       = "ReplicaSet containers peer client cert auth should be enabled"
+  description = "This check ensures that the ReplicaSet container peer client cert auth is enabled."
+  query       = query.replicaset_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_rotate_certificate_enabled" {
+  title       = "ReplicaSet containers certificate rotation should be enabled"
+  description = "This check ensures that the ReplicaSet container  certificate rotation is enabled."
+  query       = query.replicaset_container_rotate_certificate_enabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_event_qps_less_then_5" {
+  title       = "ReplicaSet containers argument event qps should be less than 5"
+  description = "This check ensures that the ReplicaSet container argument event qps is less than 5."
+  query       = query.replicaset_container_argument_event_qps_less_then_5
+
+  tags = local.replicaset_common_tags
+}

@@ -195,3 +195,43 @@ control "job_container_encryption_providers_configured" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_sys_admin_capability_disabled" {
+  title       = "Job containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the Job does not use CAP_SYS_ADMIN linux capability."
+  query       = query.job_container_sys_admin_capability_disabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_capabilities_drop_all" {
+  title       = "Job containers should minimize it's admission with capabilities assigned"
+  description = "This check ensures that the Job container minimize it's admission with capabilities assigned."
+  query       = query.job_container_capabilities_drop_all
+
+  tags = local.job_common_tags
+}
+
+control "job_container_arg_peer_client_cert_auth_enabled" {
+  title       = "Job containers peer client cert auth should be enabled"
+  description = "This check ensures that the Job container peer client cert auth is enabled."
+  query       = query.job_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_rotate_certificate_enabled" {
+  title       = "Job containers certificate rotation should be enabled"
+  description = "This check ensures that the Job container  certificate rotation is enabled."
+  query       = query.job_container_rotate_certificate_enabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_event_qps_less_then_5" {
+  title       = "Job containers argument event qps should be less than 5"
+  description = "This check ensures that the Job container argument event qps is less than 5."
+  query       = query.job_container_argument_event_qps_less_then_5
+
+  tags = local.job_common_tags
+}

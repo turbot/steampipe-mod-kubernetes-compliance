@@ -195,3 +195,43 @@ control "daemonset_container_encryption_providers_configured" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_sys_admin_capability_disabled" {
+  title       = "DaemonSet containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the DaemonSet does not use CAP_SYS_ADMIN linux capability."
+  query       = query.daemonset_container_sys_admin_capability_disabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_capabilities_drop_all" {
+  title       = "DaemonSet containers should minimize it's admission with capabilities assigned"
+  description = "This check ensures that the DaemonSet container minimize it's admission with capabilities assigned."
+  query       = query.daemonset_container_capabilities_drop_all
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_arg_peer_client_cert_auth_enabled" {
+  title       = "DaemonSet containers peer client cert auth should be enabled"
+  description = "This check ensures that the DaemonSet container peer client cert auth is enabled."
+  query       = query.daemonset_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_rotate_certificate_enabled" {
+  title       = "DaemonSet containers certificate rotation should be enabled"
+  description = "This check ensures that the DaemonSet container certificate rotation is enabled."
+  query       = query.daemonset_container_rotate_certificate_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_event_qps_less_then_5" {
+  title       = "DaemonSet containers argument event qps should be less than 5"
+  description = "This check ensures that the DaemonSet container argument event qps is less than 5."
+  query       = query.daemonset_container_argument_event_qps_less_then_5
+
+  tags = local.daemonset_common_tags
+}

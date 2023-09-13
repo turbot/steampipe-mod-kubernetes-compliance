@@ -9,6 +9,9 @@ benchmark "all_controls_replicaset" {
   description = "This section contains recommendations for configuring ReplicaSet resources."
   children = [
     control.replicaset_container_admission_capability_restricted,
+    control.replicaset_container_arg_peer_client_cert_auth_enabled,
+    control.replicaset_container_argument_event_qps_less_then_5,
+    control.replicaset_container_capabilities_drop_all,
     control.replicaset_container_encryption_providers_configured,
     control.replicaset_container_image_pull_policy_always,
     control.replicaset_container_image_tag_specified,
@@ -17,7 +20,9 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_privilege_escalation_disabled,
     control.replicaset_container_privilege_port_mapped,
     control.replicaset_container_readiness_probe,
+    control.replicaset_container_rotate_certificate_enabled,
     control.replicaset_container_security_context_exists,
+    control.replicaset_container_sys_admin_capability_disabled,
     control.replicaset_container_with_added_capabilities,
     control.replicaset_cpu_limit,
     control.replicaset_cpu_request,
@@ -28,7 +33,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_immutable_container_filesystem,
     control.replicaset_memory_limit,
     control.replicaset_memory_request,
-    control.replicaset_non_root_container
+    control.replicaset_non_root_container,
   ]
 
   tags = merge(local.all_controls_replicaset_common_tags, {

@@ -203,3 +203,43 @@ control "deployment_container_encryption_providers_configured" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_sys_admin_capability_disabled" {
+  title       = "Deployment containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the Deployment does not use CAP_SYS_ADMIN linux capability."
+  query       = query.deployment_container_sys_admin_capability_disabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_capabilities_drop_all" {
+  title       = "Deployment containers should minimize it's admission with capabilities assigned"
+  description = "This check ensures that the Deployment container minimize it's admission with capabilities assigned."
+  query       = query.deployment_container_capabilities_drop_all
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_arg_peer_client_cert_auth_enabled" {
+  title       = "Deployment containers peer client cert auth should be enabled"
+  description = "This check ensures that the Deployment container peer client cert auth is enabled."
+  query       = query.deployment_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_rotate_certificate_enabled" {
+  title       = "Deployment containers certificate rotation should be enabled"
+  description = "This check ensures that the Deployment container  certificate rotation is enabled."
+  query       = query.deployment_container_rotate_certificate_enabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_event_qps_less_then_5" {
+  title       = "Deployment containers argument event qps should be less than 5"
+  description = "This check ensures that the Deployment container argument event qps is less than 5."
+  query       = query.deployment_container_argument_event_qps_less_then_5
+
+  tags = local.deployment_common_tags
+}

@@ -195,3 +195,43 @@ control "statefulset_container_encryption_providers_configured" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_sys_admin_capability_disabled" {
+  title       = "StatefulSet containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the StatefulSet does not use CAP_SYS_ADMIN linux capability."
+  query       = query.statefulset_container_sys_admin_capability_disabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_capabilities_drop_all" {
+  title       = "StatefulSet containers should minimize it's admission with capabilities assigned"
+  description = "This check ensures that the StatefulSet container minimize it's admission with capabilities assigned."
+  query       = query.statefulset_container_capabilities_drop_all
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_arg_peer_client_cert_auth_enabled" {
+  title       = "StatefulSet containers peer client cert auth should be enabled"
+  description = "This check ensures that the StatefulSet container peer client cert auth is enabled."
+  query       = query.statefulset_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_rotate_certificate_enabled" {
+  title       = "StatefulSet containers certificate rotation should be enabled"
+  description = "This check ensures that the StatefulSet container  certificate rotation is enabled."
+  query       = query.statefulset_container_rotate_certificate_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_event_qps_less_then_5" {
+  title       = "StatefulSet containers argument event qps should be less than 5"
+  description = "This check ensures that the StatefulSet container argument event qps is less than 5."
+  query       = query.statefulset_container_argument_event_qps_less_then_5
+
+  tags = local.statefulset_common_tags
+}

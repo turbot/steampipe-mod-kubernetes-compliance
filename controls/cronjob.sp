@@ -195,3 +195,43 @@ control "cronjob_container_encryption_providers_configured" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_sys_admin_capability_disabled" {
+  title       = "CronJob containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the CronJob does not use CAP_SYS_ADMIN linux capability."
+  query       = query.cronjob_container_sys_admin_capability_disabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_capabilities_drop_all" {
+  title       = "CronJob containers should minimize it's admission with capabilities assigned"
+  description = "This check ensures that the CronJob container minimize it's admission with capabilities assigned."
+  query       = query.cronjob_container_capabilities_drop_all
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_arg_peer_client_cert_auth_enabled" {
+  title       = "CronJob containers peer client cert auth should be enabled"
+  description = "This check ensures that the CronJob container peer client cert auth is enabled."
+  query       = query.cronjob_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_rotate_certificate_enabled" {
+  title       = "CronJob containers certificate rotation should be enabled"
+  description = "This check ensures that the CronJob container  certificate rotation is enabled."
+  query       = query.cronjob_container_rotate_certificate_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_event_qps_less_than_5" {
+  title       = "CronJob containers argument event qps should be less than 5"
+  description = "This check ensures that the CronJob container argument event qps is less than 5."
+  query       = query.cronjob_container_argument_event_qps_less_than_5
+
+  tags = local.cronjob_common_tags
+}
