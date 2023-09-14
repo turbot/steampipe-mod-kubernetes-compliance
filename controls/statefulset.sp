@@ -150,7 +150,7 @@ control "statefulset_default_seccomp_profile_enabled" {
 
 control "statefulset_container_with_added_capabilities" {
   title       = "StatefulSet containers should minimize the admission of containers with added capability"
-  description = "Container in StatefulSet should minimize the admission of container with added capability. Adding capabilities to container increases the risk of container breakout."
+  description = "Container in StatefulSet should minimize the admission of containers with added capability. Adding capabilities to container increases the risk of container breakout."
   query       = query.statefulset_container_with_added_capabilities
 
   tags = local.statefulset_common_tags
@@ -166,31 +166,31 @@ control "statefulset_container_security_context_exists" {
 
 control "statefulset_container_image_tag_specified" {
   title       = "StatefulSet containers have image tag specified which should be fixed not latest or blank"
-  description = "This check ensures that the container in the StatefulSet have image tag fixed not latest or blank."
+  description = "This check ensures that the container in the StatefulSet has image tag fixed not latest or blank."
   query       = query.statefulset_container_image_tag_specified
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_image_pull_policy_always" {
-  title       = "StatefulSet containers have image pull policy set to Always"
-  description = "This check ensures that the container in the StatefulSet have image pull policy set to Always."
+  title       = "StatefulSet containers has image pull policy set to Always"
+  description = "This check ensures that the container in the StatefulSet has image pull policy set to Always."
   query       = query.statefulset_container_image_pull_policy_always
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_admission_capability_restricted" {
-  title       = "StatefulSet containers should have admission capability restricted"
-  description = "This check ensures that the container in the StatefulSet have admission capability restricted."
+  title       = "StatefulSet containers should has admission capability restricted"
+  description = "This check ensures that the container in the StatefulSet has admission capability restricted."
   query       = query.statefulset_container_admission_capability_restricted
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_encryption_providers_configured" {
-  title       = "StatefulSet containers should have encryption providers configured appropriately"
-  description = "This check ensures that the container in the StatefulSet have encryption providers configured appropriately."
+  title       = "StatefulSet containers should has encryption providers configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has encryption providers configured appropriately."
   query       = query.statefulset_container_encryption_providers_configured
 
   tags = local.statefulset_common_tags
@@ -198,15 +198,15 @@ control "statefulset_container_encryption_providers_configured" {
 
 control "statefulset_container_sys_admin_capability_disabled" {
   title       = "StatefulSet containers should not use CAP_SYS_ADMIN linux capability"
-  description = "This check ensures that the container in the StatefulSet does not use CAP_SYS_ADMIN linux capability."
+  description = "This check ensures that the container in the StatefulSet does not use CAP_SYS_ADMIN Linux capability."
   query       = query.statefulset_container_sys_admin_capability_disabled
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_capabilities_drop_all" {
-  title       = "StatefulSet containers should minimize it's admission with capabilities assigned"
-  description = "This check ensures that the container in the StatefulSet minimizes it's admission with capabilities assigned."
+  title       = "StatefulSet containers should minimize its admission with capabilities assigned"
+  description = "This check ensures that the container in the StatefulSet minimizes its admission with capabilities assigned."
   query       = query.statefulset_container_capabilities_drop_all
 
   tags = local.statefulset_common_tags
@@ -214,7 +214,7 @@ control "statefulset_container_capabilities_drop_all" {
 
 control "statefulset_container_arg_peer_client_cert_auth_enabled" {
   title       = "StatefulSet containers peer client cert auth should be enabled"
-  description = "This check ensures that the container in the StatefulSet have peer client cert auth enabled."
+  description = "This check ensures that the container in the StatefulSet has peer client cert auth enabled."
   query       = query.statefulset_container_arg_peer_client_cert_auth_enabled
 
   tags = local.statefulset_common_tags
@@ -222,7 +222,7 @@ control "statefulset_container_arg_peer_client_cert_auth_enabled" {
 
 control "statefulset_container_rotate_certificate_enabled" {
   title       = "StatefulSet containers certificate rotation should be enabled"
-  description = "TThis check ensures that the container in the StatefulSet Controller have certificate rotation enabled."
+  description = "This check ensures that the container in the StatefulSet Controller has certificate rotation enabled."
   query       = query.statefulset_container_rotate_certificate_enabled
 
   tags = local.statefulset_common_tags
@@ -230,7 +230,7 @@ control "statefulset_container_rotate_certificate_enabled" {
 
 control "statefulset_container_argument_event_qps_less_than_5" {
   title       = "StatefulSet containers argument event qps should be less than 5"
-  description = "This check ensures that the container in the StatefulSet have argument event qps set to less than 5."
+  description = "This check ensures that the container in the StatefulSet has argument event qps set to less than 5."
   query       = query.statefulset_container_argument_event_qps_less_than_5
 
   tags = local.statefulset_common_tags
