@@ -10,7 +10,7 @@ benchmark "all_controls_statefulset" {
   children = [
     control.statefulset_container_admission_capability_restricted,
     control.statefulset_container_arg_peer_client_cert_auth_enabled,
-    control.statefulset_container_argument_event_qps_less_then_5,
+    control.statefulset_container_argument_event_qps_less_than_5,
     control.statefulset_container_capabilities_drop_all,
     control.statefulset_container_encryption_providers_configured,
     control.statefulset_container_image_pull_policy_always,
@@ -33,7 +33,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_immutable_container_filesystem,
     control.statefulset_memory_limit,
     control.statefulset_memory_request,
-    control.statefulset_non_root_container,
+    control.statefulset_non_root_container
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

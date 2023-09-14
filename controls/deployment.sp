@@ -236,10 +236,10 @@ control "deployment_container_rotate_certificate_enabled" {
   tags = local.deployment_common_tags
 }
 
-control "deployment_container_argument_event_qps_less_then_5" {
+control "deployment_container_argument_event_qps_less_than_5" {
   title       = "Deployment containers argument event qps should be less than 5"
   description = "This check ensures that the Deployment container argument event qps is less than 5."
-  query       = query.deployment_container_argument_event_qps_less_then_5
+  query       = query.deployment_container_argument_event_qps_less_than_5
 
   tags = local.deployment_common_tags
 }

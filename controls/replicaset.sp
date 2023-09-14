@@ -228,10 +228,10 @@ control "replicaset_container_rotate_certificate_enabled" {
   tags = local.replicaset_common_tags
 }
 
-control "replicaset_container_argument_event_qps_less_then_5" {
+control "replicaset_container_argument_event_qps_less_than_5" {
   title       = "ReplicaSet containers argument event qps should be less than 5"
   description = "This check ensures that the ReplicaSet container argument event qps is less than 5."
-  query       = query.replicaset_container_argument_event_qps_less_then_5
+  query       = query.replicaset_container_argument_event_qps_less_than_5
 
   tags = local.replicaset_common_tags
 }

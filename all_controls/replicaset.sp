@@ -10,7 +10,7 @@ benchmark "all_controls_replicaset" {
   children = [
     control.replicaset_container_admission_capability_restricted,
     control.replicaset_container_arg_peer_client_cert_auth_enabled,
-    control.replicaset_container_argument_event_qps_less_then_5,
+    control.replicaset_container_argument_event_qps_less_than_5,
     control.replicaset_container_capabilities_drop_all,
     control.replicaset_container_encryption_providers_configured,
     control.replicaset_container_image_pull_policy_always,
@@ -33,7 +33,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_immutable_container_filesystem,
     control.replicaset_memory_limit,
     control.replicaset_memory_request,
-    control.replicaset_non_root_container,
+    control.replicaset_non_root_container
   ]
 
   tags = merge(local.all_controls_replicaset_common_tags, {

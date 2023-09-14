@@ -380,24 +380,22 @@ query "deployment_container_image_tag_specified" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
-        case
-          when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
-          when c ->> 'image' like '%@%' then 'ok'
-          when (
-            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-          ) in ('latest', '') then 'alarm'
-          else 'ok'
-        end
-      as status,
-        case
-          when c ->> 'image' is null or c ->> 'image' = '' then 'no image specified.'
-          when c ->> 'image' like '%@%' then 'image with digest specified.'
-          when (
-            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-          ) in ('latest', '') then 'image with tag latest or no tag specified.'
-          else 'image with tag specified.'
-        end
-      as reason,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+        when c ->> 'image' like '%@%' then 'ok'
+        when (
+          select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+        ) in ('latest', '') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'no image specified.'
+        when c ->> 'image' like '%@%' then 'image with digest specified.'
+        when (
+          select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+        ) in ('latest', '') then 'image with tag latest or no tag specified.'
+        else 'image with tag specified.'
+      end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -411,24 +409,22 @@ query "deployment_container_image_pull_policy_always" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
-        case
-          when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
-          when c ->> 'imagePullPolicy' is null and (
-            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+        when c ->> 'imagePullPolicy' is null
+          and ( select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
           ) not in ('latest', '') then 'alarm'
-          when c ->> 'imagePullPolicy' <> 'Always' then 'alarm'
-          else 'ok'
-        end
-      as status,
-        case
-          when c ->> 'image' is null or c ->> 'image' = '' then ' no image specified.'
-          when c ->> 'imagePullPolicy' is null and (
-            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+        when c ->> 'imagePullPolicy' <> 'Always' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then ' no image specified.'
+        when c ->> 'imagePullPolicy' is null
+          and ( select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
           ) not in ('latest', '') then ' image pull policy is not specified.'
-          when c ->> 'imagePullPolicy' <> 'Always' then ' image pull policy is not set to Always.'
-          else ' image pull policy is set to Always.'
-        end
-      as reason,
+        when c ->> 'imagePullPolicy' <> 'Always' then ' image pull policy is not set to Always.'
+        else ' image pull policy is set to Always.'
+      end as reason,
       name as deployment_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
@@ -442,16 +438,20 @@ query "deployment_container_admission_capability_restricted" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
-        case
-          when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null) and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then 'ok'
-          else 'alarm'
-        end
-      as status,
-        case
-          when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null) and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then ' admission capability is restricted.'
-          else ' admission capability is not restricted.'
-        end
-      as reason,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then ' admission capability is restricted.'
+        else ' admission capability is not restricted.'
+      end as reason,
       name as deployment_name
     from
       kubernetes_deployment,
@@ -464,11 +464,13 @@ query "deployment_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c -> 'command') @> '["--encryption-provider-config"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--encryption-provider-config"]' then 'ok'
         else 'alarm'
       end as status,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c -> 'command') @> '["--encryption-provider-config"]' then c ->> 'name' || ' encryption providers configured appropriately.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--encryption-provider-config"]' then c ->> 'name' || ' encryption providers configured appropriately.'
         else c ->> 'name' || ' encryption providers not configured appropriately.'
       end as reason,
       name as deployment_name
@@ -485,7 +487,7 @@ query "deployment_container_sys_admin_capability_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' -> 'capabilities' -> 'add' @> '["CAP_SYS_ADMIN"]'  then 'alarm'
+        when c -> 'securityContext' -> 'capabilities' -> 'add' @> '["CAP_SYS_ADMIN"]' then 'alarm'
         else 'ok'
       end as status,
       case
@@ -506,11 +508,13 @@ query "deployment_container_capabilities_drop_all" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]') or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
         else 'alarm'
       end as status,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]') or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
         else c ->> 'name' || ' admission of containers not minimized with capabilities assigned.'
       end as reason,
       name as deployment_name
@@ -527,11 +531,11 @@ query "deployment_container_arg_peer_client_cert_auth_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'args') @> '["--peer-client-cert-auth=true"]'  then 'ok'
+        when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then 'ok'
         else 'alarm'
       end as status,
       case
-       when (c -> 'args') @> '["--peer-client-cert-auth=true"]'  then c ->> 'name' || ' peer client cert auth enabled.'
+       when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer client cert auth enabled.'
         else c ->> 'name' || 'peer client cert auth disabled.'
       end as reason,
       name as deployment_name
@@ -548,11 +552,13 @@ query "deployment_container_rotate_certificate_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'command') @> '["kubelet"]' and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
-       when (c -> 'command') @> '["kubelet"]' and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
+       when (c -> 'command') @> '["kubelet"]'
+        and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
         else c ->> 'name' || ' rotate certificates enabled.'
       end as reason,
       name as deployment_name
@@ -564,16 +570,16 @@ query "deployment_container_rotate_certificate_enabled" {
   EOQ
 }
 
-query "deployment_container_argument_event_qps_less_then_5" {
+query "deployment_container_argument_event_qps_less_than_5" {
   sql = <<-EOQ
     with container_list as (
       select
-        c ->> 'name' AS container_name,
+        c ->> 'name' as container_name,
         trim('"' from split_part(co::text, '=', 2))::integer as value
       from
-        kubernetes_pod AS p,
-        jsonb_array_elements(containers) AS c,
-        jsonb_array_elements(c -> 'command') AS co
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
       where
         (co)::text LIKE '%--event-qps=%'
     )
@@ -581,11 +587,11 @@ query "deployment_container_argument_event_qps_less_then_5" {
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when l.container_name is null then 'ok'
-        when l.container_name is not null and (c -> 'command') @> '["kubelet"]' and  COALESCE((l.value)::int, 0) > 5 then 'alarm'
+        when l.container_name is not null and (c -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 5 then 'alarm'
         else 'ok'
       end as status,
       case
-        when l.container_name is null then c ->> 'name'  || ' --event-qps is not set.'
+        when l.container_name is null then c ->> 'name' || ' --event-qps is not set.'
         else c ->> 'name' || ' --event-qps is set to ' || l.value || '.'
       end as reason,
       name as deployment_name

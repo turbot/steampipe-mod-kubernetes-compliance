@@ -228,10 +228,10 @@ control "statefulset_container_rotate_certificate_enabled" {
   tags = local.statefulset_common_tags
 }
 
-control "statefulset_container_argument_event_qps_less_then_5" {
+control "statefulset_container_argument_event_qps_less_than_5" {
   title       = "StatefulSet containers argument event qps should be less than 5"
   description = "This check ensures that the StatefulSet container argument event qps is less than 5."
-  query       = query.statefulset_container_argument_event_qps_less_then_5
+  query       = query.statefulset_container_argument_event_qps_less_than_5
 
   tags = local.statefulset_common_tags
 }
