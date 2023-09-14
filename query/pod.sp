@@ -436,6 +436,8 @@ query "pod_container_encryption_providers_configured" {
         else c ->> 'name' || ' encryption providers configured appropriately.'
       end as reason,
       name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_pod,
       jsonb_array_elements(containers) as c;
