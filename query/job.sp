@@ -326,8 +326,8 @@ query "job_container_with_added_capabilities" {
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then c ->> name || ' without added capability.'
-        else c ->> name || ' with added capability.'
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then c ->> 'name' || ' without added capability.'
+        else c ->> 'name' || ' with added capability.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -347,8 +347,8 @@ query "job_container_security_context_exists" {
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' is not null then c ->> name || ' security context exists.'
-        else c ->> name || ' security context does not exist.'
+        when c -> 'securityContext' is not null then c ->> 'name' || ' security context exists.'
+        else c ->> 'name' || ' security context does not exist.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -373,12 +373,12 @@ query "job_container_image_tag_specified" {
         end
       as status,
         case
-          when c ->> 'image' is null or c ->> 'image' = '' then c ->> name || 'no image specified.'
-          when c ->> 'image' like '%@%' then c ->> name || 'image with digest specified.'
+          when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || 'no image specified.'
+          when c ->> 'image' like '%@%' then c ->> 'name' || 'image with digest specified.'
           when (
             select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-          ) in ('latest', '') then c ->> name || 'image with tag latest or no tag specified.'
-          else c ->> name || 'image with tag specified.'
+          ) in ('latest', '') then c ->> 'name' || 'image with tag latest or no tag specified.'
+          else c ->> 'name' || 'image with tag specified.'
         end
       as reason,
       name as job_name
@@ -407,8 +407,8 @@ query "job_container_image_pull_policy_always" {
         when c ->> 'imagePullPolicy' is null and (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
         ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-        when c ->> 'imagePullPolicy' <> 'Always' then c ->> name || ' image pull policy is not set to Always.'
-        else c ->> name || ' image pull policy is set to Always.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to Always.'
+        else c ->> 'name' || ' image pull policy is set to Always.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
