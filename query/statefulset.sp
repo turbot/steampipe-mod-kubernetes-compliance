@@ -450,11 +450,13 @@ query "statefulset_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
         else 'ok'
       end as status,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
         else c ->> 'name' || ' encryption providers configured appropriately.'
       end as reason,
       name as stateful_set_name
@@ -492,11 +494,13 @@ query "statefulset_container_capabilities_drop_all" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]') or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
         else 'alarm'
       end as status,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]') or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
         else c ->> 'name' || ' admission of containers not minimized with capabilities assigned.'
       end as reason,
       name as stateful_set_name

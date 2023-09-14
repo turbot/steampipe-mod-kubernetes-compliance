@@ -449,11 +449,13 @@ query "replication_controller_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
         else 'ok'
       end as status,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
         else c ->> 'name' || ' encryption providers configured appropriately.'
       end as reason,
       name as replication_controller_name

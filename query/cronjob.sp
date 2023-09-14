@@ -421,11 +421,17 @@ query "cronjob_container_admission_capability_restricted" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null) and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then 'ok'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then 'ok'
         else 'alarm'
       end as status,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null) and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]' or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then c ->> 'name' || ' admission capability is restricted.'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then c ->> 'name' || ' admission capability is restricted.'
         else c ->> 'name' || ' admission capability is not restricted.'
       end as reason,
       name as cronjob_name
@@ -440,11 +446,13 @@ query "cronjob_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
         else 'ok'
       end as status,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
         else c ->> 'name' || ' encryption providers configured appropriately.'
       end as reason,
       name as cronjob_name
@@ -482,11 +490,13 @@ query "cronjob_container_capabilities_drop_all" {
     select
       distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]') or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
         else 'alarm'
       end as status,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]') or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
         else c ->> 'name' || ' admission of containers not minimized with capabilities assigned.'
       end as reason,
       name as cronjob_name
@@ -524,11 +534,13 @@ query "cronjob_container_rotate_certificate_enabled" {
     select
       distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
-        when (c -> 'command') @> '["kubelet"]' and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
-        when (c -> 'command') @> '["kubelet"]' and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
         else c ->> 'name' || ' rotate certificates enabled.'
       end as reason,
       name as cronjob_name

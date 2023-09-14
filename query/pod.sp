@@ -426,11 +426,13 @@ query "pod_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then 'alarm'
         else 'ok'
       end as status,
       case
-        when (c -> 'command') @> '["kube-apiserver"]' and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '--encryption-provider-config%') then c ->> 'name' || ' encryption providers not configured appropriately.'
         else c ->> 'name' || ' encryption providers configured appropriately.'
       end as reason,
       name as pod_name
@@ -554,11 +556,13 @@ query "pod_container_rotate_certificate_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'command') @> '["kubelet"]' and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
-        when (c -> 'command') @> '["kubelet"]' and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
         else c ->> 'name' || ' rotate certificates enabled.'
       end as reason,
       name as pod_name
