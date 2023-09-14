@@ -150,7 +150,7 @@ control "daemonset_default_seccomp_profile_enabled" {
 
 control "daemonset_container_with_added_capabilities" {
   title       = "DaemonSet containers should minimize the admission of containers with added capability"
-  description = "Containers in DaemonSet should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  description = "Container in DaemonSet should minimize the admission of container with added capability. Adding capabilities to container increases the risk of container breakout."
   query       = query.daemonset_container_with_added_capabilities
 
   tags = local.daemonset_common_tags
@@ -158,7 +158,7 @@ control "daemonset_container_with_added_capabilities" {
 
 control "daemonset_container_security_context_exists" {
   title       = "DaemonSet containers should have security context defined"
-  description = "This check ensures that the containers in a DaemonSet definition have security context defined."
+  description = "This check ensures that the container in a DaemonSet definition have security context defined."
   query       = query.daemonset_container_security_context_exists
 
   tags = local.daemonset_common_tags
@@ -166,7 +166,7 @@ control "daemonset_container_security_context_exists" {
 
 control "daemonset_container_image_tag_specified" {
   title       = "DaemonSet containers have image tag specified which should be fixed not latest or blank"
-  description = "This check ensures that the containers in the DaemonSet have image tag fixed not latest or blank."
+  description = "This check ensures that the container in the DaemonSet have image tag fixed not latest or blank."
   query       = query.daemonset_container_image_tag_specified
 
   tags = local.daemonset_common_tags
@@ -174,7 +174,7 @@ control "daemonset_container_image_tag_specified" {
 
 control "daemonset_container_image_pull_policy_always" {
   title       = "DaemonSet containers have image pull policy set to Always"
-  description = "This check ensures that the containers in the DaemonSet have image pull policy set to Always."
+  description = "This check ensures that the container in the DaemonSet have image pull policy set to Always."
   query       = query.daemonset_container_image_pull_policy_always
 
   tags = local.daemonset_common_tags
@@ -182,7 +182,7 @@ control "daemonset_container_image_pull_policy_always" {
 
 control "daemonset_container_admission_capability_restricted" {
   title       = "DaemonSet containers should have admission capability restricted"
-  description = "This check ensures that the containers in the DaemonSet have admission capability restricted."
+  description = "This check ensures that the container in the DaemonSet have admission capability restricted."
   query       = query.daemonset_container_admission_capability_restricted
 
   tags = local.daemonset_common_tags
@@ -190,7 +190,7 @@ control "daemonset_container_admission_capability_restricted" {
 
 control "daemonset_container_encryption_providers_configured" {
   title       = "DaemonSet containers should have encryption providers configured appropriately"
-  description = "This check ensures that the containers in the DaemonSet have encryption providers configured appropriately."
+  description = "This check ensures that the container in the DaemonSet have encryption providers configured appropriately."
   query       = query.daemonset_container_encryption_providers_configured
 
   tags = local.daemonset_common_tags
@@ -206,7 +206,7 @@ control "daemonset_container_sys_admin_capability_disabled" {
 
 control "daemonset_container_capabilities_drop_all" {
   title       = "DaemonSet containers should minimize it's admission with capabilities assigned"
-  description = "This check ensures that the DaemonSet container minimize it's admission with capabilities assigned."
+  description = "This check ensures that the container in the DaemonSet minimizes it's admission with capabilities assigned."
   query       = query.daemonset_container_capabilities_drop_all
 
   tags = local.daemonset_common_tags
@@ -214,7 +214,7 @@ control "daemonset_container_capabilities_drop_all" {
 
 control "daemonset_container_arg_peer_client_cert_auth_enabled" {
   title       = "DaemonSet containers peer client cert auth should be enabled"
-  description = "This check ensures that the DaemonSet container peer client cert auth is enabled."
+  description = "This check ensures that the container in the DaemonSet have peer client cert auth enabled."
   query       = query.daemonset_container_arg_peer_client_cert_auth_enabled
 
   tags = local.daemonset_common_tags
@@ -222,16 +222,16 @@ control "daemonset_container_arg_peer_client_cert_auth_enabled" {
 
 control "daemonset_container_rotate_certificate_enabled" {
   title       = "DaemonSet containers certificate rotation should be enabled"
-  description = "This check ensures that the DaemonSet container certificate rotation is enabled."
+  description = "This check ensures that the container in the DaemonSet have certificate rotation enabled."
   query       = query.daemonset_container_rotate_certificate_enabled
 
   tags = local.daemonset_common_tags
 }
 
-control "daemonset_container_argument_event_qps_less_then_5" {
+control "daemonset_container_argument_event_qps_less_than_5" {
   title       = "DaemonSet containers argument event qps should be less than 5"
-  description = "This check ensures that the DaemonSet container argument event qps is less than 5."
-  query       = query.daemonset_container_argument_event_qps_less_then_5
+  description = "This check ensures that the container in the DaemonSet have argument event qps set to less than 5."
+  query       = query.daemonset_container_argument_event_qps_less_than_5
 
   tags = local.daemonset_common_tags
 }

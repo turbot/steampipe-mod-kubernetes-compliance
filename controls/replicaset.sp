@@ -150,7 +150,7 @@ control "replicaset_default_seccomp_profile_enabled" {
 
 control "replicaset_container_with_added_capabilities" {
   title       = "ReplicaSet containers should minimize the admission of containers with added capability"
-  description = "Containers in ReplicaSet should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  description = "Container in ReplicaSet should minimize the admission of container with added capability. Adding capabilities to container increases the risk of container breakout."
   query       = query.replicaset_container_with_added_capabilities
 
   tags = local.replicaset_common_tags
@@ -158,7 +158,7 @@ control "replicaset_container_with_added_capabilities" {
 
 control "replicaset_container_security_context_exists" {
   title       = "ReplicaSet containers should have security context"
-  description = "This check ensures that ReplicaSet containers have security context defined."
+  description = "This check ensures that ReplicaSet container have security context defined."
   query       = query.replicaset_container_security_context_exists
 
   tags = local.replicaset_common_tags
@@ -166,7 +166,7 @@ control "replicaset_container_security_context_exists" {
 
 control "replicaset_container_image_tag_specified" {
   title       = "ReplicaSet containers have image tag specified which should be fixed not latest or blank"
-  description = "This check ensures that the containers in the ReplicaSet have image tag fixed not latest or blank."
+  description = "This check ensures that the container in the ReplicaSet have image tag fixed not latest or blank."
   query       = query.replicaset_container_image_tag_specified
 
   tags = local.replicaset_common_tags
@@ -174,7 +174,7 @@ control "replicaset_container_image_tag_specified" {
 
 control "replicaset_container_image_pull_policy_always" {
   title       = "ReplicaSet containers have image pull policy set to Always"
-  description = "This check ensures that the containers in the ReplicaSet have image pull policy set to Always."
+  description = "This check ensures that the container in the ReplicaSet have image pull policy set to Always."
   query       = query.replicaset_container_image_pull_policy_always
 
   tags = local.replicaset_common_tags
@@ -182,7 +182,7 @@ control "replicaset_container_image_pull_policy_always" {
 
 control "replicaset_container_admission_capability_restricted" {
   title       = "ReplicaSet containers should have admission capability restricted"
-  description = "This check ensures that the containers in the ReplicaSet have admission capability restricted."
+  description = "This check ensures that the container in the ReplicaSet have admission capability restricted."
   query       = query.replicaset_container_admission_capability_restricted
 
   tags = local.replicaset_common_tags
@@ -190,7 +190,7 @@ control "replicaset_container_admission_capability_restricted" {
 
 control "replicaset_container_encryption_providers_configured" {
   title       = "ReplicaSet containers should have encryption providers configured appropriately"
-  description = "This check ensures that the containers in the ReplicaSet have encryption providers configured appropriately."
+  description = "This check ensures that the container in the ReplicaSet have encryption providers configured appropriately."
   query       = query.replicaset_container_encryption_providers_configured
 
   tags = local.replicaset_common_tags
@@ -206,7 +206,7 @@ control "replicaset_container_sys_admin_capability_disabled" {
 
 control "replicaset_container_capabilities_drop_all" {
   title       = "ReplicaSet containers should minimize it's admission with capabilities assigned"
-  description = "This check ensures that the ReplicaSet container minimize it's admission with capabilities assigned."
+  description = "This check ensures that the container in the ReplicaSet minimizes it's admission with capabilities assigned."
   query       = query.replicaset_container_capabilities_drop_all
 
   tags = local.replicaset_common_tags
@@ -214,7 +214,7 @@ control "replicaset_container_capabilities_drop_all" {
 
 control "replicaset_container_arg_peer_client_cert_auth_enabled" {
   title       = "ReplicaSet containers peer client cert auth should be enabled"
-  description = "This check ensures that the ReplicaSet container peer client cert auth is enabled."
+  description = "This check ensures that the container in the ReplicaSet have peer client cert auth enabled."
   query       = query.replicaset_container_arg_peer_client_cert_auth_enabled
 
   tags = local.replicaset_common_tags
@@ -222,16 +222,16 @@ control "replicaset_container_arg_peer_client_cert_auth_enabled" {
 
 control "replicaset_container_rotate_certificate_enabled" {
   title       = "ReplicaSet containers certificate rotation should be enabled"
-  description = "This check ensures that the ReplicaSet container  certificate rotation is enabled."
+  description = "This check ensures that the container in the ReplicaSet have certificate rotation enabled."
   query       = query.replicaset_container_rotate_certificate_enabled
 
   tags = local.replicaset_common_tags
 }
 
-control "replicaset_container_argument_event_qps_less_then_5" {
+control "replicaset_container_argument_event_qps_less_than_5" {
   title       = "ReplicaSet containers argument event qps should be less than 5"
-  description = "This check ensures that the ReplicaSet container argument event qps is less than 5."
-  query       = query.replicaset_container_argument_event_qps_less_then_5
+  description = "This check ensures that the container in the ReplicaSet have argument event qps set to less than 5."
+  query       = query.replicaset_container_argument_event_qps_less_than_5
 
   tags = local.replicaset_common_tags
 }

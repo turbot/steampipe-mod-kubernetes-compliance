@@ -10,7 +10,7 @@ benchmark "all_controls_replication_controller" {
   children = [
     control.replication_controller_container_admission_capability_restricted,
     control.replication_controller_container_arg_peer_client_cert_auth_enabled,
-    control.replication_controller_container_argument_event_qps_less_then_5,
+    control.replication_controller_container_argument_event_qps_less_than_5,
     control.replication_controller_container_capabilities_drop_all,
     control.replication_controller_container_encryption_providers_configured,
     control.replication_controller_container_image_pull_policy_always,
@@ -33,7 +33,7 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_immutable_container_filesystem,
     control.replication_controller_memory_limit,
     control.replication_controller_memory_request,
-    control.replication_controller_non_root_container,
+    control.replication_controller_non_root_container
   ]
 
   tags = merge(local.all_controls_replication_controller_common_tags, {

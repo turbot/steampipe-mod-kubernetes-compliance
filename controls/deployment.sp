@@ -158,7 +158,7 @@ control "deployment_default_seccomp_profile_enabled" {
 
 control "deployment_container_with_added_capabilities" {
   title       = "Deployment containers should minimize the admission of containers with added capability"
-  description = "Containers in Deployment should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  description = "Container in Deployment should minimize the admission of container with added capability. Adding capabilities to container increases the risk of container breakout."
   query       = query.deployment_container_with_added_capabilities
 
   tags = local.deployment_common_tags
@@ -166,7 +166,7 @@ control "deployment_container_with_added_capabilities" {
 
 control "deployment_container_security_context_exists" {
   title       = "Deployment containers should have security context defined"
-  description = "This check ensures that the containers in a Deployment definition have security context defined."
+  description = "This check ensures that the container in a Deployment definition have security context defined."
   query       = query.deployment_container_security_context_exists
 
   tags = local.deployment_common_tags
@@ -174,7 +174,7 @@ control "deployment_container_security_context_exists" {
 
 control "deployment_container_image_tag_specified" {
   title       = "Deployment containers have image tag specified which should be fixed not latest or blank"
-  description = "This check ensures that the containers in the Deployment have image tag fixed not latest or blank."
+  description = "This check ensures that the container in the Deployment have image tag fixed not latest or blank."
   query       = query.deployment_container_image_tag_specified
 
   tags = local.deployment_common_tags
@@ -182,7 +182,7 @@ control "deployment_container_image_tag_specified" {
 
 control "deployment_container_image_pull_policy_always" {
   title       = "Deployment containers have image pull policy set to Always"
-  description = "This check ensures that the containers in the Deployment have image pull policy set to Always."
+  description = "This check ensures that the container in the Deployment have image pull policy set to Always."
   query       = query.deployment_container_image_pull_policy_always
 
   tags = local.deployment_common_tags
@@ -190,7 +190,7 @@ control "deployment_container_image_pull_policy_always" {
 
 control "deployment_container_admission_capability_restricted" {
   title       = "Deployment containers should have admission capability restricted"
-  description = "This check ensures that the containers in the Deployment have admission capability restricted."
+  description = "This check ensures that the container in the Deployment have admission capability restricted."
   query       = query.deployment_container_admission_capability_restricted
 
   tags = local.deployment_common_tags
@@ -198,7 +198,7 @@ control "deployment_container_admission_capability_restricted" {
 
 control "deployment_container_encryption_providers_configured" {
   title       = "Deployment containers should have encryption providers configured appropriately"
-  description = "This check ensures that the containers in the Deployment have encryption providers configured appropriately."
+  description = "This check ensures that the container in the Deployment have encryption providers configured appropriately."
   query       = query.deployment_container_encryption_providers_configured
 
   tags = local.deployment_common_tags
@@ -214,7 +214,7 @@ control "deployment_container_sys_admin_capability_disabled" {
 
 control "deployment_container_capabilities_drop_all" {
   title       = "Deployment containers should minimize it's admission with capabilities assigned"
-  description = "This check ensures that the Deployment container minimize it's admission with capabilities assigned."
+  description = "This check ensures that the container in the Deployment minimizes it's admission with capabilities assigned."
   query       = query.deployment_container_capabilities_drop_all
 
   tags = local.deployment_common_tags
@@ -222,7 +222,7 @@ control "deployment_container_capabilities_drop_all" {
 
 control "deployment_container_arg_peer_client_cert_auth_enabled" {
   title       = "Deployment containers peer client cert auth should be enabled"
-  description = "This check ensures that the Deployment container peer client cert auth is enabled."
+  description = "This check ensures that the container in the Deployment have peer client cert auth enabled."
   query       = query.deployment_container_arg_peer_client_cert_auth_enabled
 
   tags = local.deployment_common_tags
@@ -230,16 +230,16 @@ control "deployment_container_arg_peer_client_cert_auth_enabled" {
 
 control "deployment_container_rotate_certificate_enabled" {
   title       = "Deployment containers certificate rotation should be enabled"
-  description = "This check ensures that the Deployment container  certificate rotation is enabled."
+  description = "This check ensures that the container in the Deployment have certificate rotation enabled."
   query       = query.deployment_container_rotate_certificate_enabled
 
   tags = local.deployment_common_tags
 }
 
-control "deployment_container_argument_event_qps_less_then_5" {
+control "deployment_container_argument_event_qps_less_than_5" {
   title       = "Deployment containers argument event qps should be less than 5"
-  description = "This check ensures that the Deployment container argument event qps is less than 5."
-  query       = query.deployment_container_argument_event_qps_less_then_5
+  description = "This check ensures that the container in the Deployment have argument event qps set to less than 5."
+  query       = query.deployment_container_argument_event_qps_less_than_5
 
   tags = local.deployment_common_tags
 }
