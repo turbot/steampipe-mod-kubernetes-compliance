@@ -499,8 +499,8 @@ query "statefulset_container_capabilities_drop_all" {
         else 'alarm'
       end as status,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
-          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then c ->> 'name' || ' admission of containers with capabilities assigned minimized.'
         else c ->> 'name' || ' admission of containers with capabilities assigned minimized.'
       end as reason,
       name as stateful_set_name
