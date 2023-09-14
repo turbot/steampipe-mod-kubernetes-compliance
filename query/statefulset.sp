@@ -373,12 +373,12 @@ query "statefulset_container_image_tag_specified" {
         else 'ok'
       end as status,
       case
-        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || 'no image specified.'
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
         when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
         when (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-        ) in ('latest', '') then c ->> 'name' || 'image with tag latest or no tag specified.'
-        else c ->> 'name' || 'image with tag specified.'
+        ) in ('latest', '') then c ->> 'name' || ' image with the latest tag or no tag specified.'
+        else c ->> 'name' || ' image with tag specified.'
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
@@ -494,14 +494,14 @@ query "statefulset_container_capabilities_drop_all" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
-          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then 'ok'
         else 'alarm'
       end as status,
       case
         when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
           or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
-        else c ->> 'name' || ' admission of containers not minimized with capabilities assigned.'
+        else c ->> 'name' || ' admission of containers with capabilities assigned minimized.'
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}
@@ -522,7 +522,7 @@ query "statefulset_container_arg_peer_client_cert_auth_enabled" {
       end as status,
       case
         when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer client cert auth enabled.'
-        else c ->> 'name' || 'peer client cert auth disabled.'
+        else c ->> 'name' || ' peer client cert auth disabled.'
       end as reason,
       name as stateful_set_name
       ${local.tag_dimensions_sql}

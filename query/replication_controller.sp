@@ -493,14 +493,14 @@ query "replication_controller_container_capabilities_drop_all" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
-          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then 'ok'
         else 'alarm'
       end as status,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
-          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
-        else c ->> 'name' || ' admission of containers not minimized with capabilities assigned.'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
+        else c ->> 'name' || ' admission of containers with capabilities assigned not minimized.'
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
@@ -521,7 +521,7 @@ query "replication_controller_container_arg_peer_client_cert_auth_enabled" {
       end as status,
       case
        when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer client cert auth enabled.'
-        else c ->> 'name' || 'peer client cert auth disabled.'
+        else c ->> 'name' || ' peer client cert auth disabled.'
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
