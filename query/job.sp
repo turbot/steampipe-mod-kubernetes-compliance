@@ -326,8 +326,8 @@ query "job_container_with_added_capabilities" {
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then name || ' without added capability.'
-        else name || ' with added capability.'
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then c ->> name || ' without added capability.'
+        else c ->> name || ' with added capability.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -347,8 +347,8 @@ query "job_container_security_context_exists" {
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' is not null then name || ' security context exists.'
-        else name || ' security context does not exist.'
+        when c -> 'securityContext' is not null then c ->> name || ' security context exists.'
+        else c ->> name || ' security context does not exist.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -373,12 +373,12 @@ query "job_container_image_tag_specified" {
         end
       as status,
         case
-          when c ->> 'image' is null or c ->> 'image' = '' then 'no image specified.'
-          when c ->> 'image' like '%@%' then 'image with digest specified.'
+          when c ->> 'image' is null or c ->> 'image' = '' then c ->> name || 'no image specified.'
+          when c ->> 'image' like '%@%' then c ->> name || 'image with digest specified.'
           when (
             select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-          ) in ('latest', '') then 'image with tag latest or no tag specified.'
-          else 'image with tag specified.'
+          ) in ('latest', '') then c ->> name || 'image with tag latest or no tag specified.'
+          else c ->> name || 'image with tag specified.'
         end
       as reason,
       name as job_name
@@ -403,12 +403,12 @@ query "job_container_image_pull_policy_always" {
         else 'ok'
       end as status,
       case
-        when c ->> 'image' is null or c ->> 'image' = '' then ' no image specified.'
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
         when c ->> 'imagePullPolicy' is null and (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-        ) not in ('latest', '') then ' image pull policy is not specified.'
-        when c ->> 'imagePullPolicy' <> 'Always' then ' image pull policy is not set to Always.'
-        else ' image pull policy is set to Always.'
+        ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> name || ' image pull policy is not set to Always.'
+        else c ->> name || ' image pull policy is set to Always.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -434,8 +434,8 @@ query "job_container_admission_capability_restricted" {
         when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
           and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
           or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
-          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then ' admission capability is restricted.'
-        else ' admission capability is not restricted.'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then c ->> 'name' || ' admission capability is restricted.'
+        else c ->> 'name' || ' admission capability is not restricted.'
       end as reason,
       name as job_name
     from
@@ -474,7 +474,7 @@ query "job_container_sys_admin_capability_disabled" {
         else 'ok'
       end as status,
       case
-       when c -> 'securityContext' -> 'capabilities' -> 'add' @> '["CAP_SYS_ADMIN"]' then c ->> 'name' || ' CAP_SYS_ADMIN enabled.'
+        when c -> 'securityContext' -> 'capabilities' -> 'add' @> '["CAP_SYS_ADMIN"]' then c ->> 'name' || ' CAP_SYS_ADMIN enabled.'
         else c ->> 'name' || ' CAP_SYS_ADMIN disabled.'
       end as reason,
       name as job_name
