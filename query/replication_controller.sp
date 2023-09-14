@@ -373,11 +373,11 @@ query "replication_controller_container_image_tag_specified" {
       end as status,
       case
         when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || 'no image specified.'
-        when c ->> 'image' like '%@%' then c ->> 'name' || 'image with digest specified.'
+        when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
         when (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-        ) in ('latest', '') then c ->> 'name' || 'image with tag latest or no tag specified.'
-        else c ->> 'name' || 'image with tag specified.'
+        ) in ('latest', '') then c ->> 'name' || ' image with the latest tag or no tag specified.'
+        else c ->> 'name' || ' image with tag specified.'
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
@@ -405,8 +405,8 @@ query "replication_controller_container_image_pull_policy_always" {
         when c ->> 'imagePullPolicy' is null and (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
         ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to Always.'
-        else c ->> 'name' || ' image pull policy is set to Always.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
+        else c ->> 'name' || ' image pull policy is set to 'Always'.'
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}

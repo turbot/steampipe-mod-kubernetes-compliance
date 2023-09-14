@@ -374,7 +374,7 @@ query "statefulset_container_image_tag_specified" {
       end as status,
       case
         when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || 'no image specified.'
-        when c ->> 'image' like '%@%' then c ->> 'name' || 'image with digest specified.'
+        when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
         when (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
         ) in ('latest', '') then c ->> 'name' || 'image with tag latest or no tag specified.'
