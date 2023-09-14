@@ -150,7 +150,7 @@ control "replication_controller_default_seccomp_profile_enabled" {
 
 control "replication_controller_container_with_added_capabilities" {
   title       = "Replication Controller containers should minimize the admission of containers with added capability"
-  description = "Containers in Replication Controller should minimize the admission of containers with added capability. Adding capabilities to containers increases the risk of container breakout."
+  description = "Container in Replication Controller should minimize the admission of container with added capability. Adding capabilities to container increases the risk of container breakout."
   query       = query.replication_controller_container_with_added_capabilities
 
   tags = local.replication_controller_common_tags
@@ -166,7 +166,7 @@ control "replication_controller_container_security_context_exists" {
 
 control "replication_controller_container_image_tag_specified" {
   title       = "Replication Controller containers have image tag specified which should be fixed not latest or blank"
-  description = "This check ensures that the containers in the Replication Controller have image tag fixed not latest or blank."
+  description = "This check ensures that the container in the Replication Controller have image tag fixed not latest or blank."
   query       = query.replication_controller_container_image_tag_specified
 
   tags = local.replication_controller_common_tags
@@ -174,7 +174,7 @@ control "replication_controller_container_image_tag_specified" {
 
 control "replication_controller_container_image_pull_policy_always" {
   title       = "Replication Controller containers have image pull policy set to Always"
-  description = "This check ensures that the containers in the Replication Controller have image pull policy set to Always."
+  description = "This check ensures that the container in the Replication Controller have image pull policy set to Always."
   query       = query.replication_controller_container_image_pull_policy_always
 
   tags = local.replication_controller_common_tags
@@ -182,7 +182,7 @@ control "replication_controller_container_image_pull_policy_always" {
 
 control "replication_controller_container_admission_capability_restricted" {
   title       = "Replication Controller containers should have admission capability restricted"
-  description = "This check ensures that the containers in the Replication Controller have admission capability restricted."
+  description = "This check ensures that the container in the Replication Controller have admission capability restricted."
   query       = query.replication_controller_container_admission_capability_restricted
 
   tags = local.replication_controller_common_tags
@@ -190,7 +190,7 @@ control "replication_controller_container_admission_capability_restricted" {
 
 control "replication_controller_container_encryption_providers_configured" {
   title       = "Replication Controller containers should have encryption providers configured appropriately"
-  description = "This check ensures that the containers in the Replication Controller have encryption providers configured appropriately."
+  description = "This check ensures that the container in the Replication Controller have encryption providers configured appropriately."
   query       = query.replication_controller_container_encryption_providers_configured
 
   tags = local.replication_controller_common_tags
@@ -206,7 +206,7 @@ control "replication_controller_container_sys_admin_capability_disabled" {
 
 control "replication_controller_container_capabilities_drop_all" {
   title       = "Replication Controller containers should minimize it's admission with capabilities assigned"
-  description = "This check ensures that the Replication Controller container minimize it's admission with capabilities assigned."
+  description = "This check ensures that the container in the Replication Controller minimizes it's admission with capabilities assigned."
   query       = query.replication_controller_container_capabilities_drop_all
 
   tags = local.replication_controller_common_tags
@@ -214,7 +214,7 @@ control "replication_controller_container_capabilities_drop_all" {
 
 control "replication_controller_container_arg_peer_client_cert_auth_enabled" {
   title       = "Replication Controller containers peer client cert auth should be enabled"
-  description = "This check ensures that the Replication Controller container peer client cert auth is enabled."
+  description = "This check ensures that the container in the Replication Controller have peer client cert auth enabled."
   query       = query.replication_controller_container_arg_peer_client_cert_auth_enabled
 
   tags = local.replication_controller_common_tags
@@ -222,7 +222,7 @@ control "replication_controller_container_arg_peer_client_cert_auth_enabled" {
 
 control "replication_controller_container_rotate_certificate_enabled" {
   title       = "Replication Controller containers certificate rotation should be enabled"
-  description = "This check ensures that the Replication Controller container  certificate rotation is enabled."
+  description = "This check ensures that the container in the Replication Controller have certificate rotation enabled."
   query       = query.replication_controller_container_rotate_certificate_enabled
 
   tags = local.replication_controller_common_tags
@@ -230,7 +230,7 @@ control "replication_controller_container_rotate_certificate_enabled" {
 
 control "replication_controller_container_argument_event_qps_less_than_5" {
   title       = "Replication Controller containers argument event qps should be less than 5"
-  description = "This check ensures that the Replication Controller container argument event qps is less than 5."
+  description = "This check ensures that the container in the Replication Controller have argument event qps set to less than 5."
   query       = query.replication_controller_container_argument_event_qps_less_than_5
 
   tags = local.replication_controller_common_tags
