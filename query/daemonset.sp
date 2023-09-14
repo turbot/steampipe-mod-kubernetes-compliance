@@ -519,7 +519,7 @@ query "daemonset_container_arg_peer_client_cert_auth_enabled" {
       end as status,
       case
         when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer cldient cert auth enabled.'
-        else c ->> 'name' || 'peer client cert auth disabled.'
+        else c ->> 'name' || ' peer client cert auth disabled.'
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
