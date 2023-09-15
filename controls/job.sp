@@ -150,7 +150,7 @@ control "job_default_seccomp_profile_enabled" {
 
 control "job_container_with_added_capabilities" {
   title       = "Job containers should minimize the admission of containers with added capability"
-  description = "Containers= in Job should minimize the admission of containers with added capability. Adding capabilities to container increases the risk of container breakout."
+  description = "Containers in Job should minimize the admission of containers with added capability. Adding capabilities to container increases the risk of container breakout."
   query       = query.job_container_with_added_capabilities
 
   tags = local.job_common_tags
@@ -158,7 +158,7 @@ control "job_container_with_added_capabilities" {
 
 control "job_container_security_context_exists" {
   title       = "Job containers should has security context defined"
-  description = "This check ensures that the container in a Job definition has security context defined."
+  description = "This check ensures that the Stateful container is running with a defined security context."
   query       = query.job_container_security_context_exists
 
   tags = local.job_common_tags
