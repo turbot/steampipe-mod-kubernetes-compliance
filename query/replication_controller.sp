@@ -372,7 +372,7 @@ query "replication_controller_container_image_tag_specified" {
         else 'ok'
       end as status,
       case
-        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || 'no image specified.'
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
         when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
         when (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
@@ -499,7 +499,7 @@ query "replication_controller_container_capabilities_drop_all" {
       end as status,
       case
         when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
-          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then c ->> 'name' || ' admission of containers minimized with capabilities assigned.'
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then c ->> 'name' || ' admission of containers with capabilities assigned minimized.'
         else c ->> 'name' || ' admission of containers with capabilities assigned not minimized.'
       end as reason,
       name as replication_controller_name

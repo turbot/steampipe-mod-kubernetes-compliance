@@ -376,7 +376,7 @@ query "cronjob_container_image_tag_specified" {
           when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
           when (
             select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-          ) in ('latest', '') then c ->> 'name' || ' image with tag latest or no tag specified.'
+          ) in ('latest', '') then c ->> 'name' || ' image with the latest tag or no tag specified.'
           else c ->> 'name' || ' image with tag specified.'
         end
       as reason,

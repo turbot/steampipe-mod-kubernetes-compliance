@@ -406,7 +406,7 @@ query "statefulset_container_image_pull_policy_always" {
         when c ->> 'imagePullPolicy' is null and (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
         ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to Always.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
         else c ->> 'name' || ' image pull policy is set to Always.'
       end as reason,
       name as stateful_set_name

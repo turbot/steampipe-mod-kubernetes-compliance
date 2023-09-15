@@ -376,7 +376,7 @@ query "replicaset_container_image_tag_specified" {
         when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
         when (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-        ) in ('latest', '') then c ->> 'name' || ' image with tag latest or no tag specified.'
+        ) in ('latest', '') then c ->> 'name' || ' image with the latest tag or no tag specified.'
         else c ->> 'name' || ' image with tag specified.'
       end as reason,
       name as replicaset_name
@@ -521,7 +521,7 @@ query "replicaset_container_arg_peer_client_cert_auth_enabled" {
       end as status,
       case
         when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer client cert auth enabled.'
-        else c ->> 'name' || 'peer client cert auth disabled.'
+        else c ->> 'name' || ' peer client cert auth disabled.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}

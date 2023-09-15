@@ -377,7 +377,7 @@ query "job_container_image_tag_specified" {
           when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
           when (
             select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
-          ) in ('latest', '') then c ->> 'name' || ' image with tag latest or no tag specified.'
+          ) in ('latest', '') then c ->> 'name' || ' image with the latest tag or no tag specified.'
           else c ->> 'name' || ' image with tag specified.'
         end
       as reason,
@@ -494,8 +494,8 @@ query "job_container_capabilities_drop_all" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all" ]')
-          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL" ]') then 'ok'
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then 'ok'
         else 'alarm'
       end as status,
       case
