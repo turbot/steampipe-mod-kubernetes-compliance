@@ -8,11 +8,22 @@ benchmark "all_controls_daemonset" {
   title       = "DaemonSet"
   description = "This section contains recommendations for configuring DaemonSet resources."
   children = [
+    control.daemonset_container_admission_capability_restricted,
+    control.daemonset_container_arg_peer_client_cert_auth_enabled,
+    control.daemonset_container_argument_event_qps_less_than_5,
+    control.daemonset_container_capabilities_drop_all,
+    control.daemonset_container_encryption_providers_configured,
+    control.daemonset_container_image_pull_policy_always,
+    control.daemonset_container_image_tag_specified,
     control.daemonset_container_liveness_probe,
     control.daemonset_container_privilege_disabled,
     control.daemonset_container_privilege_escalation_disabled,
     control.daemonset_container_privilege_port_mapped,
     control.daemonset_container_readiness_probe,
+    control.daemonset_container_rotate_certificate_enabled,
+    control.daemonset_container_security_context_exists,
+    control.daemonset_container_sys_admin_capability_disabled,
+    control.daemonset_container_with_added_capabilities,
     control.daemonset_cpu_limit,
     control.daemonset_cpu_request,
     control.daemonset_default_namespace_used,

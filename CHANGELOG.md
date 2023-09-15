@@ -1,3 +1,21 @@
+## v0.12 [2023-09-15]
+
+_Enhancements_
+
+- Added 90 new controls to the `All Controls` benchmark for the following services: ([#55](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/55))
+  - `CronJob`
+  - `DaemonSet`
+  - `Deployment`
+  - `Job`
+  - `Pod`
+  - `ReplicaSet`
+  - `ReplicationController`
+  - `StatefulSet`
+
+_Bug fixes_
+
+- Fixed the `role_with_wildcards_used` control to correctly return data instead of an error. ([#54](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/54))
+
 ## v0.11 [2023-09-05]
 
 _Breaking changes_

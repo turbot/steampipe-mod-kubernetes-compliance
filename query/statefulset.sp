@@ -317,3 +317,275 @@ query "statefulset_container_privilege_disabled" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "statefulset_container_with_added_capabilities" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' is null then c ->> 'name' || ' without added capability.'
+        else c ->> 'name' || ' with added capability.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_security_context_exists" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' is not null then c ->> 'name' || ' security context exists.'
+        else c ->> 'name' || ' security context does not exist.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_image_tag_specified" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+        when c ->> 'image' like '%@%' then 'ok'
+        when (
+          select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+        ) in ('latest', '') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
+        when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
+        when (
+          select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+        ) in ('latest', '') then c ->> 'name' || ' image with the latest tag or no tag specified.'
+        else c ->> 'name' || ' image with tag specified.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_image_pull_policy_always" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+        when c ->> 'imagePullPolicy' is null and (
+          select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+        ) not in ('latest', '') then 'alarm'
+        when c ->> 'imagePullPolicy' <> 'Always' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
+        when c ->> 'imagePullPolicy' is null and (
+          select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+        ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
+        else c ->> 'name' || ' image pull policy is set to Always.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_admission_capability_restricted" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then c ->> 'name' || ' admission capability is restricted.'
+        else c ->> 'name' || ' admission capability is not restricted.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_encryption_providers_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--encryption-provider-config=%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--encryption-provider-config=%') then c ->> 'name' || ' encryption providers not configured appropriately.'
+        else c ->> 'name' || ' encryption providers configured appropriately.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_sys_admin_capability_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' @> '["CAP_SYS_ADMIN"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c -> 'securityContext' -> 'capabilities' -> 'add' @> '["CAP_SYS_ADMIN"]' then c ->> 'name' || ' CAP_SYS_ADMIN enabled.'
+        else c ->> 'name' || ' CAP_SYS_ADMIN disabled.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_capabilities_drop_all" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then c ->> 'name' || ' admission of containers with capabilities assigned minimized.'
+        else c ->> 'name' || ' admission of containers with capabilities assigned minimized.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_arg_peer_client_cert_auth_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer client cert auth enabled.'
+        else c ->> 'name' || ' peer client cert auth disabled.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_rotate_certificate_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
+        else c ->> 'name' || ' rotate certificates enabled.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_event_qps_less_than_5" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%event-qps=%'
+    )
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (c -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 5 then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when l.container_name is null then c ->> 'name' || ' event-qps is not set.'
+        else c ->> 'name' || ' event-qps is set to ' || l.value || '.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c
+      left join container_list as l on c ->> 'name' = l.container_name;
+  EOQ
+}
