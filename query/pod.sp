@@ -585,7 +585,7 @@ query "pod_container_argument_event_qps_less_than_5" {
         jsonb_array_elements(containers) as c,
         jsonb_array_elements(c -> 'command') as co
       where
-        (co)::text LIKE '%--event-qps=%'
+        (co)::text LIKE '%event-qps=%'
     )
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -595,8 +595,8 @@ query "pod_container_argument_event_qps_less_than_5" {
         else 'ok'
       end as status,
       case
-        when l.container_name is null then c ->> 'name' || ' --event-qps is not set.'
-        else c ->> 'name' || ' --event-qps is set to ' || l.value || '.'
+        when l.container_name is null then c ->> 'name' || ' event-qps is not set.'
+        else c ->> 'name' || ' event-qps is set to ' || l.value || '.'
       end as reason,
       name as pod_name
       ${local.tag_dimensions_sql}
