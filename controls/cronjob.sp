@@ -147,3 +147,91 @@ control "cronjob_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "cronjob_container_with_added_capabilities" {
+  title       = "CronJob containers should not have added capabilities"
+  description = "Container in CronJob definition should not have added capabilities. Added capabilities can provide container processes with escalated privileges which can be used to access sensitive host resources or perform operations outside of the container."
+  query       = query.cronjob_container_with_added_capabilities
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_security_context_exists" {
+  title       = "CronJob containers should has security context defined"
+  description = "This check ensures that the container in a CronJob definition has security context defined."
+  query       = query.cronjob_container_security_context_exists
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_image_tag_specified" {
+  title       = "CronJob containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the container in the CronJob has image tag fixed not latest or blank."
+  query       = query.cronjob_container_image_tag_specified
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_image_pull_policy_always" {
+  title       = "CronJob containers should has image pull policy set to Always"
+  description = "This check ensures that the container in the CronJob has image pull policy set to Always."
+  query       = query.cronjob_container_image_pull_policy_always
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_admission_capability_restricted" {
+  title       = "CronJob containers should has admission capability restricted"
+  description = "This check ensures that the container in the CronJob has admission capability restricted."
+  query       = query.cronjob_container_admission_capability_restricted
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_encryption_providers_configured" {
+  title       = "CronJob containers should has encryption providers configured appropriately"
+  description = "This check ensures that the container in the CronJob has encryption providers configured appropriately."
+  query       = query.cronjob_container_encryption_providers_configured
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_sys_admin_capability_disabled" {
+  title       = "CronJob containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the CronJob does not use CAP_SYS_ADMIN Linux capability."
+  query       = query.cronjob_container_sys_admin_capability_disabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_capabilities_drop_all" {
+  title       = "CronJob containers should minimize its admission with capabilities assigned"
+  description = "This check ensures that the container in the CronJob minimizes its admission with capabilities assigned."
+  query       = query.cronjob_container_capabilities_drop_all
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_arg_peer_client_cert_auth_enabled" {
+  title       = "CronJob containers peer client cert auth should be enabled"
+  description = "This check ensures that the container in the CronJob has peer client cert auth enabled."
+  query       = query.cronjob_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_rotate_certificate_enabled" {
+  title       = "CronJob containers certificate rotation should be enabled"
+  description = "This check ensures that the container in the CronJob has certificate rotation enabled."
+  query       = query.cronjob_container_rotate_certificate_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_event_qps_less_than_5" {
+  title       = "CronJob containers argument event qps should be less than 5"
+  description = "This check ensures that the container in the CronJob has argument event qps set to less than 5."
+  query       = query.cronjob_container_argument_event_qps_less_than_5
+
+  tags = local.cronjob_common_tags
+}

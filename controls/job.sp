@@ -147,3 +147,91 @@ control "job_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "job_container_with_added_capabilities" {
+  title       = "Job containers should minimize the admission of containers with added capability"
+  description = "Containers in Job should minimize the admission of containers with added capability. Adding capabilities to container increases the risk of container breakout."
+  query       = query.job_container_with_added_capabilities
+
+  tags = local.job_common_tags
+}
+
+control "job_container_security_context_exists" {
+  title       = "Job containers should has security context defined"
+  description = "This check ensures that the Stateful container is running with a defined security context."
+  query       = query.job_container_security_context_exists
+
+  tags = local.job_common_tags
+}
+
+control "job_container_image_tag_specified" {
+  title       = "Job containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the container in the Job has image tag fixed not latest or blank."
+  query       = query.job_container_image_tag_specified
+
+  tags = local.job_common_tags
+}
+
+control "job_container_image_pull_policy_always" {
+  title       = "Job containers has image pull policy set to Always"
+  description = "This check ensures that the container in the Job has image pull policy set to Always."
+  query       = query.job_container_image_pull_policy_always
+
+  tags = local.job_common_tags
+}
+
+control "job_container_admission_capability_restricted" {
+  title       = "Job containers should has admission capability restricted"
+  description = "This check ensures that the container in the Job has admission capability restricted."
+  query       = query.job_container_admission_capability_restricted
+
+  tags = local.job_common_tags
+}
+
+control "job_container_encryption_providers_configured" {
+  title       = "Job containers should has encryption providers configured appropriately"
+  description = "This check ensures that the container in the Job has encryption providers configured appropriately."
+  query       = query.job_container_encryption_providers_configured
+
+  tags = local.job_common_tags
+}
+
+control "job_container_sys_admin_capability_disabled" {
+  title       = "Job containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the Job does not use CAP_SYS_ADMIN Linux capability."
+  query       = query.job_container_sys_admin_capability_disabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_capabilities_drop_all" {
+  title       = "Job containers should minimize its admission with capabilities assigned"
+  description = "This check ensures that the container in the Job minimizes its admission with capabilities assigned."
+  query       = query.job_container_capabilities_drop_all
+
+  tags = local.job_common_tags
+}
+
+control "job_container_arg_peer_client_cert_auth_enabled" {
+  title       = "Job containers peer client cert auth should be enabled"
+  description = "This check ensures that the Job container peer client cert auth is enabled."
+  query       = query.job_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_rotate_certificate_enabled" {
+  title       = "Job containers certificate rotation should be enabled"
+  description = "This check ensures that the container in the Job has peer client cert auth enabled."
+  query       = query.job_container_rotate_certificate_enabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_event_qps_less_than_5" {
+  title       = "Job containers argument event qps should be less than 5"
+  description = "This check ensures that the container in the Job has argument event qps set to less than 5."
+  query       = query.job_container_argument_event_qps_less_than_5
+
+  tags = local.job_common_tags
+}

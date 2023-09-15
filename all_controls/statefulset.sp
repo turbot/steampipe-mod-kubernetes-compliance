@@ -8,11 +8,22 @@ benchmark "all_controls_statefulset" {
   title       = "StatefulSet"
   description = "This section contains recommendations for configuring StatefulSet resources."
   children = [
+    control.statefulset_container_admission_capability_restricted,
+    control.statefulset_container_arg_peer_client_cert_auth_enabled,
+    control.statefulset_container_argument_event_qps_less_than_5,
+    control.statefulset_container_capabilities_drop_all,
+    control.statefulset_container_encryption_providers_configured,
+    control.statefulset_container_image_pull_policy_always,
+    control.statefulset_container_image_tag_specified,
     control.statefulset_container_liveness_probe,
     control.statefulset_container_privilege_disabled,
     control.statefulset_container_privilege_escalation_disabled,
     control.statefulset_container_privilege_port_mapped,
     control.statefulset_container_readiness_probe,
+    control.statefulset_container_rotate_certificate_enabled,
+    control.statefulset_container_security_context_exists,
+    control.statefulset_container_sys_admin_capability_disabled,
+    control.statefulset_container_with_added_capabilities,
     control.statefulset_cpu_limit,
     control.statefulset_cpu_request,
     control.statefulset_default_namespace_used,

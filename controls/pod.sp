@@ -132,3 +132,107 @@ control "pod_default_seccomp_profile_enabled" {
     cis = "true"
   })
 }
+
+control "pod_container_with_added_capabilities" {
+  title       = "Pod containers should minimize the admission of containers with added capability"
+  description = "Container in Pod should minimize the admission of containers with added capability. Adding capabilities to container increases the risk of container breakout."
+  query       = query.pod_container_with_added_capabilities
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_security_context_exists" {
+  title       = "Pod containers should have security context"
+  description = "This check ensures that the container in the Pod has security context defined."
+  query       = query.pod_container_security_context_exists
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_image_tag_specified" {
+  title       = "Pod containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the container in the Pod has image tag fixed not latest or blank."
+  query       = query.pod_container_image_tag_specified
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_image_pull_policy_always" {
+  title       = "Pod containers has image pull policy set to Always"
+  description = "This check ensures that the container in the Pod has image pull policy set to Always."
+  query       = query.pod_container_image_pull_policy_always
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_admission_capability_restricted" {
+  title       = "Pod containers should has admission capability restricted"
+  description = "This check ensures that the container in the Pod has admission capability restricted."
+  query       = query.pod_container_admission_capability_restricted
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_encryption_providers_configured" {
+  title       = "Pod containers should has encryption providers configured appropriately"
+  description = "This check ensures that the container in the Pod has encryption providers configured appropriately."
+  query       = query.pod_container_encryption_providers_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_sys_admin_capability_disabled" {
+  title       = "Pod containers should not use CAP_SYS_ADMIN linux capability"
+  description = "This check ensures that the container in the Pod does not use CAP_SYS_ADMIN Linux capability."
+  query       = query.pod_container_sys_admin_capability_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_memory_limit" {
+  title       = replace(local.container_memory_limit_title, "__KIND__", "Pod")
+  description = replace(local.container_memory_limit_desc, "__KIND__", "Pod")
+  query       = query.pod_container_memory_limit
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_memory_request" {
+  title       = replace(local.container_memory_request_title, "__KIND__", "Pod")
+  description = replace(local.container_memory_request_desc, "__KIND__", "Pod")
+  query       = query.pod_container_memory_request
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_capabilities_drop_all" {
+  title       = "Pod containers should minimize its admission with capabilities assigned"
+  description = "This check ensures that the container in the Pod minimizes its admission with capabilities assigned."
+  query       = query.pod_container_capabilities_drop_all
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_arg_peer_client_cert_auth_enabled" {
+  title       = "Pod containers peer client cert auth should be enabled"
+  description = "This check ensures that the Pod container peer client cert auth is enabled."
+  query       = query.pod_container_arg_peer_client_cert_auth_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_rotate_certificate_enabled" {
+  title       = "Pod containers certificate rotation should be enabled"
+  description = "This check ensures that the container in the Pod has peer client cert auth enabled."
+  query       = query.pod_container_rotate_certificate_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_event_qps_less_than_5" {
+  title       = "Pod containers argument event qps should be less than 5"
+  description = "This check ensures that the container in the Pod has argument event qps set to less than 5."
+  query       = query.pod_container_argument_event_qps_less_than_5
+
+  tags = local.pod_common_tags
+}
