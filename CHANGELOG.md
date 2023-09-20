@@ -2,7 +2,7 @@
 
 _Enhancements_
 
-- Added 90 new controls to the `All Controls` benchmark for the following services: ([#55](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/55))
+- Added 90 new controls to the `All Controls` benchmark for the following services: ([#56](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/56))
   - `CronJob`
   - `DaemonSet`
   - `Deployment`
