@@ -607,3 +607,74 @@ query "pod_container_argument_event_qps_less_than_5" {
       left join container_list as l on c ->> 'name' = l.container_name;
   EOQ
 }
+
+query "pod_container_basic_auth_file_exists" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file exists.'
+        else c ->> 'name' || ' basic auth file do not exists.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_etcd_cafile_exists" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--etcd-cafile%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile exists.'
+        else c ->> 'name' || ' etcd cafile do not exists.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_etcd_cert_and_key_exists" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--etcd-certfile%') 
+          and (c ->> 'command' like '%--etcd-keyfile%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--etcd-certfile%') 
+          and (c ->> 'command' like '%--etcd-keyfile%') then c ->> 'name' || ' etcd certfile and etcd keyfile exists.'
+        else c ->> 'name' || ' etcd certfile and etcd keyfile do not exists.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
