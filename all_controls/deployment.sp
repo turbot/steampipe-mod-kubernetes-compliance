@@ -34,7 +34,12 @@ benchmark "all_controls_deployment" {
     control.deployment_memory_limit,
     control.deployment_memory_request,
     control.deployment_non_root_container,
-    control.deployment_replica_minimum_3
+    control.deployment_replica_minimum_3,
+    control.deployment_container_argument_anonymous_auth_disabled,
+    control.deployment_container_argument_audit_log_path_configured,
+    control.deployment_container_argument_audit_log_maxage_greater_than_30,
+    control.deployment_container_argument_audit_log_maxbackup_greater_than_10,
+    control.deployment_container_argument_audit_log_maxsize_greater_than_100,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

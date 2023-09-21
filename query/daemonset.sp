@@ -404,8 +404,8 @@ query "daemonset_container_image_pull_policy_always" {
           when c ->> 'imagePullPolicy' is null
             and (select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
             ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-          when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
-          else c ->> 'name' || ' image pull policy is set to 'Always'.'
+          when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to ''Always''.'
+          else c ->> 'name' || ' image pull policy is set to ''Always''.'
         end
       as reason,
       name as daemonset_name
@@ -560,8 +560,8 @@ query "daemonset_container_argument_event_qps_less_than_5" {
         c ->> 'name' as container_name,
         trim('"' from split_part(co::text, '=', 2))::integer as value
       from
-        kubernetes_pod as p,
-        jsonb_array_elements(containers) as c,
+        kubernetes_daemonset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
         (co)::text LIKE '%event-qps=%'
@@ -584,5 +584,183 @@ query "daemonset_container_argument_event_qps_less_than_5" {
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c
       left join container_list as l on c ->> 'name' = l.container_name;
+  EOQ
+}
+
+query "daemonset_container_argument_anonymous_auth_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+         when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' rotate certificates disabled.'
+        else c ->> 'name' || ' rotate certificates enabled.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_path_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
+        else c ->> 'name' || ' audit log path configured.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_maxage_greater_than_30" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxage=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then d.value ->> 'name' || ' audit-log-maxage is not set.'
+        else d.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxbackup=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then d.value ->> 'name' || ' audit-log-maxbackup is not set.'
+        else d.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxsiz=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then d.value ->> 'name' || ' audit-log-maxsizis not set.'
+        else d.value ->> 'name' || ' audit-log-maxsiz is set to ' || l.value || '.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }

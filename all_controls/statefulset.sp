@@ -33,7 +33,12 @@ benchmark "all_controls_statefulset" {
     control.statefulset_immutable_container_filesystem,
     control.statefulset_memory_limit,
     control.statefulset_memory_request,
-    control.statefulset_non_root_container
+    control.statefulset_non_root_container,
+    control.statefulset_container_argument_anonymous_auth_disabled,
+    control.statefulset_container_argument_audit_log_path_configured,
+    control.statefulset_container_argument_audit_log_maxage_greater_than_30,
+    control.statefulset_container_argument_audit_log_maxbackup_greater_than_10,
+    control.statefulset_container_argument_audit_log_maxsize_greater_than_100,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

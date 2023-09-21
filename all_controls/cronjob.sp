@@ -33,7 +33,12 @@ benchmark "all_controls_cronjob" {
     control.cronjob_immutable_container_filesystem,
     control.cronjob_memory_limit,
     control.cronjob_memory_request,
-    control.cronjob_non_root_container
+    control.cronjob_non_root_container,
+    control.cronjob_container_argument_anonymous_auth_disabled,
+    control.cronjob_container_argument_audit_log_path_configured,
+    control.cronjob_container_argument_audit_log_maxage_greater_than_30,
+    control.cronjob_container_argument_audit_log_maxbackup_greater_than_10,
+    control.cronjob_container_argument_audit_log_maxsize_greater_than_100,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {

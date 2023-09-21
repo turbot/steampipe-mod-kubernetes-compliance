@@ -235,3 +235,43 @@ control "job_container_argument_event_qps_less_than_5" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_argument_anonymous_auth_disabled" {
+  title       = "Job containers argument anonymous auth should be disabled"
+  description = "This check ensures that the container in the Job has anonymous auth disabled."
+  query       = query.job_container_argument_anonymous_auth_disabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_audit_log_path_configured" {
+  title       = "Job containers should has audit log path configured appropriately"
+  description = "This check ensures that the container in the Job has audit log path configured  appropriately."
+  query       = query.job_container_argument_audit_log_path_configured
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_audit_log_maxage_greater_than_30" {
+  title       = "Job containers should have audit log maxage set to 30 or greater"
+  description = "This check ensures that the container in the Job has audit log maxage set to 30 or greater."
+  query       = query.job_container_argument_audit_log_maxage_greater_than_30
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_audit_log_maxbackup_greater_than_10" {
+  title       = "Job containers should have audit log maxbackup set to 10 or greater"
+  description = "This check ensures that the container in the Job has audit log maxbackup set to 10 or greater."
+  query       = query.job_container_argument_audit_log_maxbackup_greater_than_10
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_audit_log_maxsize_greater_than_100" {
+  title       = "Job containers should have audit log maxsize set to 100 or greater"
+  description = "This check ensures that the container in the Job has audit log maxsize set to 100 or greater."
+  query       = query.job_container_argument_audit_log_maxsize_greater_than_100
+
+  tags = local.job_common_tags
+}

@@ -33,7 +33,12 @@ benchmark "all_controls_daemonset" {
     control.daemonset_immutable_container_filesystem,
     control.daemonset_memory_limit,
     control.daemonset_memory_request,
-    control.daemonset_non_root_container
+    control.daemonset_non_root_container,
+    control.daemonset_container_argument_anonymous_auth_disabled,
+    control.daemonset_container_argument_audit_log_path_configured,
+    control.daemonset_container_argument_audit_log_maxage_greater_than_30,
+    control.daemonset_container_argument_audit_log_maxbackup_greater_than_10,
+    control.daemonset_container_argument_audit_log_maxsize_greater_than_100,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

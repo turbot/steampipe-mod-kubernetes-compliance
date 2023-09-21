@@ -243,3 +243,43 @@ control "deployment_container_argument_event_qps_less_than_5" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_anonymous_auth_disabled" {
+  title       = "Deployment containers argument anonymous auth should be disabled"
+  description = "This check ensures that the container in the Deployment has anonymous auth disabled."
+  query       = query.deployment_container_argument_anonymous_auth_disabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_audit_log_path_configured" {
+  title       = "Deployment containers should has audit log path configured appropriately"
+  description = "This check ensures that the container in the Deployment has audit log path configured  appropriately."
+  query       = query.deployment_container_argument_audit_log_path_configured
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_audit_log_maxage_greater_than_30" {
+  title       = "Deployment containers should have audit log maxage set to 30 or greater"
+  description = "This check ensures that the container in the Deployment has audit log maxage set to 30 or greater."
+  query       = query.deployment_container_argument_audit_log_maxage_greater_than_30
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_audit_log_maxbackup_greater_than_10" {
+  title       = "Deployment containers should have audit log maxbackup set to 10 or greater"
+  description = "This check ensures that the container in the Deployment has audit log maxbackup set to 10 or greater."
+  query       = query.deployment_container_argument_audit_log_maxbackup_greater_than_10
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_audit_log_maxsize_greater_than_100" {
+  title       = "Deployment containers should have audit log maxsize set to 100 or greater"
+  description = "This check ensures that the container in the Deployment has audit log maxsize set to 100 or greater."
+  query       = query.deployment_container_argument_audit_log_maxsize_greater_than_100
+
+  tags = local.deployment_common_tags
+}

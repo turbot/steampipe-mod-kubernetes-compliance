@@ -235,3 +235,43 @@ control "cronjob_container_argument_event_qps_less_than_5" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_argument_anonymous_auth_disabled" {
+  title       = "CronJob containers argument anonymous auth should be disabled"
+  description = "This check ensures that the container in the CronJob has anonymous auth disabled."
+  query       = query.cronjob_container_argument_anonymous_auth_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "cronjob_container_argument_audit_log_path_configured" {
+  title       = "CronJob containers should has audit log path configured appropriately"
+  description = "This check ensures that the container in the CronJob has audit log path configured  appropriately."
+  query       = query.cronjob_container_argument_audit_log_path_configured
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_audit_log_maxage_greater_than_30" {
+  title       = "CronJob containers should have audit log maxage set to 30 or greater"
+  description = "This check ensures that the container in the CronJob has audit log maxage set to 30 or greater."
+  query       = query.cronjob_container_argument_audit_log_maxage_greater_than_30
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_audit_log_maxbackup_greater_than_10" {
+  title       = "CronJob containers should have audit log maxbackup set to 10 or greater"
+  description = "This check ensures that the container in the CronJob has audit log maxbackup set to 10 or greater."
+  query       = query.cronjob_container_argument_audit_log_maxbackup_greater_than_10
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
+  title       = "CronJob containers should have audit log maxsize set to 100 or greater"
+  description = "This check ensures that the container in the CronJob has audit log maxsize set to 100 or greater."
+  query       = query.cronjob_container_argument_audit_log_maxsize_greater_than_100
+
+  tags = local.cronjob_common_tags
+}

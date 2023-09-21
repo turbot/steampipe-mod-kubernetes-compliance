@@ -405,8 +405,8 @@ query "replicaset_container_image_pull_policy_always" {
         when c ->> 'imagePullPolicy' is null and (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
         ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
-        else c ->> 'name' || ' image pull policy is set to 'Always'.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to ''Always''.'
+        else c ->> 'name' || ' image pull policy is set to ''Always''.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -586,5 +586,183 @@ query "replicaset_container_argument_event_qps_less_than_5" {
       kubernetes_replicaset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c
       left join container_list as l on c ->> 'name' = l.container_name;
+  EOQ
+}
+
+query "replicaset_container_argument_anonymous_auth_disabled" {
+  sql = <<-EOQ
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' anonymous auth enabled.'
+        else c ->> 'name' || ' anonymous auth disabled.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replicaset_container_argument_audit_log_path_configured" {
+  sql = <<-EOQ
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
+        else c ->> 'name' || ' audit log path configured.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replicaset_container_argument_audit_log_maxage_greater_than_30" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxage=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then r.value ->> 'name' || ' audit-log-maxage is not set.'
+        else r.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
+  EOQ
+}
+
+query "replicaset_container_argument_audit_log_maxbackup_greater_than_10" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%udit-log-maxbackup=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then r.value ->> 'name' || ' audit-log-maxbackup is not set.'
+        else r.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
+  EOQ
+}
+
+query "replicaset_container_argument_audit_log_maxsize_greater_than_100" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxsize=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then r.value ->> 'name' || ' audit-log-maxsize is not set.'
+        else r.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
   EOQ
 }

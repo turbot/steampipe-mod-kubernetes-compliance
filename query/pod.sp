@@ -382,8 +382,8 @@ query "pod_container_image_pull_policy_always" {
         when c ->> 'imagePullPolicy' is null and (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
         ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
-        else c ->> 'name' || ' image pull policy is set to 'Always'.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to ''Always''.'
+        else c ->> 'name' || ' image pull policy is set to ''Always''.'
       end as reason,
       name as pod_name
       ${local.tag_dimensions_sql}
@@ -608,6 +608,29 @@ query "pod_container_argument_event_qps_less_than_5" {
   EOQ
 }
 
+query "pod_container_argument_anonymous_auth_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' anonymous auth enabled.'
+        else c ->> 'name' || ' anonymous auth disabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
 query "pod_container_basic_auth_file_exists" {
   sql = <<-EOQ
     select
@@ -660,13 +683,13 @@ query "pod_container_etcd_cert_and_key_exists" {
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--etcd-certfile%') 
+          and (c ->> 'command' like '%--etcd-certfile%')
           and (c ->> 'command' like '%--etcd-keyfile%') then 'alarm'
         else 'ok'
       end as status,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--etcd-certfile%') 
+          and (c ->> 'command' like '%--etcd-certfile%')
           and (c ->> 'command' like '%--etcd-keyfile%') then c ->> 'name' || ' etcd certfile and etcd keyfile exists.'
         else c ->> 'name' || ' etcd certfile and etcd keyfile do not exists.'
       end as reason,
@@ -676,5 +699,160 @@ query "pod_container_etcd_cert_and_key_exists" {
     from
       kubernetes_pod,
       jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_argument_audit_log_path_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
+        else c ->> 'name' || ' audit log path configured.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_argument_audit_log_maxage_greater_than_30" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxage=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then p.value ->> 'name' || ' audit-log-maxage is not set.'
+        else p.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
+      end as reason,
+      p.pod_name as pod_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
+  EOQ
+}
+
+query "pod_container_argument_audit_log_maxbackup_greater_than_10" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxbackup=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then p.value ->> 'name' || ' audit-log-maxbackup is not set.'
+        else p.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
+      end as reason,
+      p.pod_name as pod_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
+  EOQ
+}
+
+query "pod_container_argument_audit_log_maxsize_greater_than_100" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxsize=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then p.value ->> 'name' || ' audit-log-maxsize is not set.'
+        else p.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
+      end as reason,
+      p.pod_name as pod_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
   EOQ
 }

@@ -407,8 +407,8 @@ query "job_container_image_pull_policy_always" {
         when c ->> 'imagePullPolicy' is null and (
           select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
         ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
-        else c ->> 'name' || ' image pull policy is set to 'Always'.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to ''Always''.'
+        else c ->> 'name' || ' image pull policy is set to ''Always''.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -587,5 +587,184 @@ query "job_container_argument_event_qps_less_than_5" {
       kubernetes_job,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c
       left join container_list as l on c ->> 'name' = l.container_name;
+  EOQ
+}
+
+query "job_container_argument_anonymous_auth_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+       when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' anonymous auth enabled.'
+        else c ->> 'name' || ' anonymous auth disabled.'
+      end as reason,
+      name as job_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_job,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "job_container_argument_audit_log_path_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
+        else c ->> 'name' || ' audit log path configured.'
+      end as reason,
+      name as job_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_job,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "job_container_argument_audit_log_maxage_greater_than_30" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        j.name as job
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxage=%'
+    ), container_name_with_job_name as (
+      select
+        j.name as job_name,
+        j.uid as job_uid,
+        j.path as path,
+        j.start_line as start_line,
+        c.*
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then j.value ->> 'name' || ' audit-log-maxage is not set.'
+        else j.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
+      end as reason,
+      j.job_name as job_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_job_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
+  EOQ
+}
+
+
+query "job_container_argument_audit_log_maxbackup_greater_than_10" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        j.name as job
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxbackup=%'
+    ), container_name_with_job_name as (
+      select
+        j.name as job_name,
+        j.uid as job_uid,
+        j.path as path,
+        j.start_line as start_line,
+        c.*
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then j.value ->> 'name' || ' audit-log-maxbackup is not set.'
+        else j.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
+      end as reason,
+      j.job_name as job_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_job_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
+  EOQ
+}
+
+query "job_container_argument_audit_log_maxsize_greater_than_100" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        j.name as job
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxsize=%'
+    ), container_name_with_job_name as (
+      select
+        j.name as job_name,
+        j.uid as job_uid,
+        j.path as path,
+        j.start_line as start_line,
+        c.*
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when l.container_name is null then j.value ->> 'name' || ' audit-log-maxsize is not set.'
+        else j.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
+      end as reason,
+      j.job_name as job_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_job_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
   EOQ
 }
