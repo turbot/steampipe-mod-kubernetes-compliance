@@ -347,3 +347,11 @@ control "job_container_argument_kubelet_client_certificate_and_key_configured" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "Job containers argument etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the Job has etcd certfile and keyfile argument configured."
+  query       = query.job_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.job_common_tags
+}

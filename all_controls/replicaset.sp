@@ -48,6 +48,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_memory_limit,
     control.replicaset_memory_request,
     control.replicaset_non_root_container,
+    control.replicaset_container_argument_etcd_certfile_and_keyfile_configured,
   ]
 
 

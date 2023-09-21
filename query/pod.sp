@@ -677,21 +677,28 @@ query "pod_container_argument_etcd_cafile_configured" {
   EOQ
 }
 
-query "pod_container_etcd_cert_and_key_exists" {
+query "pod_container_argument_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--etcd-certfile%')
-          and (c ->> 'command' like '%--etcd-keyfile%') then 'alarm'
+          and (
+            not (c ->> 'command' like '%--etcd-certfile%')
+            or not (c ->> 'command' like '%--etcd-keyfile%')
+          ) then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--etcd-certfile%')
-          and (c ->> 'command' like '%--etcd-keyfile%') then c ->> 'name' || ' etcd certfile and etcd keyfile exists.'
-        else c ->> 'name' || ' etcd certfile and etcd keyfile do not exists.'
+          and (
+            not (c ->> 'command' like '%--etcd-certfile%')
+            or not (c ->> 'command' like '%--etcd-keyfile%')
+          ) then c ->> 'name' || ' etcd certfile and etcd keyfile not set.'
+        else c ->> 'name' || ' etcd certfile and etcd keyfile set.'
       end as reason,
       name as pod_name
       ${local.tag_dimensions_sql}

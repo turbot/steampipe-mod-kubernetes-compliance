@@ -347,3 +347,11 @@ control "statefulset_container_argument_kubelet_client_certificate_and_key_confi
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "StatefulSet containers argument etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the StatefulSet has etcd certfile and keyfile argument configured."
+  query       = query.statefulset_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.statefulset_common_tags
+}

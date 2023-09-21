@@ -1079,3 +1079,35 @@ query "daemonset_container_argument_kubelet_client_certificate_and_key_configure
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "daemonset_container_argument_etcd_certfile_and_keyfile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--etcd-certfile%')
+            or not (c ->> 'command' like '%--etcd-keyfile%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--etcd-certfile%')
+            or not (c ->> 'command' like '%--etcd-keyfile%')
+          ) then c ->> 'name' || ' etcd certfile and etcd keyfile not set.'
+        else c ->> 'name' || ' etcd certfile and etcd keyfile set.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

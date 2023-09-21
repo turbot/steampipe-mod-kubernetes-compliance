@@ -47,7 +47,8 @@ benchmark "all_controls_daemonset" {
     control.daemonset_immutable_container_filesystem,
     control.daemonset_memory_limit,
     control.daemonset_memory_request,
-    control.daemonset_non_root_container
+    control.daemonset_non_root_container,
+    control.daemonset_container_argument_etcd_certfile_and_keyfile_configured,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

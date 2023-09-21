@@ -348,3 +348,11 @@ control "pod_container_argument_kubelet_client_certificate_and_key_configured" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "Pod containers argument etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the Pod has etcd certfile and keyfile argument configured."
+  query       = query.pod_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.job_common_tags
+}

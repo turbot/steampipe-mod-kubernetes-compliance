@@ -48,7 +48,8 @@ benchmark "all_controls_pod" {
     control.pod_non_root_container,
     control.pod_service_account_not_exist,
     control.pod_service_account_token_disabled,
-    control.pod_volume_host_path
+    control.pod_volume_host_path,
+    control.pod_container_argument_etcd_certfile_and_keyfile_configured,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {
