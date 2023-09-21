@@ -666,12 +666,16 @@ query "job_container_argument_audit_log_maxage_greater_than_30" {
     select
       coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+        when (j.value -> 'command') is null then 'ok'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then j.value ->> 'name' || ' audit-log-maxage is not set.'
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' audit-log-maxage not set.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube apiserver not defined.'
         else j.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       j.job_name as job_name
@@ -682,7 +686,6 @@ query "job_container_argument_audit_log_maxage_greater_than_30" {
       left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
   EOQ
 }
-
 
 query "job_container_argument_audit_log_maxbackup_greater_than_10" {
   sql = <<-EOQ
@@ -714,12 +717,15 @@ query "job_container_argument_audit_log_maxbackup_greater_than_10" {
     select
       coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+        when (j.value -> 'command') is null then 'ok'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
-        else 'alarm'
       end as status,
       case
-        when l.container_name is null then j.value ->> 'name' || ' audit-log-maxbackup is not set.'
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' audit-log-maxbackup not set.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube apiserver not defined.'
         else j.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       j.job_name as job_name
@@ -761,12 +767,16 @@ query "job_container_argument_audit_log_maxsize_greater_than_100" {
     select
       coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+        when (j.value -> 'command') is null then 'ok'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then j.value ->> 'name' || ' audit-log-maxsize is not set.'
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' audit-log-maxsize not set.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube apiserver not defined.'
         else j.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       j.job_name as job_name
@@ -821,5 +831,155 @@ query "job_container_argument_etcd_cafile_configured" {
     from
       kubernetes_job,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "job_container_argument_authorization_mode_node" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as job
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_job_name as (
+      select
+        j.name as job_name,
+        j.uid as job_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null then 'ok'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then 'alarm'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then j.value ->> 'name' || ' authorization mode not set to node.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then j.value ->> 'name' || ' authorization mode set to node.'
+        else j.value ->> 'name' || ' kube apiserver not defined.'
+      end as reason,
+      j.job_name as job_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_job_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
+  EOQ
+}
+
+query "job_container_argument_authorization_mode_no_always_allow" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as job
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_job_name as (
+      select
+        j.name as job_name,
+        j.uid as job_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then j.value ->> 'name' || ' authorization mode set to always allow.'
+        else j.value ->> 'name' || ' authorization mode not set to always allow.'
+      end as reason,
+      j.job_name as job_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_job_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
+  EOQ
+}
+
+query "job_container_argument_authorization_mode_rbac" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as job
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_job_name as (
+      select
+        j.name as job_name,
+        j.uid as job_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null then 'ok'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then 'alarm'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then j.value ->> 'name' || ' authorization mode not set to RBAC.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then j.value ->> 'name' || ' authorization mode set to RBAC.'
+        else j.value ->> 'name' || ' kube apiserver not defined.'
+      end as reason,
+      j.job_name as job_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_job_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
   EOQ
 }

@@ -42,6 +42,9 @@ benchmark "all_controls_deployment" {
     control.deployment_container_argument_audit_log_maxsize_greater_than_100,
     control.deployment_container_no_argument_basic_auth_file,
     control.deployment_container_argument_etcd_cafile_configured,
+    control.deployment_container_argument_authorization_mode_node,
+    control.deployment_container_argument_authorization_mode_no_always_allow,
+    control.deployment_container_argument_authorization_mode_rbac,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

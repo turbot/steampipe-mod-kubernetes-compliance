@@ -39,6 +39,9 @@ benchmark "all_controls_job" {
     control.job_container_argument_audit_log_maxsize_greater_than_100,
     control.job_container_no_argument_basic_auth_file,
     control.job_container_argument_etcd_cafile_configured,
+    control.job_container_argument_authorization_mode_node,
+    control.job_container_argument_authorization_mode_no_always_allow,
+    control.job_container_argument_authorization_mode_rbac,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

@@ -291,3 +291,27 @@ control "statefulset_container_argument_etcd_cafile_configured" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_authorization_mode_node" {
+  title       = "StatefulSet containers argument authorization mode should have node"
+  description = "This check ensures that the container in the StatefulSet has node included in the argument authorization mode."
+  query       = query.statefulset_container_argument_authorization_mode_node
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_authorization_mode_no_always_allow" {
+  title       = "StatefulSet containers argument authorization mode should not be set to always allow"
+  description = "This check ensures that the container in the StatefulSet has argument authorization mode not set to always allow."
+  query       = query.statefulset_container_argument_authorization_mode_no_always_allow
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_authorization_mode_rbac" {
+  title       = "StatefulSet containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the StatefulSet has RBAC included in the argument authorization mode."
+  query       = query.statefulset_container_argument_authorization_mode_rbac
+
+  tags = local.statefulset_common_tags
+}

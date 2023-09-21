@@ -292,3 +292,27 @@ control "pod_container_argument_etcd_cafile_configured" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_argument_authorization_mode_node" {
+  title       = "Pod containers argument authorization mode should have node"
+  description = "This check ensures that the container in the Pod has node included in the argument authorization mode."
+  query       = query.pod_container_argument_authorization_mode_node
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_authorization_mode_no_always_allow" {
+  title       = "Pod containers argument authorization mode should not be set to always allow"
+  description = "This check ensures that the container in the Pod has argument authorization mode not set to always allow."
+  query       = query.pod_container_argument_authorization_mode_no_always_allow
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_authorization_mode_rbac" {
+  title       = "Pod containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the Pod has RBAC included in the argument authorization mode."
+  query       = query.pod_container_argument_authorization_mode_rbac
+
+  tags = local.pod_common_tags
+}

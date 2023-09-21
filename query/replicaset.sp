@@ -665,12 +665,16 @@ query "replicaset_container_argument_audit_log_maxage_greater_than_30" {
     select
       coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+        when (r.value -> 'command') is null then 'ok'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then r.value ->> 'name' || ' audit-log-maxage is not set.'
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' audit-log-maxage not set.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube apiserver not defined.'
         else r.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       r.replicaset_name as replicaset_name
@@ -712,12 +716,16 @@ query "replicaset_container_argument_audit_log_maxbackup_greater_than_10" {
     select
       coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+        when (r.value -> 'command') is null then 'ok'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then r.value ->> 'name' || ' audit-log-maxbackup is not set.'
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' audit-log-maxbackup not set.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube apiserver not defined.'
         else r.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       r.replicaset_name as replicaset_name
@@ -759,12 +767,16 @@ query "replicaset_container_argument_audit_log_maxsize_greater_than_100" {
     select
       coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+        when (r.value -> 'command') is null then 'ok'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then r.value ->> 'name' || ' audit-log-maxsize is not set.'
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' audit-log-maxsize not set.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube apiserver not defined.'
         else r.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       r.replicaset_name as replicaset_name
@@ -822,3 +834,152 @@ query "replicaset_container_argument_etcd_cafile_configured" {
   EOQ
 }
 
+query "replicaset_container_argument_authorization_mode_node" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null then 'ok'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then 'alarm'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then r.value ->> 'name' || ' authorization mode not set to node.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then r.value ->> 'name' || ' authorization mode set to node.'
+        else r.value ->> 'name' || ' kube apiserver not defined.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
+  EOQ
+}
+
+query "replicaset_container_argument_authorization_mode_no_always_allow" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then r.value ->> 'name' || ' authorization mode set to always allow.'
+        else r.value ->> 'name' || ' authorization mode not set to always allow.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
+  EOQ
+}
+
+query "replicaset_container_argument_authorization_mode_rbac" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null then 'ok'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then 'alarm'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then r.value ->> 'name' || ' authorization mode not set to RBAC.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then r.value ->> 'name' || ' authorization mode set to RBAC.'
+        else r.value ->> 'name' || ' kube apiserver not defined.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
+  EOQ
+}

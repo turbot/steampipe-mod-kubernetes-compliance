@@ -41,6 +41,9 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_argument_audit_log_maxsize_greater_than_100,
     control.cronjob_container_no_argument_basic_auth_file,
     control.cronjob_container_argument_etcd_cafile_configured,
+    control.cronjob_container_argument_authorization_mode_node,
+    control.cronjob_container_argument_authorization_mode_no_always_allow,
+    control.cronjob_container_argument_authorization_mode_rbac,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {

@@ -663,12 +663,16 @@ query "daemonset_container_argument_audit_log_maxage_greater_than_30" {
     select
       coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+        when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then d.value ->> 'name' || ' audit-log-maxage is not set.'
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxage not set.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube apiserver not defined.'
         else d.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
@@ -710,12 +714,16 @@ query "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
     select
       coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+       when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then d.value ->> 'name' || ' audit-log-maxbackup is not set.'
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxbackup not set.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube apiserver not defined.'
         else d.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
@@ -757,13 +765,17 @@ query "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
     select
       coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
       case
-        when l.container_name is null then 'ok'
+         when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
         else 'alarm'
       end as status,
       case
-        when l.container_name is null then d.value ->> 'name' || ' audit-log-maxsizis not set.'
-        else d.value ->> 'name' || ' audit-log-maxsiz is set to ' || l.value || '.'
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxsize not set.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube apiserver not defined.'
+        else d.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -817,5 +829,155 @@ query "daemonset_container_argument_etcd_cafile_configured" {
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_authorization_mode_node" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode not set to node.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode set to node.'
+        else d.value ->> 'name' || ' kube apiserver not defined.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset
+  EOQ
+}
+
+query "daemonset_container_argument_authorization_mode_no_always_allow" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then d.value ->> 'name' || ' authorization mode set to always allow.'
+        else d.value ->> 'name' || ' authorization mode not set to always allow.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset
+  EOQ
+}
+
+query "daemonset_container_argument_authorization_mode_rbac" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode not set to RBAC.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode set to RBAC.'
+        else d.value ->> 'name' || ' kube apiserver not defined.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset
   EOQ
 }

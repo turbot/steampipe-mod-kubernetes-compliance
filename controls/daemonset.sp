@@ -291,3 +291,27 @@ control "daemonset_container_argument_etcd_cafile_configured" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_authorization_mode_node" {
+  title       = "DaemonSet containers argument authorization mode should have node"
+  description = "This check ensures that the container in the DaemonSet has node included in the argument authorization mode."
+  query       = query.daemonset_container_argument_authorization_mode_node
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_authorization_mode_no_always_allow" {
+  title       = "DaemonSet containers argument authorization mode should not be set to always allow"
+  description = "This check ensures that the container in the DaemonSet has argument authorization mode not set to always allow."
+  query       = query.daemonset_container_argument_authorization_mode_no_always_allow
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_authorization_mode_rbac" {
+  title       = "DaemonSet containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the DaemonSet has RBAC included in the argument authorization mode."
+  query       = query.daemonset_container_argument_authorization_mode_rbac
+
+  tags = local.daemonset_common_tags
+}

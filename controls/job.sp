@@ -291,3 +291,27 @@ control "job_container_argument_etcd_cafile_configured" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_argument_authorization_mode_node" {
+  title       = "Job containers argument authorization mode should have node"
+  description = "This check ensures that the container in the Job has node included in the argument authorization mode."
+  query       = query.job_container_argument_authorization_mode_node
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_authorization_mode_no_always_allow" {
+  title       = "Job containers argument authorization mode should not be set to always allow"
+  description = "This check ensures that the container in the Job has argument authorization mode not set to always allow."
+  query       = query.job_container_argument_authorization_mode_no_always_allow
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_authorization_mode_rbac" {
+  title       = "Job containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the Job has RBAC included in the argument authorization mode."
+  query       = query.job_container_argument_authorization_mode_rbac
+
+  tags = local.job_common_tags
+}

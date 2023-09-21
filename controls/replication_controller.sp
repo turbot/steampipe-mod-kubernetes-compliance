@@ -291,3 +291,27 @@ control "replication_controller_container_argument_etcd_cafile_configured" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_authorization_mode_node" {
+  title       = "Replication Controller containers argument authorization mode should have node"
+  description = "This check ensures that the container in the Replication Controller has node included in the argument authorization mode."
+  query       = query.replication_controller_container_argument_authorization_mode_node
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_authorization_mode_no_always_allow" {
+  title       = "Replication Controller containers argument authorization mode should not be set to always allow"
+  description = "This check ensures that the container in the Replication Controller has argument authorization mode not set to always allow."
+  query       = query.replication_controller_container_argument_authorization_mode_no_always_allow
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_authorization_mode_rbac" {
+  title       = "Replication Controller containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the Replication Controller has RBAC included in the argument authorization mode."
+  query       = query.replication_controller_container_argument_authorization_mode_rbac
+
+  tags = local.replication_controller_common_tags
+}

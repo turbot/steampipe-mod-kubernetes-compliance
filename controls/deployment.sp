@@ -299,3 +299,27 @@ control "deployment_container_argument_etcd_cafile_configured" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_authorization_mode_node" {
+  title       = "Deployment containers argument authorization mode should have node"
+  description = "This check ensures that the container in the Deployment has node included in the argument authorization mode."
+  query       = query.deployment_container_argument_authorization_mode_node
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_authorization_mode_no_always_allow" {
+  title       = "Deployment containers argument authorization mode should not be set to always allow"
+  description = "This check ensures that the container in the Deployment has argument authorization mode not set to always allow."
+  query       = query.deployment_container_argument_authorization_mode_no_always_allow
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_authorization_mode_rbac" {
+  title       = "Deployment containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the Deployment has RBAC included in the argument authorization mode."
+  query       = query.deployment_container_argument_authorization_mode_rbac
+
+  tags = local.deployment_common_tags
+}

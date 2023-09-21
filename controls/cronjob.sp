@@ -291,3 +291,27 @@ control "cronjob_container_argument_etcd_cafile_configured" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_argument_authorization_mode_node" {
+  title       = "CronJob containers argument authorization mode should have node"
+  description = "This check ensures that the container in the CronJob has node included in the argument authorization mode."
+  query       = query.cronjob_container_argument_authorization_mode_node
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_authorization_mode_no_always_allow" {
+  title       = "CronJob containers argument authorization mode should not be set to always allow"
+  description = "This check ensures that the container in the CronJob has argument authorization mode not set to always allow."
+  query       = query.cronjob_container_argument_authorization_mode_no_always_allow
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_authorization_mode_rbac" {
+  title       = "CronJob containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the CronJob has RBAC included in the argument authorization mode."
+  query       = query.cronjob_container_argument_authorization_mode_rbac
+
+  tags = local.cronjob_common_tags
+}
