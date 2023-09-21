@@ -984,3 +984,101 @@ query "statefulset_container_argument_authorization_mode_rbac" {
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
   EOQ
 }
+
+query "statefulset_container_no_argument_insecure_bind_address" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--insecure-bind-address%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address .'
+        else c ->> 'name' || ' has no insecure bind address.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_kubelet_https_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled .'
+        else c ->> 'name' || ' kubelet HTTPS enabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_insecure_port_0" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (c -> 'command') @> '["--insecure-port=0"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (c -> 'command') @> '["--insecure-port=0"]' then c ->> 'name' || ' insecure port not set to 0.'
+        else c ->> 'name' || ' insecure port set to 0.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_kubelet_client_certificate_and_key_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--kubelet-client-certificate%')
+            or not (c ->> 'command' like '%--kubelet-client-key%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+         when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--kubelet-client-certificate%')
+            or not (c ->> 'command' like '%--kubelet-client-key%')
+          ) then c ->> 'name' || ' kubelet client certificate and key not set.'
+        else c ->> 'name' || ' kubelet client certificate and key set.'
+      end as reason,
+      name as statefulset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

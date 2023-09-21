@@ -42,6 +42,10 @@ benchmark "all_controls_job" {
     control.job_container_argument_authorization_mode_node,
     control.job_container_argument_authorization_mode_no_always_allow,
     control.job_container_argument_authorization_mode_rbac,
+    control.job_container_no_argument_insecure_bind_address,
+    control.job_container_argument_kubelet_https_enabled,
+    control.job_container_argument_insecure_port_0,
+    control.job_container_argument_kubelet_client_certificate_and_key_configured,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

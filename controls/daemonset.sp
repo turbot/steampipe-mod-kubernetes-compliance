@@ -315,3 +315,35 @@ control "daemonset_container_argument_authorization_mode_rbac" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_no_argument_insecure_bind_address" {
+  title       = "DaemonSet containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the DaemonSet has argument insecure bind address not set."
+  query       = query.daemonset_container_no_argument_insecure_bind_address
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kubelet_https_enabled" {
+  title       = "DaemonSet containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the DaemonSet has kubelet HTTPS argument enabled."
+  query       = query.daemonset_container_argument_kubelet_https_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_insecure_port_0" {
+  title       = "DaemonSet containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the DaemonSet has insecure port set to 0."
+  query       = query.daemonset_container_argument_insecure_port_0
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "DaemonSet containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the DaemonSet has kubelet client certificate and key argument configured."
+  query       = query.daemonset_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.daemonset_common_tags
+}

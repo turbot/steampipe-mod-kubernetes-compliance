@@ -315,3 +315,35 @@ control "cronjob_container_argument_authorization_mode_rbac" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_no_argument_insecure_bind_address" {
+  title       = "CronJob containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the CronJob has argument insecure bind address not set."
+  query       = query.cronjob_container_no_argument_insecure_bind_address
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kubelet_https_enabled" {
+  title       = "CronJob containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the CronJob has kubelet HTTPS argument enabled."
+  query       = query.cronjob_container_argument_kubelet_https_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_insecure_port_0" {
+  title       = "CronJob containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the CronJob has insecure port set to 0."
+  query       = query.cronjob_container_argument_insecure_port_0
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "CronJob containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the CronJob has kubelet client certificate and key argument configured."
+  query       = query.cronjob_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.cronjob_common_tags
+}

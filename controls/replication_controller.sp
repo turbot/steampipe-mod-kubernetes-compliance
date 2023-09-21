@@ -315,3 +315,35 @@ control "replication_controller_container_argument_authorization_mode_rbac" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_no_argument_insecure_bind_address" {
+  title       = "Replication Controller containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the Replication Controller has argument insecure bind address not set."
+  query       = query.replication_controller_container_no_argument_insecure_bind_address
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_https_enabled" {
+  title       = "Replication Controller containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the Replication Controller has kubelet HTTPS argument enabled."
+  query       = query.replication_controller_container_argument_kubelet_https_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_insecure_port_0" {
+  title       = "Replication Controller containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the Replication Controller has insecure port set to 0."
+  query       = query.replication_controller_container_argument_insecure_port_0
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "Replication Controller containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the Replication Controller has kubelet client certificate and key argument configured."
+  query       = query.replication_controller_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.replication_controller_common_tags
+}

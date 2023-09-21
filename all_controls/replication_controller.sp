@@ -44,6 +44,10 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_container_argument_authorization_mode_node,
     control.replication_controller_container_argument_authorization_mode_no_always_allow,
     control.replication_controller_container_argument_authorization_mode_rbac,
+    control.replication_controller_container_no_argument_insecure_bind_address,
+    control.replication_controller_container_argument_kubelet_https_enabled,
+    control.replication_controller_container_argument_insecure_port_0,
+    control.replication_controller_container_argument_kubelet_client_certificate_and_key_configured,
   ]
 
   tags = merge(local.all_controls_replication_controller_common_tags, {

@@ -315,3 +315,35 @@ control "statefulset_container_argument_authorization_mode_rbac" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_no_argument_insecure_bind_address" {
+  title       = "StatefulSet containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the StatefulSet has argument insecure bind address not set."
+  query       = query.statefulset_container_no_argument_insecure_bind_address
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kubelet_https_enabled" {
+  title       = "StatefulSet containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the StatefulSet has kubelet HTTPS argument enabled."
+  query       = query.statefulset_container_argument_kubelet_https_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_insecure_port_0" {
+  title       = "StatefulSet containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the StatefulSet has insecure port set to 0."
+  query       = query.statefulset_container_argument_insecure_port_0
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "StatefulSet containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the StatefulSet has kubelet client certificate and key argument configured."
+  query       = query.statefulset_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.statefulset_common_tags
+}

@@ -44,6 +44,10 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_argument_authorization_mode_node,
     control.statefulset_container_argument_authorization_mode_no_always_allow,
     control.statefulset_container_argument_authorization_mode_rbac,
+    control.statefulset_container_no_argument_insecure_bind_address,
+    control.statefulset_container_argument_kubelet_https_enabled,
+    control.statefulset_container_argument_insecure_port_0,
+    control.statefulset_container_argument_kubelet_client_certificate_and_key_configured,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

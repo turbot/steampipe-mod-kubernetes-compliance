@@ -316,3 +316,35 @@ control "pod_container_argument_authorization_mode_rbac" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_no_argument_insecure_bind_address" {
+  title       = "Pod containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the Pod has argument insecure bind address not set."
+  query       = query.pod_container_no_argument_insecure_bind_address
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kubelet_https_enabled" {
+  title       = "Pod containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the Pod has kubelet HTTPS argument enabled."
+  query       = query.pod_container_argument_kubelet_https_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_insecure_port_0" {
+  title       = "Pod containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the Pod has insecure port set to 0."
+  query       = query.pod_container_argument_insecure_port_0
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "Pod containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the Pod has kubelet client certificate and key argument configured."
+  query       = query.pod_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.pod_common_tags
+}

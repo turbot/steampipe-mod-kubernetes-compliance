@@ -45,6 +45,10 @@ benchmark "all_controls_deployment" {
     control.deployment_container_argument_authorization_mode_node,
     control.deployment_container_argument_authorization_mode_no_always_allow,
     control.deployment_container_argument_authorization_mode_rbac,
+    control.deployment_container_no_argument_insecure_bind_address,
+    control.deployment_container_argument_kubelet_https_enabled,
+    control.deployment_container_argument_insecure_port_0,
+    control.deployment_container_argument_kubelet_client_certificate_and_key_configured,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

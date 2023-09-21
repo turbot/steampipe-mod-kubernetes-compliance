@@ -315,3 +315,35 @@ control "job_container_argument_authorization_mode_rbac" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_no_argument_insecure_bind_address" {
+  title       = "Job containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the Job has argument insecure bind address not set."
+  query       = query.job_container_no_argument_insecure_bind_address
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_kubelet_https_enabled" {
+  title       = "Job containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the Job has kubelet HTTPS argument enabled."
+  query       = query.job_container_argument_kubelet_https_enabled
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_insecure_port_0" {
+  title       = "Job containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the Job has insecure port set to 0."
+  query       = query.job_container_argument_insecure_port_0
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "Job containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the Job has kubelet client certificate and key argument configured."
+  query       = query.job_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.job_common_tags
+}

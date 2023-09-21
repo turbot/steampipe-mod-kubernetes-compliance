@@ -44,6 +44,10 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_argument_authorization_mode_node,
     control.cronjob_container_argument_authorization_mode_no_always_allow,
     control.cronjob_container_argument_authorization_mode_rbac,
+    control.cronjob_container_no_argument_insecure_bind_address,
+    control.cronjob_container_argument_kubelet_https_enabled,
+    control.cronjob_container_argument_insecure_port_0,
+    control.cronjob_container_argument_kubelet_client_certificate_and_key_configured,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {
