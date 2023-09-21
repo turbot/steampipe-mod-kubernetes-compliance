@@ -275,3 +275,11 @@ control "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_no_argument_basic_auth_file" {
+  title       = "DaemonSet containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the DaemonSet has argument basic auth file not set."
+  query       = query.daemonset_container_no_argument_basic_auth_file
+
+  tags = local.daemonset_common_tags
+}

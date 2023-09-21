@@ -408,8 +408,8 @@ query "cronjob_container_image_pull_policy_always" {
         else c ->> 'name' || ' image pull policy is set to ''Always''.'
       end as reason,
       name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
@@ -651,6 +651,9 @@ query "cronjob_container_argument_audit_log_maxage_greater_than_30" {
         j.uid as cronjob_uid,
         j.path as path,
         j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
         c.*
       from
         kubernetes_cronjob as j,
@@ -668,8 +671,8 @@ query "cronjob_container_argument_audit_log_maxage_greater_than_30" {
         else j.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       j.cronjob_name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_cronjob_name as j
       left join container_list as l on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
@@ -695,6 +698,9 @@ query "cronjob_container_argument_audit_log_maxbackup_greater_than_10" {
         j.uid as cronjob_uid,
         j.path as path,
         j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
         c.*
       from
         kubernetes_cronjob as j,
@@ -712,8 +718,8 @@ query "cronjob_container_argument_audit_log_maxbackup_greater_than_10" {
         else j.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       j.cronjob_name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_cronjob_name as j
       left join container_list as l on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
@@ -739,6 +745,9 @@ query "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
         j.uid as cronjob_uid,
         j.path as path,
         j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
         c.*
       from
         kubernetes_cronjob as j,
@@ -756,10 +765,33 @@ query "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
         else j.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       j.cronjob_name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_cronjob_name as j
       left join container_list as l on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
+  EOQ
+}
+
+query "cronjob_container_no_argument_basic_auth_file" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
+        else c ->> 'name' || ' basic auth file not set.'
+      end as reason,
+      name as cronjob_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_cronjob,
+      jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
   EOQ
 }

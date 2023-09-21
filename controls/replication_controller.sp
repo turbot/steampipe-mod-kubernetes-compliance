@@ -275,3 +275,11 @@ control "replication_controller_container_argument_audit_log_maxsize_greater_tha
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_no_argument_basic_auth_file" {
+  title       = "Replication Controller containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the Replication Controller has argument basic auth file not set."
+  query       = query.replication_controller_container_no_argument_basic_auth_file
+
+  tags = local.replication_controller_common_tags
+}

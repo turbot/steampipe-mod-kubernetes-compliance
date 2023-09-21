@@ -276,3 +276,11 @@ control "pod_container_argument_audit_log_maxsize_greater_than_100" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_no_argument_basic_auth_file" {
+  title       = "Pod containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the Pod has argument basic auth file not set."
+  query       = query.pod_container_no_argument_basic_auth_file
+
+  tags = local.pod_common_tags
+}

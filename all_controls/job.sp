@@ -33,7 +33,11 @@ benchmark "all_controls_job" {
     control.job_immutable_container_filesystem,
     control.job_memory_limit,
     control.job_memory_request,
-    control.job_non_root_container
+    control.job_non_root_container,
+    control.job_container_argument_audit_log_maxage_greater_than_30,
+    control.job_container_argument_audit_log_maxbackup_greater_than_10,
+    control.job_container_argument_audit_log_maxsize_greater_than_100,
+    control.job_container_no_argument_basic_auth_file,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

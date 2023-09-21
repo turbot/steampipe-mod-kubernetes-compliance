@@ -40,6 +40,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_audit_log_maxage_greater_than_30,
     control.pod_container_argument_audit_log_maxbackup_greater_than_10,
     control.pod_container_argument_audit_log_maxsize_greater_than_100,
+    control.pod_container_no_argument_basic_auth_file,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

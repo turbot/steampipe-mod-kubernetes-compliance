@@ -275,3 +275,11 @@ control "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_no_argument_basic_auth_file" {
+  title       = "CronJob containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the CronJob has argument basic auth file not set."
+  query       = query.cronjob_container_no_argument_basic_auth_file
+
+  tags = local.cronjob_common_tags
+}

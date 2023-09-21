@@ -654,6 +654,9 @@ query "replication_controller_container_argument_audit_log_maxage_greater_than_3
         r.uid as replication_controller_uid,
         r.path as path,
         r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -671,8 +674,8 @@ query "replication_controller_container_argument_audit_log_maxage_greater_than_3
         else r.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       r.replication_controller_name as replication_controller_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replication_controller_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller
@@ -698,6 +701,9 @@ query "replication_controller_container_argument_audit_log_maxbackup_greater_tha
         r.uid as replication_controller_uid,
         r.path as path,
         r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -715,8 +721,8 @@ query "replication_controller_container_argument_audit_log_maxbackup_greater_tha
         else r.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       r.replication_controller_name as replication_controller_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replication_controller_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller
@@ -742,6 +748,9 @@ query "replication_controller_container_argument_audit_log_maxsize_greater_than_
         r.uid as replication_controller_uid,
         r.path as path,
         r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -759,10 +768,33 @@ query "replication_controller_container_argument_audit_log_maxsize_greater_than_
         else r.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       r.replication_controller_name as replication_controller_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replication_controller_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller
+  EOQ
+}
+
+query "replication_controller_container_no_argument_basic_auth_file" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
+        else c ->> 'name' || ' basic auth file not set.'
+      end as reason,
+      name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replication_controller,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }

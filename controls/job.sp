@@ -275,3 +275,11 @@ control "job_container_argument_audit_log_maxsize_greater_than_100" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_no_argument_basic_auth_file" {
+  title       = "Job containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the Job has argument basic auth file not set."
+  query       = query.job_container_no_argument_basic_auth_file
+
+  tags = local.job_common_tags
+}

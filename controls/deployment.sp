@@ -283,3 +283,11 @@ control "deployment_container_argument_audit_log_maxsize_greater_than_100" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_no_argument_basic_auth_file" {
+  title       = "Deployment containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the Deployment has argument basic auth file not set."
+  query       = query.deployment_container_no_argument_basic_auth_file
+
+  tags = local.deployment_common_tags
+}

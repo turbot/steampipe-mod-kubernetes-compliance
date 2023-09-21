@@ -654,6 +654,9 @@ query "replicaset_container_argument_audit_log_maxage_greater_than_30" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
         c.*
       from
         kubernetes_replicaset as r,
@@ -671,8 +674,8 @@ query "replicaset_container_argument_audit_log_maxage_greater_than_30" {
         else r.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       r.replicaset_name as replicaset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
@@ -698,6 +701,9 @@ query "replicaset_container_argument_audit_log_maxbackup_greater_than_10" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
         c.*
       from
         kubernetes_replicaset as r,
@@ -715,8 +721,8 @@ query "replicaset_container_argument_audit_log_maxbackup_greater_than_10" {
         else r.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       r.replicaset_name as replicaset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
@@ -742,6 +748,9 @@ query "replicaset_container_argument_audit_log_maxsize_greater_than_100" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
         c.*
       from
         kubernetes_replicaset as r,
@@ -759,10 +768,33 @@ query "replicaset_container_argument_audit_log_maxsize_greater_than_100" {
         else r.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       r.replicaset_name as replicaset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset
+  EOQ
+}
+
+query "replicaset_container_no_argument_basic_auth_file" {
+  sql = <<-EOQ
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
+        else c ->> 'name' || ' basic auth file not set.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }

@@ -631,7 +631,7 @@ query "pod_container_argument_anonymous_auth_disabled" {
   EOQ
 }
 
-query "pod_container_basic_auth_file_exists" {
+query "pod_container_no_argument_basic_auth_file" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -642,8 +642,8 @@ query "pod_container_basic_auth_file_exists" {
       end as status,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file exists.'
-        else c ->> 'name' || ' basic auth file do not exists.'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
+        else c ->> 'name' || ' basic auth file not set.'
       end as reason,
       name as pod_name
       ${local.tag_dimensions_sql}
@@ -744,6 +744,9 @@ query "pod_container_argument_audit_log_maxage_greater_than_30" {
         p.uid as pod_uid,
         p.path as path,
         p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
         c.*
       from
         kubernetes_pod as p,
@@ -761,8 +764,8 @@ query "pod_container_argument_audit_log_maxage_greater_than_30" {
         else p.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       p.pod_name as pod_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
@@ -788,6 +791,9 @@ query "pod_container_argument_audit_log_maxbackup_greater_than_10" {
         p.uid as pod_uid,
         p.path as path,
         p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
         c.*
       from
         kubernetes_pod as p,
@@ -805,8 +811,8 @@ query "pod_container_argument_audit_log_maxbackup_greater_than_10" {
         else p.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       p.pod_name as pod_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
@@ -832,6 +838,9 @@ query "pod_container_argument_audit_log_maxsize_greater_than_100" {
         p.uid as pod_uid,
         p.path as path,
         p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
         c.*
       from
         kubernetes_pod as p,
@@ -849,8 +858,8 @@ query "pod_container_argument_audit_log_maxsize_greater_than_100" {
         else p.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       p.pod_name as pod_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod

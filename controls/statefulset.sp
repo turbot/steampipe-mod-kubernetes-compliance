@@ -275,3 +275,11 @@ control "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_no_argument_basic_auth_file" {
+  title       = "StatefulSet containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the StatefulSet has argument basic auth file not set."
+  query       = query.statefulset_container_no_argument_basic_auth_file
+
+  tags = local.statefulset_common_tags
+}

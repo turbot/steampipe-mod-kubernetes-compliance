@@ -655,6 +655,9 @@ query "statefulset_container_argument_audit_log_maxage_greater_than_30" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -672,8 +675,8 @@ query "statefulset_container_argument_audit_log_maxage_greater_than_30" {
         else s.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       s.statefulset_name as statefulset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
@@ -699,6 +702,9 @@ query "statefulset_container_argument_audit_log_maxbackup_greater_than_10" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -716,8 +722,8 @@ query "statefulset_container_argument_audit_log_maxbackup_greater_than_10" {
         else s.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       s.statefulset_name as statefulset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
@@ -743,6 +749,9 @@ query "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -760,10 +769,33 @@ query "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
         else s.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       s.statefulset_name as statefulset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+  EOQ
+}
+
+query "statefulset_container_no_argument_basic_auth_file" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
+        else c ->> 'name' || ' basic auth file not set.'
+      end as reason,
+      name as stateful_set_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }

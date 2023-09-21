@@ -652,6 +652,9 @@ query "daemonset_container_argument_audit_log_maxage_greater_than_30" {
         d.uid as daemonset_uid,
         d.path as path,
         d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
         c.*
       from
         kubernetes_daemonset as d,
@@ -669,8 +672,8 @@ query "daemonset_container_argument_audit_log_maxage_greater_than_30" {
         else d.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset
@@ -696,6 +699,9 @@ query "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
         d.uid as daemonset_uid,
         d.path as path,
         d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
         c.*
       from
         kubernetes_daemonset as d,
@@ -713,8 +719,8 @@ query "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
         else d.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset
@@ -740,6 +746,9 @@ query "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
         d.uid as daemonset_uid,
         d.path as path,
         d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
         c.*
       from
         kubernetes_daemonset as d,
@@ -757,10 +766,33 @@ query "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
         else d.value ->> 'name' || ' audit-log-maxsiz is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_no_argument_basic_auth_file" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
+        else c ->> 'name' || ' basic auth file not set.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
