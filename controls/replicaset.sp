@@ -245,7 +245,7 @@ control "replicaset_container_argument_anonymous_auth_disabled" {
 }
 
 control "replicaset_container_argument_audit_log_path_configured" {
-  title       = "ReplicaSet containers should has audit log path configured appropriately"
+  title       = "ReplicaSet containers should have audit log path configured appropriately"
   description = "This check ensures that the container in the ReplicaSet has audit log path configured appropriately."
   query       = query.replicaset_container_argument_audit_log_path_configured
 

@@ -245,7 +245,7 @@ control "replication_controller_container_argument_anonymous_auth_disabled" {
 }
 
 control "replication_controller_container_argument_audit_log_path_configured" {
-  title       = "Replication Controller containers should has audit log path configured appropriately"
+  title       = "Replication Controller containers should have audit log path configured appropriately"
   description = "This check ensures that the container in the Replication Controller has audit log path configured appropriately."
   query       = query.replication_controller_container_argument_audit_log_path_configured
 

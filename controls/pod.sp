@@ -246,7 +246,7 @@ control "pod_container_argument_anonymous_auth_disabled" {
 }
 
 control "pod_container_argument_audit_log_path_configured" {
-  title       = "Pod containers should has audit log path configured appropriately"
+  title       = "Pod containers should have audit log path configured appropriately"
   description = "This check ensures that the container in the Pod has audit log path configured  appropriately."
   query       = query.pod_container_argument_audit_log_path_configured
 

@@ -241,11 +241,11 @@ control "cronjob_container_argument_anonymous_auth_disabled" {
   description = "This check ensures that the container in the CronJob has anonymous auth disabled."
   query       = query.cronjob_container_argument_anonymous_auth_disabled
 
-  tags = local.pod_common_tags
+  tags = local.cronjob_common_tags
 }
 
 control "cronjob_container_argument_audit_log_path_configured" {
-  title       = "CronJob containers should has audit log path configured appropriately"
+  title       = "CronJob containers should have audit log path configured appropriately"
   description = "This check ensures that the container in the CronJob has audit log path configured  appropriately."
   query       = query.cronjob_container_argument_audit_log_path_configured
 

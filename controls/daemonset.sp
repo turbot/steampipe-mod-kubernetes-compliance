@@ -245,7 +245,7 @@ control "daemonset_container_argument_anonymous_auth_disabled" {
 }
 
 control "daemonset_container_argument_audit_log_path_configured" {
-  title       = "DaemonSet containers should has audit log path configured appropriately"
+  title       = "DaemonSet containers should have audit log path configured appropriately"
   description = "This check ensures that the container in the DaemonSet has audit log path configured  appropriately."
   query       = query.daemonset_container_argument_audit_log_path_configured
 

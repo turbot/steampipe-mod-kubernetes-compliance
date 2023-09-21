@@ -245,7 +245,7 @@ control "statefulset_container_argument_anonymous_auth_disabled" {
 }
 
 control "statefulset_container_argument_audit_log_path_configured" {
-  title       = "StatefulSet containers should has audit log path configured appropriately"
+  title       = "StatefulSet containers should have audit log path configured appropriately"
   description = "This check ensures that the container in the  StatefulSet has audit log path configured appropriately."
   query       = query.statefulset_container_argument_audit_log_path_configured
 
