@@ -284,3 +284,11 @@ control "pod_container_no_argument_basic_auth_file" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_argument_etcd_cafile_configured" {
+  title       = "Pod containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the Pod has argument etcd cafile set."
+  query       = query.pod_container_argument_etcd_cafile_configured
+
+  tags = local.pod_common_tags
+}

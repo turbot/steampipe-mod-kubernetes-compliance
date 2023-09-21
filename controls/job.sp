@@ -283,3 +283,11 @@ control "job_container_no_argument_basic_auth_file" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_argument_etcd_cafile_configured" {
+  title       = "Job containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the Job has argument etcd cafile set."
+  query       = query.job_container_argument_etcd_cafile_configured
+
+  tags = local.job_common_tags
+}

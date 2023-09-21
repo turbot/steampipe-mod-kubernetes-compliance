@@ -654,19 +654,19 @@ query "pod_container_no_argument_basic_auth_file" {
   EOQ
 }
 
-query "pod_container_etcd_cafile_exists" {
+query "pod_container_argument_etcd_cafile_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--etcd-cafile%') then 'alarm'
+          and (c ->> 'command' not like '%--etcd-cafile%') then 'alarm'
         else 'ok'
       end as status,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile exists.'
-        else c ->> 'name' || ' etcd cafile do not exists.'
+          and (c ->> 'command' not like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile not set.'
+        else c ->> 'name' || ' etcd cafile set.'
       end as reason,
       name as pod_name
       ${local.tag_dimensions_sql}

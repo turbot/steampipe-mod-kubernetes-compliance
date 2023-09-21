@@ -283,3 +283,11 @@ control "replication_controller_container_no_argument_basic_auth_file" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_etcd_cafile_configured" {
+  title       = "Replication Controller containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the Replication Controller has argument etcd cafile set."
+  query       = query.replication_controller_container_argument_etcd_cafile_configured
+
+  tags = local.replication_controller_common_tags
+}

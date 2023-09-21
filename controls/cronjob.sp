@@ -283,3 +283,11 @@ control "cronjob_container_no_argument_basic_auth_file" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_argument_etcd_cafile_configured" {
+  title       = "CronJob containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the CronJob has argument etcd cafile set."
+  query       = query.cronjob_container_argument_etcd_cafile_configured
+
+  tags = local.cronjob_common_tags
+}

@@ -40,6 +40,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_argument_audit_log_maxbackup_greater_than_10,
     control.cronjob_container_argument_audit_log_maxsize_greater_than_100,
     control.cronjob_container_no_argument_basic_auth_file,
+    control.cronjob_container_argument_etcd_cafile_configured,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {

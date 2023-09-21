@@ -283,3 +283,11 @@ control "statefulset_container_no_argument_basic_auth_file" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_etcd_cafile_configured" {
+  title       = "StatefulSet containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the StatefulSet has argument etcd cafile set."
+  query       = query.statefulset_container_argument_etcd_cafile_configured
+
+  tags = local.statefulset_common_tags
+}

@@ -40,6 +40,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_argument_audit_log_maxbackup_greater_than_10,
     control.statefulset_container_argument_audit_log_maxsize_greater_than_100,
     control.statefulset_container_no_argument_basic_auth_file,
+    control.statefulset_container_argument_etcd_cafile_configured,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

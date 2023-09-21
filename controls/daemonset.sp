@@ -283,3 +283,11 @@ control "daemonset_container_no_argument_basic_auth_file" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_etcd_cafile_configured" {
+  title       = "DaemonSet containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the DaemonSet has argument etcd cafile set."
+  query       = query.daemonset_container_argument_etcd_cafile_configured
+
+  tags = local.daemonset_common_tags
+}

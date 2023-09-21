@@ -798,3 +798,26 @@ query "replication_controller_container_no_argument_basic_auth_file" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "replication_controller_container_argument_etcd_cafile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--etcd-cafile%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile not set.'
+        else c ->> 'name' || ' etcd cafile set.'
+      end as reason,
+      name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replication_controller,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

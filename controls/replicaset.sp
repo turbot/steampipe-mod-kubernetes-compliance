@@ -283,3 +283,11 @@ control "replicaset_container_no_argument_basic_auth_file" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_etcd_cafile_configured" {
+  title       = "ReplicaSet containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the ReplicaSet has argument etcd cafile set."
+  query       = query.replicaset_container_argument_etcd_cafile_configured
+
+  tags = local.replicaset_common_tags
+}

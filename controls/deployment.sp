@@ -291,3 +291,11 @@ control "deployment_container_no_argument_basic_auth_file" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_etcd_cafile_configured" {
+  title       = "Deployment containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the Deployment has argument etcd cafile set."
+  query       = query.deployment_container_argument_etcd_cafile_configured
+
+  tags = local.deployment_common_tags
+}
