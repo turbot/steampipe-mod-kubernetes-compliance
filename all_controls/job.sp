@@ -9,6 +9,7 @@ benchmark "all_controls_job" {
   description = "This section contains recommendations for configuring Job resources."
   children = [
     control.job_container_admission_capability_restricted,
+    control.job_container_admission_control_plugin_always_pull_images,
     control.job_container_arg_peer_client_cert_auth_enabled,
     control.job_container_argument_anonymous_auth_disabled,
     control.job_container_argument_audit_log_maxage_greater_than_30,
@@ -19,6 +20,7 @@ benchmark "all_controls_job" {
     control.job_container_argument_authorization_mode_node,
     control.job_container_argument_authorization_mode_rbac,
     control.job_container_argument_etcd_cafile_configured,
+    control.job_container_argument_etcd_certfile_and_keyfile_configured,
     control.job_container_argument_event_qps_less_than_5,
     control.job_container_argument_insecure_port_0,
     control.job_container_argument_kubelet_client_certificate_and_key_configured,
@@ -47,8 +49,7 @@ benchmark "all_controls_job" {
     control.job_immutable_container_filesystem,
     control.job_memory_limit,
     control.job_memory_request,
-    control.job_non_root_container,
-    control.job_container_argument_etcd_certfile_and_keyfile_configured,
+    control.job_non_root_container
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

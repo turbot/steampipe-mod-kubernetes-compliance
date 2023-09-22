@@ -1114,3 +1114,52 @@ query "statefulset_container_argument_etcd_certfile_and_keyfile_configured" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "statefulset_container_admission_control_plugin_always_pull_images" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        s.name as statefulset
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--enable-admission-plugins=%'
+    ), container_name_with_statefulset_name as (
+      select
+        s.name as statefulset_name,
+        s.uid as statefulset_uid,
+        s.path as path,
+        s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
+        c.*
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(s.statefulset_uid, concat(s.path, ':', s.start_line)) as resource,
+      case
+        when (s.value -> 'command') is null or not ((s.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysPullImages%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
+        when not ((s.value -> 'command') @> '["kube-apiserver"]') then s.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysPullImages%') then s.value ->> 'name' || ' admission control plugin set to always pull images.'
+        else s.value ->> 'name' || ' admission control plugin not set to always pull images.'
+      end as reason,
+      s.statefulset_name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_statefulset_name as s
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
+  EOQ
+}

@@ -354,5 +354,13 @@ control "pod_container_argument_etcd_certfile_and_keyfile_configured" {
   description = "This check ensures that the container in the Pod has etcd certfile and keyfile argument configured."
   query       = query.pod_container_argument_etcd_certfile_and_keyfile_configured
 
-  tags = local.job_common_tags
+  tags = local.pod_common_tags
+}
+
+control "pod_container_admission_control_plugin_always_pull_images" {
+  title       = "Pod containers admission control plugin should be set to  always pull images"
+  description = "This check ensures that the container in the Pod has always pull images configured foradmission control plugin."
+  query       = query.pod_container_admission_control_plugin_always_pull_images
+
+  tags = local.pod_common_tags
 }

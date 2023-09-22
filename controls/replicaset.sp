@@ -355,3 +355,11 @@ control "replicaset_container_argument_etcd_certfile_and_keyfile_configured" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_admission_control_plugin_always_pull_images" {
+  title       = "ReplicaSet containers admission control plugin should be set to  always pull images"
+  description = "This check ensures that the container in the ReplicaSet has always pull images configured foradmission control plugin."
+  query       = query.replicaset_container_admission_control_plugin_always_pull_images
+
+  tags = local.replicaset_common_tags
+}

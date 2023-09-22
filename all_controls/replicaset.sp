@@ -9,6 +9,7 @@ benchmark "all_controls_replicaset" {
   description = "This section contains recommendations for configuring ReplicaSet resources."
   children = [
     control.replicaset_container_admission_capability_restricted,
+    control.replicaset_container_admission_control_plugin_always_pull_images,
     control.replicaset_container_arg_peer_client_cert_auth_enabled,
     control.replicaset_container_argument_anonymous_auth_disabled,
     control.replicaset_container_argument_audit_log_maxage_greater_than_30,
@@ -19,6 +20,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_argument_authorization_mode_node,
     control.replicaset_container_argument_authorization_mode_rbac,
     control.replicaset_container_argument_etcd_cafile_configured,
+    control.replicaset_container_argument_etcd_certfile_and_keyfile_configured,
     control.replicaset_container_argument_event_qps_less_than_5,
     control.replicaset_container_argument_insecure_port_0,
     control.replicaset_container_argument_kubelet_client_certificate_and_key_configured,
@@ -47,8 +49,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_immutable_container_filesystem,
     control.replicaset_memory_limit,
     control.replicaset_memory_request,
-    control.replicaset_non_root_container,
-    control.replicaset_container_argument_etcd_certfile_and_keyfile_configured,
+    control.replicaset_non_root_container
   ]
 
 

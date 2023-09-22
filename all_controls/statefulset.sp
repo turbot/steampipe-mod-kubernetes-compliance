@@ -9,6 +9,7 @@ benchmark "all_controls_statefulset" {
   description = "This section contains recommendations for configuring StatefulSet resources."
   children = [
     control.statefulset_container_admission_capability_restricted,
+    control.statefulset_container_admission_control_plugin_always_pull_images,
     control.statefulset_container_arg_peer_client_cert_auth_enabled,
     control.statefulset_container_argument_anonymous_auth_disabled,
     control.statefulset_container_argument_audit_log_maxage_greater_than_30,
@@ -19,6 +20,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_argument_authorization_mode_node,
     control.statefulset_container_argument_authorization_mode_rbac,
     control.statefulset_container_argument_etcd_cafile_configured,
+    control.statefulset_container_argument_etcd_certfile_and_keyfile_configured,
     control.statefulset_container_argument_event_qps_less_than_5,
     control.statefulset_container_argument_insecure_port_0,
     control.statefulset_container_argument_kubelet_client_certificate_and_key_configured,
@@ -47,8 +49,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_immutable_container_filesystem,
     control.statefulset_memory_limit,
     control.statefulset_memory_request,
-    control.statefulset_non_root_container,
-    control.statefulset_container_argument_etcd_certfile_and_keyfile_configured,
+    control.statefulset_non_root_container
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

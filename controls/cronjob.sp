@@ -355,3 +355,11 @@ control "cronjob_container_argument_etcd_certfile_and_keyfile_configured" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_admission_control_plugin_always_pull_images" {
+  title       = "CronJob containers admission control plugin should be set to  always pull images"
+  description = "This check ensures that the container in the CronJob has always pull images configured foradmission control plugin."
+  query       = query.cronjob_container_admission_control_plugin_always_pull_images
+
+  tags = local.cronjob_common_tags
+}
