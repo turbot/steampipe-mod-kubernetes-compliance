@@ -1227,6 +1227,6 @@ query "pod_container_admission_control_plugin_no_always_admit" {
       ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
-      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
   EOQ
 }
