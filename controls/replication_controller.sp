@@ -357,9 +357,17 @@ control "replication_controller_container_argument_etcd_certfile_and_keyfile_con
 }
 
 control "replication_controller_container_admission_control_plugin_always_pull_images" {
-  title       = "Replication Controller containers admission control plugin should be set to  always pull images"
-  description = "This check ensures that the container in the Replication Controller has always pull images configured foradmission control plugin."
+  title       = "Replication Controller containers admission control plugin should be set to always pull images"
+  description = "This check ensures that the container in the Replication Controller has always pull images configured for admission control plugin."
   query       = query.replication_controller_container_admission_control_plugin_always_pull_images
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_admission_control_plugin_no_always_admit" {
+  title       = "Replication Controlle containers admission control plugin should not be set to always admit"
+  description = "This check ensures that the container in the Replication Controlle has admission control plugin not set to always admit."
+  query       = query.replication_controller_container_admission_control_plugin_no_always_admit
 
   tags = local.replication_controller_common_tags
 }

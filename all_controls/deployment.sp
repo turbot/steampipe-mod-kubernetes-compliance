@@ -10,6 +10,7 @@ benchmark "all_controls_deployment" {
   children = [
     control.deployment_container_admission_capability_restricted,
     control.deployment_container_admission_control_plugin_always_pull_images,
+    control.deployment_container_admission_control_plugin_no_always_admit,
     control.deployment_container_arg_peer_client_cert_auth_enabled,
     control.deployment_container_argument_anonymous_auth_disabled,
     control.deployment_container_argument_audit_log_maxage_greater_than_30,
@@ -50,7 +51,7 @@ benchmark "all_controls_deployment" {
     control.deployment_memory_limit,
     control.deployment_memory_request,
     control.deployment_non_root_container,
-    control.deployment_replica_minimum_3
+    control.deployment_replica_minimum_3,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

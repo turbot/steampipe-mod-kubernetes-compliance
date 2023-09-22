@@ -10,6 +10,7 @@ benchmark "all_controls_cronjob" {
   children = [
     control.cronjob_container_admission_capability_restricted,
     control.cronjob_container_admission_control_plugin_always_pull_images,
+    control.cronjob_container_admission_control_plugin_no_always_admit,
     control.cronjob_container_arg_peer_client_cert_auth_enabled,
     control.cronjob_container_argument_anonymous_auth_disabled,
     control.cronjob_container_argument_audit_log_maxage_greater_than_30,

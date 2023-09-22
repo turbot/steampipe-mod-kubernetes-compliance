@@ -10,6 +10,7 @@ benchmark "all_controls_job" {
   children = [
     control.job_container_admission_capability_restricted,
     control.job_container_admission_control_plugin_always_pull_images,
+    control.job_container_admission_control_plugin_no_always_admit,
     control.job_container_arg_peer_client_cert_auth_enabled,
     control.job_container_argument_anonymous_auth_disabled,
     control.job_container_argument_audit_log_maxage_greater_than_30,
@@ -49,7 +50,7 @@ benchmark "all_controls_job" {
     control.job_immutable_container_filesystem,
     control.job_memory_limit,
     control.job_memory_request,
-    control.job_non_root_container
+    control.job_non_root_container,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

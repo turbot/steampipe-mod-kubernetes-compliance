@@ -10,6 +10,7 @@ benchmark "all_controls_pod" {
   children = [
     control.pod_container_admission_capability_restricted,
     control.pod_container_admission_control_plugin_always_pull_images,
+    control.pod_container_admission_control_plugin_no_always_admit,
     control.pod_container_arg_peer_client_cert_auth_enabled,
     control.pod_container_argument_anonymous_auth_disabled,
     control.pod_container_argument_audit_log_maxage_greater_than_30,
@@ -50,7 +51,7 @@ benchmark "all_controls_pod" {
     control.pod_non_root_container,
     control.pod_service_account_not_exist,
     control.pod_service_account_token_disabled,
-    control.pod_volume_host_path,
+    control.pod_volume_host_path
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

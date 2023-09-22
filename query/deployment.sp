@@ -1177,3 +1177,52 @@ query "deployment_container_admission_control_plugin_always_pull_images" {
       left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment
   EOQ
 }
+
+query "deployment_container_admission_control_plugin_no_always_admit" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as deployment
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--enable-admission-plugins=%'
+    ), container_name_with_deployment_name as (
+      select
+        d.name as deployment_name,
+        d.uid as deployment_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.deployment_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then d.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then d.value ->> 'name' || ' admission control plugin set to always admit.'
+        else d.value ->> 'name' || ' admission control plugin not set to always pull images.'
+      end as reason,
+      d.deployment_name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_deployment_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
+  EOQ
+}

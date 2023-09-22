@@ -1162,3 +1162,52 @@ query "replication_controller_container_admission_control_plugin_always_pull_ima
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller
   EOQ
 }
+
+query "replication_controller_container_admission_control_plugin_no_always_admit" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replication_controller
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--enable-admission-plugins=%'
+    ), container_name_with_replication_controller_name as (
+      select
+        r.name as replication_controller_name,
+        r.uid as replication_controller_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replication_controller_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]') then r.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then r.value ->> 'name' || ' admission control plugin set to always admit.'
+        else r.value ->> 'name' || ' admission control plugin not set to always pull images.'
+      end as reason,
+      r.replication_controller_name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replication_controller_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
+  EOQ
+}

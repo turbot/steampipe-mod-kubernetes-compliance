@@ -1162,3 +1162,52 @@ query "job_container_admission_control_plugin_always_pull_images" {
       left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job
   EOQ
 }
+
+query "job_container_admission_control_plugin_no_always_admit" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as job
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--enable-admission-plugins=%'
+    ), container_name_with_job_name as (
+      select
+        j.name as job_name,
+        j.uid as job_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_job as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]') then j.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then j.value ->> 'name' || ' admission control plugin set to always admit.'
+        else j.value ->> 'name' || ' admission control plugin not set to always pull images.'
+      end as reason,
+      j.job_name as job_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_job_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.job_name = l.job;
+  EOQ
+}

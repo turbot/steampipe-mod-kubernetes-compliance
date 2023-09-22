@@ -10,6 +10,7 @@ benchmark "all_controls_daemonset" {
   children = [
     control.daemonset_container_admission_capability_restricted,
     control.daemonset_container_admission_control_plugin_always_pull_images,
+    control.daemonset_container_admission_control_plugin_no_always_admit,
     control.daemonset_container_arg_peer_client_cert_auth_enabled,
     control.daemonset_container_argument_anonymous_auth_disabled,
     control.daemonset_container_argument_audit_log_maxage_greater_than_30,
@@ -49,7 +50,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_immutable_container_filesystem,
     control.daemonset_memory_limit,
     control.daemonset_memory_request,
-    control.daemonset_non_root_container
+    control.daemonset_non_root_container,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

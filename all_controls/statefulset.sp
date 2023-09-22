@@ -10,6 +10,7 @@ benchmark "all_controls_statefulset" {
   children = [
     control.statefulset_container_admission_capability_restricted,
     control.statefulset_container_admission_control_plugin_always_pull_images,
+    control.statefulset_container_admission_control_plugin_no_always_admit,
     control.statefulset_container_arg_peer_client_cert_auth_enabled,
     control.statefulset_container_argument_anonymous_auth_disabled,
     control.statefulset_container_argument_audit_log_maxage_greater_than_30,

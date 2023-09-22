@@ -358,9 +358,17 @@ control "pod_container_argument_etcd_certfile_and_keyfile_configured" {
 }
 
 control "pod_container_admission_control_plugin_always_pull_images" {
-  title       = "Pod containers admission control plugin should be set to  always pull images"
-  description = "This check ensures that the container in the Pod has always pull images configured foradmission control plugin."
+  title       = "Pod containers admission control plugin should be set to always pull images"
+  description = "This check ensures that the container in the Pod has always pull images configured for admission control plugin."
   query       = query.pod_container_admission_control_plugin_always_pull_images
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_admission_control_plugin_no_always_admit" {
+  title       = "Pod containers admission control plugin should not be set to always admit"
+  description = "This check ensures that the container in the Pod has admission control plugin not set to always admit."
+  query       = query.pod_container_admission_control_plugin_no_always_admit
 
   tags = local.pod_common_tags
 }
