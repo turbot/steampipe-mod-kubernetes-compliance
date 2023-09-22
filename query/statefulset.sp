@@ -675,7 +675,7 @@ query "statefulset_container_argument_audit_log_maxage_greater_than_30" {
       case
         when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
         when (s.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  s.value ->> 'name' || ' audit-log-maxage not set.'
-        when not ((s.value -> 'command') @> '["kube-apiserver"]')  then s.value ->> 'name' || ' kube apiserver not defined.'
+        when not ((s.value -> 'command') @> '["kube-apiserver"]')  then s.value ->> 'name' || ' kube-apiservernot defined.'
         else s.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       s.statefulset_name as statefulset_name
@@ -683,7 +683,7 @@ query "statefulset_container_argument_audit_log_maxage_greater_than_30" {
       ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
-      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
 
@@ -726,7 +726,7 @@ query "statefulset_container_argument_audit_log_maxbackup_greater_than_10" {
       case
         when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
         when (s.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  s.value ->> 'name' || ' audit-log-maxbackup not set.'
-        when not ((s.value -> 'command') @> '["kube-apiserver"]')  then s.value ->> 'name' || ' kube apiserver not defined.'
+        when not ((s.value -> 'command') @> '["kube-apiserver"]')  then s.value ->> 'name' || ' kube-apiservernot defined.'
         else s.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       s.statefulset_name as statefulset_name
@@ -734,7 +734,7 @@ query "statefulset_container_argument_audit_log_maxbackup_greater_than_10" {
       ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
-      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
 
@@ -777,7 +777,7 @@ query "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
       case
         when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
         when (s.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  s.value ->> 'name' || ' audit-log-maxsize not set.'
-        when not ((s.value -> 'command') @> '["kube-apiserver"]')  then s.value ->> 'name' || ' kube apiserver not defined.'
+        when not ((s.value -> 'command') @> '["kube-apiserver"]')  then s.value ->> 'name' || ' kube-apiservernot defined.'
         else s.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       s.statefulset_name as statefulset_name
@@ -785,7 +785,7 @@ query "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
       ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
-      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
 
@@ -876,14 +876,14 @@ query "statefulset_container_argument_authorization_mode_node" {
         when (s.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  s.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then s.value ->> 'name' || ' authorization mode not set to node.'
         when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then s.value ->> 'name' || ' authorization mode set to node.'
-        else s.value ->> 'name' || ' kube apiserver not defined.'
+        else s.value ->> 'name' || ' kube-apiservernot defined.'
       end as reason,
       s.statefulset_name as statefulset_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
-      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
 
@@ -929,7 +929,7 @@ query "statefulset_container_argument_authorization_mode_no_always_allow" {
       ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
-      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
 
@@ -974,14 +974,14 @@ query "statefulset_container_argument_authorization_mode_rbac" {
         when (s.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  s.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then s.value ->> 'name' || ' authorization mode not set to RBAC.'
         when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then s.value ->> 'name' || ' authorization mode set to RBAC.'
-        else s.value ->> 'name' || ' kube apiserver not defined.'
+        else s.value ->> 'name' || ' kube-apiservernot defined.'
       end as reason,
       s.statefulset_name as statefulset_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
-      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
 
@@ -996,7 +996,7 @@ query "statefulset_container_no_argument_insecure_bind_address" {
       end as status,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address .'
+          and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address.'
         else c ->> 'name' || ' has no insecure bind address.'
       end as reason,
       name as statefulset_name
@@ -1019,7 +1019,7 @@ query "statefulset_container_argument_kubelet_https_enabled" {
       end as status,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled .'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled.'
         else c ->> 'name' || ' kubelet HTTPS enabled.'
       end as reason,
       name as statefulset_name

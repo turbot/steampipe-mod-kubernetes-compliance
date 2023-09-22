@@ -254,31 +254,31 @@ control "deployment_container_argument_anonymous_auth_disabled" {
 
 control "deployment_container_argument_audit_log_path_configured" {
   title       = "Deployment containers should have audit log path configured appropriately"
-  description = "This check ensures that the container in the Deployment has audit log path configured  appropriately."
+  description = "This check ensures that the container in the Deployment has audit log path configured appropriately."
   query       = query.deployment_container_argument_audit_log_path_configured
 
   tags = local.deployment_common_tags
 }
 
 control "deployment_container_argument_audit_log_maxage_greater_than_30" {
-  title       = "Deployment containers should have audit log maxage set to 30 or greater"
-  description = "This check ensures that the container in the Deployment has audit log maxage set to 30 or greater."
+  title       = "Deployment containers should have audit log max-age set to 30 or greater"
+  description = "This check ensures that the container in the Deployment has audit log max-age set to 30 or greater."
   query       = query.deployment_container_argument_audit_log_maxage_greater_than_30
 
   tags = local.deployment_common_tags
 }
 
 control "deployment_container_argument_audit_log_maxbackup_greater_than_10" {
-  title       = "Deployment containers should have audit log maxbackup set to 10 or greater"
-  description = "This check ensures that the container in the Deployment has audit log maxbackup set to 10 or greater."
+  title       = "Deployment containers should have audit log max backup set to 10 or greater"
+  description = "This check ensures that the container in the Deployment has audit log max backup set to 10 or greater."
   query       = query.deployment_container_argument_audit_log_maxbackup_greater_than_10
 
   tags = local.deployment_common_tags
 }
 
 control "deployment_container_argument_audit_log_maxsize_greater_than_100" {
-  title       = "Deployment containers should have audit log maxsize set to 100 or greater"
-  description = "This check ensures that the container in the Deployment has audit log maxsize set to 100 or greater."
+  title       = "Deployment containers should have audit log max size set to 100 or greater"
+  description = "This check ensures that the container in the Deployment has audit log max size set to 100 or greater."
   query       = query.deployment_container_argument_audit_log_maxsize_greater_than_100
 
   tags = local.deployment_common_tags
@@ -286,7 +286,7 @@ control "deployment_container_argument_audit_log_maxsize_greater_than_100" {
 
 control "deployment_container_no_argument_basic_auth_file" {
   title       = "Deployment containers argument basic auth file should not be set"
-  description = "This check ensures that the container in the Deployment has argument basic auth file not set."
+  description = "This check ensures that the container in the Deployment does not have an argument basic auth file set."
   query       = query.deployment_container_no_argument_basic_auth_file
 
   tags = local.deployment_common_tags
@@ -309,8 +309,8 @@ control "deployment_container_argument_authorization_mode_node" {
 }
 
 control "deployment_container_argument_authorization_mode_no_always_allow" {
-  title       = "Deployment containers argument authorization mode should not be set to always allow"
-  description = "This check ensures that the container in the Deployment has argument authorization mode not set to always allow."
+  title       = "Deployment containers argument authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the Deployment has argument authorization mode not set to 'always allow'."
   query       = query.deployment_container_argument_authorization_mode_no_always_allow
 
   tags = local.deployment_common_tags
@@ -326,7 +326,7 @@ control "deployment_container_argument_authorization_mode_rbac" {
 
 control "deployment_container_no_argument_insecure_bind_address" {
   title       = "Deployment containers argument insecure bind address should not be set"
-  description = "This check ensures that the container in the Deployment has argument insecure bind address not set."
+  description = "This check ensures that the container in the Deployment does not have an argument insecure bind address set."
   query       = query.deployment_container_no_argument_insecure_bind_address
 
   tags = local.deployment_common_tags
@@ -365,16 +365,16 @@ control "deployment_container_argument_etcd_certfile_and_keyfile_configured" {
 }
 
 control "deployment_container_admission_control_plugin_always_pull_images" {
-  title       = "Deployment containers admission control plugin should be set to always pull images"
-  description = "This check ensures that the container in the Deployment has always pull images configured for admission control plugin."
+  title       = "Deployment containers admission control plugin should be set to 'always pull images'"
+  description = "This check ensures that the container in the Deployment has 'always pull images' configured for admission control plugin."
   query       = query.deployment_container_admission_control_plugin_always_pull_images
 
   tags = local.deployment_common_tags
 }
 
 control "deployment_container_admission_control_plugin_no_always_admit" {
-  title       = "Deployment containers admission control plugin should not be set to always admit"
-  description = "This check ensures that the container in the Deployment has admission control plugin not set to always admit."
+  title       = "Deployment containers admission control plugin should not be set to 'always admit'"
+  description = "This check ensures that the container in the Deployment has an admission control plugin not set to 'always admit'."
   query       = query.deployment_container_admission_control_plugin_no_always_admit
 
   tags = local.deployment_common_tags

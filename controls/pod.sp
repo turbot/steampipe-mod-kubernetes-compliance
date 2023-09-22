@@ -247,31 +247,31 @@ control "pod_container_argument_anonymous_auth_disabled" {
 
 control "pod_container_argument_audit_log_path_configured" {
   title       = "Pod containers should have audit log path configured appropriately"
-  description = "This check ensures that the container in the Pod has audit log path configured  appropriately."
+  description = "This check ensures that the container in the Pod has audit log path configured appropriately."
   query       = query.pod_container_argument_audit_log_path_configured
 
   tags = local.pod_common_tags
 }
 
 control "pod_container_argument_audit_log_maxage_greater_than_30" {
-  title       = "Pod containers should have audit log maxage set to 30 or greater"
-  description = "This check ensures that the container in the Pod has audit log maxage set to 30 or greater."
+  title       = "Pod containers should have audit log max-age set to 30 or greater"
+  description = "This check ensures that the container in the Pod has audit log max-age set to 30 or greater."
   query       = query.pod_container_argument_audit_log_maxage_greater_than_30
 
   tags = local.pod_common_tags
 }
 
 control "pod_container_argument_audit_log_maxbackup_greater_than_10" {
-  title       = "Pod containers should have audit log maxbackup set to 10 or greater"
-  description = "This check ensures that the container in the Pod has audit log maxbackup set to 10 or greater."
+  title       = "Pod containers should have audit log max backup set to 10 or greater"
+  description = "This check ensures that the container in the Pod has audit log max backup set to 10 or greater."
   query       = query.pod_container_argument_audit_log_maxbackup_greater_than_10
 
   tags = local.pod_common_tags
 }
 
 control "pod_container_argument_audit_log_maxsize_greater_than_100" {
-  title       = "Pod containers should have audit log maxsize set to 100 or greater"
-  description = "This check ensures that the container in the Pod has audit log maxsize set to 100 or greater."
+  title       = "Pod containers should have audit log max size set to 100 or greater"
+  description = "This check ensures that the container in the Pod has audit log max size set to 100 or greater."
   query       = query.pod_container_argument_audit_log_maxsize_greater_than_100
 
   tags = local.pod_common_tags
@@ -279,7 +279,7 @@ control "pod_container_argument_audit_log_maxsize_greater_than_100" {
 
 control "pod_container_no_argument_basic_auth_file" {
   title       = "Pod containers argument basic auth file should not be set"
-  description = "This check ensures that the container in the Pod has argument basic auth file not set."
+  description = "This check ensures that the container in the Pod does not have an argument basic auth file set."
   query       = query.pod_container_no_argument_basic_auth_file
 
   tags = local.pod_common_tags
@@ -302,8 +302,8 @@ control "pod_container_argument_authorization_mode_node" {
 }
 
 control "pod_container_argument_authorization_mode_no_always_allow" {
-  title       = "Pod containers argument authorization mode should not be set to always allow"
-  description = "This check ensures that the container in the Pod has argument authorization mode not set to always allow."
+  title       = "Pod containers argument authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the Pod has argument authorization mode not set to 'always allow'."
   query       = query.pod_container_argument_authorization_mode_no_always_allow
 
   tags = local.pod_common_tags
@@ -319,7 +319,7 @@ control "pod_container_argument_authorization_mode_rbac" {
 
 control "pod_container_no_argument_insecure_bind_address" {
   title       = "Pod containers argument insecure bind address should not be set"
-  description = "This check ensures that the container in the Pod has argument insecure bind address not set."
+  description = "This check ensures that the container in the Pod does not have an argument insecure bind address set."
   query       = query.pod_container_no_argument_insecure_bind_address
 
   tags = local.pod_common_tags
@@ -358,16 +358,16 @@ control "pod_container_argument_etcd_certfile_and_keyfile_configured" {
 }
 
 control "pod_container_admission_control_plugin_always_pull_images" {
-  title       = "Pod containers admission control plugin should be set to always pull images"
-  description = "This check ensures that the container in the Pod has always pull images configured for admission control plugin."
+  title       = "Pod containers admission control plugin should be set to 'always pull images'"
+  description = "This check ensures that the container in the Pod has 'always pull images' configured for admission control plugin."
   query       = query.pod_container_admission_control_plugin_always_pull_images
 
   tags = local.pod_common_tags
 }
 
 control "pod_container_admission_control_plugin_no_always_admit" {
-  title       = "Pod containers admission control plugin should not be set to always admit"
-  description = "This check ensures that the container in the Pod has admission control plugin not set to always admit."
+  title       = "Pod containers admission control plugin should not be set to 'always admit'"
+  description = "This check ensures that the container in the Pod has an admission control plugin not set to 'always admit'."
   query       = query.pod_container_admission_control_plugin_no_always_admit
 
   tags = local.pod_common_tags

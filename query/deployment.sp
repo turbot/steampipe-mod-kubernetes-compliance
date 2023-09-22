@@ -689,7 +689,7 @@ query "deployment_container_argument_audit_log_maxage_greater_than_30" {
       case
         when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxage not set.'
-        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube apiserver not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
         else d.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       d.deployment_name as deployment_name
@@ -697,7 +697,7 @@ query "deployment_container_argument_audit_log_maxage_greater_than_30" {
       ${local.common_dimensions_sql}
     from
       container_name_with_deployment_name as d
-      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
 
@@ -740,7 +740,7 @@ query "deployment_container_argument_audit_log_maxbackup_greater_than_10" {
       case
         when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxbackup not set.'
-        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube apiserver not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
         else d.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       d.deployment_name as deployment_name
@@ -748,7 +748,7 @@ query "deployment_container_argument_audit_log_maxbackup_greater_than_10" {
       ${local.common_dimensions_sql}
     from
       container_name_with_deployment_name as d
-      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
 
@@ -791,7 +791,7 @@ query "deployment_container_argument_audit_log_maxsize_greater_than_100" {
       case
         when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxsize not set.'
-        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube apiserver not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
         else d.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       d.deployment_name as deployment_name
@@ -890,14 +890,14 @@ query "deployment_container_argument_authorization_mode_node" {
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode not set to node.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode set to node.'
-        else d.value ->> 'name' || ' kube apiserver not defined.'
+        else d.value ->> 'name' || ' kube-apiservernot defined.'
       end as reason,
       d.deployment_name as deployment_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       container_name_with_deployment_name as d
-      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
 
@@ -943,7 +943,7 @@ query "deployment_container_argument_authorization_mode_no_always_allow" {
       ${local.common_dimensions_sql}
     from
       container_name_with_deployment_name as d
-      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
 
@@ -988,14 +988,14 @@ query "deployment_container_argument_authorization_mode_rbac" {
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode not set to RBAC.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode set to RBAC.'
-        else d.value ->> 'name' || ' kube apiserver not defined.'
+        else d.value ->> 'name' || ' kube-apiservernot defined.'
       end as reason,
       d.deployment_name as deployment_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
       container_name_with_deployment_name as d
-      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
 
@@ -1010,7 +1010,7 @@ query "deployment_container_no_argument_insecure_bind_address" {
       end as status,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address .'
+          and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address.'
         else c ->> 'name' || ' has no insecure bind address.'
       end as reason,
       name as deployment_name
@@ -1033,7 +1033,7 @@ query "deployment_container_argument_kubelet_https_enabled" {
       end as status,
       case
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled .'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled.'
         else c ->> 'name' || ' kubelet HTTPS enabled.'
       end as reason,
       name as deployment_name
@@ -1174,7 +1174,7 @@ query "deployment_container_admission_control_plugin_always_pull_images" {
       ${local.common_dimensions_sql}
     from
       container_name_with_deployment_name as d
-      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
 

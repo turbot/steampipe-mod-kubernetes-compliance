@@ -246,31 +246,31 @@ control "statefulset_container_argument_anonymous_auth_disabled" {
 
 control "statefulset_container_argument_audit_log_path_configured" {
   title       = "StatefulSet containers should have audit log path configured appropriately"
-  description = "This check ensures that the container in the  StatefulSet has audit log path configured appropriately."
+  description = "This check ensures that the container in the StatefulSet has audit log path configured appropriately."
   query       = query.statefulset_container_argument_audit_log_path_configured
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_argument_audit_log_maxage_greater_than_30" {
-  title       = "StatefulSet containers should have audit log maxage set to 30 or greater"
-  description = "This check ensures that the container in the StatefulSet has audit log maxage set to 30 or greater."
+  title       = "StatefulSet containers should have audit log max-age set to 30 or greater"
+  description = "This check ensures that the container in the StatefulSet has audit log max-age set to 30 or greater."
   query       = query.statefulset_container_argument_audit_log_maxage_greater_than_30
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_argument_audit_log_maxbackup_greater_than_10" {
-  title       = "StatefulSet containers should have audit log maxbackup set to 10 or greater"
-  description = "This check ensures that the container in the StatefulSet has audit log maxbackup set to 10 or greater."
+  title       = "StatefulSet containers should have audit log max backup set to 10 or greater"
+  description = "This check ensures that the container in the StatefulSet has audit log max backup set to 10 or greater."
   query       = query.statefulset_container_argument_audit_log_maxbackup_greater_than_10
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
-  title       = "StatefulSet containers should have audit log maxsize set to 100 or greater"
-  description = "This check ensures that the container in the StatefulSet has audit log maxsize set to 100 or greater."
+  title       = "StatefulSet containers should have audit log max size set to 100 or greater"
+  description = "This check ensures that the container in the StatefulSet has audit log max size set to 100 or greater."
   query       = query.statefulset_container_argument_audit_log_maxsize_greater_than_100
 
   tags = local.statefulset_common_tags
@@ -278,7 +278,7 @@ control "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
 
 control "statefulset_container_no_argument_basic_auth_file" {
   title       = "StatefulSet containers argument basic auth file should not be set"
-  description = "This check ensures that the container in the StatefulSet has argument basic auth file not set."
+  description = "This check ensures that the container in the StatefulSet does not have an argument basic auth file set."
   query       = query.statefulset_container_no_argument_basic_auth_file
 
   tags = local.statefulset_common_tags
@@ -301,8 +301,8 @@ control "statefulset_container_argument_authorization_mode_node" {
 }
 
 control "statefulset_container_argument_authorization_mode_no_always_allow" {
-  title       = "StatefulSet containers argument authorization mode should not be set to always allow"
-  description = "This check ensures that the container in the StatefulSet has argument authorization mode not set to always allow."
+  title       = "StatefulSet containers argument authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the StatefulSet has argument authorization mode not set to 'always allow'."
   query       = query.statefulset_container_argument_authorization_mode_no_always_allow
 
   tags = local.statefulset_common_tags
@@ -318,7 +318,7 @@ control "statefulset_container_argument_authorization_mode_rbac" {
 
 control "statefulset_container_no_argument_insecure_bind_address" {
   title       = "StatefulSet containers argument insecure bind address should not be set"
-  description = "This check ensures that the container in the StatefulSet has argument insecure bind address not set."
+  description = "This check ensures that the container in the StatefulSet does not have an argument insecure bind address set."
   query       = query.statefulset_container_no_argument_insecure_bind_address
 
   tags = local.statefulset_common_tags
@@ -357,16 +357,16 @@ control "statefulset_container_argument_etcd_certfile_and_keyfile_configured" {
 }
 
 control "statefulset_container_admission_control_plugin_always_pull_images" {
-  title       = "StatefulSet containers admission control plugin should be set to always pull images"
-  description = "This check ensures that the container in the StatefulSet has always pull images configured for admission control plugin."
+  title       = "StatefulSet containers admission control plugin should be set to 'always pull images'"
+  description = "This check ensures that the container in the StatefulSet has 'always pull images' configured for admission control plugin."
   query       = query.statefulset_container_admission_control_plugin_always_pull_images
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_admission_control_plugin_no_always_admit" {
-  title       = "StatefulSet containers admission control plugin should not be set to always admit"
-  description = "This check ensures that the container in the StatefulSet has admission control plugin not set to always admit."
+  title       = "StatefulSet containers admission control plugin should not be set to 'always admit'"
+  description = "This check ensures that the container in the StatefulSet has an admission control plugin not set to 'always admit'."
   query       = query.statefulset_container_admission_control_plugin_no_always_admit
 
   tags = local.statefulset_common_tags

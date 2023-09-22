@@ -246,31 +246,31 @@ control "cronjob_container_argument_anonymous_auth_disabled" {
 
 control "cronjob_container_argument_audit_log_path_configured" {
   title       = "CronJob containers should have audit log path configured appropriately"
-  description = "This check ensures that the container in the CronJob has audit log path configured  appropriately."
+  description = "This check ensures that the container in the CronJob has audit log path configured appropriately."
   query       = query.cronjob_container_argument_audit_log_path_configured
 
   tags = local.cronjob_common_tags
 }
 
 control "cronjob_container_argument_audit_log_maxage_greater_than_30" {
-  title       = "CronJob containers should have audit log maxage set to 30 or greater"
-  description = "This check ensures that the container in the CronJob has audit log maxage set to 30 or greater."
+  title       = "CronJob containers should have audit log max-age set to 30 or greater"
+  description = "This check ensures that the container in the CronJob has audit log max-age set to 30 or greater."
   query       = query.cronjob_container_argument_audit_log_maxage_greater_than_30
 
   tags = local.cronjob_common_tags
 }
 
 control "cronjob_container_argument_audit_log_maxbackup_greater_than_10" {
-  title       = "CronJob containers should have audit log maxbackup set to 10 or greater"
-  description = "This check ensures that the container in the CronJob has audit log maxbackup set to 10 or greater."
+  title       = "CronJob containers should have audit log max backup set to 10 or greater"
+  description = "This check ensures that the container in the CronJob has audit log max backup set to 10 or greater."
   query       = query.cronjob_container_argument_audit_log_maxbackup_greater_than_10
 
   tags = local.cronjob_common_tags
 }
 
 control "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
-  title       = "CronJob containers should have audit log maxsize set to 100 or greater"
-  description = "This check ensures that the container in the CronJob has audit log maxsize set to 100 or greater."
+  title       = "CronJob containers should have audit log max size set to 100 or greater"
+  description = "This check ensures that the container in the CronJob has audit log max size set to 100 or greater."
   query       = query.cronjob_container_argument_audit_log_maxsize_greater_than_100
 
   tags = local.cronjob_common_tags
@@ -278,7 +278,7 @@ control "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
 
 control "cronjob_container_no_argument_basic_auth_file" {
   title       = "CronJob containers argument basic auth file should not be set"
-  description = "This check ensures that the container in the CronJob has argument basic auth file not set."
+  description = "This check ensures that the CronJob container does not have an argument basic auth file set."
   query       = query.cronjob_container_no_argument_basic_auth_file
 
   tags = local.cronjob_common_tags
@@ -301,8 +301,8 @@ control "cronjob_container_argument_authorization_mode_node" {
 }
 
 control "cronjob_container_argument_authorization_mode_no_always_allow" {
-  title       = "CronJob containers argument authorization mode should not be set to always allow"
-  description = "This check ensures that the container in the CronJob has argument authorization mode not set to always allow."
+  title       = "CronJob containers argument authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the CronJob has argument authorization mode not set to 'always allow'."
   query       = query.cronjob_container_argument_authorization_mode_no_always_allow
 
   tags = local.cronjob_common_tags
@@ -318,7 +318,7 @@ control "cronjob_container_argument_authorization_mode_rbac" {
 
 control "cronjob_container_no_argument_insecure_bind_address" {
   title       = "CronJob containers argument insecure bind address should not be set"
-  description = "This check ensures that the container in the CronJob has argument insecure bind address not set."
+  description = "This check ensures that the CronJob container does not have an argument insecure bind address set."
   query       = query.cronjob_container_no_argument_insecure_bind_address
 
   tags = local.cronjob_common_tags
@@ -357,16 +357,16 @@ control "cronjob_container_argument_etcd_certfile_and_keyfile_configured" {
 }
 
 control "cronjob_container_admission_control_plugin_always_pull_images" {
-  title       = "CronJob containers admission control plugin should be set to always pull images"
-  description = "This check ensures that the container in the CronJob has always pull images configured for admission control plugin."
+  title       = "CronJob containers admission control plugin should be set to 'always pull images'"
+  description = "This check ensures that the container in the CronJob has 'always pull images' configured for the admission control plugin."
   query       = query.cronjob_container_admission_control_plugin_always_pull_images
 
   tags = local.cronjob_common_tags
 }
 
 control "cronjob_container_admission_control_plugin_no_always_admit" {
-  title       = "CronJob containers admission control plugin should not be set to always admit"
-  description = "This check ensures that the container in the CronJob has admission control plugin not set to always admit."
+  title       = "CronJob containers admission control plugin should not be set to 'always admit'"
+  description = "This check ensures that the container in the CronJob has an admission control plugin not set to 'always admit'."
   query       = query.cronjob_container_admission_control_plugin_no_always_admit
 
   tags = local.cronjob_common_tags
