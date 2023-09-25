@@ -348,10 +348,10 @@ control "daemonset_container_argument_kubelet_client_certificate_and_key_configu
   tags = local.daemonset_common_tags
 }
 
-control "daemonset_container_argument_etcd_certfile_and_keyfile_configured" {
-  title       = "DaemonSet containers argument etcd certfile and keyfile should be configured"
-  description = "This check ensures that the container in the DaemonSet has etcd certfile and keyfile argument configured."
-  query       = query.daemonset_container_argument_etcd_certfile_and_keyfile_configured
+control "daemonset_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
+  title       = "DaemonSet containers argument apiserver etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the DaemonSet has apiserver etcd certfile and keyfile argument configured."
+  query       = query.daemonset_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured
 
   tags = local.daemonset_common_tags
 }

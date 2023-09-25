@@ -348,10 +348,10 @@ control "replication_controller_container_argument_kubelet_client_certificate_an
   tags = local.replication_controller_common_tags
 }
 
-control "replication_controller_container_argument_etcd_certfile_and_keyfile_configured" {
-  title       = "Replication Controller containers argument etcd certfile and keyfile should be configured"
-  description = "This check ensures that the container in the Replication Controller has etcd certfile and keyfile argument configured."
-  query       = query.replication_controller_container_argument_etcd_certfile_and_keyfile_configured
+control "replication_controller_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
+  title       = "Replication Controller containers argument apiserver etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the Replication Controller has apiserver etcd certfile and keyfile argument configured."
+  query       = query.replication_controller_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured
 
   tags = local.replication_controller_common_tags
 }

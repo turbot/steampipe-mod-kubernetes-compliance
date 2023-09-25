@@ -348,10 +348,10 @@ control "cronjob_container_argument_kubelet_client_certificate_and_key_configure
   tags = local.cronjob_common_tags
 }
 
-control "cronjob_container_argument_etcd_certfile_and_keyfile_configured" {
-  title       = "CronJob containers argument etcd certfile and keyfile should be configured"
-  description = "This check ensures that the container in the CronJob has etcd certfile and keyfile argument configured."
-  query       = query.cronjob_container_argument_etcd_certfile_and_keyfile_configured
+control "cronjob_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
+  title       = "CronJob containers argument apiserver etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the CronJob has apiserver etcd certfile and keyfile argument configured."
+  query       = query.cronjob_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured
 
   tags = local.cronjob_common_tags
 }

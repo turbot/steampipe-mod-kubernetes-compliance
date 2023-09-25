@@ -21,7 +21,7 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_container_argument_authorization_mode_node,
     control.replication_controller_container_argument_authorization_mode_rbac,
     control.replication_controller_container_argument_etcd_cafile_configured,
-    control.replication_controller_container_argument_etcd_certfile_and_keyfile_configured,
+    control.replication_controller_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured,
     control.replication_controller_container_argument_event_qps_less_than_5,
     control.replication_controller_container_argument_insecure_port_0,
     control.replication_controller_container_argument_kubelet_client_certificate_and_key_configured,

@@ -1083,7 +1083,7 @@ query "statefulset_container_argument_kubelet_client_certificate_and_key_configu
   EOQ
 }
 
-query "statefulset_container_argument_etcd_certfile_and_keyfile_configured" {
+query "statefulset_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,

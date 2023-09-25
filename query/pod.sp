@@ -677,7 +677,7 @@ query "pod_container_argument_etcd_cafile_configured" {
   EOQ
 }
 
-query "pod_container_argument_etcd_certfile_and_keyfile_configured" {
+query "pod_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,

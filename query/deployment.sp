@@ -1097,7 +1097,7 @@ query "deployment_container_argument_kubelet_client_certificate_and_key_configur
   EOQ
 }
 
-query "deployment_container_argument_etcd_certfile_and_keyfile_configured" {
+query "deployment_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,

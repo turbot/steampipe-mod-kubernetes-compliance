@@ -356,10 +356,10 @@ control "deployment_container_argument_kubelet_client_certificate_and_key_config
   tags = local.deployment_common_tags
 }
 
-control "deployment_container_argument_etcd_certfile_and_keyfile_configured" {
-  title       = "Deployment containers argument etcd certfile and keyfile should be configured"
-  description = "This check ensures that the container in the Deployment has etcd certfile and keyfile argument configured."
-  query       = query.deployment_container_argument_etcd_certfile_and_keyfile_configured
+control "deployment_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
+  title       = "Deployment containers argument apiserver etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the Deployment has apiserver etcd certfile and keyfile argument configured."
+  query       = query.deployment_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured
 
   tags = local.deployment_common_tags
 }
