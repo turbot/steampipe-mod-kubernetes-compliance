@@ -404,8 +404,8 @@ query "daemonset_container_image_pull_policy_always" {
           when c ->> 'imagePullPolicy' is null
             and (select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
             ) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
-          when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to 'Always'.'
-          else c ->> 'name' || ' image pull policy is set to 'Always'.'
+          when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to ''Always''.'
+          else c ->> 'name' || ' image pull policy is set to ''Always''.'
         end
       as reason,
       name as daemonset_name
@@ -560,8 +560,8 @@ query "daemonset_container_argument_event_qps_less_than_5" {
         c ->> 'name' as container_name,
         trim('"' from split_part(co::text, '=', 2))::integer as value
       from
-        kubernetes_pod as p,
-        jsonb_array_elements(containers) as c,
+        kubernetes_daemonset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
         (co)::text LIKE '%event-qps=%'
@@ -584,5 +584,628 @@ query "daemonset_container_argument_event_qps_less_than_5" {
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c
       left join container_list as l on c ->> 'name' = l.container_name;
+  EOQ
+}
+
+query "daemonset_container_argument_anonymous_auth_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+         when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' rotate certificates disabled.'
+        else c ->> 'name' || ' rotate certificates enabled.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_path_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
+        else c ->> 'name' || ' audit log path configured.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_maxage_greater_than_30" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxage=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 30 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxage not set.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
+        else d.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxbackup=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+       when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 10 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxbackup not set.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
+        else d.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%audit-log-maxsiz=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+         when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and coalesce((l.value)::int, 0) >= 100 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxsize not set.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
+        else d.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_no_argument_basic_auth_file" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
+        else c ->> 'name' || ' basic auth file not set.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_etcd_cafile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--etcd-cafile%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile not set.'
+        else c ->> 'name' || ' etcd cafile set.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_authorization_mode_node" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode not set to node.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode set to node.'
+        else d.value ->> 'name' || ' kube-apiservernot defined.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_argument_authorization_mode_no_always_allow" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then d.value ->> 'name' || ' authorization mode set to always allow.'
+        else d.value ->> 'name' || ' authorization mode not set to always allow.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_argument_authorization_mode_rbac" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null then 'ok'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then 'alarm'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then 'ok'
+        else 'ok'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode not set to RBAC.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode set to RBAC.'
+        else d.value ->> 'name' || ' kube-apiservernot defined.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_no_argument_insecure_bind_address" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--insecure-bind-address%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address.'
+        else c ->> 'name' || ' has no insecure bind address.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_kubelet_https_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled.'
+        else c ->> 'name' || ' kubelet HTTPS enabled.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_insecure_port_0" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (c -> 'command') @> '["--insecure-port=0"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (c -> 'command') @> '["--insecure-port=0"]' then c ->> 'name' || ' insecure port not set to 0.'
+        else c ->> 'name' || ' insecure port set to 0.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_kubelet_client_certificate_and_key_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--kubelet-client-certificate%')
+            or not (c ->> 'command' like '%--kubelet-client-key%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+         when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--kubelet-client-certificate%')
+            or not (c ->> 'command' like '%--kubelet-client-key%')
+          ) then c ->> 'name' || ' kubelet client certificate and key not set.'
+        else c ->> 'name' || ' kubelet client certificate and key set.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_argument_etcd_certfile_and_keyfile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--etcd-certfile%')
+            or not (c ->> 'command' like '%--etcd-keyfile%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--etcd-certfile%')
+            or not (c ->> 'command' like '%--etcd-keyfile%')
+          ) then c ->> 'name' || ' etcd certfile and etcd keyfile not set.'
+        else c ->> 'name' || ' etcd certfile and etcd keyfile set.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "daemonset_container_admission_control_plugin_always_pull_images" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--enable-admission-plugins=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysPullImages%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then d.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysPullImages%') then d.value ->> 'name' || ' admission control plugin set to always pull images.'
+        else d.value ->> 'name' || ' admission control plugin not set to always pull images.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_admission_control_plugin_no_always_admit" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--enable-admission-plugins=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then d.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAdmit%') then d.value ->> 'name' || ' admission control plugin set to always admit.'
+        else d.value ->> 'name' || ' admission control plugin not set to always pull images.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }

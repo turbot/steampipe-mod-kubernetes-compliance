@@ -235,3 +235,139 @@ control "daemonset_container_argument_event_qps_less_than_5" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_anonymous_auth_disabled" {
+  title       = "DaemonSet containers argument anonymous auth should be disabled"
+  description = "This check ensures that the container in the DaemonSet has anonymous auth disabled."
+  query       = query.daemonset_container_argument_anonymous_auth_disabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_audit_log_path_configured" {
+  title       = "DaemonSet containers should have audit log path configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has audit log path configured appropriately."
+  query       = query.daemonset_container_argument_audit_log_path_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_audit_log_maxage_greater_than_30" {
+  title       = "DaemonSet containers should have audit log max-age set to 30 or greater"
+  description = "This check ensures that the container in the DaemonSet has audit log max-age set to 30 or greater."
+  query       = query.daemonset_container_argument_audit_log_maxage_greater_than_30
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
+  title       = "DaemonSet containers should have audit log max backup set to 10 or greater"
+  description = "This check ensures that the container in the DaemonSet has audit log max backup set to 10 or greater."
+  query       = query.daemonset_container_argument_audit_log_maxbackup_greater_than_10
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
+  title       = "DaemonSet containers should have audit log max size set to 100 or greater"
+  description = "This check ensures that the container in the DaemonSet has audit log max size set to 100 or greater."
+  query       = query.daemonset_container_argument_audit_log_maxsize_greater_than_100
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_no_argument_basic_auth_file" {
+  title       = "DaemonSet containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the DaemonSet does not have an argument basic auth file set."
+  query       = query.daemonset_container_no_argument_basic_auth_file
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_etcd_cafile_configured" {
+  title       = "DaemonSet containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the DaemonSet has argument etcd cafile set."
+  query       = query.daemonset_container_argument_etcd_cafile_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_authorization_mode_node" {
+  title       = "DaemonSet containers argument authorization mode should have node"
+  description = "This check ensures that the container in the DaemonSet has node included in the argument authorization mode."
+  query       = query.daemonset_container_argument_authorization_mode_node
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_authorization_mode_no_always_allow" {
+  title       = "DaemonSet containers argument authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the DaemonSet has argument authorization mode not set to 'always allow'."
+  query       = query.daemonset_container_argument_authorization_mode_no_always_allow
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_authorization_mode_rbac" {
+  title       = "DaemonSet containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the DaemonSet has RBAC included in the argument authorization mode."
+  query       = query.daemonset_container_argument_authorization_mode_rbac
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_no_argument_insecure_bind_address" {
+  title       = "DaemonSet containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the DaemonSet does not have an argument insecure bind address set."
+  query       = query.daemonset_container_no_argument_insecure_bind_address
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kubelet_https_enabled" {
+  title       = "DaemonSet containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the DaemonSet has kubelet HTTPS argument enabled."
+  query       = query.daemonset_container_argument_kubelet_https_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_insecure_port_0" {
+  title       = "DaemonSet containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the DaemonSet has insecure port set to 0."
+  query       = query.daemonset_container_argument_insecure_port_0
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "DaemonSet containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the DaemonSet has kubelet client certificate and key argument configured."
+  query       = query.daemonset_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "DaemonSet containers argument etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the DaemonSet has etcd certfile and keyfile argument configured."
+  query       = query.daemonset_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_admission_control_plugin_always_pull_images" {
+  title       = "DaemonSet containers admission control plugin should be set to 'always pull images'"
+  description = "This check ensures that the container in the DaemonSet has 'always pull images' configured for admission control plugin."
+  query       = query.daemonset_container_admission_control_plugin_always_pull_images
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_admission_control_plugin_no_always_admit" {
+  title       = "DaemonSet containers admission control plugin should not be set to 'always admit'"
+  description = "This check ensures that the container in the DaemonSet has an admission control plugin not set to 'always admit'."
+  query       = query.daemonset_container_admission_control_plugin_no_always_admit
+
+  tags = local.daemonset_common_tags
+}
