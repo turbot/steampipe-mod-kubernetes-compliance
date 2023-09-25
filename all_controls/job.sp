@@ -59,6 +59,7 @@ benchmark "all_controls_job" {
     control.job_container_no_argument_hostname_override_configured,
     control.job_container_argument_kube_controller_manager_profiling_disabled,
     control.job_container_argument_etcd_auto_tls_disabled,
+    control.job_container_argument_namespace_lifecycle_enabled,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

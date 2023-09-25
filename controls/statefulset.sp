@@ -435,3 +435,11 @@ control "statefulset_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_namespace_lifecycle_enabled" {
+  title       = "StatefulSet containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.statefulset_container_argument_namespace_lifecycle_enabled
+
+  tags = local.statefulset_common_tags
+}

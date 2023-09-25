@@ -60,6 +60,7 @@ benchmark "all_controls_deployment" {
     control.deployment_container_no_argument_hostname_override_configured,
     control.deployment_container_argument_kube_controller_manager_profiling_disabled,
     control.deployment_container_argument_etcd_auto_tls_disabled,
+    control.deployment_container_argument_namespace_lifecycle_enabled,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

@@ -59,6 +59,7 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_container_no_argument_hostname_override_configured,
     control.replication_controller_container_argument_kube_controller_manager_profiling_disabled,
     control.replication_controller_container_argument_etcd_auto_tls_disabled,
+    control.replication_controller_container_argument_namespace_lifecycle_enabled,
   ]
 
   tags = merge(local.all_controls_replication_controller_common_tags, {

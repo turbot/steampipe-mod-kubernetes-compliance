@@ -59,6 +59,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_no_argument_hostname_override_configured,
     control.replicaset_container_argument_kube_controller_manager_profiling_disabled,
     control.replicaset_container_argument_etcd_auto_tls_disabled,
+    control.replicaset_container_argument_namespace_lifecycle_enabled,
   ]
 
 

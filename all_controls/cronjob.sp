@@ -59,6 +59,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_no_argument_hostname_override_configured,
     control.cronjob_container_argument_kube_controller_manager_profiling_disabled,
     control.cronjob_container_argument_etcd_auto_tls_disabled,
+    control.cronjob_container_argument_namespace_lifecycle_enabled,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {

@@ -435,3 +435,11 @@ control "replicaset_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_namespace_lifecycle_enabled" {
+  title       = "ReplicaSet containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.replicaset_container_argument_namespace_lifecycle_enabled
+
+  tags = local.replicaset_common_tags
+}

@@ -436,3 +436,11 @@ control "pod_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_argument_namespace_lifecycle_enabled" {
+  title       = "Pod containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.pod_container_argument_namespace_lifecycle_enabled
+
+  tags = local.pod_common_tags
+}
