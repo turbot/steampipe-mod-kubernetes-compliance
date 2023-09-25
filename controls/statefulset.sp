@@ -436,6 +436,62 @@ control "statefulset_container_argument_etcd_auto_tls_disabled" {
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "StatefulSet containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument kube controller manager service account credentials enabled."
+  query       = query.statefulset_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "StatefulSet containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the StatefulSet has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.statefulset_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "StatefulSet containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has kube controller manager service account private key file configured appropriately."
+  query       = query.statefulset_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kubelet_read_only_port_0" {
+  title       = "StatefulSet containers argument kubelet read only port shoule be set 0"
+  description = "This check ensures that the container in the StatefulSet has argument kubelet read only port set to 0."
+  query       = query.statefulset_container_argument_kubelet_read_only_port_0
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "StatefulSet containers should have kube controller manager root ca file configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has kube controller manager root ca file configured appropriately."
+  query       = query.statefulset_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "StatefulSet containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument etcd client cert auth enabled."
+  query       = query.statefulset_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_namespace_lifecycle_enabled" {
+  title       = "StatefulSet containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.statefulset_container_argument_namespace_lifecycle_enabled
+
+  tags = local.statefulset_common_tags
+}
+
 control "statefulset_container_argument_service_account_lookup_enabled" {
   title       = "StatefulSet containers argument service account lookup should be enabled"
   description = "This check ensures that the container in the StatefulSet has argument service account lookup enabled."

@@ -1464,6 +1464,278 @@ query "deployment_container_argument_etcd_auto_tls_disabled" {
   EOQ
 }
 
+query "deployment_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--use-service-account-credentials=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-controller-manager"]') then c ->> 'name' || ' kube-controller-manager not defined.'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--use-service-account-credentials=true"]' then c ->> 'name' || ' use service account credential enabled.'
+        else c ->> 'name' || ' use service account credential disabled.'
+      end as reason,
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "deployment_container_argument_kubelet_authorization_mode_no_always_allow" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as deployment
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_deployment_name as (
+      select
+        d.name as deployment_name,
+        d.uid as deployment_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.deployment_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kubelet"]') then d.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' and ((l.value) like '%AlwaysAllow%') then d.value ->> 'name' || ' authorization mode set to always allow.'
+        else d.value ->> 'name' || ' authorization mode not set to always allow.'
+      end as reason,
+      d.deployment_name as deployment_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_deployment_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
+  EOQ
+}
+
+query "deployment_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '.', 2)) as value,
+        d.name as deployment
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--service-account-private-key-file%'
+    ), container_name_with_deployment_name as (
+      select
+        d.name as deployment_name,
+        d.uid as deployment_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.deployment_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-controller-manager"]') then d.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then d.value ->> 'name' || ' service account private key file is set.'
+        else d.value ->> 'name' || ' service account private key file is not set.'
+      end as reason,
+      d.deployment_name as deployment_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_deployment_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
+  EOQ
+}
+
+query "deployment_container_argument_kubelet_read_only_port_0" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as deployment
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--read-only-port=%'
+    ), container_name_with_deployment_name as (
+      select
+        d.name as deployment_name,
+        d.uid as deployment_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.deployment_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' and (l.value = 0) then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kubelet"]') then d.value ->> 'name' || ' kubelet not defined.'
+        else d.value ->> 'name' || ' read only port is set to ' || (l.value) || '.'
+      end as reason,
+      d.deployment_name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_deployment_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
+  EOQ
+}
+
+query "deployment_container_argument_kube_controller_manager_root_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '.', 2)) as value,
+        d.name as deployment
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--root-ca-file%'
+    ), container_name_with_deployment_name as (
+      select
+        d.name as deployment_name,
+        d.uid as deployment_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.deployment_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-controller-manager"]') then d.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then d.value ->> 'name' || ' root-ca-file is set.'
+        else d.value ->> 'name' || ' root-ca-file is not set.'
+      end as reason,
+      d.deployment_name as deployment_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_deployment_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
+  EOQ
+}
+
+query "deployment_container_argument_etcd_client_cert_auth_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--client-cert-auth=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--client-cert-auth=true"]' then c ->> 'name' || ' client cert auth enabled.'
+        else c ->> 'name' || ' client cert auth disabled.'
+      end as reason,
+      name as deployment_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "deployment_container_argument_namespace_lifecycle_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NamespaceLifecycle"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NamespaceLifecycle"]' then c ->> 'name' || ' has admission control plugin NamespaceLifecycle enabled.'
+        else c ->> 'name' || ' has admission control plugin NamespaceLifecycle disabled.'
+      end as reason,
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
 query "deployment_container_argument_service_account_lookup_enabled" {
   sql = <<-EOQ
     select

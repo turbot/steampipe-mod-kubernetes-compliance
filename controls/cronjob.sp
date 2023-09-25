@@ -436,6 +436,118 @@ control "cronjob_container_argument_etcd_auto_tls_disabled" {
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "CronJob containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the CronJob has argument kube controller manager service account credentials enabled."
+  query       = query.cronjob_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "CronJob containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the CronJob has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.cronjob_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "CronJob containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the CronJob has kube controller manager service account private key file configured appropriately."
+  query       = query.cronjob_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kubelet_read_only_port_0" {
+  title       = "CronJob containers argument kubelet read only port shoule be set 0"
+  description = "This check ensures that the container in the CronJob has argument kubelet read only port set to 0."
+  query       = query.cronjob_container_argument_kubelet_read_only_port_0
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "CronJob containers should have kube controller manager root ca file configured appropriately"
+  description = "This check ensures that the container in the CronJob has kube controller manager root ca file configured appropriately."
+  query       = query.cronjob_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "CronJob containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the CronJob has argument etcd client cert auth enabled."
+  query       = query.cronjob_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_namespace_lifecycle_enabled" {
+  title       = "CronJob containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.cronjob_container_argument_namespace_lifecycle_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "CronJob containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the CronJob has argument kube controller manager service account credentials enabled."
+  query       = query.cronjob_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "CronJob containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the CronJob has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.cronjob_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "CronJob containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the CronJob has kube controller manager service account private key file configured appropriately."
+  query       = query.cronjob_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kubelet_read_only_port_0" {
+  title       = "CronJob containers argument kubelet read only port shoule be set 0"
+  description = "This check ensures that the container in the CronJob has argument kubelet read only port set to 0."
+  query       = query.cronjob_container_argument_kubelet_read_only_port_0
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "CronJob containers should have kube controller manager root ca file configured appropriately"
+  description = "This check ensures that the container in the CronJob has kube controller manager root ca file configured appropriately."
+  query       = query.cronjob_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "CronJob containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the CronJob has argument etcd client cert auth enabled."
+  query       = query.cronjob_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_namespace_lifecycle_enabled" {
+  title       = "CronJob containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.cronjob_container_argument_namespace_lifecycle_enabled
+
+  tags = local.cronjob_common_tags
+}
+
 control "cronjob_container_argument_service_account_lookup_enabled" {
   title       = "CronJob containers argument service account lookup should be enabled"
   description = "This check ensures that the container in the CronJob has argument service account lookup enabled."
