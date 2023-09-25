@@ -159,19 +159,19 @@ query "pod_template_container_admission_control_plugin_always_pull_images" {
   EOQ
 }
 
-query "pod_template_container_argument_anonymous_auth_disabled" {
+query "pod_template_container_argument_api_server_anonymous_auth_disabled" {
   sql = <<-EOQ
     select
       distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
-        when (c -> 'command') @> '["kubelet"]'
+        when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
         else 'ok'
       end as status,
       case
         when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
-         when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
-        when (c -> 'command') @> '["kubelet"]'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' anonymous auth enabled.'
         else c ->> 'name' || ' anonymous auth disabled.'
       end as reason,
@@ -636,6 +636,364 @@ query "pod_template_container_no_argument_insecure_bind_address" {
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address.'
         else c ->> 'name' || ' has no insecure bind address.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_insecure_port_0" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (c -> 'command') @> '["--insecure-port=0"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (c -> 'command') @> '["--insecure-port=0"]' then c ->> 'name' || ' insecure port not set to 0.'
+        else c ->> 'name' || ' insecure port set to 0.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_kubelet_client_certificate_and_key_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--kubelet-client-certificate%')
+            or not (c ->> 'command' like '%--kubelet-client-key%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--kubelet-client-certificate%')
+            or not (c ->> 'command' like '%--kubelet-client-key%')
+          ) then c ->> 'name' || ' kubelet client certificate and key not set.'
+        else c ->> 'name' || ' kubelet client certificate and key set.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_kubelet_https_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled.'
+        else c ->> 'name' || ' kubelet HTTPS enabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_cpu_limit" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'resources' -> 'limits' ->> 'cpu' is null then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c -> 'resources' -> 'limits' ->> 'cpu' is null then c ->> 'name' || ' does not have a CPU limit.'
+        else c ->> 'name' || ' has a CPU limit of ' || (c -> 'resources' -> 'limits' ->> 'cpu') || '.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_cpu_request" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'resources' -> 'requests' ->> 'cpu' is null then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c -> 'resources' -> 'requests' ->> 'cpu' is null then c ->> 'name' || ' does not have a CPU request.'
+        else c ->> 'name' || ' has a CPU request of ' || (c -> 'resources' -> 'requests' ->> 'cpu') || '.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_security_context_exists" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' is not null then c ->> 'name' || ' security context exists.'
+        else c ->> 'name' || ' security context does not exist.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_admission_capability_restricted" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' is not null)
+          and (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]'
+          or c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["NET_RAW"]') then c ->> 'name' || ' admission capability is restricted.'
+        else c ->> 'name' || ' admission capability is not restricted.'
+      end as reason,
+      name as pod_template_name
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_image_pull_policy_always" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+        when c ->> 'imagePullPolicy' is null
+          and (select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]) not in ('latest', '') then 'alarm'
+        when c ->> 'imagePullPolicy' <> 'Always' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
+        when c ->> 'imagePullPolicy' is null
+          and (select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]) not in ('latest', '') then c ->> 'name' || ' image pull policy is not specified.'
+        when c ->> 'imagePullPolicy' <> 'Always' then c ->> 'name' || ' image pull policy is not set to ''Always''.'
+        else c ->> 'name' || ' image pull policy is set to ''Always''.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_image_tag_specified" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+        case
+          when c ->> 'image' is null or c ->> 'image' = '' then 'alarm'
+          when c ->> 'image' like '%@%' then 'ok'
+          when (select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]) in ('latest', '') then 'alarm'
+          else 'ok'
+        end
+      as status,
+        case
+          when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
+          when c ->> 'image' like '%@%' then c ->> 'name' || ' image with digest specified.'
+          when (
+            select (regexp_matches(c ->> 'image', '(?:[^\s\/]+\/)?([^\s:]+):?([^\s]*)'))[2]
+          ) in ('latest', '') then c ->> 'name' || ' image with the latest tag or no tag specified.'
+          else c ->> 'name' || ' image with tag specified.'
+        end
+      as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_kubelet_anonymous_auth_disabled" {
+  sql = <<-EOQ
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' anonymous auth enabled.'
+        else c ->> 'name' || ' anonymous auth disabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_event_qps_less_than_5" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value
+      from
+        kubernetes_pod_template as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%event-qps=%'
+    )
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when l.container_name is null then 'ok'
+        when l.container_name is not null and (c -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 5 then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when l.container_name is null then c ->> 'name' || ' event-qps is not set.'
+        else c ->> 'name' || ' event-qps is set to ' || l.value || '.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c
+      left join container_list as l on c ->> 'name' = l.container_name;
+  EOQ
+}
+
+query "pod_template_container_rotate_certificate_enabled" {
+  sql = <<-EOQ
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
+        else c ->> 'name' || ' rotate certificates enabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_liveness_probe" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'livenessProbe' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'livenessProbe' is not null then c ->> 'name' || ' has liveness probe.'
+        else c ->> 'name' || ' does not have liveness probe.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_memory_limit" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'resources' -> 'limits' ->> 'memory' is null then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c -> 'resources' -> 'limits' ->> 'memory' is null then c ->> 'name' || ' does not have a memory limit.'
+        else c ->> 'name' || ' has a memory limit of ' || (c -> 'resources' -> 'limits' ->> 'memory') || '.'
       end as reason,
       name as pod_template_name
       ${local.tag_dimensions_sql}

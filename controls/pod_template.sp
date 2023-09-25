@@ -44,10 +44,10 @@ control "pod_template_container_admission_control_plugin_always_pull_images" {
   tags = local.pod_template_common_tags
 }
 
-control "pod_template_container_argument_anonymous_auth_disabled" {
+control "pod_template_container_argument_api_server_anonymous_auth_disabled" {
   title       = "PodTemplate containers argument anonymous auth should be disabled"
   description = "This check ensures that the container in the PodTemplate has anonymous auth disabled."
-  query       = query.pod_template_container_argument_anonymous_auth_disabled
+  query       = query.pod_template_container_argument_api_server_anonymous_auth_disabled
 
   tags = local.pod_template_common_tags
 }
@@ -144,6 +144,118 @@ control "pod_template_container_no_argument_insecure_bind_address" {
   title       = "PodTemplate containers argument insecure bind address should not be set"
   description = "This check ensures that the PodTemplate container does not have an argument insecure bind address set."
   query       = query.pod_template_container_no_argument_insecure_bind_address
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_insecure_port_0" {
+  title       = "PodTemplate containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the PodTemplate has insecure port set to 0."
+  query       = query.pod_template_container_argument_insecure_port_0
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "PodTemplate containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the PodTemplate has kubelet client certificate and key argument configured."
+  query       = query.pod_template_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kubelet_https_enabled" {
+  title       = "PodTemplate containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the PodTemplate has kubelet HTTPS argument enabled."
+  query       = query.pod_template_container_argument_kubelet_https_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_cpu_limit" {
+  title       = replace(local.container_cpu_limit_title, "__KIND__", "PodTemplate")
+  description = replace(local.container_cpu_limit_desc, "__KIND__", "PodTemplate")
+  query       = query.pod_template_cpu_limit
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_cpu_request" {
+  title       = replace(local.container_cpu_request_title, "__KIND__", "PodTemplate")
+  description = replace(local.container_cpu_request_desc, "__KIND__", "PodTemplate")
+  query       = query.pod_template_cpu_request
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_security_context_exists" {
+  title       = "PodTemplate containers should has security context defined"
+  description = "This check ensures that the container in a PodTemplate definition has security context defined."
+  query       = query.pod_template_container_security_context_exists
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_admission_capability_restricted" {
+  title       = "PodTemplate containers should has admission capability restricted"
+  description = "This check ensures that the container in the PodTemplate has admission capability restricted."
+  query       = query.pod_template_container_admission_capability_restricted
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_image_pull_policy_always" {
+  title       = "PodTemplate containers should has image pull policy set to Always"
+  description = "This check ensures that the container in the PodTemplate has image pull policy set to Always."
+  query       = query.pod_template_container_image_pull_policy_always
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_image_tag_specified" {
+  title       = "PodTemplate containers have image tag specified which should be fixed not latest or blank"
+  description = "This check ensures that the container in the PodTemplate has image tag fixed not latest or blank."
+  query       = query.pod_template_container_image_tag_specified
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kubelet_anonymous_auth_disabled" {
+  title       = "PodTemplate containers argument anonymous auth should be disabled"
+  description = "This check ensures that the container in the PodTemplate has anonymous auth disabled."
+  query       = query.pod_template_container_argument_kubelet_anonymous_auth_disabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_event_qps_less_than_5" {
+  title       = "PodTemplate containers argument event qps should be less than 5"
+  description = "This check ensures that the container in the PodTemplate has argument event qps set to less than 5."
+  query       = query.pod_template_container_argument_event_qps_less_than_5
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_rotate_certificate_enabled" {
+  title       = "PodTemplate containers certificate rotation should be enabled"
+  description = "This check ensures that the container in the PodTemplate has certificate rotation enabled."
+  query       = query.pod_template_container_rotate_certificate_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_liveness_probe" {
+  title       = "PodTemplate containers should have liveness probe"
+  description = "Containers in PodTemplate definition should have liveness probe. The liveness probes are to check if the container is started and alive. If this isn't the case, kubernetes will eventually restart the container."
+  query       = query.pod_template_container_liveness_probe
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_memory_limit" {
+  title       = replace(local.container_memory_limit_title, "__KIND__", "PodTemplate")
+  description = replace(local.container_memory_limit_desc, "__KIND__", "PodTemplate")
+  query       = query.pod_template_memory_limit
 
   tags = local.pod_template_common_tags
 }
