@@ -483,3 +483,11 @@ control "cronjob_container_argument_etcd_client_cert_auth_enabled" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_argument_namespace_lifecycle_enabled" {
+  title       = "CronJob containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.cronjob_container_argument_namespace_lifecycle_enabled
+
+  tags = local.cronjob_common_tags
+}

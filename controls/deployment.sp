@@ -491,3 +491,11 @@ control "deployment_container_argument_etcd_client_cert_auth_enabled" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_namespace_lifecycle_enabled" {
+  title       = "Deployment containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the Deployment has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.deployment_container_argument_etcd_auto_tls_disabled
+
+  tags = local.deployment_common_tags
+}

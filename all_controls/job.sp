@@ -64,7 +64,8 @@ benchmark "all_controls_job" {
     control.job_container_argument_kube_controller_manager_service_account_private_key_file_configured,
     control.job_container_argument_kubelet_read_only_port_0,
     control.job_container_argument_kube_controller_manager_root_ca_file_configured,
-    control.job_container_argument_etcd_client_cert_auth_enabled
+    control.job_container_argument_etcd_client_cert_auth_enabled,
+    control.job_container_argument_namespace_lifecycle_enabled,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

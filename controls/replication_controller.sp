@@ -483,3 +483,11 @@ control "replication_controller_container_argument_etcd_client_cert_auth_enabled
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_namespace_lifecycle_enabled" {
+  title       = "Replication Controller containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.replication_controller_container_argument_namespace_lifecycle_enabled
+
+  tags = local.replication_controller_common_tags
+}

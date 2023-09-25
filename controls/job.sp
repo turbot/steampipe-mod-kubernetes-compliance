@@ -483,3 +483,11 @@ control "job_container_argument_etcd_client_cert_auth_enabled" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_argument_namespace_lifecycle_enabled" {
+  title       = "Job containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.job_container_argument_namespace_lifecycle_enabled
+
+  tags = local.job_common_tags
+}
