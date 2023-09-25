@@ -571,3 +571,11 @@ control "daemonset_container_kubelet_certificate_authority_configured" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_node_restriction_enabled" {
+  title       = "DaemonSet containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the DaemonSet has argument admission control plugin NodeRestriction disabled."
+  query       = query.daemonset_container_argument_node_restriction_enabled
+
+  tags = local.daemonset_common_tags
+}

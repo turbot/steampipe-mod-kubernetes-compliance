@@ -515,3 +515,11 @@ control "statefulset_container_kubelet_certificate_authority_configured" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_node_restriction_enabled" {
+  title       = "StatefulSet containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin NodeRestriction disabled."
+  query       = query.statefulset_container_argument_node_restriction_enabled
+
+  tags = local.statefulset_common_tags
+}

@@ -571,3 +571,11 @@ control "cronjob_container_kubelet_certificate_authority_configured" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_argument_node_restriction_enabled" {
+  title       = "CronJob containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin NodeRestriction disabled."
+  query       = query.cronjob_container_argument_node_restriction_enabled
+
+  tags = local.cronjob_common_tags
+}

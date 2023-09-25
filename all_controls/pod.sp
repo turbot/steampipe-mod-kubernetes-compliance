@@ -70,6 +70,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_service_account_lookup_enabled,
     control.pod_container_token_auth_file_not_configured,
     control.pod_container_kubelet_certificate_authority_configured,
+    control.pod_container_argument_node_restriction_enabled,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

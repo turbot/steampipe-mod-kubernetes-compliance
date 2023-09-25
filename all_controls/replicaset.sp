@@ -69,6 +69,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_argument_service_account_lookup_enabled,
     control.replicaset_container_token_auth_file_not_configured,
     control.replicaset_container_kubelet_certificate_authority_configured,
+    control.replicaset_container_argument_node_restriction_enabled,
   ]
 
 

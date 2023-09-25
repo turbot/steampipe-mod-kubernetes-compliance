@@ -516,3 +516,11 @@ control "replicaset_container_kubelet_certificate_authority_configured" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_node_restriction_enabled" {
+  title       = "ReplicaSet containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin NodeRestriction disabled."
+  query       = query.replicaset_container_argument_node_restriction_enabled
+
+  tags = local.replicaset_common_tags
+}

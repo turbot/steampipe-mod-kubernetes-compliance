@@ -1802,3 +1802,29 @@ query "statefulset_container_kubelet_certificate_authority_configured" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "statefulset_container_argument_node_restriction_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NodeRestriction"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NodeRestriction"]' then c ->> 'name' || ' has admission control plugin NodeRestriction enabled.'
+        else c ->> 'name' || ' has admission control plugin NodeRestriction disabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

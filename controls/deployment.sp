@@ -523,3 +523,11 @@ control "deployment_container_kubelet_certificate_authority_configured" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_node_restriction_enabled" {
+  title       = "Deployment containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the Deployment has argument admission control plugin NodeRestriction disabled."
+  query       = query.deployment_container_argument_node_restriction_enabled
+
+  tags = local.deployment_common_tags
+}

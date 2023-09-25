@@ -515,3 +515,11 @@ control "job_container_kubelet_certificate_authority_configured" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_argument_node_restriction_enabled" {
+  title       = "Job containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin NodeRestriction disabled."
+  query       = query.job_container_argument_node_restriction_enabled
+
+  tags = local.job_common_tags
+}

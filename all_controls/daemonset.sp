@@ -69,6 +69,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_argument_service_account_lookup_enabled,
     control.daemonset_container_token_auth_file_not_configured,
     control.daemonset_container_kubelet_certificate_authority_configured,
+    control.daemonset_container_argument_node_restriction_enabled,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

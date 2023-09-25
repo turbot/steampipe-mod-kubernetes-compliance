@@ -516,3 +516,11 @@ control "pod_container_kubelet_certificate_authority_configured" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_argument_node_restriction_enabled" {
+  title       = "Pod containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin NodeRestriction disabled."
+  query       = query.pod_container_argument_node_restriction_enabled
+
+  tags = local.pod_common_tags
+}

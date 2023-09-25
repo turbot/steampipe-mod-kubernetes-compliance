@@ -515,3 +515,11 @@ control "replication_controller_container_kubelet_certificate_authority_configur
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_node_restriction_enabled" {
+  title       = "Replication Controller containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin NodeRestriction disabled."
+  query       = query.replication_controller_container_argument_node_restriction_enabled
+
+  tags = local.replication_controller_common_tags
+}
