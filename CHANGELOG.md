@@ -1,3 +1,17 @@
+## v0.13 [2023-09-25]
+
+_Enhancements_
+
+- Added 112 new controls to the `All Controls` benchmark for the following services: ([#59](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/59))
+  - `CronJob`
+  - `DaemonSet`
+  - `Deployment`
+  - `Job`
+  - `Pod`
+  - `ReplicaSet`
+  - `ReplicationController`
+  - `StatefulSet`
+
 ## v0.12 [2023-09-15]
 
 _Enhancements_

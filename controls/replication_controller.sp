@@ -235,3 +235,139 @@ control "replication_controller_container_argument_event_qps_less_than_5" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_anonymous_auth_disabled" {
+  title       = "Replication Controller containers argument anonymous auth should be disabled"
+  description = "This check ensures that the container in the Replication Controller has anonymous auth disabled."
+  query       = query.replication_controller_container_argument_anonymous_auth_disabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_audit_log_path_configured" {
+  title       = "Replication Controller containers should have audit log path configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has audit log path configured appropriately."
+  query       = query.replication_controller_container_argument_audit_log_path_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_audit_log_maxage_greater_than_30" {
+  title       = "Replication Controller containers should have audit log max-age set to 30 or greater"
+  description = "This check ensures that the container in the Replication Controller has audit log max-age set to 30 or greater."
+  query       = query.replication_controller_container_argument_audit_log_maxage_greater_than_30
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_audit_log_maxbackup_greater_than_10" {
+  title       = "Replication Controller containers should have audit log max backup set to 10 or greater"
+  description = "This check ensures that the container in the Replication Controller has audit log max backup set to 10 or greater."
+  query       = query.replication_controller_container_argument_audit_log_maxbackup_greater_than_10
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_audit_log_maxsize_greater_than_100" {
+  title       = "Replication Controller containers should have audit log max size set to 100 or greater"
+  description = "This check ensures that the container in the Replication Controller has audit log max size set to 100 or greater."
+  query       = query.replication_controller_container_argument_audit_log_maxsize_greater_than_100
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_no_argument_basic_auth_file" {
+  title       = "Replication Controller containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the Replication Controller does not have an argument basic auth file set."
+  query       = query.replication_controller_container_no_argument_basic_auth_file
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_etcd_cafile_configured" {
+  title       = "Replication Controller containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the Replication Controller has argument etcd cafile set."
+  query       = query.replication_controller_container_argument_etcd_cafile_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_authorization_mode_node" {
+  title       = "Replication Controller containers argument authorization mode should have node"
+  description = "This check ensures that the container in the Replication Controller has node included in the argument authorization mode."
+  query       = query.replication_controller_container_argument_authorization_mode_node
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_authorization_mode_no_always_allow" {
+  title       = "Replication Controller containers argument authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the Replication Controller has argument authorization mode not set to 'always allow'."
+  query       = query.replication_controller_container_argument_authorization_mode_no_always_allow
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_authorization_mode_rbac" {
+  title       = "Replication Controller containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the Replication Controller has RBAC included in the argument authorization mode."
+  query       = query.replication_controller_container_argument_authorization_mode_rbac
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_no_argument_insecure_bind_address" {
+  title       = "Replication Controller containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the Replication Controller does not have an argument insecure bind address set."
+  query       = query.replication_controller_container_no_argument_insecure_bind_address
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_https_enabled" {
+  title       = "Replication Controller containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the Replication Controller has kubelet HTTPS argument enabled."
+  query       = query.replication_controller_container_argument_kubelet_https_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_insecure_port_0" {
+  title       = "Replication Controller containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the Replication Controller has insecure port set to 0."
+  query       = query.replication_controller_container_argument_insecure_port_0
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "Replication Controller containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the Replication Controller has kubelet client certificate and key argument configured."
+  query       = query.replication_controller_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "Replication Controller containers argument etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the Replication Controller has etcd certfile and keyfile argument configured."
+  query       = query.replication_controller_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_admission_control_plugin_always_pull_images" {
+  title       = "Replication Controller containers admission control plugin should be set to 'always pull images'"
+  description = "This check ensures that the container in the Replication Controller has 'always pull images' configured for admission control plugin."
+  query       = query.replication_controller_container_admission_control_plugin_always_pull_images
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_admission_control_plugin_no_always_admit" {
+  title       = "Replication Controlle containers admission control plugin should not be set to 'always admit'"
+  description = "This check ensures that the container in the Replication Controlle has an admission control plugin not set to 'always admit'."
+  query       = query.replication_controller_container_admission_control_plugin_no_always_admit
+
+  tags = local.replication_controller_common_tags
+}

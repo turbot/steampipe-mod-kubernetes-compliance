@@ -235,3 +235,139 @@ control "statefulset_container_argument_event_qps_less_than_5" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_anonymous_auth_disabled" {
+  title       = "StatefulSet Controller containers argument anonymous auth should be disabled"
+  description = "This check ensures that the container in the StatefulSet Controller has anonymous auth disabled."
+  query       = query.statefulset_container_argument_anonymous_auth_disabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_audit_log_path_configured" {
+  title       = "StatefulSet containers should have audit log path configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has audit log path configured appropriately."
+  query       = query.statefulset_container_argument_audit_log_path_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_audit_log_maxage_greater_than_30" {
+  title       = "StatefulSet containers should have audit log max-age set to 30 or greater"
+  description = "This check ensures that the container in the StatefulSet has audit log max-age set to 30 or greater."
+  query       = query.statefulset_container_argument_audit_log_maxage_greater_than_30
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_audit_log_maxbackup_greater_than_10" {
+  title       = "StatefulSet containers should have audit log max backup set to 10 or greater"
+  description = "This check ensures that the container in the StatefulSet has audit log max backup set to 10 or greater."
+  query       = query.statefulset_container_argument_audit_log_maxbackup_greater_than_10
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
+  title       = "StatefulSet containers should have audit log max size set to 100 or greater"
+  description = "This check ensures that the container in the StatefulSet has audit log max size set to 100 or greater."
+  query       = query.statefulset_container_argument_audit_log_maxsize_greater_than_100
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_no_argument_basic_auth_file" {
+  title       = "StatefulSet containers argument basic auth file should not be set"
+  description = "This check ensures that the container in the StatefulSet does not have an argument basic auth file set."
+  query       = query.statefulset_container_no_argument_basic_auth_file
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_etcd_cafile_configured" {
+  title       = "StatefulSet containers argument etcd cafile should be set"
+  description = "This check ensures that the container in the StatefulSet has argument etcd cafile set."
+  query       = query.statefulset_container_argument_etcd_cafile_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_authorization_mode_node" {
+  title       = "StatefulSet containers argument authorization mode should have node"
+  description = "This check ensures that the container in the StatefulSet has node included in the argument authorization mode."
+  query       = query.statefulset_container_argument_authorization_mode_node
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_authorization_mode_no_always_allow" {
+  title       = "StatefulSet containers argument authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the StatefulSet has argument authorization mode not set to 'always allow'."
+  query       = query.statefulset_container_argument_authorization_mode_no_always_allow
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_authorization_mode_rbac" {
+  title       = "StatefulSet containers argument authorization mode should have RBAC"
+  description = "This check ensures that the container in the StatefulSet has RBAC included in the argument authorization mode."
+  query       = query.statefulset_container_argument_authorization_mode_rbac
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_no_argument_insecure_bind_address" {
+  title       = "StatefulSet containers argument insecure bind address should not be set"
+  description = "This check ensures that the container in the StatefulSet does not have an argument insecure bind address set."
+  query       = query.statefulset_container_no_argument_insecure_bind_address
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kubelet_https_enabled" {
+  title       = "StatefulSet containers argument kubelet HTTPS should be enabled"
+  description = "This check ensures that the container in the StatefulSet has kubelet HTTPS argument enabled."
+  query       = query.statefulset_container_argument_kubelet_https_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_insecure_port_0" {
+  title       = "StatefulSet containers argument insecure port should be set to 0"
+  description = "This check ensures that the container in the StatefulSet has insecure port set to 0."
+  query       = query.statefulset_container_argument_insecure_port_0
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kubelet_client_certificate_and_key_configured" {
+  title       = "StatefulSet containers argument kubelet client certificate and key should be configured"
+  description = "This check ensures that the container in the StatefulSet has kubelet client certificate and key argument configured."
+  query       = query.statefulset_container_argument_kubelet_client_certificate_and_key_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "StatefulSet containers argument etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the StatefulSet has etcd certfile and keyfile argument configured."
+  query       = query.statefulset_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_admission_control_plugin_always_pull_images" {
+  title       = "StatefulSet containers admission control plugin should be set to 'always pull images'"
+  description = "This check ensures that the container in the StatefulSet has 'always pull images' configured for admission control plugin."
+  query       = query.statefulset_container_admission_control_plugin_always_pull_images
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_admission_control_plugin_no_always_admit" {
+  title       = "StatefulSet containers admission control plugin should not be set to 'always admit'"
+  description = "This check ensures that the container in the StatefulSet has an admission control plugin not set to 'always admit'."
+  query       = query.statefulset_container_admission_control_plugin_no_always_admit
+
+  tags = local.statefulset_common_tags
+}
