@@ -435,3 +435,51 @@ control "replicaset_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "ReplicaSet containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument kube controller manager service account credentials enabled."
+  query       = query.replicaset_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "ReplicaSet containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the ReplicaSet has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.replicaset_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "ReplicaSet containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the ReplicaSet has kube controller manager service account private key file configured appropriately."
+  query       = query.replicaset_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_kubelet_read_only_port_0" {
+  title       = "ReplicaSet containers argument kubelet read only port shoule be set 0"
+  description = "This check ensures that the container in the ReplicaSet has argument kubelet read only port set to 0."
+  query       = query.replicaset_container_argument_kubelet_read_only_port_0
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "ReplicaSet containers should have kube controller manager root ca file configured appropriately"
+  description = "This check ensures that the container in the ReplicaSet has kube controller manager root ca file configured appropriately."
+  query       = query.replicaset_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "ReplicaSet containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument etcd client cert auth enabled."
+  query       = query.replicaset_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.replicaset_common_tags
+}

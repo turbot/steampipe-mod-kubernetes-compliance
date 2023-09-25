@@ -28,8 +28,8 @@ query "replication_controller_host_network_access_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'ReplicationController replication_controllers using host network.'
-        else 'ReplicationController replication_controllers not using host network.'
+        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'ReplicationController pods using host network.'
+        else 'ReplicationController pods not using host network.'
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
@@ -131,9 +131,9 @@ query "replication_controller_hostpid_hostipc_sharing_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicationController replication_controllers share host PID namespaces.'
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicationController replication_controllers share host IPC namespaces.'
-        else 'ReplicationController replication_controllers cannot share host process namespaces.'
+        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicationController pods share host PID namespaces.'
+        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicationController pods share host IPC namespaces.'
+        else 'ReplicationController pods cannot share host process namespaces.'
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
@@ -1449,7 +1449,7 @@ query "replication_controller_container_argument_etcd_auto_tls_disabled" {
   EOQ
 }
 
-query "replication_controller__container_argument_kube_controller_manager_service_account_credentials_enabled" {
+query "replication_controller_container_argument_kube_controller_manager_service_account_credentials_enabled" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -1482,7 +1482,7 @@ query "replication_controller_container_argument_kubelet_authorization_mode_no_a
         trim('"' from split_part(co::text, '=', 2)) as value,
         r.name as replication_controller
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1498,7 +1498,7 @@ query "replication_controller_container_argument_kubelet_authorization_mode_no_a
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1518,7 +1518,7 @@ query "replication_controller_container_argument_kubelet_authorization_mode_no_a
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_replication_controller_name as p
+      container_name_with_replication_controller_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
   EOQ
 }
@@ -1531,7 +1531,7 @@ query "replication_controller_container_argument_kube_controller_manager_service
         trim('"' from split_part(co::text, '.', 2)) as value,
         r.name as replication_controller
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1547,7 +1547,7 @@ query "replication_controller_container_argument_kube_controller_manager_service
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1567,7 +1567,7 @@ query "replication_controller_container_argument_kube_controller_manager_service
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_replication_controller_name as p
+      container_name_with_replication_controller_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
   EOQ
 }
@@ -1580,7 +1580,7 @@ query "replication_controller_container_argument_kubelet_read_only_port_0" {
         trim('"' from split_part(co::text, '=', 2))::integer as value,
         r.name as replication_controller
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1596,7 +1596,7 @@ query "replication_controller_container_argument_kubelet_read_only_port_0" {
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1615,7 +1615,7 @@ query "replication_controller_container_argument_kubelet_read_only_port_0" {
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
-      container_name_with_replication_controller_name as p
+      container_name_with_replication_controller_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
   EOQ
 }
@@ -1628,7 +1628,7 @@ query "replication_controller_container_argument_kube_controller_manager_root_ca
         trim('"' from split_part(co::text, '.', 2)) as value,
         r.name as replication_controller
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1644,7 +1644,7 @@ query "replication_controller_container_argument_kube_controller_manager_root_ca
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replication_controller as p,
+        kubernetes_replication_controller as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1664,7 +1664,7 @@ query "replication_controller_container_argument_kube_controller_manager_root_ca
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_replication_controller_name as p
+      container_name_with_replication_controller_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
   EOQ
 }

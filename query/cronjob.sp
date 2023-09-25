@@ -118,8 +118,8 @@ query "cronjob_host_network_access_disabled" {
         else 'ok'
       end as status,
       case
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork' = 'true' then 'CronJob cronjobs using host network.'
-        else 'CronJob cronjobs not using host network.'
+        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork' = 'true' then 'CronJob pods using host network.'
+        else 'CronJob pods not using host network.'
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
@@ -286,9 +286,9 @@ query "cronjob_hostpid_hostipc_sharing_disabled" {
         else 'ok'
       end as status,
       case
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID' = 'true' then 'CronJob cronjobs share host pid namespaces.'
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostIPC' = 'true' then 'CronJob cronjobs share host ipc namespaces.'
-        else 'CronJob cronjobs cannot share host process namespaces.'
+        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID' = 'true' then 'CronJob pods share host pid namespaces.'
+        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostIPC' = 'true' then 'CronJob pods share host ipc namespaces.'
+        else 'CronJob pods cannot share host process namespaces.'
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}

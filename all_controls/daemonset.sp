@@ -59,6 +59,12 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_no_argument_hostname_override_configured,
     control.daemonset_container_argument_kube_controller_manager_profiling_disabled,
     control.daemonset_container_argument_etcd_auto_tls_disabled,
+    control.daemonset_container_argument_kube_controller_manager_service_account_credentials_enabled,
+    control.daemonset_container_argument_kubelet_authorization_mode_no_always_allow,
+    control.daemonset_container_argument_kube_controller_manager_service_account_private_key_file_configured,
+    control.daemonset_container_argument_kubelet_read_only_port_0,
+    control.daemonset_container_argument_kube_controller_manager_root_ca_file_configured,
+    control.daemonset_container_argument_etcd_client_cert_auth_enabled
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

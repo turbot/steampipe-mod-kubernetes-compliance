@@ -243,8 +243,8 @@ query "replicaset_host_network_access_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'ReplicaSet replicasets using host network.'
-        else 'ReplicaSet replicasets not using host network.'
+        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'ReplicaSet pods using host network.'
+        else 'ReplicaSet pods not using host network.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -263,9 +263,9 @@ query "replicaset_hostpid_hostipc_sharing_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicaSet replicasets share host PID namespaces.'
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicaSet replicasets share host IPC namespaces.'
-        else 'ReplicaSet replicasets cannot share host process namespaces.'
+        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicaSet pods share host PID namespaces.'
+        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicaSet pods share host IPC namespaces.'
+        else 'ReplicaSet pods cannot share host process namespaces.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -1499,7 +1499,7 @@ query "replicaset_container_argument_kubelet_authorization_mode_no_always_allow"
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replicaset as p,
+        kubernetes_replicaset as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1519,7 +1519,7 @@ query "replicaset_container_argument_kubelet_authorization_mode_no_always_allow"
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_replicaset_name as p
+      container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
   EOQ
 }
@@ -1532,7 +1532,7 @@ query "replicaset_container_argument_kube_controller_manager_service_account_pri
         trim('"' from split_part(co::text, '.', 2)) as value,
         r.name as replicaset
       from
-        kubernetes_replicaset as p,
+        kubernetes_replicaset as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1548,7 +1548,7 @@ query "replicaset_container_argument_kube_controller_manager_service_account_pri
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replicaset as p,
+        kubernetes_replicaset as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1568,7 +1568,7 @@ query "replicaset_container_argument_kube_controller_manager_service_account_pri
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_replicaset_name as p
+      container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
   EOQ
 }
@@ -1581,7 +1581,7 @@ query "replicaset_container_argument_kubelet_read_only_port_0" {
         trim('"' from split_part(co::text, '=', 2))::integer as value,
         r.name as replicaset
       from
-        kubernetes_replicaset as p,
+        kubernetes_replicaset as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1597,7 +1597,7 @@ query "replicaset_container_argument_kubelet_read_only_port_0" {
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replicaset as p,
+        kubernetes_replicaset as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1616,7 +1616,7 @@ query "replicaset_container_argument_kubelet_read_only_port_0" {
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
-      container_name_with_replicaset_name as p
+      container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
   EOQ
 }
@@ -1629,7 +1629,7 @@ query "replicaset_container_argument_kube_controller_manager_root_ca_file_config
         trim('"' from split_part(co::text, '.', 2)) as value,
         r.name as replicaset
       from
-        kubernetes_replicaset as p,
+        kubernetes_replicaset as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1645,7 +1645,7 @@ query "replicaset_container_argument_kube_controller_manager_root_ca_file_config
         r.source_type as source_type,
         c.*
       from
-        kubernetes_replicaset as p,
+        kubernetes_replicaset as r,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1665,7 +1665,7 @@ query "replicaset_container_argument_kube_controller_manager_root_ca_file_config
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_replicaset_name as p
+      container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
   EOQ
 }

@@ -435,3 +435,51 @@ control "daemonset_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "DaemonSet containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument kube controller manager service account credentials enabled."
+  query       = query.daemonset_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "DaemonSet containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the DaemonSet has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.daemonset_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "DaemonSet containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has kube controller manager service account private key file configured appropriately."
+  query       = query.daemonset_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kubelet_read_only_port_0" {
+  title       = "DaemonSet containers argument kubelet read only port shoule be set 0"
+  description = "This check ensures that the container in the DaemonSet has argument kubelet read only port set to 0."
+  query       = query.daemonset_container_argument_kubelet_read_only_port_0
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "DaemonSet containers should have kube controller manager root ca file configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has kube controller manager root ca file configured appropriately."
+  query       = query.daemonset_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "DaemonSet containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument etcd client cert auth enabled."
+  query       = query.daemonset_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.daemonset_common_tags
+}

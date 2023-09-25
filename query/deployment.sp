@@ -1498,7 +1498,7 @@ query "deployment_container_argument_kubelet_authorization_mode_no_always_allow"
         trim('"' from split_part(co::text, '=', 2)) as value,
         d.name as deployment
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1514,7 +1514,7 @@ query "deployment_container_argument_kubelet_authorization_mode_no_always_allow"
         d.source_type as source_type,
         c.*
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1534,7 +1534,7 @@ query "deployment_container_argument_kubelet_authorization_mode_no_always_allow"
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_deployment_name as p
+      container_name_with_deployment_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
@@ -1547,7 +1547,7 @@ query "deployment_container_argument_kube_controller_manager_service_account_pri
         trim('"' from split_part(co::text, '.', 2)) as value,
         d.name as deployment
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1563,7 +1563,7 @@ query "deployment_container_argument_kube_controller_manager_service_account_pri
         d.source_type as source_type,
         c.*
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1583,7 +1583,7 @@ query "deployment_container_argument_kube_controller_manager_service_account_pri
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_deployment_name as p
+      container_name_with_deployment_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
@@ -1596,7 +1596,7 @@ query "deployment_container_argument_kubelet_read_only_port_0" {
         trim('"' from split_part(co::text, '=', 2))::integer as value,
         d.name as deployment
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1612,7 +1612,7 @@ query "deployment_container_argument_kubelet_read_only_port_0" {
         d.source_type as source_type,
         c.*
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1631,7 +1631,7 @@ query "deployment_container_argument_kubelet_read_only_port_0" {
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
-      container_name_with_deployment_name as p
+      container_name_with_deployment_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
@@ -1644,7 +1644,7 @@ query "deployment_container_argument_kube_controller_manager_root_ca_file_config
         trim('"' from split_part(co::text, '.', 2)) as value,
         d.name as deployment
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1660,7 +1660,7 @@ query "deployment_container_argument_kube_controller_manager_root_ca_file_config
         d.source_type as source_type,
         c.*
       from
-        kubernetes_deployment as p,
+        kubernetes_deployment as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1680,7 +1680,7 @@ query "deployment_container_argument_kube_controller_manager_root_ca_file_config
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_deployment_name as p
+      container_name_with_deployment_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }

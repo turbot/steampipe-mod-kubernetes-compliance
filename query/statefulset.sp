@@ -1525,7 +1525,7 @@ query "statefulset_container_argument_kubelet_authorization_mode_no_always_allow
   EOQ
 }
 
-query "statefulset_ontainer_argument_kube_controller_manager_service_account_private_key_file_configured" {
+query "statefulset_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
   sql = <<-EOQ
     with container_list as (
       select

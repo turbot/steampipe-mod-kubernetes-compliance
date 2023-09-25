@@ -139,8 +139,8 @@ query "daemonset_host_network_access_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'DaemonSet daemonsets using host network.'
-        else 'DaemonSet daemonsets not using host network.'
+        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'DaemonSet pods using host network.'
+        else 'DaemonSet pods not using host network.'
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -159,9 +159,9 @@ query "daemonset_hostpid_hostipc_sharing_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'DaemonSet daemonsets share host PID namespaces.'
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'DaemonSet daemonsets share host IPC namespaces.'
-        else 'DaemonSet daemonsets cannot share host process namespaces.'
+        when template -> 'spec' ->> 'hostPID' = 'true' then 'DaemonSet pods share host PID namespaces.'
+        when template -> 'spec' ->> 'hostIPC' = 'true' then 'DaemonSet pods share host IPC namespaces.'
+        else 'DaemonSet pods cannot share host process namespaces.'
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -1481,7 +1481,7 @@ query "daemonset_container_argument_kubelet_authorization_mode_no_always_allow" 
         trim('"' from split_part(co::text, '=', 2)) as value,
         d.name as daemonset
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1497,7 +1497,7 @@ query "daemonset_container_argument_kubelet_authorization_mode_no_always_allow" 
         d.source_type as source_type,
         c.*
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1517,7 +1517,7 @@ query "daemonset_container_argument_kubelet_authorization_mode_no_always_allow" 
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_daemonset_name as p
+      container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }
@@ -1530,7 +1530,7 @@ query "daemonset_container_argument_kube_controller_manager_service_account_priv
         trim('"' from split_part(co::text, '.', 2)) as value,
         d.name as daemonset
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1546,7 +1546,7 @@ query "daemonset_container_argument_kube_controller_manager_service_account_priv
         d.source_type as source_type,
         c.*
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1566,7 +1566,7 @@ query "daemonset_container_argument_kube_controller_manager_service_account_priv
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_daemonset_name as p
+      container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }
@@ -1579,7 +1579,7 @@ query "daemonset_container_argument_kubelet_read_only_port_0" {
         trim('"' from split_part(co::text, '=', 2))::integer as value,
         d.name as daemonset
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1595,7 +1595,7 @@ query "daemonset_container_argument_kubelet_read_only_port_0" {
         d.source_type as source_type,
         c.*
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1614,7 +1614,7 @@ query "daemonset_container_argument_kubelet_read_only_port_0" {
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
     from
-      container_name_with_daemonset_name as p
+      container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }
@@ -1627,7 +1627,7 @@ query "daemonset_container_argument_kube_controller_manager_root_ca_file_configu
         trim('"' from split_part(co::text, '.', 2)) as value,
         d.name as daemonset
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
@@ -1643,7 +1643,7 @@ query "daemonset_container_argument_kube_controller_manager_root_ca_file_configu
         d.source_type as source_type,
         c.*
       from
-        kubernetes_daemonset as p,
+        kubernetes_daemonset as d,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c
     )
     select
@@ -1663,7 +1663,7 @@ query "daemonset_container_argument_kube_controller_manager_root_ca_file_configu
       --${local.tag_dimensions_sql}
       --${local.common_dimensions_sql}
     from
-      container_name_with_daemonset_name as p
+      container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }
