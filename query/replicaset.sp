@@ -243,8 +243,8 @@ query "replicaset_host_network_access_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'ReplicaSet pods using host network.'
-        else 'ReplicaSet pods not using host network.'
+        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'ReplicaSet replicasets using host network.'
+        else 'ReplicaSet replicasets not using host network.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -263,9 +263,9 @@ query "replicaset_hostpid_hostipc_sharing_disabled" {
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicaSet pods share host PID namespaces.'
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicaSet pods share host IPC namespaces.'
-        else 'ReplicaSet pods cannot share host process namespaces.'
+        when template -> 'spec' ->> 'hostPID' = 'true' then 'ReplicaSet replicasets share host PID namespaces.'
+        when template -> 'spec' ->> 'hostIPC' = 'true' then 'ReplicaSet replicasets share host IPC namespaces.'
+        else 'ReplicaSet replicasets cannot share host process namespaces.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -562,8 +562,8 @@ query "replicaset_container_argument_event_qps_less_than_5" {
         c ->> 'name' as container_name,
         trim('"' from split_part(co::text, '=', 2))::integer as value
       from
-        kubernetes_pod as p,
-        jsonb_array_elements(containers) as c,
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
         (co)::text LIKE '%event-qps=%'
@@ -1443,6 +1443,253 @@ query "replicaset_container_argument_etcd_auto_tls_disabled" {
       name as replicaset_name
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replicaset_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--use-service-account-credentials=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-controller-manager"]') then c ->> 'name' || ' kube-controller-manager not defined.'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--use-service-account-credentials=true"]' then c ->> 'name' || ' use service account credential enabled.'
+        else c ->> 'name' || ' use service account credential disabled.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replicaset_container_argument_kubelet_authorization_mode_no_always_allow" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and ((l.value) like '%AlwaysAllow%') then r.value ->> 'name' || ' authorization mode set to always allow.'
+        else r.value ->> 'name' || ' authorization mode not set to always allow.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as p
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
+  EOQ
+}
+
+query "replicaset_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '.', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--service-account-private-key-file%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kube-controller-manager"]') then r.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then r.value ->> 'name' || ' service account private key file is set.'
+        else r.value ->> 'name' || ' service account private key file is not set.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as p
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
+  EOQ
+}
+
+query "replicaset_container_argument_kubelet_read_only_port_0" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--read-only-port=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and (l.value = 0) then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
+        else r.value ->> 'name' || ' read only port is set to ' || (l.value) || '.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as p
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
+  EOQ
+}
+
+query "replicaset_container_argument_kube_controller_manager_root_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '.', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--root-ca-file%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kube-controller-manager"]') then r.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then r.value ->> 'name' || ' root-ca-file is set.'
+        else r.value ->> 'name' || ' root-ca-file is not set.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as p
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
+  EOQ
+}
+
+query "replicaset_container_argument_etcd_client_cert_auth_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--client-cert-auth=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--client-cert-auth=true"]' then c ->> 'name' || ' client cert auth enabled.'
+        else c ->> 'name' || ' client cert auth disabled.'
+      end as reason,
+      name as replicaset_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
     from
       kubernetes_replicaset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
