@@ -562,8 +562,8 @@ query "replicaset_container_argument_event_qps_less_than_5" {
         c ->> 'name' as container_name,
         trim('"' from split_part(co::text, '=', 2))::integer as value
       from
-        kubernetes_pod as p,
-        jsonb_array_elements(containers) as c,
+        kubernetes_replicaset as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
         (co)::text LIKE '%event-qps=%'
@@ -1439,6 +1439,87 @@ query "replicaset_container_argument_etcd_auto_tls_disabled" {
         when (c -> 'command') @> '["etcd"]'
           and (c -> 'command') @> '["-auto-tls=true"]' then c ->> 'name' || ' auto TLS enabled.'
         else c ->> 'name' || ' auto TLS disabled.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replicaset_container_argument_service_account_lookup_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--service-account-lookup=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--service-account-lookup=true"]' then  c ->> 'name' || ' service account lookup enabled.'
+        else c ->> 'name' || ' service account lookup disabled.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replicaset_container_token_auth_file_not_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--token-auth-file%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--token-auth-file%') then  c ->> 'name' || ' token auth file not configured.'
+        else c ->> 'name' || ' token auth file configured.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "replicaset_container_kubelet_certificate_authority_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then  c ->> 'name' || ' kubelet certificate authority configured.'
+        else c ->> 'name' || ' kubelet certificate authority not configured.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}

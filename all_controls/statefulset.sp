@@ -59,6 +59,9 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_no_argument_hostname_override_configured,
     control.statefulset_container_argument_kube_controller_manager_profiling_disabled,
     control.statefulset_container_argument_etcd_auto_tls_disabled,
+    control.statefulset_container_argument_service_account_lookup_enabled,
+    control.statefulset_container_token_auth_file_not_configured,
+    control.statefulset_container_kubelet_certificate_authority_configured,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

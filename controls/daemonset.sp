@@ -435,3 +435,27 @@ control "daemonset_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_service_account_lookup_enabled" {
+  title       = "DaemonSet containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument service account lookup enabled."
+  query       = query.daemonset_container_argument_service_account_lookup_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_token_auth_file_not_configured" {
+  title       = "DaemonSet containers token auth file should not be configured"
+  description = "This check ensures that the container in the DaemonSet does not have token auth file configured."
+  query       = query.daemonset_container_token_auth_file_not_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_kubelet_certificate_authority_configured" {
+  title       = "DaemonSet containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has kubelet certificate authority configured appropriately."
+  query       = query.daemonset_container_kubelet_certificate_authority_configured
+
+  tags = local.daemonset_common_tags
+}

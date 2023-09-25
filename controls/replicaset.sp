@@ -435,3 +435,27 @@ control "replicaset_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_service_account_lookup_enabled" {
+  title       = "ReplicaSet containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument service account lookup enabled."
+  query       = query.replicaset_container_argument_service_account_lookup_enabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_token_auth_file_not_configured" {
+  title       = "ReplicaSet containers token auth file should not be configured"
+  description = "This check ensures that the container in the ReplicaSet does not have token auth file configured."
+  query       = query.replicaset_container_token_auth_file_not_configured
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_kubelet_certificate_authority_configured" {
+  title       = "ReplicaSet containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the ReplicaSet has kubelet certificate authority configured appropriately."
+  query       = query.replicaset_container_kubelet_certificate_authority_configured
+
+  tags = local.replicaset_common_tags
+}

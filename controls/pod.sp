@@ -436,3 +436,27 @@ control "pod_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_argument_service_account_lookup_enabled" {
+  title       = "Pod containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the Pod has argument service account lookup enabled."
+  query       = query.pod_container_argument_service_account_lookup_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_token_auth_file_not_configured" {
+  title       = "Pod containers token auth file should not be configured"
+  description = "This check ensures that the container in the Pod does not have token auth file configured."
+  query       = query.pod_container_token_auth_file_not_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_kubelet_certificate_authority_configured" {
+  title       = "Pod containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the Pod has kubelet certificate authority configured appropriately."
+  query       = query.pod_container_kubelet_certificate_authority_configured
+
+  tags = local.pod_common_tags
+}

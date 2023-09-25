@@ -435,3 +435,27 @@ control "cronjob_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_argument_service_account_lookup_enabled" {
+  title       = "CronJob containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the CronJob has argument service account lookup enabled."
+  query       = query.cronjob_container_argument_service_account_lookup_enabled
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_token_auth_file_not_configured" {
+  title       = "CronJob containers token auth file should not be configured"
+  description = "This check ensures that the container in the CronJob does not have token auth file configured."
+  query       = query.cronjob_container_token_auth_file_not_configured
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_kubelet_certificate_authority_configured" {
+  title       = "CronJob containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the CronJob has kubelet certificate authority configured appropriately."
+  query       = query.cronjob_container_kubelet_certificate_authority_configured
+
+  tags = local.cronjob_common_tags
+}

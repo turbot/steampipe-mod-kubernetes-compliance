@@ -60,6 +60,9 @@ benchmark "all_controls_pod" {
     control.pod_container_no_argument_hostname_override_configured,
     control.pod_container_argument_kube_controller_manager_profiling_disabled,
     control.pod_container_argument_etcd_auto_tls_disabled,
+    control.pod_container_argument_service_account_lookup_enabled,
+    control.pod_container_token_auth_file_not_configured,
+    control.pod_container_kubelet_certificate_authority_configured,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

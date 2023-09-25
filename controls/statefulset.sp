@@ -435,3 +435,27 @@ control "statefulset_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_service_account_lookup_enabled" {
+  title       = "StatefulSet containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument service account lookup enabled."
+  query       = query.statefulset_container_argument_service_account_lookup_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_token_auth_file_not_configured" {
+  title       = "StatefulSet containers token auth file should not be configured"
+  description = "This check ensures that the container in the StatefulSet does not have token auth file configured."
+  query       = query.statefulset_container_token_auth_file_not_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_kubelet_certificate_authority_configured" {
+  title       = "StatefulSet containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has kubelet certificate authority configured appropriately."
+  query       = query.statefulset_container_kubelet_certificate_authority_configured
+
+  tags = local.statefulset_common_tags
+}

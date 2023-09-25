@@ -443,3 +443,27 @@ control "deployment_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_service_account_lookup_enabled" {
+  title       = "Deployment containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the Deployment has argument service account lookup enabled."
+  query       = query.deployment_container_argument_service_account_lookup_enabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_token_auth_file_not_configured" {
+  title       = "Deployment containers token auth file should not be configured"
+  description = "This check ensures that the container in the Deployment does not have token auth file configured."
+  query       = query.deployment_container_token_auth_file_not_configured
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_kubelet_certificate_authority_configured" {
+  title       = "Deployment containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the Deployment has kubelet certificate authority configured appropriately."
+  query       = query.deployment_container_kubelet_certificate_authority_configured
+
+  tags = local.deployment_common_tags
+}

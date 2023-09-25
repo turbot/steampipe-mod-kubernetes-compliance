@@ -435,3 +435,27 @@ control "replication_controller_container_argument_etcd_auto_tls_disabled" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_service_account_lookup_enabled" {
+  title       = "Replication Controller containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument service account lookup enabled."
+  query       = query.replication_controller_container_argument_service_account_lookup_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_token_auth_file_not_configured" {
+  title       = "Replication Controller containers token auth file should not be configured"
+  description = "This check ensures that the container in the Replication Controller does not have token auth file configured."
+  query       = query.replication_controller_container_token_auth_file_not_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_kubelet_certificate_authority_configured" {
+  title       = "Replication Controller containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kubelet certificate authority configured appropriately."
+  query       = query.replication_controller_container_kubelet_certificate_authority_configured
+
+  tags = local.replication_controller_common_tags
+}

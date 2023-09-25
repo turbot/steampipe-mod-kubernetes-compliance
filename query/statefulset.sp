@@ -1449,3 +1449,84 @@ query "statefulset_container_argument_etcd_auto_tls_disabled" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "statefulset_container_argument_service_account_lookup_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--service-account-lookup=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--service-account-lookup=true"]' then  c ->> 'name' || ' service account lookup enabled.'
+        else c ->> 'name' || ' service account lookup disabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_token_auth_file_not_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--token-auth-file%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--token-auth-file%') then  c ->> 'name' || ' token auth file not configured.'
+        else c ->> 'name' || ' token auth file configured.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_kubelet_certificate_authority_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then  c ->> 'name' || ' kubelet certificate authority configured.'
+        else c ->> 'name' || ' kubelet certificate authority not configured.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
