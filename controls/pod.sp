@@ -372,3 +372,67 @@ control "pod_container_admission_control_plugin_no_always_admit" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "Pod containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the Pod has kube scheduler profiling disabled."
+  query       = query.pod_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_bind_address_127_0_0_1" {
+  title       = "Pod containers argument bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Pod has argument bind address set to 127.0.0.1."
+  query       = query.pod_container_argument_bind_address_127_0_0_1
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_protect_kernel_defaults_enabled" {
+  title       = "Pod containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the Pod has argument protect kernel defaults enabled."
+  query       = query.pod_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_make_iptables_util_chains_enabled" {
+  title       = "Pod containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the Pod has argument make iptables util chains enabled."
+  query       = query.pod_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "Pod containers should have TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the Pod has TLS cert file and TLS private key file configured appropriately."
+  query       = query.pod_container_argument_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_no_argument_hostname_override_configured" {
+  title       = "Pod containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the Pod has argument hostname override not configured."
+  query       = query.pod_container_no_argument_hostname_override_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "Pod containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the Pod has kube controller manager profiling disabled."
+  query       = query.pod_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_etcd_auto_tls_disabled" {
+  title       = "Pod containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the Pod has argument etcd auto TLS disabled."
+  query       = query.pod_container_argument_etcd_auto_tls_disabled
+
+  tags = local.pod_common_tags
+}

@@ -1230,3 +1230,240 @@ query "pod_container_admission_control_plugin_no_always_admit" {
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
   EOQ
 }
+
+query "pod_container_argument_kube_scheduler_profiling_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-scheduler"]') then 'ok'
+        when (c -> 'command') @> '["kube-scheduler"]'
+          and (c -> 'command') @> '["--profiling=false"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-scheduler"]') then c ->> 'name' || ' kube-scheduler not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--profiling=false"]' then c ->> 'name' || ' profiling disabled.'
+        else c ->> 'name' || ' profiling enabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_argument_bind_address_127_0_0_1" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--bind-address=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null or not ((p.value -> 'command') @> '["kube-scheduler"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when not ((p.value -> 'command') @> '["kube-scheduler"]') then p.value ->> 'name' || ' kube-scheduler not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then p.value ->> 'name' || ' bind address set to 127.0.0.1.'
+        else p.value ->> 'name' || ' bind address not set to 127.0.0.1.'
+      end as reason,
+      p.pod_name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
+  EOQ
+}
+
+query "pod_container_argument_protect_kernel_defaults_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--protect-kernel-defaults=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--protect-kernel-defaults=true"]' then c ->> 'name' || ' protect kernel defaults enabled.'
+        else c ->> 'name' || ' protect kernel defaults disabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_argument_make_iptables_util_chains_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--make-iptables-util-chains=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--make-iptables-util-chains=true"]' then c ->> 'name' || ' make iptables util chain enabled.'
+        else c ->> 'name' || '  make iptables util chain disabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+         when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-filey%')
+          ) then c ->> 'name' || ' TLS cert file and private key not set.'
+        else c ->> 'name' || ' TLS cert file and private key set.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_no_argument_hostname_override_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c ->> 'command' like '%--hostname-override%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c ->> 'command' like '%--hostname-override%') then c ->> 'name' || ' hostname override set.'
+        else c ->> 'name' || '  hostname override not set.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_argument_kube_controller_manager_profiling_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--profiling=false"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-controller-manager"]') then c ->> 'name' || ' kube-controller-manager not defined.'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--profiling=false"]' then c ->> 'name' || ' profiling disabled.'
+        else c ->> 'name' || ' profiling enabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_argument_etcd_auto_tls_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--auto-tls=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["-auto-tls=true"]' then c ->> 'name' || ' auto TLS enabled.'
+        else c ->> 'name' || ' auto TLS disabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}

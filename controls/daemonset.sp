@@ -371,3 +371,67 @@ control "daemonset_container_admission_control_plugin_no_always_admit" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "DaemonSet containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the DaemonSet has kube scheduler profiling disabled."
+  query       = query.daemonset_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_bind_address_127_0_0_1" {
+  title       = "DaemonSet containers argument bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the DaemonSet has argument bind address set to 127.0.0.1."
+  query       = query.daemonset_container_argument_bind_address_127_0_0_1
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_protect_kernel_defaults_enabled" {
+  title       = "DaemonSet containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument protect kernel defaults enabled."
+  query       = query.daemonset_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_make_iptables_util_chains_enabled" {
+  title       = "DaemonSet containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument make iptables util chains enabled."
+  query       = query.daemonset_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "DaemonSet containers should have TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has TLS cert file and TLS private key file configured appropriately."
+  query       = query.daemonset_container_argument_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_no_argument_hostname_override_configured" {
+  title       = "DaemonSet containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the DaemonSet has argument hostname override not configured."
+  query       = query.daemonset_container_no_argument_hostname_override_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "DaemonSet containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the DaemonSet has kube controller manager profiling disabled."
+  query       = query.daemonset_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_etcd_auto_tls_disabled" {
+  title       = "DaemonSet containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the DaemonSet has argument etcd auto TLS disabled."
+  query       = query.daemonset_container_argument_etcd_auto_tls_disabled
+
+  tags = local.daemonset_common_tags
+}

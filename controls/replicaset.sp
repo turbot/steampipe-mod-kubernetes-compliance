@@ -371,3 +371,67 @@ control "replicaset_container_admission_control_plugin_no_always_admit" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "ReplicaSet containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the ReplicaSet has kube scheduler profiling disabled."
+  query       = query.replicaset_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_bind_address_127_0_0_1" {
+  title       = "ReplicaSet containers argument bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the ReplicaSet has argument bind address set to 127.0.0.1."
+  query       = query.replicaset_container_argument_bind_address_127_0_0_1
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_protect_kernel_defaults_enabled" {
+  title       = "ReplicaSet containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument protect kernel defaults enabled."
+  query       = query.replicaset_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_make_iptables_util_chains_enabled" {
+  title       = "ReplicaSet containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument make iptables util chains enabled."
+  query       = query.replicaset_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "ReplicaSet containers should have TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the ReplicaSet has TLS cert file and TLS private key file configured appropriately."
+  query       = query.replicaset_container_argument_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_no_argument_hostname_override_configured" {
+  title       = "ReplicaSet containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the ReplicaSet has argument hostname override not configured."
+  query       = query.replicaset_container_no_argument_hostname_override_configured
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "ReplicaSet containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the ReplicaSet has kube controller manager profiling disabled."
+  query       = query.replicaset_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.replicaset_common_tags
+}
+
+control "replicaset_container_argument_etcd_auto_tls_disabled" {
+  title       = "ReplicaSet containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the ReplicaSet has argument etcd auto TLS disabled."
+  query       = query.replicaset_container_argument_etcd_auto_tls_disabled
+
+  tags = local.replicaset_common_tags
+}

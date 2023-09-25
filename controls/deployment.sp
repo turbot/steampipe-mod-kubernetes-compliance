@@ -379,3 +379,67 @@ control "deployment_container_admission_control_plugin_no_always_admit" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "Deployment containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the Deployment has kube scheduler profiling disabled."
+  query       = query.deployment_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_bind_address_127_0_0_1" {
+  title       = "Deployment containers argument bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Deployment has argument bind address set to 127.0.0.1."
+  query       = query.deployment_container_argument_bind_address_127_0_0_1
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_protect_kernel_defaults_enabled" {
+  title       = "Deployment containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the Deployment has argument protect kernel defaults enabled."
+  query       = query.deployment_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_make_iptables_util_chains_enabled" {
+  title       = "Deployment containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the Deployment has argument make iptables util chains enabled."
+  query       = query.deployment_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "Deployment containers should have TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the Deployment has TLS cert file and TLS private key file configured appropriately."
+  query       = query.deployment_container_argument_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_no_argument_hostname_override_configured" {
+  title       = "Deployment containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the Deployment has argument hostname override not configured."
+  query       = query.deployment_container_no_argument_hostname_override_configured
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "Deployment containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the Deployment has kube controller manager profiling disabled."
+  query       = query.deployment_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_etcd_auto_tls_disabled" {
+  title       = "Deployment containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the Deployment has argument etcd auto TLS disabled."
+  query       = query.deployment_container_argument_etcd_auto_tls_disabled
+
+  tags = local.deployment_common_tags
+}

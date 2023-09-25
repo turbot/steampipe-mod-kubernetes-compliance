@@ -50,7 +50,15 @@ benchmark "all_controls_statefulset" {
     control.statefulset_immutable_container_filesystem,
     control.statefulset_memory_limit,
     control.statefulset_memory_request,
-    control.statefulset_non_root_container
+    control.statefulset_non_root_container,
+    control.statefulset_container_argument_kube_scheduler_profiling_disabled,
+    control.statefulset_container_argument_bind_address_127_0_0_1,
+    control.statefulset_container_argument_protect_kernel_defaults_enabled,
+    control.statefulset_container_argument_make_iptables_util_chains_enabled,
+    control.statefulset_container_argument_tls_cert_file_and_tls_private_key_file_configured,
+    control.statefulset_container_no_argument_hostname_override_configured,
+    control.statefulset_container_argument_kube_controller_manager_profiling_disabled,
+    control.statefulset_container_argument_etcd_auto_tls_disabled,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

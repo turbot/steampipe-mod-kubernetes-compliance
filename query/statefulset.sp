@@ -563,8 +563,8 @@ query "statefulset_container_argument_event_qps_less_than_5" {
         c ->> 'name' as container_name,
         trim('"' from split_part(co::text, '=', 2))::integer as value
       from
-        kubernetes_pod as p,
-        jsonb_array_elements(containers) as c,
+        kubernetes_stateful_set as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
         jsonb_array_elements(c -> 'command') as co
       where
         (co)::text LIKE '%event-qps=%'
@@ -1210,5 +1210,242 @@ query "statefulset_container_admission_control_plugin_no_always_admit" {
     from
       container_name_with_statefulset_name as s
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
+  EOQ
+}
+
+query "statefulset_container_argument_kube_scheduler_profiling_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-scheduler"]') then 'ok'
+        when (c -> 'command') @> '["kube-scheduler"]'
+          and (c -> 'command') @> '["--profiling=false"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-scheduler"]') then c ->> 'name' || ' kube-scheduler not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--profiling=false"]' then c ->> 'name' || ' profiling disabled.'
+        else c ->> 'name' || ' profiling enabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_bind_address_127_0_0_1" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        s.name as statefulset
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--bind-address=%'
+    ), container_name_with_statefulset_name as (
+      select
+        s.name as statefulset_name,
+        s.uid as statefulset_uid,
+        s.path as path,
+        s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
+        c.*
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(s.statefulset_uid, concat(s.path, ':', s.start_line)) as resource,
+      case
+        when (s.value -> 'command') is null or not ((s.value -> 'command') @> '["kube-scheduler"]') then 'ok'
+        when l.container_name is not null and (s.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
+        when not ((s.value -> 'command') @> '["kube-scheduler"]') then s.value ->> 'name' || ' kube-scheduler not defined.'
+        when l.container_name is not null and (s.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then s.value ->> 'name' || ' bind address set to 127.0.0.1.'
+        else s.value ->> 'name' || ' bind address not set to 127.0.0.1.'
+      end as reason,
+      s.statefulset_name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_statefulset_name as s
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+  EOQ
+}
+
+query "statefulset_container_argument_protect_kernel_defaults_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--protect-kernel-defaults=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--protect-kernel-defaults=true"]' then c ->> 'name' || ' protect kernel defaults enabled.'
+        else c ->> 'name' || ' protect kernel defaults disabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_make_iptables_util_chains_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--make-iptables-util-chains=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--make-iptables-util-chains=true"]' then c ->> 'name' || ' make iptables util chain enabled.'
+        else c ->> 'name' || '  make iptables util chain disabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+         when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-filey%')
+          ) then c ->> 'name' || ' TLS cert file and private key not set.'
+        else c ->> 'name' || ' TLS cert file and private key set.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_no_argument_hostname_override_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c ->> 'command' like '%--hostname-override%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c ->> 'command' like '%--hostname-override%') then c ->> 'name' || ' hostname override set.'
+        else c ->> 'name' || '  hostname override not set.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_kube_controller_manager_profiling_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--profiling=false"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-controller-manager"]') then c ->> 'name' || ' kube-controller-manager not defined.'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--profiling=false"]' then c ->> 'name' || ' profiling disabled.'
+        else c ->> 'name' || ' profiling enabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_etcd_auto_tls_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--auto-tls=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["-auto-tls=true"]' then c ->> 'name' || ' auto TLS enabled.'
+        else c ->> 'name' || ' auto TLS disabled.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }

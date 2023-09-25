@@ -51,7 +51,15 @@ benchmark "all_controls_pod" {
     control.pod_non_root_container,
     control.pod_service_account_not_exist,
     control.pod_service_account_token_disabled,
-    control.pod_volume_host_path
+    control.pod_volume_host_path,
+    control.pod_container_argument_kube_scheduler_profiling_disabled,
+    control.pod_container_argument_bind_address_127_0_0_1,
+    control.pod_container_argument_protect_kernel_defaults_enabled,
+    control.pod_container_argument_make_iptables_util_chains_enabled,
+    control.pod_container_argument_tls_cert_file_and_tls_private_key_file_configured,
+    control.pod_container_no_argument_hostname_override_configured,
+    control.pod_container_argument_kube_controller_manager_profiling_disabled,
+    control.pod_container_argument_etcd_auto_tls_disabled,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

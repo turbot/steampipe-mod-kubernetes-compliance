@@ -371,3 +371,67 @@ control "statefulset_container_admission_control_plugin_no_always_admit" {
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "StatefulSet containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the StatefulSet has kube scheduler profiling disabled."
+  query       = query.statefulset_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_bind_address_127_0_0_1" {
+  title       = "StatefulSet containers argument bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the StatefulSet has argument bind address set to 127.0.0.1."
+  query       = query.statefulset_container_argument_bind_address_127_0_0_1
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_protect_kernel_defaults_enabled" {
+  title       = "StatefulSet containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument protect kernel defaults enabled."
+  query       = query.statefulset_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_make_iptables_util_chains_enabled" {
+  title       = "StatefulSet containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument make iptables util chains enabled."
+  query       = query.statefulset_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "StatefulSet containers should have TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has TLS cert file and TLS private key file configured appropriately."
+  query       = query.statefulset_container_argument_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_no_argument_hostname_override_configured" {
+  title       = "StatefulSet containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the StatefulSet has argument hostname override not configured."
+  query       = query.statefulset_container_no_argument_hostname_override_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "StatefulSet containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the StatefulSet has kube controller manager profiling disabled."
+  query       = query.statefulset_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_etcd_auto_tls_disabled" {
+  title       = "StatefulSet containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the StatefulSet has argument etcd auto TLS disabled."
+  query       = query.statefulset_container_argument_etcd_auto_tls_disabled
+
+  tags = local.statefulset_common_tags
+}

@@ -50,7 +50,15 @@ benchmark "all_controls_cronjob" {
     control.cronjob_immutable_container_filesystem,
     control.cronjob_memory_limit,
     control.cronjob_memory_request,
-    control.cronjob_non_root_container
+    control.cronjob_non_root_container,
+    control.cronjob_container_argument_kube_scheduler_profiling_disabled,
+    control.cronjob_container_argument_bind_address_127_0_0_1,
+    control.cronjob_container_argument_protect_kernel_defaults_enabled,
+    control.cronjob_container_argument_make_iptables_util_chains_enabled,
+    control.cronjob_container_argument_tls_cert_file_and_tls_private_key_file_configured,
+    control.cronjob_container_no_argument_hostname_override_configured,
+    control.cronjob_container_argument_kube_controller_manager_profiling_disabled,
+    control.cronjob_container_argument_etcd_auto_tls_disabled,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {
