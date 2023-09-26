@@ -579,3 +579,16 @@ control "cronjob_container_argument_node_restriction_enabled" {
 
   tags = local.cronjob_common_tags
 }
+
+
+### KP - start
+
+
+
+### KP - end
+
+
+### PC - start
+
+
+### PC - end

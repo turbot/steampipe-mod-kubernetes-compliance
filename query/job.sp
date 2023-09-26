@@ -1827,3 +1827,16 @@ query "job_container_argument_node_restriction_enabled" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+
+### KP - start
+
+
+
+### KP - end
+
+
+### PC - start
+
+
+### PC - end

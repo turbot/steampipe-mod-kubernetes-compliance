@@ -523,3 +523,16 @@ control "replication_controller_container_argument_node_restriction_enabled" {
 
   tags = local.replication_controller_common_tags
 }
+
+
+### KP - start
+
+
+
+### KP - end
+
+
+### PC - start
+
+
+### PC - end

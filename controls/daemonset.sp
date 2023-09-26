@@ -579,3 +579,16 @@ control "daemonset_container_argument_node_restriction_enabled" {
 
   tags = local.daemonset_common_tags
 }
+
+
+### KP - start
+
+
+
+### KP - end
+
+
+### PC - start
+
+
+### PC - end

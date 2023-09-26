@@ -1846,3 +1846,16 @@ query "pod_container_argument_node_restriction_enabled" {
       jsonb_array_elements(containers) as c;
   EOQ
 }
+
+
+### KP - start
+
+
+
+### KP - end
+
+
+### PC - start
+
+
+### PC - end
