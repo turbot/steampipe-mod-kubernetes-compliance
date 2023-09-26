@@ -535,6 +535,14 @@ control "job_container_argument_pod_security_policy_enabled" {
   tags = local.job_common_tags
 }
 
+control "job_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "Job containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the Job has kube apiserver profiling disabled."
+  query       = query.job_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.job_common_tags
+}
+
 ### KP - end
 
 

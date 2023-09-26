@@ -591,6 +591,14 @@ control "daemonset_container_argument_pod_security_policy_enabled" {
   tags = local.daemonset_common_tags
 }
 
+control "daemonset_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "DaemonSet containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the DaemonSet has kube apiserver profiling disabled."
+  query       = query.daemonset_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.daemonset_common_tags
+}
+
 ### KP - end
 
 
