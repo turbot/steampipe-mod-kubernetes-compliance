@@ -591,6 +591,14 @@ control "cronjob_container_argument_pod_security_policy_enabled" {
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "CronJob containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the CronJob has kube apiserver profiling disabled."
+  query       = query.cronjob_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.cronjob_common_tags
+}
+
 ### KP - end
 
 

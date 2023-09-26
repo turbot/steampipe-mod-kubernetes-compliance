@@ -535,6 +535,14 @@ control "statefulset_container_argument_pod_security_policy_enabled" {
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "StatefulSet containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the StatefulSet has kube apiserver profiling disabled."
+  query       = query.statefulset_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.statefulset_common_tags
+}
+
 ### KP - end
 
 

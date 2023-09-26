@@ -72,6 +72,7 @@ benchmark "all_controls_pod" {
     control.pod_container_kubelet_certificate_authority_configured,
     control.pod_container_argument_node_restriction_enabled,
     control.pod_container_argument_pod_security_policy_enabled,
+    control.pod_container_argument_kube_apiserver_profiling_disabled,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

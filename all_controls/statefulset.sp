@@ -71,6 +71,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_kubelet_certificate_authority_configured,
     control.statefulset_container_argument_node_restriction_enabled,
     control.statefulset_container_argument_pod_security_policy_enabled,
+    control.statefulset_container_argument_kube_apiserver_profiling_disabled,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

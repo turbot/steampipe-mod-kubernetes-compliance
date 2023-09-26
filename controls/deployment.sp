@@ -543,6 +543,14 @@ control "deployment_container_argument_pod_security_policy_enabled" {
   tags = local.deployment_common_tags
 }
 
+control "deployment_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "Deployment containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the Deployment has kube apiserver profiling disabled."
+  query       = query.deployment_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.deployment_common_tags
+}
+
 ### KP - end
 
 

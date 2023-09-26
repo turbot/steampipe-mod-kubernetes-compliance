@@ -536,6 +536,14 @@ control "replicaset_container_argument_pod_security_policy_enabled" {
   tags = local.replicaset_common_tags
 }
 
+control "replicaset_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "ReplicaSet containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the ReplicaSet has kube apiserver profiling disabled."
+  query       = query.replicaset_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.replicaset_common_tags
+}
+
 ### KP - end
 
 

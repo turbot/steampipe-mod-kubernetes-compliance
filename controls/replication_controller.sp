@@ -535,6 +535,14 @@ control "replication_controller_container_argument_pod_security_policy_enabled" 
   tags = local.replication_controller_common_tags
 }
 
+control "replication_controller_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "Replication Controller containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the Replication Controller has kube apiserver profiling disabled."
+  query       = query.replication_controller_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.replication_controller_common_tags
+}
+
 ### KP - end
 
 
