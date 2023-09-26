@@ -45,7 +45,20 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_capabilities_drop_all,
     control.pod_template_container_privilege_disabled,
     control.pod_template_immutable_container_filesystem,
-    control.pod_template_container_readiness_probe
+    control.pod_template_container_readiness_probe,
+    control.pod_template_container_argument_namespace_lifecycle_enabled,
+    control.pod_template_container_argument_node_restriction_enabled,
+    control.pod_template_container_argument_service_account_lookup_enabled,
+    control.pod_template_container_token_auth_file_not_configured,
+    control.pod_template_container_kubelet_certificate_authority_configured,
+    control.pod_template_container_argument_etcd_auto_tls_disabled,
+    control.pod_template_container_argument_etcd_client_cert_auth_enabled,
+    control.pod_template_container_argument_kube_controller_manager_profiling_disabled,
+    control.pod_template_container_argument_kube_controller_manager_root_ca_file_configured,
+    control.pod_template_container_argument_kube_controller_manager_service_account_credentials_enabled,
+    control.pod_template_container_argument_kube_controller_manager_service_account_private_key_file_configured,
+    control.pod_template_container_argument_kubelet_authorization_mode_no_always_allow,
+    control.pod_template_container_no_argument_hostname_override_configured
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

@@ -1110,3 +1110,413 @@ query "pod_template_container_readiness_probe" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "pod_template_container_argument_namespace_lifecycle_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NamespaceLifecycle"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NamespaceLifecycle"]' then c ->> 'name' || ' has admission control plugin NamespaceLifecycle enabled.'
+        else c ->> 'name' || ' has admission control plugin NamespaceLifecycle disabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_node_restriction_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NodeRestriction"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=NodeRestriction"]' then c ->> 'name' || ' has admission control plugin NodeRestriction enabled.'
+        else c ->> 'name' || ' has admission control plugin NodeRestriction disabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_service_account_lookup_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--service-account-lookup=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--service-account-lookup=true"]' then  c ->> 'name' || ' service account lookup enabled.'
+        else c ->> 'name' || ' service account lookup disabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_token_auth_file_not_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--token-auth-file%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' not like '%--token-auth-file%') then  c ->> 'name' || ' token auth file not configured.'
+        else c ->> 'name' || ' token auth file configured.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_kubelet_certificate_authority_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null then 'ok'
+        when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then  c ->> 'name' || ' kubelet certificate authority configured.'
+        else c ->> 'name' || ' kubelet certificate authority not configured.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_etcd_auto_tls_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--auto-tls=true"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--auto-tls=true"]' then c ->> 'name' || ' auto TLS enabled.'
+        else c ->> 'name' || ' auto TLS disabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_etcd_client_cert_auth_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--client-cert-auth=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and (c -> 'command') @> '["--client-cert-auth=true"]' then c ->> 'name' || ' client cert auth enabled.'
+        else c ->> 'name' || ' client cert auth disabled.'
+      end as reason,
+      name as pod_template_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_kube_controller_manager_profiling_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--profiling=false"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-controller-manager"]') then c ->> 'name' || ' kube-controller-manager not defined.'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--profiling=false"]' then c ->> 'name' || ' profiling disabled.'
+        else c ->> 'name' || ' profiling enabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_kube_controller_manager_root_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '.', 2)) as value,
+        j.name as pod_template
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--root-ca-file%'
+    ), container_name_with_pod_template_name as (
+      select
+        j.name as pod_template_name,
+        j.uid as pod_template_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.pod_template_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kube-controller-manager"]') then j.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then j.value ->> 'name' || ' root-ca-file is set.'
+        else j.value ->> 'name' || ' root-ca-file is not set.'
+      end as reason,
+      j.pod_template_name as pod_template_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_pod_template_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
+  EOQ
+}
+
+query "pod_template_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--use-service-account-credentials=true"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-controller-manager"]') then c ->> 'name' || ' kube-controller-manager not defined.'
+        when (c -> 'command') @> '["kube-controller-manager"]'
+          and (c -> 'command') @> '["--use-service-account-credentials=true"]' then c ->> 'name' || ' use service account credential enabled.'
+        else c ->> 'name' || ' use service account credential disabled.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '.', 2)) as value,
+        j.name as pod_template
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--service-account-private-key-file%'
+    ), container_name_with_pod_template_name as (
+      select
+        j.name as pod_template_name,
+        j.uid as pod_template_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.pod_template_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kube-controller-manager"]') then j.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%pem%') then j.value ->> 'name' || ' service account private key file is set.'
+        else j.value ->> 'name' || ' service account private key file is not set.'
+      end as reason,
+      j.pod_template_name as pod_template_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_pod_template_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
+  EOQ
+}
+
+query "pod_template_container_argument_kubelet_authorization_mode_no_always_allow" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as pod_template
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--authorization-mode=%'
+    ), container_name_with_pod_template_name as (
+      select
+        j.name as pod_template_name,
+        j.uid as pod_template_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.pod_template_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kubelet"]') then j.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and ((l.value) like '%AlwaysAllow%') then j.value ->> 'name' || ' authorization mode set to always allow.'
+        else j.value ->> 'name' || ' authorization mode not set to always allow.'
+      end as reason,
+      j.pod_template_name as pod_template_name
+      --${local.tag_dimensions_sql}
+      --${local.common_dimensions_sql}
+    from
+      container_name_with_pod_template_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
+  EOQ
+}
+
+query "pod_template_container_no_argument_hostname_override_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c ->> 'command' like '%--hostname-override%') then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c ->> 'command' like '%--hostname-override%') then c ->> 'name' || ' hostname override set.'
+        else c ->> 'name' || '  hostname override not set.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

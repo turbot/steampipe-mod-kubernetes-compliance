@@ -299,3 +299,107 @@ control "pod_template_container_readiness_probe" {
 
   tags = local.pod_template_common_tags
 }
+
+control "pod_template_container_argument_namespace_lifecycle_enabled" {
+  title       = "PodTemplate containers argument admission control plugin NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin NamespaceLifecycle disabled."
+  query       = query.pod_template_container_argument_namespace_lifecycle_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_node_restriction_enabled" {
+  title       = "PodTemplate containers argument admission control plugin NodeRestriction is enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin NodeRestriction disabled."
+  query       = query.pod_template_container_argument_node_restriction_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_service_account_lookup_enabled" {
+  title       = "PodTemplate containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument service account lookup enabled."
+  query       = query.pod_template_container_argument_service_account_lookup_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_token_auth_file_not_configured" {
+  title       = "PodTemplate containers token auth file should not be configured"
+  description = "This check ensures that the container in the PodTemplate does not have token auth file configured."
+  query       = query.pod_template_container_token_auth_file_not_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_kubelet_certificate_authority_configured" {
+  title       = "PodTemplate containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has kubelet certificate authority configured appropriately."
+  query       = query.pod_template_container_kubelet_certificate_authority_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_etcd_auto_tls_disabled" {
+  title       = "PodTemplate containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the PodTemplate has argument etcd auto TLS disabled."
+  query       = query.pod_template_container_argument_etcd_auto_tls_disabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "Podtemplate containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the Podtemplate has argument etcd client cert auth enabled."
+  query       = query.pod_template_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "PodTemplate containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the PodTemplate has kube controller manager profiling disabled."
+  query       = query.pod_template_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "PodTemplate containers should have kube controller manager root ca file configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has kube controller manager root ca file configured appropriately."
+  query       = query.pod_template_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "PodTemplate containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument kube controller manager service account credentials enabled."
+  query       = query.pod_template_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "PodTemplate containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has kube controller manager service account private key file configured appropriately."
+  query       = query.pod_template_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "PodTemplate containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the PodTemplate has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.pod_template_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_no_argument_hostname_override_configured" {
+  title       = "PodTemplate containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the PodTemplate has argument hostname override not configured."
+  query       = query.pod_template_container_no_argument_hostname_override_configured
+
+  tags = local.pod_template_common_tags
+}
