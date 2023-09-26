@@ -1898,6 +1898,29 @@ query "deployment_container_argument_kube_apiserver_profiling_disabled" {
   EOQ
 }
 
+query "deployment_container_argument_secure_port_not_0" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--secure-port=0"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--secure-port=0"]' then c ->> 'name' || ' secure port set to 0.'
+        else c ->> 'name' || ' secure port not set to 0.'
+      end as reason,
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
 ### KP - end
 
 

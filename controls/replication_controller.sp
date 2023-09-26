@@ -543,6 +543,14 @@ control "replication_controller_container_argument_kube_apiserver_profiling_disa
   tags = local.replication_controller_common_tags
 }
 
+control "replication_controller_container_argument_secure_port_not_0" {
+  title       = "Replication Controller containers argument secure port should not be set to 0"
+  description = "This check ensures that the container in the Replication Controller has secure port not set to 0."
+  query       = query.replication_controller_container_argument_secure_port_not_0
+
+  tags = local.replication_controller_common_tags
+}
+
 ### KP - end
 
 

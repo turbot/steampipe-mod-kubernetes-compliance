@@ -1902,6 +1902,29 @@ query "pod_container_argument_kube_apiserver_profiling_disabled" {
   EOQ
 }
 
+query "pod_container_argument_secure_port_not_0" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--secure-port=0"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--secure-port=0"]' then c ->> 'name' || ' secure port set to 0.'
+        else c ->> 'name' || ' secure port not set to 0.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
 ### KP - end
 
 

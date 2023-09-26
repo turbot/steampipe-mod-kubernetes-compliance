@@ -544,6 +544,14 @@ control "replicaset_container_argument_kube_apiserver_profiling_disabled" {
   tags = local.replicaset_common_tags
 }
 
+control "replicaset_container_argument_secure_port_not_0" {
+  title       = "ReplicaSet containers argument secure port should not be set to 0"
+  description = "This check ensures that the container in the ReplicaSet has secure port not set to 0."
+  query       = query.replicaset_container_argument_secure_port_not_0
+
+  tags = local.replicaset_common_tags
+}
+
 ### KP - end
 
 

@@ -544,6 +544,14 @@ control "pod_container_argument_kube_apiserver_profiling_disabled" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_argument_secure_port_not_0" {
+  title       = "Pod containers argument secure port should not be set to 0"
+  description = "This check ensures that the container in the Pod has secure port not set to 0."
+  query       = query.pod_container_argument_secure_port_not_0
+
+  tags = local.pod_common_tags
+}
+
 ### KP - end
 
 

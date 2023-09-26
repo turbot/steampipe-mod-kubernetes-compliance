@@ -74,6 +74,7 @@ benchmark "all_controls_job" {
     control.job_container_argument_kube_apiserver_profiling_disabled,
     control.job_container_argument_etcd_certfile_and_keyfile_configured,
     control.job_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
+    control.job_container_argument_secure_port_not_0,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

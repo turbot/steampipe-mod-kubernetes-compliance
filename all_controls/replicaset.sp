@@ -74,6 +74,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_argument_kube_apiserver_profiling_disabled,
     control.replicaset_container_argument_etcd_certfile_and_keyfile_configured,
     control.replicaset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
+    control.replicaset_container_argument_secure_port_not_0,
   ]
 
 
