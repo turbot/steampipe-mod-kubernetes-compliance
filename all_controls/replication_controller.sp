@@ -70,6 +70,8 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_container_token_auth_file_not_configured,
     control.replication_controller_container_kubelet_certificate_authority_configured,
     control.replication_controller_container_argument_node_restriction_enabled,
+    control.replication_controller_container_argument_etcd_certfile_and_keyfile_configured,
+    control.replication_controller_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
   ]
 
   tags = merge(local.all_controls_replication_controller_common_tags, {

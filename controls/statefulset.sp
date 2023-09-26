@@ -534,5 +534,20 @@ control "statefulset_container_argument_node_restriction_enabled" {
 
 ### PC - start
 
+control "statefulset_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "StatefulSet containers should have etcd certfile and keyfile configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has etcd certfile and keyfile configured appropriately."
+  query       = query.statefulset_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  title       = "StatefulSet containers should have etcd peer certfile and peer keyfile configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has etcd peer certfile and peer keyfile configured appropriately."
+  query       = query.statefulset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
+
+  tags = local.statefulset_common_tags
+}
 
 ### PC - end

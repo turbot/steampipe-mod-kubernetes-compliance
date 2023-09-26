@@ -534,5 +534,20 @@ control "replication_controller_container_argument_node_restriction_enabled" {
 
 ### PC - start
 
+control "replication_controller_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "Replication Controller containers should have etcd certfile and keyfile configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has etcd certfile and keyfile configured appropriately."
+  query       = query.replication_controller_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  title       = "Replication Controller containers should have etcd peer certfile and peer keyfile configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has etcd peer certfile and peer keyfile configured appropriately."
+  query       = query.replication_controller_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
+
+  tags = local.replication_controller_common_tags
+}
 
 ### PC - end

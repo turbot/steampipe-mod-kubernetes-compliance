@@ -1099,8 +1099,8 @@ query "cronjob_container_argument_kube_apiserver_etcd_certfile_and_keyfile_confi
           and (
             not (c ->> 'command' like '%--etcd-certfile%')
             or not (c ->> 'command' like '%--etcd-keyfile%')
-          ) then c ->> 'name' || ' etcd certfile and etcd keyfile not set.'
-        else c ->> 'name' || ' etcd certfile and etcd keyfile set.'
+          ) then c ->> 'name' || ' kube apiserver etcd certfile and etcd keyfile not set.'
+        else c ->> 'name' || ' kube apiserver etcd certfile and etcd keyfile set.'
       end as reason,
       name as cronjob_name
       ${local.tag_dimensions_sql}
@@ -1835,5 +1835,68 @@ query "cronjob_container_argument_node_restriction_enabled" {
 
 ### PC - start
 
+query "cronjob_container_argument_etcd_certfile_and_keyfile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (
+            not (c ->> 'command' like '%--cert-file%')
+            or not (c ->> 'command' like '%--key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and(
+            not (c ->> 'command' like '%--cert-file%') 
+            or not (c ->> 'command' like '%--key-file%')
+          ) then c ->> 'name' || ' etcd certfile and keyfile not set.'
+        else c ->> 'name' || ' etcd certfile and keyfile set.'
+      end as reason,
+      name as cronjob_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_cronjob,
+      jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "cronjob_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (
+            not (c ->> 'command' like '%--peer-cert-file%')
+            or not (c ->> 'command' like '%--peer-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and(
+            not (c ->> 'command' like '%--peer-cert-file%') 
+            or not (c ->> 'command' like '%--peer-key-file%')
+          ) then c ->> 'name' || ' etcd peer certfile and peer keyfile not set.'
+        else c ->> 'name' || ' etcd peer certfile and peer keyfile set.'
+      end as reason,
+      name as cronjob_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_cronjob,
+      jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
+  EOQ
+}
 
 ### PC - end

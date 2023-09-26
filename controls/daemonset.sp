@@ -590,5 +590,20 @@ control "daemonset_container_argument_node_restriction_enabled" {
 
 ### PC - start
 
+control "daemonset_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "DaemonSet containers should have etcd certfile and keyfile configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has etcd certfile and keyfile configured appropriately."
+  query       = query.daemonset_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  title       = "DaemonSet containers should have etcd peer certfile and peer keyfile configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has etcd peer certfile and peer keyfile configured appropriately."
+  query       = query.daemonset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
+
+  tags = local.daemonset_common_tags
+}
 
 ### PC - end
