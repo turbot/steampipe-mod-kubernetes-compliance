@@ -70,6 +70,7 @@ benchmark "all_controls_job" {
     control.job_container_token_auth_file_not_configured,
     control.job_container_kubelet_certificate_authority_configured,
     control.job_container_argument_node_restriction_enabled,
+    control.job_container_argument_pod_security_policy_enabled,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

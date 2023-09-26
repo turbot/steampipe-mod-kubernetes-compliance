@@ -527,7 +527,13 @@ control "statefulset_container_argument_node_restriction_enabled" {
 
 ### KP - start
 
+control "statefulset_container_argument_pod_security_policy_enabled" {
+  title       = "StatefulSet containers argument admission control plugin PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin PodSecurityPolicy disabled."
+  query       = query.statefulset_container_argument_pod_security_policy_enabled
 
+  tags = local.statefulset_common_tags
+}
 
 ### KP - end
 

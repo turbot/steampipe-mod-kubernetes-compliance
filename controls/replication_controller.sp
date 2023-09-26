@@ -527,7 +527,13 @@ control "replication_controller_container_argument_node_restriction_enabled" {
 
 ### KP - start
 
+control "replication_controller_container_argument_pod_security_policy_enabled" {
+  title       = "Replication Controller containers argument admission control plugin PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin PodSecurityPolicy disabled."
+  query       = query.replication_controller_container_argument_pod_security_policy_enabled
 
+  tags = local.replication_controller_common_tags
+}
 
 ### KP - end
 
