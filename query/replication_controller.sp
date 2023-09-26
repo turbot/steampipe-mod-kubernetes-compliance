@@ -1238,7 +1238,7 @@ query "replication_controller_container_argument_kube_scheduler_profiling_disabl
   EOQ
 }
 
-query "replication_controller_container_argument_bind_address_127_0_0_1" {
+query "replication_controller_container_argument_kube_scheduler_bind_address_127_0_0_1" {
   sql = <<-EOQ
     with container_list as (
       select
@@ -1275,8 +1275,8 @@ query "replication_controller_container_argument_bind_address_127_0_0_1" {
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when not ((r.value -> 'command') @> '["kube-scheduler"]') then r.value ->> 'name' || ' kube-scheduler not defined.'
-        when l.container_name is not null and (r.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then r.value ->> 'name' || ' bind address set to 127.0.0.1.'
-        else r.value ->> 'name' || ' bind address not set to 127.0.0.1.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then r.value ->> 'name' || ' kube-scheduler bind address set to 127.0.0.1.'
+        else r.value ->> 'name' || ' kube-scheduler bind address not set to 127.0.0.1.'
       end as reason,
       r.replication_controller_name as replication_controller_name
       ${local.tag_dimensions_sql}

@@ -52,7 +52,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_memory_request,
     control.cronjob_non_root_container,
     control.cronjob_container_argument_kube_scheduler_profiling_disabled,
-    control.cronjob_container_argument_bind_address_127_0_0_1,
+    control.cronjob_container_argument_kube_scheduler_bind_address_127_0_0_1,
     control.cronjob_container_argument_protect_kernel_defaults_enabled,
     control.cronjob_container_argument_make_iptables_util_chains_enabled,
     control.cronjob_container_argument_tls_cert_file_and_tls_private_key_file_configured,

@@ -53,7 +53,7 @@ benchmark "all_controls_deployment" {
     control.deployment_non_root_container,
     control.deployment_replica_minimum_3,
     control.deployment_container_argument_kube_scheduler_profiling_disabled,
-    control.deployment_container_argument_bind_address_127_0_0_1,
+    control.deployment_container_argument_kube_scheduler_bind_address_127_0_0_1,
     control.deployment_container_argument_protect_kernel_defaults_enabled,
     control.deployment_container_argument_make_iptables_util_chains_enabled,
     control.deployment_container_argument_tls_cert_file_and_tls_private_key_file_configured,

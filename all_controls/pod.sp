@@ -53,7 +53,7 @@ benchmark "all_controls_pod" {
     control.pod_service_account_token_disabled,
     control.pod_volume_host_path,
     control.pod_container_argument_kube_scheduler_profiling_disabled,
-    control.pod_container_argument_bind_address_127_0_0_1,
+    control.pod_container_argument_kube_scheduler_bind_address_127_0_0_1,
     control.pod_container_argument_protect_kernel_defaults_enabled,
     control.pod_container_argument_make_iptables_util_chains_enabled,
     control.pod_container_argument_tls_cert_file_and_tls_private_key_file_configured,

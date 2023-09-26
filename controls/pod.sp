@@ -381,10 +381,10 @@ control "pod_container_argument_kube_scheduler_profiling_disabled" {
   tags = local.pod_common_tags
 }
 
-control "pod_container_argument_bind_address_127_0_0_1" {
-  title       = "Pod containers argument bind address should be set to 127.0.0.1"
-  description = "This check ensures that the container in the Pod has argument bind address set to 127.0.0.1."
-  query       = query.pod_container_argument_bind_address_127_0_0_1
+control "pod_container_argument_kube_scheduler_bind_address_127_0_0_1" {
+  title       = "Pod containers argument kube-scheduler bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Pod has argument kube-scheduler bind address set to 127.0.0.1."
+  query       = query.pod_container_argument_kube_scheduler_bind_address_127_0_0_1
 
   tags = local.pod_common_tags
 }

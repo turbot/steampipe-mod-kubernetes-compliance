@@ -1238,7 +1238,7 @@ query "job_container_argument_kube_scheduler_profiling_disabled" {
   EOQ
 }
 
-query "job_container_argument_bind_address_127_0_0_1" {
+query "job_container_argument_kube_scheduler_bind_address_127_0_0_1" {
   sql = <<-EOQ
     with container_list as (
       select
@@ -1275,8 +1275,8 @@ query "job_container_argument_bind_address_127_0_0_1" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when not ((j.value -> 'command') @> '["kube-scheduler"]') then j.value ->> 'name' || ' kube-scheduler not defined.'
-        when l.container_name is not null and (j.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then j.value ->> 'name' || ' bind address set to 127.0.0.1.'
-        else j.value ->> 'name' || ' bind address not set to 127.0.0.1.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-scheduler"]' and ((l.value) like '%127.0.0.1%') then j.value ->> 'name' || ' kube-scheduler bind address set to 127.0.0.1.'
+        else j.value ->> 'name' || ' kube-scheduler bind address not set to 127.0.0.1.'
       end as reason,
       j.job_name as job_name
       ${local.tag_dimensions_sql}

@@ -380,10 +380,10 @@ control "statefulset_container_argument_kube_scheduler_profiling_disabled" {
   tags = local.statefulset_common_tags
 }
 
-control "statefulset_container_argument_bind_address_127_0_0_1" {
-  title       = "StatefulSet containers argument bind address should be set to 127.0.0.1"
-  description = "This check ensures that the container in the StatefulSet has argument bind address set to 127.0.0.1."
-  query       = query.statefulset_container_argument_bind_address_127_0_0_1
+control "statefulset_container_argument_kube_scheduler_bind_address_127_0_0_1" {
+  title       = "StatefulSet containers argument kube-scheduler bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the StatefulSet has argument kube-scheduler bind address set to 127.0.0.1."
+  query       = query.statefulset_container_argument_kube_scheduler_bind_address_127_0_0_1
 
   tags = local.statefulset_common_tags
 }

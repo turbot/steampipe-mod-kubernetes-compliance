@@ -52,7 +52,7 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_memory_request,
     control.replication_controller_non_root_container,
     control.replication_controller_container_argument_kube_scheduler_profiling_disabled,
-    control.replication_controller_container_argument_bind_address_127_0_0_1,
+    control.replication_controller_container_argument_kube_scheduler_bind_address_127_0_0_1,
     control.replication_controller_container_argument_protect_kernel_defaults_enabled,
     control.replication_controller_container_argument_make_iptables_util_chains_enabled,
     control.replication_controller_container_argument_tls_cert_file_and_tls_private_key_file_configured,

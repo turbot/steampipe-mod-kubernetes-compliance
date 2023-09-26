@@ -380,10 +380,10 @@ control "cronjob_container_argument_kube_scheduler_profiling_disabled" {
   tags = local.cronjob_common_tags
 }
 
-control "cronjob_container_argument_bind_address_127_0_0_1" {
-  title       = "CronJob containers argument bind address should be set to 127.0.0.1"
-  description = "This check ensures that the container in the CronJob has argument bind address set to 127.0.0.1."
-  query       = query.cronjob_container_argument_bind_address_127_0_0_1
+control "cronjob_container_argument_kube_scheduler_bind_address_127_0_0_1" {
+  title       = "CronJob containers argument kube-scheduler bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the CronJob has argument kube-scheduler bind address set to 127.0.0.1."
+  query       = query.cronjob_container_argument_kube_scheduler_bind_address_127_0_0_1
 
   tags = local.cronjob_common_tags
 }
