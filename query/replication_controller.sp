@@ -449,11 +449,14 @@ query "replication_controller_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--encryption-provider-config=%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--encryption-provider-config=%') then c ->> 'name' || ' encryption providers not configured appropriately.'
         else c ->> 'name' || ' encryption providers configured appropriately.'
@@ -537,12 +540,15 @@ query "replication_controller_container_rotate_certificate_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
-       when (c -> 'command') @> '["kubelet"]'
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
         and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
         else c ->> 'name' || ' rotate certificates enabled.'
       end as reason,
@@ -571,11 +577,14 @@ query "replication_controller_container_argument_event_qps_less_than_5" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when l.container_name is null then 'ok'
         when l.container_name is not null and (c -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 5 then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when l.container_name is null then c ->> 'name' || ' event-qps is not set.'
         else c ->> 'name' || ' event-qps is set to ' || l.value || '.'
       end as reason,
@@ -594,11 +603,14 @@ query "replication_controller_container_argument_anonymous_auth_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' anonymous auth enabled.'
         else c ->> 'name' || ' anonymous auth disabled.'
@@ -617,11 +629,14 @@ query "replication_controller_container_argument_audit_log_path_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
         else c ->> 'name' || ' audit log path configured.'
@@ -674,7 +689,7 @@ query "replication_controller_container_argument_audit_log_maxage_greater_than_3
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' audit-log-maxage not set.'
-        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube-apiserver not defined.'
         else r.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       r.replication_controller_name as replication_controller_name
@@ -725,7 +740,7 @@ query "replication_controller_container_argument_audit_log_maxbackup_greater_tha
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' audit-log-maxbackup not set.'
-        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube-apiserver not defined.'
         else r.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       r.replication_controller_name as replication_controller_name
@@ -776,7 +791,7 @@ query "replication_controller_container_argument_audit_log_maxsize_greater_than_
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' audit-log-maxsize not set.'
-        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]')  then r.value ->> 'name' || ' kube-apiserver not defined.'
         else r.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       r.replication_controller_name as replication_controller_name
@@ -793,11 +808,14 @@ query "replication_controller_container_no_argument_basic_auth_file" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
         else c ->> 'name' || ' basic auth file not set.'
@@ -816,11 +834,14 @@ query "replication_controller_container_argument_etcd_cafile_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%--etcd-cafile%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile not set.'
         else c ->> 'name' || ' etcd cafile set.'
@@ -875,7 +896,7 @@ query "replication_controller_container_argument_authorization_mode_node" {
         when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then r.value ->> 'name' || ' authorization mode not set to node.'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then r.value ->> 'name' || ' authorization mode set to node.'
-        else r.value ->> 'name' || ' kube-apiservernot defined.'
+        else r.value ->> 'name' || ' kube-apiserver not defined.'
       end as reason,
       r.replication_controller_name as replication_controller_name
       ${local.tag_dimensions_sql}
@@ -916,10 +937,13 @@ query "replication_controller_container_argument_authorization_mode_no_always_al
     select
       coalesce(r.replication_controller_uid, concat(r.path, ':', r.start_line)) as resource,
       case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]') then r.value ->> 'name' || ' kube-apiserver not defined.'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then r.value ->> 'name' || ' authorization mode set to always allow.'
         else r.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
@@ -973,7 +997,7 @@ query "replication_controller_container_argument_authorization_mode_rbac" {
         when (r.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  r.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then r.value ->> 'name' || ' authorization mode not set to RBAC.'
         when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then r.value ->> 'name' || ' authorization mode set to RBAC.'
-        else r.value ->> 'name' || ' kube-apiservernot defined.'
+        else r.value ->> 'name' || ' kube-apiserver not defined.'
       end as reason,
       r.replication_controller_name as replication_controller_name
       ${local.tag_dimensions_sql}
@@ -989,11 +1013,14 @@ query "replication_controller_container_no_argument_insecure_bind_address" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--insecure-bind-address%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address.'
         else c ->> 'name' || ' has no insecure bind address.'
@@ -1012,11 +1039,14 @@ query "replication_controller_container_argument_kubelet_https_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--kubelet-https=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled.'
         else c ->> 'name' || ' kubelet HTTPS enabled.'
@@ -1035,11 +1065,14 @@ query "replication_controller_container_argument_insecure_port_0" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and not (c -> 'command') @> '["--insecure-port=0"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and not (c -> 'command') @> '["--insecure-port=0"]' then c ->> 'name' || ' insecure port not set to 0.'
         else c ->> 'name' || ' insecure port set to 0.'
@@ -1058,6 +1091,7 @@ query "replication_controller_container_argument_kubelet_client_certificate_and_
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (
             not (c ->> 'command' like '%--kubelet-client-certificate%')
@@ -1066,7 +1100,9 @@ query "replication_controller_container_argument_kubelet_client_certificate_and_
         else 'ok'
       end as status,
       case
-         when (c -> 'command') @> '["kube-apiserver"]'
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
           and (
             not (c ->> 'command' like '%--kubelet-client-certificate%')
             or not (c ->> 'command' like '%--kubelet-client-key%')
@@ -1355,10 +1391,10 @@ query "replication_controller_container_argument_tls_cert_file_and_tls_private_k
       case
         when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
         when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
-         when (c -> 'command') @> '["kube-apiserver"]'
+         when (c -> 'command') @> '["kubelet"]'
           and (
             not (c ->> 'command' like '%--tls-cert-file%')
-            or not (c ->> 'command' like '%--tls-private-key-filey%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
           ) then c ->> 'name' || ' TLS cert file and private key not set.'
         else c ->> 'name' || ' TLS cert file and private key set.'
       end as reason,
@@ -1956,7 +1992,7 @@ query "replication_controller_container_argument_etcd_certfile_and_keyfile_confi
         when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
         when (c -> 'command') @> '["etcd"]'
           and(
-            not (c ->> 'command' like '%--cert-file%') 
+            not (c ->> 'command' like '%--cert-file%')
             or not (c ->> 'command' like '%--key-file%')
           ) then c ->> 'name' || ' etcd certfile and keyfile not set.'
         else c ->> 'name' || ' etcd certfile and keyfile set.'
@@ -1988,7 +2024,7 @@ query "replication_controller_container_argument_etcd_peer_certfile_and_peer_key
         when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
         when (c -> 'command') @> '["etcd"]'
           and(
-            not (c ->> 'command' like '%--peer-cert-file%') 
+            not (c ->> 'command' like '%--peer-cert-file%')
             or not (c ->> 'command' like '%--peer-key-file%')
           ) then c ->> 'name' || ' etcd peer certfile and peer keyfile not set.'
         else c ->> 'name' || ' etcd peer certfile and peer keyfile set.'
