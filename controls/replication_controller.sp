@@ -485,8 +485,8 @@ control "replication_controller_container_argument_etcd_client_cert_auth_enabled
 }
 
 control "replication_controller_container_argument_namespace_lifecycle_enabled" {
-  title       = "Replication Controller containers argument admission control plugin NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the Replication Controller has argument admission control plugin NamespaceLifecycle disabled."
+  title       = "Replication Controller containers argument admission control plugin where NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin where NamespaceLifecycle is enabled."
   query       = query.replication_controller_container_argument_namespace_lifecycle_enabled
 
   tags = local.replication_controller_common_tags
@@ -517,8 +517,8 @@ control "replication_controller_container_kubelet_certificate_authority_configur
 }
 
 control "replication_controller_container_argument_node_restriction_enabled" {
-  title       = "Replication Controller containers argument admission control plugin NodeRestriction is enabled"
-  description = "This check ensures that the container in the Replication Controller has argument admission control plugin NodeRestriction disabled."
+  title       = "Replication Controller containers argument admission control plugin where NodeRestriction is enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin where NodeRestriction is enabled."
   query       = query.replication_controller_container_argument_node_restriction_enabled
 
   tags = local.replication_controller_common_tags
@@ -528,8 +528,8 @@ control "replication_controller_container_argument_node_restriction_enabled" {
 ### KP - start
 
 control "replication_controller_container_argument_pod_security_policy_enabled" {
-  title       = "Replication Controller containers argument admission control plugin PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the Replication Controller has argument admission control plugin PodSecurityPolicy disabled."
+  title       = "Replication Controller containers argument admission control plugin where PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin where PodSecurityPolicy is enabled."
   query       = query.replication_controller_container_argument_pod_security_policy_enabled
 
   tags = local.replication_controller_common_tags

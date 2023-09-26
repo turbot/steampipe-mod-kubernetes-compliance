@@ -485,8 +485,8 @@ control "statefulset_container_argument_etcd_client_cert_auth_enabled" {
 }
 
 control "statefulset_container_argument_namespace_lifecycle_enabled" {
-  title       = "StatefulSet containers argument admission control plugin NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin NamespaceLifecycle disabled."
+  title       = "StatefulSet containers argument admission control plugin where NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NamespaceLifecycle enabled."
   query       = query.statefulset_container_argument_namespace_lifecycle_enabled
 
   tags = local.statefulset_common_tags
@@ -517,8 +517,8 @@ control "statefulset_container_kubelet_certificate_authority_configured" {
 }
 
 control "statefulset_container_argument_node_restriction_enabled" {
-  title       = "StatefulSet containers argument admission control plugin NodeRestriction is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin NodeRestriction disabled."
+  title       = "StatefulSet containers argument admission control plugin where NodeRestriction is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NodeRestriction enabled."
   query       = query.statefulset_container_argument_node_restriction_enabled
 
   tags = local.statefulset_common_tags
@@ -528,8 +528,8 @@ control "statefulset_container_argument_node_restriction_enabled" {
 ### KP - start
 
 control "statefulset_container_argument_pod_security_policy_enabled" {
-  title       = "StatefulSet containers argument admission control plugin PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin PodSecurityPolicy disabled."
+  title       = "StatefulSet containers argument admission control plugin where PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where PodSecurityPolicy is enabled."
   query       = query.statefulset_container_argument_pod_security_policy_enabled
 
   tags = local.statefulset_common_tags

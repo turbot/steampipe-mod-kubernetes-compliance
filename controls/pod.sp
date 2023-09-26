@@ -486,8 +486,8 @@ control "pod_container_argument_etcd_client_cert_auth_enabled" {
 }
 
 control "pod_container_argument_namespace_lifecycle_enabled" {
-  title       = "Pod containers argument admission control plugin NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the Pod has argument admission control plugin NamespaceLifecycle disabled."
+  title       = "Pod containers argument admission control plugin where NamespaceLifecycle is enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin where NamespaceLifecycle is enabled."
   query       = query.pod_container_argument_namespace_lifecycle_enabled
 
   tags = local.pod_common_tags
@@ -518,8 +518,8 @@ control "pod_container_kubelet_certificate_authority_configured" {
 }
 
 control "pod_container_argument_node_restriction_enabled" {
-  title       = "Pod containers argument admission control plugin NodeRestriction is enabled"
-  description = "This check ensures that the container in the Pod has argument admission control plugin NodeRestriction disabled."
+  title       = "Pod containers argument admission control plugin where NodeRestriction is enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin where NodeRestriction is enabled."
   query       = query.pod_container_argument_node_restriction_enabled
 
   tags = local.pod_common_tags
@@ -530,7 +530,7 @@ control "pod_container_argument_node_restriction_enabled" {
 
 control "pod_container_argument_pod_security_policy_enabled" {
   title       = "Pod containers argument admission control plugin PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the Pod has argument admission control plugin PodSecurityPolicy disabled."
+  description = "This check ensures that the container in the Pod has argument admission control plugin where PodSecurityPolicy is enabled."
   query       = query.pod_container_argument_pod_security_policy_enabled
 
   tags = local.pod_common_tags
