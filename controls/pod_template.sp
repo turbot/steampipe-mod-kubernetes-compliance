@@ -259,3 +259,43 @@ control "pod_template_memory_limit" {
 
   tags = local.pod_template_common_tags
 }
+
+control "pod_template_memory_request" {
+  title       = replace(local.container_memory_request_title, "__KIND__", "PodTemplate")
+  description = replace(local.container_memory_request_desc, "__KIND__", "PodTemplate")
+  query       = query.pod_template_memory_request
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_capabilities_drop_all" {
+  title       = "PodTemplate containers should minimize its admission with capabilities assigned"
+  description = "This check ensures that the container in the PodTemplate minimizes its admission with capabilities assigned."
+  query       = query.pod_template_container_capabilities_drop_all
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_privilege_disabled" {
+  title       = replace(local.container_privilege_disabled_title, "__KIND__", "PodTemplate")
+  description = replace(local.container_privilege_disabled_desc, "__KIND__", "PodTemplate")
+  query       = query.pod_template_container_privilege_disabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_immutable_container_filesystem" {
+  title       = replace(local.immutable_container_filesystem_title, "__KIND__", "PodTemplate")
+  description = replace(local.immutable_container_filesystem_desc, "__KIND__", "PodTemplate")
+  query       = query.pod_template_immutable_container_filesystem
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_readiness_probe" {
+  title       = "PodTemplate containers should have readiness probe"
+  description = "Containers in PodTemplate definition should have readiness probe. The readiness probes in turn also check dependencies like database connections or other services your container is depending on to fulfill its work."
+  query       = query.pod_template_container_readiness_probe
+
+  tags = local.pod_template_common_tags
+}

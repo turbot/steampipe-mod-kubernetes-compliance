@@ -40,7 +40,12 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_event_qps_less_than_5,
     control.pod_template_container_rotate_certificate_enabled,
     control.pod_template_container_liveness_probe,
-    control.pod_template_memory_limit
+    control.pod_template_memory_limit,
+    control.pod_template_memory_request,
+    control.pod_template_container_capabilities_drop_all,
+    control.pod_template_container_privilege_disabled,
+    control.pod_template_immutable_container_filesystem,
+    control.pod_template_container_readiness_probe
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

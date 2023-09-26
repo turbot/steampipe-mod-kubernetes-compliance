@@ -1003,3 +1003,110 @@ query "pod_template_memory_limit" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "pod_template_memory_request" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'resources' -> 'requests' ->> 'memory' is null then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c -> 'resources' -> 'requests' ->> 'memory' is null then c ->> 'name' || ' does not have a memory request.'
+        else c ->> 'name' || ' has a memory request of ' || (c -> 'resources' -> 'requests' ->> 'memory') || '.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_capabilities_drop_all" {
+  sql = <<-EOQ
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["all"]')
+          or (c -> 'securityContext' -> 'capabilities' -> 'drop' @> '["ALL"]') then c ->> 'name' || ' admission of containers with capabilities assigned minimized.'
+        else c ->> 'name' || ' admission of containers with capabilities assigned not minimized.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_privilege_disabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c -> 'securityContext' ->> 'privileged' = 'true' then c ->> 'name' || ' privileged container.'
+        else c ->> 'name' || ' not privileged container.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_immutable_container_filesystem" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read only root file system.'
+        else c ->> 'name' || ' not running with read only root file system.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_readiness_probe" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c -> 'readinessProbe' is not null then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when c -> 'readinessProbe' is not null then c ->> 'name' || ' has readiness probe.'
+        else c ->> 'name' || ' does not have readiness probe.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
