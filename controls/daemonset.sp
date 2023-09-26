@@ -583,7 +583,13 @@ control "daemonset_container_argument_node_restriction_enabled" {
 
 ### KP - start
 
+control "daemonset_container_argument_pod_security_policy_enabled" {
+  title       = "DaemonSet containers argument admission control plugin PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the DaemonSet has argument admission control plugin PodSecurityPolicy disabled."
+  query       = query.daemonset_container_argument_pod_security_policy_enabled
 
+  tags = local.daemonset_common_tags
+}
 
 ### KP - end
 

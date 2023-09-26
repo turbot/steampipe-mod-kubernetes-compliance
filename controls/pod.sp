@@ -528,7 +528,13 @@ control "pod_container_argument_node_restriction_enabled" {
 
 ### KP - start
 
+control "pod_container_argument_pod_security_policy_enabled" {
+  title       = "Pod containers argument admission control plugin PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin PodSecurityPolicy disabled."
+  query       = query.pod_container_argument_pod_security_policy_enabled
 
+  tags = local.pod_common_tags
+}
 
 ### KP - end
 

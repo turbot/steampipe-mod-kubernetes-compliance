@@ -583,7 +583,13 @@ control "cronjob_container_argument_node_restriction_enabled" {
 
 ### KP - start
 
+control "cronjob_container_argument_pod_security_policy_enabled" {
+  title       = "CronJob containers argument admission control plugin PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin PodSecurityPolicy disabled."
+  query       = query.cronjob_container_argument_pod_security_policy_enabled
 
+  tags = local.cronjob_common_tags
+}
 
 ### KP - end
 

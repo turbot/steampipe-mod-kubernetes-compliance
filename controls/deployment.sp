@@ -535,7 +535,13 @@ control "deployment_container_argument_node_restriction_enabled" {
 
 ### KP - start
 
+control "deployment_container_argument_pod_security_policy_enabled" {
+  title       = "Deployment containers argument admission control plugin PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the Deployment has argument admission control plugin PodSecurityPolicy disabled."
+  query       = query.deployment_container_argument_pod_security_policy_enabled
 
+  tags = local.deployment_common_tags
+}
 
 ### KP - end
 
