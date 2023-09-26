@@ -403,3 +403,51 @@ control "pod_template_container_no_argument_hostname_override_configured" {
 
   tags = local.pod_template_common_tags
 }
+
+control "pod_template_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "PodTemplate containers should have TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has TLS cert file and TLS private key file configured appropriately."
+  query       = query.pod_template_container_argument_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_make_iptables_util_chains_enabled" {
+  title       = "PodTemplate containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument make iptables util chains enabled."
+  query       = query.pod_template_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_protect_kernel_defaults_enabled" {
+  title       = "PodTemplate containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument protect kernel defaults enabled."
+  query       = query.pod_template_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kubelet_read_only_port_0" {
+  title       = "PodTemplate containers argument kubelet read only port shoule be set 0"
+  description = "This check ensures that the container in the PodTemplate has argument kubelet read only port set to 0."
+  query       = query.pod_template_container_argument_kubelet_read_only_port_0
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_bind_address_127_0_0_1" {
+  title       = "PodTemplate containers argument bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the PodTemplate has argument bind address set to 127.0.0.1."
+  query       = query.pod_template_container_argument_bind_address_127_0_0_1
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "PodTemplate containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the PodTemplate has kube scheduler profiling disabled."
+  query       = query.pod_template_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.pod_template_common_tags
+}
