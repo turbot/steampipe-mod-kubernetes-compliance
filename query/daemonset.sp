@@ -1973,4 +1973,53 @@ query "daemonset_container_argument_etcd_peer_certfile_and_peer_keyfile_configur
   EOQ
 }
 
+query "daemonset_container_argument_kube_controller_manager_bind_address_127_0_0_1" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--bind-address=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%127.0.0.1%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-controller-manager"]') then d.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%127.0.0.1%') then d.value ->> 'name' || ' kube-controller-manager bind address set to 127.0.0.1.'
+        else d.value ->> 'name' || ' kube-controller-manager bind address not set to 127.0.0.1.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
 ### PC - end

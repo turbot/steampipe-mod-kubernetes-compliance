@@ -580,4 +580,11 @@ control "deployment_container_argument_etcd_peer_certfile_and_peer_keyfile_confi
   tags = local.deployment_common_tags
 }
 
+control "deployment_container_argument_kube_controller_manager_bind_address_127_0_0_1" {
+  title       = "Deployment containers argument kube-controller-manager bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Deployment has argument kube-controller-manager bind address set to 127.0.0.1."
+  query       = query.deployment_container_argument_kube_controller_manager_bind_address_127_0_0_1
+
+  tags = local.deployment_common_tags
+}
 ### PC - end

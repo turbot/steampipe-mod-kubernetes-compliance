@@ -1975,4 +1975,53 @@ query "replicaset_container_argument_etcd_peer_certfile_and_peer_keyfile_configu
   EOQ
 }
 
+query "replicaset_container_argument_kube_controller_manager_bind_address_127_0_0_1" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--bind-address=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%127.0.0.1%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kube-controller-manager"]') then r.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%127.0.0.1%') then r.value ->> 'name' || ' kube-controller-manager bind address set to 127.0.0.1.'
+        else r.value ->> 'name' || ' kube-controller-manager bind address not set to 127.0.0.1.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
+  EOQ
+}
+
 ### PC - end

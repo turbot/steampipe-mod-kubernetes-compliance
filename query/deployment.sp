@@ -1991,4 +1991,53 @@ query "deployment_container_argument_etcd_peer_certfile_and_peer_keyfile_configu
 }
 
 
+query "deployment_container_argument_kube_controller_manager_bind_address_127_0_0_1" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as deployment
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--bind-address=%'
+    ), container_name_with_deployment_name as (
+      select
+        d.name as deployment_name,
+        d.uid as deployment_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_deployment as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.deployment_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-controller-manager"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%127.0.0.1%') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-controller-manager"]') then d.value ->> 'name' || ' kube-controller-manager not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-controller-manager"]' and ((l.value) like '%127.0.0.1%') then d.value ->> 'name' || ' kube-controller-manager bind address set to 127.0.0.1.'
+        else d.value ->> 'name' || ' kube-controller-manager bind address not set to 127.0.0.1.'
+      end as reason,
+      d.deployment_name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_deployment_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
+  EOQ
+}
+
 ### PC - end

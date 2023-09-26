@@ -75,6 +75,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_argument_etcd_certfile_and_keyfile_configured,
     control.cronjob_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
     control.cronjob_container_argument_secure_port_not_0,
+    control.cronjob_container_argument_kube_controller_manager_bind_address_127_0_0_1,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {
