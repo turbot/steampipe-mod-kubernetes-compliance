@@ -591,6 +591,14 @@ control "cronjob_container_argument_pod_security_policy_enabled" {
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_argument_security_context_deny_enabled" {
+  title       = "CronJob containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+  query       = query.cronjob_container_argument_security_context_deny_enabled
+
+  tags = local.cronjob_common_tags
+}
+
 control "cronjob_container_argument_kube_apiserver_profiling_disabled" {
   title       = "CronJob containers kube apiserver profiling should be disabled"
   description = "This check ensures that the container in the CronJob has kube apiserver profiling disabled."

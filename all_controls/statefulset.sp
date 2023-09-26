@@ -75,6 +75,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_argument_etcd_certfile_and_keyfile_configured,
     control.statefulset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
     control.statefulset_container_argument_secure_port_not_0,
+    control.statefulset_container_argument_security_context_deny_enabled,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {
