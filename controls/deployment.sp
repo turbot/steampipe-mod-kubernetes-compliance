@@ -543,6 +543,14 @@ control "deployment_container_argument_pod_security_policy_enabled" {
   tags = local.deployment_common_tags
 }
 
+control "deployment_container_argument_security_context_deny_enabled" {
+  title       = "Deployment containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  description = "This check ensures that the container in the Deployment has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+  query       = query.deployment_container_argument_security_context_deny_enabled
+
+  tags = local.deployment_common_tags
+}
+
 control "deployment_container_argument_kube_apiserver_profiling_disabled" {
   title       = "Deployment containers kube apiserver profiling should be disabled"
   description = "This check ensures that the container in the Deployment has kube apiserver profiling disabled."

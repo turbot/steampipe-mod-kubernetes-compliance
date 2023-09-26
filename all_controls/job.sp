@@ -75,6 +75,7 @@ benchmark "all_controls_job" {
     control.job_container_argument_etcd_certfile_and_keyfile_configured,
     control.job_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
     control.job_container_argument_secure_port_not_0,
+    control.job_container_argument_security_context_deny_enabled,
     control.job_container_argument_kube_controller_manager_bind_address_127_0_0_1,
   ]
 

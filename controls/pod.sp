@@ -536,6 +536,14 @@ control "pod_container_argument_pod_security_policy_enabled" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_argument_security_context_deny_enabled" {
+  title       = "Pod containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+  query       = query.pod_container_argument_security_context_deny_enabled
+
+  tags = local.pod_common_tags
+}
+
 control "pod_container_argument_kube_apiserver_profiling_disabled" {
   title       = "Pod containers kube apiserver profiling should be disabled"
   description = "This check ensures that the container in the Pod has kube apiserver profiling disabled."

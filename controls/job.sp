@@ -535,6 +535,14 @@ control "job_container_argument_pod_security_policy_enabled" {
   tags = local.job_common_tags
 }
 
+control "job_container_argument_security_context_deny_enabled" {
+  title       = "Job containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+  query       = query.job_container_argument_security_context_deny_enabled
+
+  tags = local.job_common_tags
+}
+
 control "job_container_argument_kube_apiserver_profiling_disabled" {
   title       = "Job containers kube apiserver profiling should be disabled"
   description = "This check ensures that the container in the Job has kube apiserver profiling disabled."
