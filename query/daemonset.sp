@@ -447,11 +447,14 @@ query "daemonset_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--encryption-provider-config=%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--encryption-provider-config=%') then c ->> 'name' || ' encryption providers not configured appropriately.'
         else c ->> 'name' || ' encryption providers configured appropriately.'
@@ -535,11 +538,14 @@ query "daemonset_container_rotate_certificate_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
         else c ->> 'name' || ' rotate certificates enabled.'
@@ -569,11 +575,14 @@ query "daemonset_container_argument_event_qps_less_than_5" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when l.container_name is null then 'ok'
         when l.container_name is not null and (c -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 5 then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when l.container_name is null then c ->> 'name' || ' event-qps is not set.'
         else c ->> 'name' || ' event-qps is set to ' || l.value || '.'
       end as reason,
@@ -592,11 +601,14 @@ query "daemonset_container_argument_anonymous_auth_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-         when (c -> 'command') @> '["kubelet"]'
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' rotate certificates disabled.'
         else c ->> 'name' || ' rotate certificates enabled.'
@@ -615,11 +627,14 @@ query "daemonset_container_argument_audit_log_path_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
         else c ->> 'name' || ' audit log path configured.'
@@ -672,7 +687,7 @@ query "daemonset_container_argument_audit_log_maxage_greater_than_30" {
       case
         when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxage not set.'
-        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot not defined.'
         else d.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
@@ -723,7 +738,7 @@ query "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
       case
         when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxbackup not set.'
-        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiserver not defined.'
         else d.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
@@ -774,7 +789,7 @@ query "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
       case
         when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' audit-log-maxsize not set.'
-        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]')  then d.value ->> 'name' || ' kube-apiserver not defined.'
         else d.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       d.daemonset_name as daemonset_name
@@ -791,11 +806,14 @@ query "daemonset_container_no_argument_basic_auth_file" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
         else c ->> 'name' || ' basic auth file not set.'
@@ -814,11 +832,14 @@ query "daemonset_container_argument_etcd_cafile_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%--etcd-cafile%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile not set.'
         else c ->> 'name' || ' etcd cafile set.'
@@ -873,7 +894,7 @@ query "daemonset_container_argument_authorization_mode_node" {
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode not set to node.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then d.value ->> 'name' || ' authorization mode set to node.'
-        else d.value ->> 'name' || ' kube-apiservernot defined.'
+        else d.value ->> 'name' || ' kube-apiserver not defined.'
       end as reason,
       d.daemonset_name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -914,10 +935,13 @@ query "daemonset_container_argument_authorization_mode_no_always_allow" {
     select
       coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
       case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then d.value ->> 'name' || ' kube-apiserver not defined.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then d.value ->> 'name' || ' authorization mode set to always allow.'
         else d.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
@@ -971,7 +995,7 @@ query "daemonset_container_argument_authorization_mode_rbac" {
         when (d.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  d.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode not set to RBAC.'
         when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then d.value ->> 'name' || ' authorization mode set to RBAC.'
-        else d.value ->> 'name' || ' kube-apiservernot defined.'
+        else d.value ->> 'name' || ' kube-apiserver not defined.'
       end as reason,
       d.daemonset_name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -987,11 +1011,14 @@ query "daemonset_container_no_argument_insecure_bind_address" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--insecure-bind-address%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address.'
         else c ->> 'name' || ' has no insecure bind address.'
@@ -1010,11 +1037,14 @@ query "daemonset_container_argument_kubelet_https_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--kubelet-https=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled.'
         else c ->> 'name' || ' kubelet HTTPS enabled.'
@@ -1033,11 +1063,14 @@ query "daemonset_container_argument_insecure_port_0" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and not (c -> 'command') @> '["--insecure-port=0"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and not (c -> 'command') @> '["--insecure-port=0"]' then c ->> 'name' || ' insecure port not set to 0.'
         else c ->> 'name' || ' insecure port set to 0.'
@@ -1056,6 +1089,7 @@ query "daemonset_container_argument_kubelet_client_certificate_and_key_configure
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (
             not (c ->> 'command' like '%--kubelet-client-certificate%')
@@ -1064,7 +1098,9 @@ query "daemonset_container_argument_kubelet_client_certificate_and_key_configure
         else 'ok'
       end as status,
       case
-         when (c -> 'command') @> '["kube-apiserver"]'
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
           and (
             not (c ->> 'command' like '%--kubelet-client-certificate%')
             or not (c ->> 'command' like '%--kubelet-client-key%')
@@ -1563,8 +1599,8 @@ query "daemonset_container_argument_kube_controller_manager_service_account_priv
         else d.value ->> 'name' || ' service account private key file is not set.'
       end as reason,
       d.daemonset_name as daemonset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
@@ -1660,8 +1696,8 @@ query "daemonset_container_argument_kube_controller_manager_root_ca_file_configu
         else d.value ->> 'name' || ' root-ca-file is not set.'
       end as reason,
       d.daemonset_name as daemonset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
@@ -1686,8 +1722,8 @@ query "daemonset_container_argument_etcd_client_cert_auth_enabled" {
         else c ->> 'name' || ' client cert auth disabled.'
       end as reason,
       name as daemonset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_daemonset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
@@ -1955,7 +1991,7 @@ query "daemonset_container_argument_etcd_certfile_and_keyfile_configured" {
         when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
         when (c -> 'command') @> '["etcd"]'
           and(
-            not (c ->> 'command' like '%--cert-file%') 
+            not (c ->> 'command' like '%--cert-file%')
             or not (c ->> 'command' like '%--key-file%')
           ) then c ->> 'name' || ' etcd certfile and keyfile not set.'
         else c ->> 'name' || ' etcd certfile and keyfile set.'
@@ -1987,7 +2023,7 @@ query "daemonset_container_argument_etcd_peer_certfile_and_peer_keyfile_configur
         when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
         when (c -> 'command') @> '["etcd"]'
           and(
-            not (c ->> 'command' like '%--peer-cert-file%') 
+            not (c ->> 'command' like '%--peer-cert-file%')
             or not (c ->> 'command' like '%--peer-key-file%')
           ) then c ->> 'name' || ' etcd peer certfile and peer keyfile not set.'
         else c ->> 'name' || ' etcd peer certfile and peer keyfile set.'

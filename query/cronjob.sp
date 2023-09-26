@@ -446,11 +446,14 @@ query "cronjob_container_encryption_providers_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--encryption-provider-config=%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--encryption-provider-config=%') then c ->> 'name' || ' encryption providers not configured appropriately.'
         else c ->> 'name' || ' encryption providers configured appropriately.'
@@ -534,11 +537,14 @@ query "cronjob_container_rotate_certificate_enabled" {
     select
       distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--rotate-certificates=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--rotate-certificates=false"]' then c ->> 'name' || ' rotate certificates disabled.'
         else c ->> 'name' || ' rotate certificates enabled.'
@@ -568,11 +574,14 @@ query "cronjob_container_argument_event_qps_less_than_5" {
     select
       distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when l.container_name is null then 'ok'
         when l.container_name is not null and (c -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 5 then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when l.container_name is null then c ->> 'name' || ' event-qps is not set.'
         else c ->> 'name' || ' event-qps is set to ' || l.value || '.'
       end as reason,
@@ -591,11 +600,14 @@ query "cronjob_container_argument_anonymous_auth_disabled" {
     select
       distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--anonymous-auth=true"]' then c ->> 'name' || ' anonymous auth enabled.'
         else c ->> 'name' || ' anonymous auth disabled.'
@@ -614,11 +626,14 @@ query "cronjob_container_argument_audit_log_path_configured" {
     select
       distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--audit-log-path=%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%"--audit-log-path=%') then c ->> 'name' || ' audit log path not configured.'
         else c ->> 'name' || ' audit log path configured.'
@@ -671,7 +686,7 @@ query "cronjob_container_argument_audit_log_maxage_greater_than_30" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' audit-log-maxage not set.'
-        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube-apiserver not defined.'
         else j.value ->> 'name' || ' audit-log-maxage is set to ' || l.value || '.'
       end as reason,
       j.cronjob_name as cronjob_name
@@ -722,7 +737,7 @@ query "cronjob_container_argument_audit_log_maxbackup_greater_than_10" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' audit-log-maxbackup not set.'
-        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube-apiserver not defined.'
         else j.value ->> 'name' || ' audit-log-maxbackup is set to ' || l.value || '.'
       end as reason,
       j.cronjob_name as cronjob_name
@@ -773,7 +788,7 @@ query "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' audit-log-maxsize not set.'
-        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube-apiservernot defined.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]')  then j.value ->> 'name' || ' kube-apiserver not defined.'
         else j.value ->> 'name' || ' audit-log-maxsize is set to ' || l.value || '.'
       end as reason,
       j.cronjob_name as cronjob_name
@@ -790,11 +805,14 @@ query "cronjob_container_no_argument_basic_auth_file" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--basic-auth-file%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--basic-auth-file%') then c ->> 'name' || ' basic auth file set.'
         else c ->> 'name' || ' basic auth file not set.'
@@ -813,12 +831,15 @@ query "cronjob_container_argument_etcd_cafile_configured" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%--etcd-cafile%') then 'alarm'
         else 'ok'
       end as status,
       case
-       when (c -> 'command') @> '["kube-apiserver"]'
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%--etcd-cafile%') then c ->> 'name' || ' etcd cafile not set.'
         else c ->> 'name' || ' etcd cafile set.'
       end as reason,
@@ -872,7 +893,7 @@ query "cronjob_container_argument_authorization_mode_node" {
         when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then j.value ->> 'name' || ' authorization mode not set to node.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then j.value ->> 'name' || ' authorization mode set to node.'
-        else j.value ->> 'name' || ' kube-apiservernot defined.'
+        else j.value ->> 'name' || ' kube-apiserver not defined.'
       end as reason,
       j.cronjob_name as cronjob_name
       ${local.tag_dimensions_sql}
@@ -913,10 +934,13 @@ query "cronjob_container_argument_authorization_mode_no_always_allow" {
     select
       coalesce(j.cronjob_uid, concat(j.path, ':', j.start_line)) as resource,
       case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kube-apiserver"]') then 'ok'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]') then j.value ->> 'name' || ' kube-apiserver not defined.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then j.value ->> 'name' || ' authorization mode set to always allow.'
         else j.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
@@ -970,7 +994,7 @@ query "cronjob_container_argument_authorization_mode_rbac" {
         when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then j.value ->> 'name' || ' authorization mode not set to RBAC.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then j.value ->> 'name' || ' authorization mode set to RBAC.'
-        else j.value ->> 'name' || ' kube-apiservernot defined.'
+        else j.value ->> 'name' || ' kube-apiserver not defined.'
       end as reason,
       j.cronjob_name as cronjob_name
       ${local.tag_dimensions_sql}
@@ -986,11 +1010,14 @@ query "cronjob_container_no_argument_insecure_bind_address" {
    select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--insecure-bind-address%') then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' like '%--insecure-bind-address%') then c ->> 'name' || ' has insecure bind address.'
         else c ->> 'name' || ' has no insecure bind address.'
@@ -1009,11 +1036,14 @@ query "cronjob_container_argument_kubelet_https_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--kubelet-https=false"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--kubelet-https=false"]' then c ->> 'name' || ' kubelet HTTPS disabled.'
         else c ->> 'name' || ' kubelet HTTPS enabled.'
@@ -1032,11 +1062,14 @@ query "cronjob_container_argument_insecure_port_0" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and not (c -> 'command') @> '["--insecure-port=0"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and not (c -> 'command') @> '["--insecure-port=0"]' then c ->> 'name' || ' insecure port not set to 0.'
         else c ->> 'name' || ' insecure port set to 0.'
@@ -1055,6 +1088,7 @@ query "cronjob_container_argument_kubelet_client_certificate_and_key_configured"
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (
             not (c ->> 'command' like '%--kubelet-client-certificate%')
@@ -1063,6 +1097,8 @@ query "cronjob_container_argument_kubelet_client_certificate_and_key_configured"
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
          when (c -> 'command') @> '["kube-apiserver"]'
           and (
             not (c ->> 'command' like '%--kubelet-client-certificate%')
@@ -1352,10 +1388,10 @@ query "cronjob_container_argument_tls_cert_file_and_tls_private_key_file_configu
       case
         when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
         when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
-         when (c -> 'command') @> '["kube-apiserver"]'
+         when (c -> 'command') @> '["kubelet"]'
           and (
             not (c ->> 'command' like '%--tls-cert-file%')
-            or not (c ->> 'command' like '%--tls-private-key-filey%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
           ) then c ->> 'name' || ' TLS cert file and private key not set.'
         else c ->> 'name' || ' TLS cert file and private key set.'
       end as reason,
@@ -1513,8 +1549,8 @@ query "cronjob_container_argument_kubelet_authorization_mode_no_always_allow" {
         else j.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
       j.cronjob_name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_cronjob_name as j
       left join container_list as l on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
@@ -1562,8 +1598,8 @@ query "cronjob_container_argument_kube_controller_manager_service_account_privat
         else j.value ->> 'name' || ' service account private key file is not set.'
       end as reason,
       j.cronjob_name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_cronjob_name as j
       left join container_list as l on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
@@ -1913,11 +1949,14 @@ query "cronjob_container_argument_secure_port_not_0" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--secure-port=0"]' then 'alarm'
         else 'ok'
       end as status,
       case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c -> 'command') @> '["--secure-port=0"]' then c ->> 'name' || ' secure port set to 0.'
         else c ->> 'name' || ' secure port not set to 0.'
@@ -1954,7 +1993,7 @@ query "cronjob_container_argument_etcd_certfile_and_keyfile_configured" {
         when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
         when (c -> 'command') @> '["etcd"]'
           and(
-            not (c ->> 'command' like '%--cert-file%') 
+            not (c ->> 'command' like '%--cert-file%')
             or not (c ->> 'command' like '%--key-file%')
           ) then c ->> 'name' || ' etcd certfile and keyfile not set.'
         else c ->> 'name' || ' etcd certfile and keyfile set.'
@@ -1986,7 +2025,7 @@ query "cronjob_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
         when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
         when (c -> 'command') @> '["etcd"]'
           and(
-            not (c ->> 'command' like '%--peer-cert-file%') 
+            not (c ->> 'command' like '%--peer-cert-file%')
             or not (c ->> 'command' like '%--peer-key-file%')
           ) then c ->> 'name' || ' etcd peer certfile and peer keyfile not set.'
         else c ->> 'name' || ' etcd peer certfile and peer keyfile set.'
