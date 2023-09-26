@@ -1571,8 +1571,8 @@ query "pod_container_argument_kubelet_authorization_mode_no_always_allow" {
         else p.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
       p.pod_name as pod_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
@@ -1620,8 +1620,8 @@ query "pod_container_argument_kube_controller_manager_service_account_private_ke
         else p.value ->> 'name' || ' service account private key file is not set.'
       end as reason,
       p.pod_name as pod_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
@@ -1717,8 +1717,8 @@ query "pod_container_argument_kube_controller_manager_root_ca_file_configured" {
         else p.value ->> 'name' || ' root-ca-file is not set.'
       end as reason,
       p.pod_name as pod_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
@@ -1743,8 +1743,8 @@ query "pod_container_argument_etcd_client_cert_auth_enabled" {
         else c ->> 'name' || ' client cert auth disabled.'
       end as reason,
       name as pod_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_pod,
       jsonb_array_elements(containers) as c;

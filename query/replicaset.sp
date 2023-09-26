@@ -1552,8 +1552,8 @@ query "replicaset_container_argument_kubelet_authorization_mode_no_always_allow"
         else r.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
       r.replicaset_name as replicaset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
@@ -1601,8 +1601,8 @@ query "replicaset_container_argument_kube_controller_manager_service_account_pri
         else r.value ->> 'name' || ' service account private key file is not set.'
       end as reason,
       r.replicaset_name as replicaset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
@@ -1698,8 +1698,8 @@ query "replicaset_container_argument_kube_controller_manager_root_ca_file_config
         else r.value ->> 'name' || ' root-ca-file is not set.'
       end as reason,
       r.replicaset_name as replicaset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_replicaset_name as r
       left join container_list as l on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
@@ -1724,8 +1724,8 @@ query "replicaset_container_argument_etcd_client_cert_auth_enabled" {
         else c ->> 'name' || ' client cert auth disabled.'
       end as reason,
       name as replicaset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_replicaset,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;

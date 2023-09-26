@@ -1695,8 +1695,8 @@ query "cronjob_container_argument_kube_controller_manager_root_ca_file_configure
         else j.value ->> 'name' || ' root-ca-file is not set.'
       end as reason,
       j.cronjob_name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_cronjob_name as j
       left join container_list as l on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
@@ -1721,8 +1721,8 @@ query "cronjob_container_argument_etcd_client_cert_auth_enabled" {
         else c ->> 'name' || ' client cert auth disabled.'
       end as reason,
       name as cronjob_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_cronjob,
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;

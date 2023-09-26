@@ -1550,8 +1550,8 @@ query "daemonset_container_argument_kubelet_authorization_mode_no_always_allow" 
         else d.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
       d.daemonset_name as daemonset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
       left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;

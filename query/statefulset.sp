@@ -1550,8 +1550,8 @@ query "statefulset_container_argument_kubelet_authorization_mode_no_always_allow
         else s.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
       s.statefulset_name as statefulset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
@@ -1599,8 +1599,8 @@ query "statefulset_container_argument_kube_controller_manager_service_account_pr
         else s.value ->> 'name' || ' service account private key file is not set.'
       end as reason,
       s.statefulset_name as statefulset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       container_name_with_statefulset_name as s
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
@@ -1722,8 +1722,8 @@ query "statefulset_container_argument_etcd_client_cert_auth_enabled" {
         else c ->> 'name' || ' client cert auth disabled.'
       end as reason,
       name as statefulset_name
-      --${local.tag_dimensions_sql}
-      --${local.common_dimensions_sql}
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
     from
       kubernetes_stateful_set,
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
