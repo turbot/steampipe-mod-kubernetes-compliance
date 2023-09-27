@@ -451,3 +451,37 @@ control "pod_template_container_argument_kube_scheduler_profiling_disabled" {
 
   tags = local.pod_template_common_tags
 }
+
+control "pod_template_container_argument_pod_security_policy_enabled" {
+  title       = "PodTemplate containers argument admission control plugin PodSecurityPolicy is enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin where PodSecurityPolicy is enabled."
+  query       = query.pod_template_container_argument_pod_security_policy_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "PodTemplate containers kube apiserver profiling should be disabled"
+  description = "This check ensures that the container in the PodTemplate has kube apiserver profiling disabled."
+  query       = query.pod_template_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_secure_port_not_0" {
+  title       = "PodTemplate containers argument secure port should not be set to 0"
+  description = "This check ensures that the container in the PodTemplate has secure port not set to 0."
+  query       = query.pod_template_container_argument_secure_port_not_0
+
+  tags = local.pod_template_common_tags
+}
+
+# TODO - Update needed for the query
+
+# control "pod_template_container_argument_security_context_deny_enabled" {
+#   title       = "PodTemplate containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+#   description = "This check ensures that the container in the PodTemplate has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+#   query       = query.pod_template_container_argument_security_context_deny_enabled
+
+#   tags = local.pod_template_common_tags
+# }

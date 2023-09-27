@@ -64,7 +64,10 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_protect_kernel_defaults_enabled,
     control.pod_template_container_argument_kubelet_read_only_port_0,
     control.pod_template_container_argument_bind_address_127_0_0_1,
-    control.pod_template_container_argument_kube_scheduler_profiling_disabled
+    control.pod_template_container_argument_kube_scheduler_profiling_disabled,
+    control.pod_template_container_argument_pod_security_policy_enabled,
+    control.pod_template_container_argument_kube_apiserver_profiling_disabled,
+    control.pod_template_container_argument_secure_port_not_0
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {
