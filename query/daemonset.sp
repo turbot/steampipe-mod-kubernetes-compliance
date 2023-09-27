@@ -1373,7 +1373,7 @@ query "daemonset_container_argument_make_iptables_util_chains_enabled" {
   EOQ
 }
 
-query "daemonset_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+query "daemonset_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -1393,8 +1393,8 @@ query "daemonset_container_argument_tls_cert_file_and_tls_private_key_file_confi
           and (
             not (c ->> 'command' like '%--tls-cert-file%')
             or not (c ->> 'command' like '%--tls-private-key-filey%')
-          ) then c ->> 'name' || ' TLS cert file and private key not set.'
-        else c ->> 'name' || ' TLS cert file and private key set.'
+          ) then c ->> 'name' || ' kubelet tls cert file or private key not set.'
+        else c ->> 'name' || ' kubelet tls cert file and private key set.'
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -2111,4 +2111,135 @@ query "daemonset_container_argument_service_account_enabled" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "daemonset_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--read-only-port=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]'  and coalesce((l.value)::int, 0) > 0 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kubelet"]') then d.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then d.value ->> 'name' || ' kubelet terminated pod gc threshold is set to ' || (l.value) || '.'
+        else d.value ->> 'name' || ' kubelet terminated pod gc threshold is not set apropriately.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_argument_kubelet_client_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--client-ca-file=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kubelet"]') then d.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then d.value ->> 'name' || ' kubelet client ca file configured.'
+        else d.value ->> 'name' || ' kubelet client ca file not configured.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
+query "daemonset_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-filey%')
+          ) then c ->> 'name' || ' kube-apiserver tls cert file or private key not set.'
+        else c ->> 'name' || ' kube-apiserver tls cert file and private key set.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
 ### PC - end

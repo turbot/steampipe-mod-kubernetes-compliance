@@ -1394,7 +1394,7 @@ query "pod_container_argument_make_iptables_util_chains_enabled" {
   EOQ
 }
 
-query "pod_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+query "pod_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -1414,8 +1414,8 @@ query "pod_container_argument_tls_cert_file_and_tls_private_key_file_configured"
           and (
             not (c ->> 'command' like '%--tls-cert-file%')
             or not (c ->> 'command' like '%--tls-private-key-file%')
-          ) then c ->> 'name' || ' TLS cert file and private key not set.'
-        else c ->> 'name' || ' TLS cert file and private key set.'
+          ) then c ->> 'name' || ' kubelet tls cert file or private key not set.'
+        else c ->> 'name' || ' kubelet tls cert file and private key set.'
       end as reason,
       name as pod_name
       ${local.tag_dimensions_sql}
@@ -2135,4 +2135,136 @@ query "pod_container_argument_service_account_enabled" {
       jsonb_array_elements(containers) as c;
   EOQ
 }
+
+query "pod_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--terminated-pod-gc-threshold=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null or not ((p.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when not ((p.value -> 'command') @> '["kubelet"]') then p.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then p.value ->> 'name' || ' kubelet terminated pod gc threshold set to ' || (l.value) || '.'
+        else p.value ->> 'name' || ' kubelet terminated pod gc threshold is not set apropriately.'
+      end as reason,
+      p.pod_name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
+  EOQ
+}
+
+query "pod_container_argument_kubelet_client_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--client-ca-file=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null or not ((p.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when not ((p.value -> 'command') @> '["kubelet"]') then p.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then p.value ->> 'name' || ' kubelet client ca file configured.'
+        else p.value ->> 'name' || ' kubelet client ca file not configured.'
+      end as reason,
+      p.pod_name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
+  EOQ
+}
+
+query "pod_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then c ->> 'name' || ' kube-apiserver tls cert file or private key not set.'
+        else c ->> 'name' || ' kube-apiserver tls cert file and private key set.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+
 ### PC - end

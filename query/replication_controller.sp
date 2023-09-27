@@ -1375,7 +1375,7 @@ query "replication_controller_container_argument_make_iptables_util_chains_enabl
   EOQ
 }
 
-query "replication_controller_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+query "replication_controller_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -1395,8 +1395,8 @@ query "replication_controller_container_argument_tls_cert_file_and_tls_private_k
           and (
             not (c ->> 'command' like '%--tls-cert-file%')
             or not (c ->> 'command' like '%--tls-private-key-file%')
-          ) then c ->> 'name' || ' TLS cert file and private key not set.'
-        else c ->> 'name' || ' TLS cert file and private key set.'
+          ) then c ->> 'name' || ' kubelet tls cert file or private key not set.'
+        else c ->> 'name' || ' kubelet tls cert file and private key set.'
       end as reason,
       name as replication_controller_name
       ${local.tag_dimensions_sql}
@@ -2112,4 +2112,135 @@ query "replication_controller_container_argument_service_account_enabled" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "replication_controller_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replication_controller
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--terminated-pod-gc-threshold=%'
+    ), container_name_with_replication_controller_name as (
+      select
+        r.name as replication_controller_name,
+        r.uid as replication_controller_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replication_controller_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then r.value ->> 'name' || ' kubelet terminated pod gc threshold is set to ' || (l.value) || '.'
+        else r.value ->> 'name' || ' kubelet terminated pod gc threshold is not set apropriately.'
+      end as reason,
+      r.replication_controller_name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replication_controller_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
+  EOQ
+}
+
+query "replication_controller_container_argument_kubelet_client_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replication_controller
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--client-ca-file=%'
+    ), container_name_with_replication_controller_name as (
+      select
+        r.name as replication_controller_name,
+        r.uid as replication_controller_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replication_controller_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then r.value ->> 'name' || ' kubelet client ca file configured.'
+        else r.value ->> 'name' || ' kubelet client ca file not configured.'
+      end as reason,
+      r.replication_controller_name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replication_controller_name as r
+      left join container_list as l on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
+  EOQ
+}
+
+query "replication_controller_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then c ->> 'name' || ' kube-apiserver tls cert file or private key not set.'
+        else c ->> 'name' || ' kube-apiserver tls cert file and private key set.'
+      end as reason,
+      name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replication_controller,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
 ### PC - end

@@ -1373,7 +1373,7 @@ query "statefulset_container_argument_make_iptables_util_chains_enabled" {
   EOQ
 }
 
-query "statefulset_container_argument_tls_cert_file_and_tls_private_key_file_configured" {
+query "statefulset_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -1393,8 +1393,8 @@ query "statefulset_container_argument_tls_cert_file_and_tls_private_key_file_con
           and (
             not (c ->> 'command' like '%--tls-cert-file%')
             or not (c ->> 'command' like '%--tls-private-key-file%')
-          ) then c ->> 'name' || ' TLS cert file and private key not set.'
-        else c ->> 'name' || ' TLS cert file and private key set.'
+          ) then c ->> 'name' || ' kubelet tls cert file or private key not set.'
+        else c ->> 'name' || ' kubelet tls cert file and private key set.'
       end as reason,
       name as statefulset_name
       ${local.tag_dimensions_sql}
@@ -2110,4 +2110,135 @@ query "statefulset_container_argument_service_account_enabled" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "statefulset_container_argument_kubelet_client_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        s.name as statefulset
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--client-ca-file=%'
+    ), container_name_with_statefulset_name as (
+      select
+        s.name as statefulset_name,
+        s.uid as statefulset_uid,
+        s.path as path,
+        s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
+        c.*
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(s.statefulset_uid, concat(s.path, ':', s.start_line)) as resource,
+      case
+        when (s.value -> 'command') is null or not ((s.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
+        when not ((s.value -> 'command') @> '["kubelet"]') then s.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then s.value ->> 'name' || ' kubelet client ca file configured.'
+        else s.value ->> 'name' || ' kubelet client ca file is not configured.'
+      end as reason,
+      s.statefulset_name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_statefulset_name as s
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
+  EOQ
+}
+
+query "statefulset_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        s.name as statefulset
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--terminated-pod-gc-threshold=%'
+    ), container_name_with_statefulset_name as (
+      select
+        s.name as statefulset_name,
+        s.uid as statefulset_uid,
+        s.path as path,
+        s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
+        c.*
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(s.statefulset_uid, concat(s.path, ':', s.start_line)) as resource,
+      case
+        when (s.value -> 'command') is null or not ((s.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and and coalesce((l.value)::int, 0) > 0 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
+        when not ((s.value -> 'command') @> '["kubelet"]') then s.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and and coalesce((l.value)::int, 0) > 0 then s.value ->> 'name' || ' terminated pod gc threshold is set to ' || (l.value) || '.'
+        else s.value ->> 'name' || ' terminated pod gc threshold is not set to apropriately.'
+      end as reason,
+      s.statefulset_name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_statefulset_name as s
+      left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
+  EOQ
+}
+
+query "statefulset_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (
+            not (c ->> 'command' like '%--tls-cert-file%')
+            or not (c ->> 'command' like '%--tls-private-key-file%')
+          ) then c ->> 'name' || ' kube-apiserver tls cert file or private key not set.'
+        else c ->> 'name' || ' kube-apiserver tls cert file and private key set.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
 ### PC - end
