@@ -80,6 +80,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.pod_container_argument_service_account_enabled,
     control.pod_container_argument_service_account_key_file_appropriate,
+    control.pod_container_kubernetes_dashboard_not_deployed,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

@@ -2018,6 +2018,37 @@ query "daemonset_container_argument_service_account_key_file_appropriate" {
   EOQ
 }
 
+query "daemonset_container_kubernetes_dashboard_not_deployed" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'ok'
+        when not pg_typeof(c->>'image') = 'text'::regtype then 'alarm'
+        when c ->> 'image' = 'kubernetes-dashboard' 
+          or c ->> 'image' = 'kubernetesui' 
+          or labels ->> 'apps' = 'kubernetes-dashboard' 
+          or labels ->> 'k8s-app' = 'kubernetes-dashboard' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
+        when not pg_typeof(c->>'image') = 'text'::regtype then c ->> 'name' || ' image invalid.'
+        when c ->> 'image' = 'kubernetes-dashboard' 
+          or c ->> 'image' = 'kubernetesui' 
+          or labels ->> 'apps' = 'kubernetes-dashboard' 
+          or labels ->> 'k8s-app' = 'kubernetes-dashboard' then c ->> 'name' || ' kubernetes dashboard deployed.'
+        else c ->> 'name' || ' kubernetes dashboard not deployed.'
+      end as reason,
+      name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_daemonset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
 ### KP - end
 
 

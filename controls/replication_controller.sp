@@ -567,6 +567,14 @@ control "replication_controller_container_argument_service_account_key_file_appr
   tags = local.replication_controller_common_tags
 }
 
+control "replication_controller_container_kubernetes_dashboard_not_deployed" {
+  title       = "Replication Controller containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Replication Controller does not have Kubernetes dashboard deployed."
+  query       = query.replication_controller_container_kubernetes_dashboard_not_deployed
+
+  tags = local.replication_controller_common_tags
+}
+
 ### KP - end
 
 

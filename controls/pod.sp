@@ -568,6 +568,14 @@ control "pod_container_argument_service_account_key_file_appropriate" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_kubernetes_dashboard_not_deployed" {
+  title       = "Pod containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Pod does not have Kubernetes dashboard deployed."
+  query       = query.pod_container_kubernetes_dashboard_not_deployed
+
+  tags = local.pod_common_tags
+}
+
 ### KP - end
 
 

@@ -567,6 +567,14 @@ control "job_container_argument_service_account_key_file_appropriate" {
   tags = local.job_common_tags
 }
 
+control "job_container_kubernetes_dashboard_not_deployed" {
+  title       = "Job containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Job does not have Kubernetes dashboard deployed."
+  query       = query.job_container_kubernetes_dashboard_not_deployed
+
+  tags = local.job_common_tags
+}
+
 ### KP - end
 
 

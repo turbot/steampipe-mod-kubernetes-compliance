@@ -567,6 +567,14 @@ control "daemonset_container_argument_service_account_key_file_appropriate" {
   tags = local.daemonset_common_tags
 }
 
+control "daemonset_container_kubernetes_dashboard_not_deployed" {
+  title       = "DaemonSet containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the DaemonSet does not have Kubernetes dashboard deployed."
+  query       = query.daemonset_container_kubernetes_dashboard_not_deployed
+
+  tags = local.daemonset_common_tags
+}
+
 ### KP - end
 
 

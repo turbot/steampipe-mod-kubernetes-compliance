@@ -79,6 +79,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.replicaset_container_argument_service_account_enabled,
     control.replicaset_container_argument_service_account_key_file_appropriate,
+    control.replicaset_container_kubernetes_dashboard_not_deployed,
   ]
 
 

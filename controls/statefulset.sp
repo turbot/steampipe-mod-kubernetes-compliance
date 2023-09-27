@@ -567,6 +567,14 @@ control "statefulset_container_argument_service_account_key_file_appropriate" {
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_kubernetes_dashboard_not_deployed" {
+  title       = "StatefulSet containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the StatefulSet does not have Kubernetes dashboard deployed."
+  query       = query.statefulset_container_kubernetes_dashboard_not_deployed
+
+  tags = local.statefulset_common_tags
+}
+
 ### KP - end
 
 
