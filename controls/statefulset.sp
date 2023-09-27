@@ -575,6 +575,14 @@ control "statefulset_container_kubernetes_dashboard_not_deployed" {
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "StatefulSet containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the StatefulSet has --streaming-connection-idle-timeout not set to 0."
+  query       = query.statefulset_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.statefulset_common_tags
+}
+
 ### KP - end
 
 

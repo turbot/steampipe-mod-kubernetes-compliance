@@ -80,6 +80,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_argument_service_account_enabled,
     control.daemonset_container_argument_service_account_key_file_appropriate,
     control.daemonset_container_kubernetes_dashboard_not_deployed,
+    control.daemonset_container_streaming_connection_idle_timeout_not_zero,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

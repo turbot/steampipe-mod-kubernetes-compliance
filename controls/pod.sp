@@ -576,6 +576,14 @@ control "pod_container_kubernetes_dashboard_not_deployed" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "Pod containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the Pod has --streaming-connection-idle-timeout not set to 0."
+  query       = query.pod_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.pod_common_tags
+}
+
 ### KP - end
 
 

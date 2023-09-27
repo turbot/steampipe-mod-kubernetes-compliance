@@ -575,6 +575,14 @@ control "cronjob_container_kubernetes_dashboard_not_deployed" {
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "CronJob containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the CronJob has --streaming-connection-idle-timeout not set to 0."
+  query       = query.cronjob_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.cronjob_common_tags
+}
+
 ### KP - end
 
 

@@ -80,6 +80,7 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_container_argument_service_account_enabled,
     control.replication_controller_container_argument_service_account_key_file_appropriate,
     control.replication_controller_container_kubernetes_dashboard_not_deployed,
+    control.replication_controller_container_streaming_connection_idle_timeout_not_zero,
   ]
 
   tags = merge(local.all_controls_replication_controller_common_tags, {
