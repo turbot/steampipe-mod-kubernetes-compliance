@@ -1992,6 +1992,194 @@ query "pod_container_argument_secure_port_not_0" {
   EOQ
 }
 
+query "pod_container_argument_service_account_key_file_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--service-account-key-file=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null or not ((p.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then p.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then p.value ->> 'name' || ' service-account-key-file set appropriate.'
+        else p.value ->> 'name' || ' service-account-key-file set inappropriate.'
+      end as reason,
+      p.pod_name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l
+        on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
+  EOQ
+}
+
+query "pod_container_kubernetes_dashboard_not_deployed" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then 'ok'
+        when not pg_typeof(c->>'image') = 'text'::regtype then 'alarm'
+        when c ->> 'image' = 'kubernetes-dashboard' 
+          or c ->> 'image' = 'kubernetesui' 
+          or labels ->> 'apps' = 'kubernetes-dashboard' 
+          or labels ->> 'k8s-app' = 'kubernetes-dashboard' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
+        when not pg_typeof(c->>'image') = 'text'::regtype then c ->> 'name' || ' image invalid.'
+        when c ->> 'image' = 'kubernetes-dashboard' 
+          or c ->> 'image' = 'kubernetesui' 
+          or labels ->> 'apps' = 'kubernetes-dashboard' 
+          or labels ->> 'k8s-app' = 'kubernetes-dashboard' then c ->> 'name' || ' kubernetes dashboard deployed.'
+        else c ->> 'name' || ' kubernetes dashboard not deployed.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_streaming_connection_idle_timeout_not_zero" {
+  sql = <<-EOQ
+    select
+      distinct(coalesce(uid, concat(path, ':', start_line))) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kubelet"]') then 'ok'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--streaming-connection-idle-timeout=0"]' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
+        when (c -> 'command') @> '["kubelet"]'
+          and (c -> 'command') @> '["--streaming-connection-idle-timeout=0"]' then c ->> 'name' || ' --streaming-connection-idle-timeout argument set to 0.'
+        when not (c ->> 'command' like '%--streaming-connection-idle-timeout%') then c ->> 'name' || ' --streaming-connection-idle-timeout argument not set.'
+        else c ->> 'name' || ' --streaming-connection-idle-timeout argument not set to 0.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_container_strong_kubelet_cryptographic_ciphers" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--tls-cipher-suites=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null or not ((p.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kubelet"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when not ((p.value -> 'command') @> '["kubelet"]') then p.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kubelet"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then p.value ->> 'name' || ' kubelet uses strong cryptographic ciphers.'
+        else p.value ->> 'name' || ' kubelet not using strong cryptographic ciphers.'
+      end as reason,
+      p.pod_name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l
+        on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
+  EOQ
+}
+
+query "pod_container_argument_rotate_kubelet_server_certificate_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]' or (c -> 'command') @> '["kubelet"]') then 'ok'
+        when ((c -> 'command') @> '["kube-controller-manager"]' or (c -> 'command') @> '["kubelet"]')
+          and (c -> 'command') @> '["--feature-gates=RotateKubeletServerCertificate=true"]' then  'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-controller-manager"]' or (c -> 'command') @> '["kubelet"]') then c ->> 'name' || 'kube-controller-manager or kubelet not defined'
+        when ((c -> 'command') @> '["kube-controller-manager"]' or (c -> 'command') @> '["kubelet"]')
+          and (c -> 'command') @> '["--feature-gates=RotateKubeletServerCertificate=true"]' then c ->> 'name' || ' RotateKubeletServerCertificate argument enabled.'
+        else c ->> 'name' || ' RotateKubeletServerCertificate argument disabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
 ### KP - end
 
 

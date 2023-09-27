@@ -559,6 +559,46 @@ control "job_container_argument_secure_port_not_0" {
   tags = local.job_common_tags
 }
 
+control "job_container_argument_service_account_key_file_appropriate" {
+  title       = "Job containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the Job has the --service-account-key-file argument set as appropriate."
+  query       = query.job_container_argument_service_account_key_file_appropriate
+
+  tags = local.job_common_tags
+}
+
+control "job_container_kubernetes_dashboard_not_deployed" {
+  title       = "Job containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Job does not have Kubernetes dashboard deployed."
+  query       = query.job_container_kubernetes_dashboard_not_deployed
+
+  tags = local.job_common_tags
+}
+
+control "job_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "Job containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the Job has --streaming-connection-idle-timeout not set to 0."
+  query       = query.job_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.job_common_tags
+}
+
+control "job_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Job containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Job has kublet using strong cryptographic ciphers."
+  query       = query.job_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Job containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Job has argument rotate kubelet server certificate enabled."
+  query       = query.job_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.job_common_tags
+}
+
 ### KP - end
 
 

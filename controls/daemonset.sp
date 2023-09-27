@@ -559,6 +559,46 @@ control "daemonset_container_argument_secure_port_not_0" {
   tags = local.daemonset_common_tags
 }
 
+control "daemonset_container_argument_service_account_key_file_appropriate" {
+  title       = "DaemonSet containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the DaemonSet has the --service-account-key-file argument set as appropriate."
+  query       = query.daemonset_container_argument_service_account_key_file_appropriate
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_kubernetes_dashboard_not_deployed" {
+  title       = "DaemonSet containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the DaemonSet does not have Kubernetes dashboard deployed."
+  query       = query.daemonset_container_kubernetes_dashboard_not_deployed
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "DaemonSet containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the DaemonSet has --streaming-connection-idle-timeout not set to 0."
+  query       = query.daemonset_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "DaemonSet containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the DaemonSet has kublet using strong cryptographic ciphers."
+  query       = query.daemonset_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.daemonset_common_tags
+}
+
+control "daemonset_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "DaemonSet containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument rotate kubelet server certificate enabled."
+  query       = query.daemonset_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.daemonset_common_tags
+}
+
 ### KP - end
 
 

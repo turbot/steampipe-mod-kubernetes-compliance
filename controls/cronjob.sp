@@ -559,6 +559,46 @@ control "cronjob_container_argument_secure_port_not_0" {
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_argument_service_account_key_file_appropriate" {
+  title       = "CronJob containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the CronJob has the --service-account-key-file argument set as appropriate."
+  query       = query.cronjob_container_argument_service_account_key_file_appropriate
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_kubernetes_dashboard_not_deployed" {
+  title       = "CronJob containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the CronJob does not have Kubernetes dashboard deployed."
+  query       = query.cronjob_container_kubernetes_dashboard_not_deployed
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "CronJob containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the CronJob has --streaming-connection-idle-timeout not set to 0."
+  query       = query.cronjob_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "CronJob containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the CronJob has kublet using strong cryptographic ciphers."
+  query       = query.cronjob_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.cronjob_common_tags
+}
+
+control "cronjob_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "CronJob containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the CronJob has argument rotate kubelet server certificate enabled."
+  query       = query.cronjob_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.cronjob_common_tags
+}
+
 ### KP - end
 
 

@@ -560,6 +560,46 @@ control "pod_container_argument_secure_port_not_0" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_argument_service_account_key_file_appropriate" {
+  title       = "Pod containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the Pod has the --service-account-key-file argument set as appropriate."
+  query       = query.pod_container_argument_service_account_key_file_appropriate
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_kubernetes_dashboard_not_deployed" {
+  title       = "Pod containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Pod does not have Kubernetes dashboard deployed."
+  query       = query.pod_container_kubernetes_dashboard_not_deployed
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "Pod containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the Pod has --streaming-connection-idle-timeout not set to 0."
+  query       = query.pod_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Pod containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Pod has kublet using strong cryptographic ciphers."
+  query       = query.pod_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Pod containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Pod has argument rotate kubelet server certificate enabled."
+  query       = query.pod_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.pod_common_tags
+}
+
 ### KP - end
 
 

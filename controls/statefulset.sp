@@ -559,6 +559,46 @@ control "statefulset_container_argument_secure_port_not_0" {
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_argument_service_account_key_file_appropriate" {
+  title       = "StatefulSet containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the StatefulSet has the --service-account-key-file argument set as appropriate."
+  query       = query.statefulset_container_argument_service_account_key_file_appropriate
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_kubernetes_dashboard_not_deployed" {
+  title       = "StatefulSet containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the StatefulSet does not have Kubernetes dashboard deployed."
+  query       = query.statefulset_container_kubernetes_dashboard_not_deployed
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "StatefulSet containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the StatefulSet has --streaming-connection-idle-timeout not set to 0."
+  query       = query.statefulset_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "StatefulSet containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the StatefulSet has kublet using strong cryptographic ciphers."
+  query       = query.statefulset_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.statefulset_common_tags
+}
+
+control "statefulset_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "StatefulSet containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument rotate kubelet server certificate enabled."
+  query       = query.statefulset_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.statefulset_common_tags
+}
+
 ### KP - end
 
 

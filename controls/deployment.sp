@@ -567,6 +567,46 @@ control "deployment_container_argument_secure_port_not_0" {
   tags = local.deployment_common_tags
 }
 
+control "deployment_container_argument_service_account_key_file_appropriate" {
+  title       = "Deployment containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the Deployment has the --service-account-key-file argument set as appropriate."
+  query       = query.deployment_container_argument_service_account_key_file_appropriate
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_kubernetes_dashboard_not_deployed" {
+  title       = "Deployment containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Deployment does not have Kubernetes dashboard deployed."
+  query       = query.deployment_container_kubernetes_dashboard_not_deployed
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "Deployment containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the Deployment has --streaming-connection-idle-timeout not set to 0."
+  query       = query.deployment_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Deployment containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Deployment has kublet using strong cryptographic ciphers."
+  query       = query.deployment_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Deployment containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Deployment has argument rotate kubelet server certificate enabled."
+  query       = query.deployment_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.deployment_common_tags
+}
+
 ### KP - end
 
 
