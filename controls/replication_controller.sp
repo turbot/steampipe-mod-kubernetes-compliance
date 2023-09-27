@@ -660,4 +660,12 @@ control "replication_controller_container_argument_kube_apiserver_tls_cert_file_
   tags = local.replication_controller_common_tags
 }
 
+control "replication_controller_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "Replication Controller containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Replication Controller has kube-apiserver using strong cryptographic ciphers."
+  query       = query.replication_controller_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.replication_controller_common_tags
+}
+
 ### PC - end

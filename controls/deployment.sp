@@ -668,4 +668,11 @@ control "deployment_container_argument_kube_apiserver_tls_cert_file_and_tls_priv
   tags = local.deployment_common_tags
 }
 
+control "deployment_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "Deployment containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Deployment has kube-apiserver using strong cryptographic ciphers."
+  query       = query.deployment_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.deployment_common_tags
+}
 ### PC - end

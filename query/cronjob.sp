@@ -2432,4 +2432,58 @@ query "cronjob_container_argument_kube_apiserver_tls_cert_file_and_tls_private_k
   EOQ
 }
 
+query "cronjob_container_strong_kube_apiserver_cryptographic_ciphers" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as cronjob
+      from
+        kubernetes_cronjob as j,
+        jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--tls-cipher-suites=%'
+    ), container_name_with_cronjob_name as (
+      select
+        j.name as cronjob_name,
+        j.uid as cronjob_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_cronjob as j,
+        jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.cronjob_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kube-apiserver"]') then j.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then j.value ->> 'name' || ' kube-apiserver uses strong cryptographic ciphers.'
+        else j.value ->> 'name' || ' kube-apiserver not using strong cryptographic ciphers.'
+      end as reason,
+      j.cronjob_name as cronjob_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_cronjob_name as j
+      left join container_list as l
+        on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
+  EOQ
+}
+
 ### PC - end

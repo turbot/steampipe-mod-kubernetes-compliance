@@ -86,6 +86,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.statefulset_container_argument_kubelet_terminated_pod_gc_threshold_configured,
     control.statefulset_container_argument_kubelet_client_ca_file_configured,
+    control.statefulset_container_strong_kube_apiserver_cryptographic_ciphers,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

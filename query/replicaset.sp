@@ -2432,4 +2432,58 @@ query "replicaset_container_argument_kube_apiserver_tls_cert_file_and_tls_privat
   EOQ
 }
 
+query "replicaset_container_strong_kube_apiserver_cryptographic_ciphers" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--tls-cipher-suites=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]') then r.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then r.value ->> 'name' || ' kube-apiserver uses strong cryptographic ciphers.'
+        else r.value ->> 'name' || ' kube-apiserver not using strong cryptographic ciphers.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l
+        on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
+  EOQ
+}
+
 ### PC - end

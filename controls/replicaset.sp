@@ -661,4 +661,11 @@ control "replicaset_container_argument_kube_apiserver_tls_cert_file_and_tls_priv
   tags = local.replicaset_common_tags
 }
 
+control "replicaset_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "ReplicaSet containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the ReplicaSet has kube-apiserver using strong cryptographic ciphers."
+  query       = query.replicaset_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.replicaset_common_tags
+}
 ### PC - end

@@ -660,4 +660,11 @@ control "cronjob_container_argument_kube_apiserver_tls_cert_file_and_tls_private
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "CronJob containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the CronJob has kube-apiserver using strong cryptographic ciphers."
+  query       = query.cronjob_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.cronjob_common_tags
+}
 ### PC - end

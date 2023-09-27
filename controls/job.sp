@@ -660,4 +660,11 @@ control "job_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key
   tags = local.job_common_tags
 }
 
+control "job_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "Job containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Job has kube-apiserver using strong cryptographic ciphers."
+  query       = query.job_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.job_common_tags
+}
 ### PC - end

@@ -660,4 +660,12 @@ control "statefulset_container_argument_kube_apiserver_tls_cert_file_and_tls_pri
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "StatefulSet containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the StatefulSet has kube-apiserver using strong cryptographic ciphers."
+  query       = query.statefulset_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.statefulset_common_tags
+}
+
 ### PC - end

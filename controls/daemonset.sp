@@ -660,4 +660,11 @@ control "daemonset_container_argument_kube_apiserver_tls_cert_file_and_tls_priva
   tags = local.daemonset_common_tags
 }
 
+control "daemonset_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "DaemonSet containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the DaemonSet has kube-apiserver using strong cryptographic ciphers."
+  query       = query.daemonset_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.daemonset_common_tags
+}
 ### PC - end

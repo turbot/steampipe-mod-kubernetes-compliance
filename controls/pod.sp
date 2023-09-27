@@ -661,4 +661,12 @@ control "pod_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key
   tags = local.pod_common_tags
 }
 
+control "pod_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "Pod containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Pod has kube-apiserver using strong cryptographic ciphers."
+  query       = query.pod_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.pod_common_tags
+}
+
 ### PC - end
