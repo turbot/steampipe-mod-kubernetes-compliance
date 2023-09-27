@@ -587,4 +587,12 @@ control "replication_controller_container_argument_kube_controller_manager_bind_
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_service_account_enabled" {
+  title       = "Replication Controller containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.replication_controller_container_argument_service_account_enabled
+
+  tags = local.replication_controller_common_tags
+}
 ### PC - end

@@ -643,4 +643,12 @@ control "daemonset_container_argument_kube_controller_manager_bind_address_127_0
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_argument_service_account_enabled" {
+  title       = "DaemonSet containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the DaemonSet has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.daemonset_container_argument_service_account_enabled
+
+  tags = local.daemonset_common_tags
+}
 ### PC - end

@@ -588,4 +588,12 @@ control "replicaset_container_argument_kube_controller_manager_bind_address_127_
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_service_account_enabled" {
+  title       = "ReplicaSet containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.replicaset_container_argument_service_account_enabled
+
+  tags = local.replicaset_common_tags
+}
 ### PC - end

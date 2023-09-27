@@ -77,6 +77,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_argument_secure_port_not_0,
     control.replicaset_container_argument_security_context_deny_enabled,
     control.replicaset_container_argument_kube_controller_manager_bind_address_127_0_0_1,
+    control.replicaset_container_argument_service_account_enabled,
   ]
 
 

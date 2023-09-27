@@ -2088,4 +2088,29 @@ query "replicaset_container_argument_kube_controller_manager_bind_address_127_0_
   EOQ
 }
 
+query "replicaset_container_argument_service_account_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=ServiceAccount"]' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and (c -> 'command') @> '["--enable-admission-plugins=ServiceAccount"]' then c ->> 'name' || ' has admission control plugin ServiceAccount enabled.'
+        else c ->> 'name' || ' has admission control plugin ServiceAccount disabled.'
+      end as reason,
+      name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_replicaset,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
 ### PC - end

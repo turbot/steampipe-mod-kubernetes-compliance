@@ -587,4 +587,12 @@ control "job_container_argument_kube_controller_manager_bind_address_127_0_0_1" 
 
   tags = local.job_common_tags
 }
+
+control "job_container_argument_service_account_enabled" {
+  title       = "Job containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.job_container_argument_service_account_enabled
+
+  tags = local.job_common_tags
+}
 ### PC - end

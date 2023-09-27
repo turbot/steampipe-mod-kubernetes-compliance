@@ -595,4 +595,12 @@ control "deployment_container_argument_kube_controller_manager_bind_address_127_
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_argument_service_account_enabled" {
+  title       = "Deployment containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the Deployment has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.deployment_container_argument_service_account_enabled
+
+  tags = local.deployment_common_tags
+}
 ### PC - end

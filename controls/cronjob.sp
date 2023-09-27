@@ -643,4 +643,12 @@ control "cronjob_container_argument_kube_controller_manager_bind_address_127_0_0
 
   tags = local.cronjob_common_tags
 }
+
+control "cronjob_container_argument_service_account_enabled" {
+  title       = "CronJob containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.cronjob_container_argument_service_account_enabled
+
+  tags = local.cronjob_common_tags
+}
 ### PC - end

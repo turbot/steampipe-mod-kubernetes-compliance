@@ -587,4 +587,12 @@ control "statefulset_container_argument_kube_controller_manager_bind_address_127
 
   tags = local.statefulset_common_tags
 }
+
+control "statefulset_container_argument_service_account_enabled" {
+  title       = "StatefulSet containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.statefulset_container_argument_service_account_enabled
+
+  tags = local.statefulset_common_tags
+}
 ### PC - end

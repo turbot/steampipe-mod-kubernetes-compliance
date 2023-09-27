@@ -77,6 +77,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_argument_secure_port_not_0,
     control.daemonset_container_argument_security_context_deny_enabled,
     control.daemonset_container_argument_kube_controller_manager_bind_address_127_0_0_1,
+    control.daemonset_container_argument_service_account_enabled,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {
