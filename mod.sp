@@ -80,7 +80,7 @@ mod "kubernetes_compliance" {
   color         = "#0089D6"
   documentation = file("./docs/index.md")
   icon          = "/images/mods/turbot/kubernetes-compliance.svg"
-  categories    = ["kubernetes", "compliance", "software development", "security"]
+  categories    = ["kubernetes", "compliance", "iac", "software development", "security"]
 
   opengraph {
     title       = "Steampipe Mod for Kubernetes Compliance"
