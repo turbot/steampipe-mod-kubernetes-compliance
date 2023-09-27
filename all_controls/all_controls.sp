@@ -27,7 +27,8 @@ benchmark "all_controls" {
     benchmark.all_controls_secret,
     benchmark.all_controls_service,
     benchmark.all_controls_service_account,
-    benchmark.all_controls_statefulset
+    benchmark.all_controls_statefulset,
+    benchmark.all_controls_pod_template
   ]
 
   tags = local.all_controls_common_tags
