@@ -583,6 +583,14 @@ control "job_container_streaming_connection_idle_timeout_not_zero" {
   tags = local.job_common_tags
 }
 
+control "job_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Job containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Job has kublet using strong cryptographic ciphers."
+  query       = query.job_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.job_common_tags
+}
+
 ### KP - end
 
 

@@ -2076,6 +2076,60 @@ query "daemonset_container_streaming_connection_idle_timeout_not_zero" {
   EOQ
 }
 
+query "daemonset_container_strong_kubelet_cryptographic_ciphers" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--tls-cipher-suites=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kubelet"]') then d.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then d.value ->> 'name' || ' kubelet uses strong cryptographic ciphers.'
+        else d.value ->> 'name' || ' kubelet not using strong cryptographic ciphers.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l
+        on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
 ### KP - end
 
 

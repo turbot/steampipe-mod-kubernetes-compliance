@@ -82,6 +82,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_service_account_key_file_appropriate,
     control.pod_container_kubernetes_dashboard_not_deployed,
     control.pod_container_streaming_connection_idle_timeout_not_zero,
+    control.pod_container_strong_kubelet_cryptographic_ciphers,
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {

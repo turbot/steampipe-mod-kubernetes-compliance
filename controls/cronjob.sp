@@ -583,6 +583,14 @@ control "cronjob_container_streaming_connection_idle_timeout_not_zero" {
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "CronJob containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the CronJob has kublet using strong cryptographic ciphers."
+  query       = query.cronjob_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.cronjob_common_tags
+}
+
 ### KP - end
 
 

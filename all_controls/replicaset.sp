@@ -81,6 +81,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_argument_service_account_key_file_appropriate,
     control.replicaset_container_kubernetes_dashboard_not_deployed,
     control.replicaset_container_streaming_connection_idle_timeout_not_zero,
+    control.replicaset_container_strong_kubelet_cryptographic_ciphers,
   ]
 
 

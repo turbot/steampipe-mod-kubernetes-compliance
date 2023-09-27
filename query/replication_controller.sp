@@ -2077,6 +2077,60 @@ query "replication_controller_container_streaming_connection_idle_timeout_not_ze
   EOQ
 }
 
+query "replication_controller_container_strong_kubelet_cryptographic_ciphers" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replication_controller
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--tls-cipher-suites=%'
+    ), container_name_with_replication_controller_name as (
+      select
+        r.name as replication_controller_name,
+        r.uid as replication_controller_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replication_controller as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replication_controller_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' 
+          and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
+        then r.value ->> 'name' || ' kubelet uses strong cryptographic ciphers.'
+        else r.value ->> 'name' || ' kubelet not using strong cryptographic ciphers.'
+      end as reason,
+      r.replication_controller_name as replication_controller_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replication_controller_name as r
+      left join container_list as l
+        on r.value ->> 'name' = l.container_name and r.replication_controller_name = l.replication_controller;
+  EOQ
+}
+
 ### KP - end
 
 

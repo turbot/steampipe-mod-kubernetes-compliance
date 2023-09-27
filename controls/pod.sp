@@ -584,6 +584,14 @@ control "pod_container_streaming_connection_idle_timeout_not_zero" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Pod containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Pod has kublet using strong cryptographic ciphers."
+  query       = query.pod_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.pod_common_tags
+}
+
 ### KP - end
 
 

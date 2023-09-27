@@ -591,6 +591,14 @@ control "deployment_container_streaming_connection_idle_timeout_not_zero" {
   tags = local.deployment_common_tags
 }
 
+control "deployment_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Deployment containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Deployment has kublet using strong cryptographic ciphers."
+  query       = query.deployment_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.deployment_common_tags
+}
+
 ### KP - end
 
 

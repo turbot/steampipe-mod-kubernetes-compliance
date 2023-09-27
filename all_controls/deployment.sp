@@ -81,7 +81,7 @@ benchmark "all_controls_deployment" {
     control.deployment_container_argument_service_account_enabled,
     control.deployment_container_argument_service_account_key_file_appropriate,
     control.deployment_container_kubernetes_dashboard_not_deployed,
-    control.deployment_container_streaming_connection_idle_timeout_not_zero,
+    control.deployment_container_strong_kubelet_cryptographic_ciphers,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

@@ -583,6 +583,14 @@ control "statefulset_container_streaming_connection_idle_timeout_not_zero" {
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "StatefulSet containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the StatefulSet has kublet using strong cryptographic ciphers."
+  query       = query.statefulset_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.statefulset_common_tags
+}
+
 ### KP - end
 
 
