@@ -406,7 +406,7 @@ query "pod_template_container_argument_authorization_mode_node" {
       end as status,
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
-        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' authorization mode not set.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then j.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%Node%') then j.value ->> 'name' || ' authorization mode not set to node.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%Node%') then j.value ->> 'name' || ' authorization mode set to node.'
         else j.value ->> 'name' || ' kube-apiserver not defined.'
@@ -456,7 +456,7 @@ query "pod_template_container_argument_authorization_mode_no_always_allow" {
       end as status,
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
-        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' authorization mode not set.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then j.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%AlwaysAllow%') then j.value ->> 'name' || ' authorization mode set to always allow.'
         else j.value ->> 'name' || ' authorization mode not set to always allow.'
       end as reason,
@@ -508,7 +508,7 @@ query "pod_template_container_argument_authorization_mode_rbac" {
       end as status,
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
-        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  j.value ->> 'name' || ' authorization mode not set.'
+        when (j.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then j.value ->> 'name' || ' authorization mode not set.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and not ((l.value) like '%RBAC%') then j.value ->> 'name' || ' authorization mode not set to RBAC.'
         when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%RBAC%') then j.value ->> 'name' || ' authorization mode set to RBAC.'
         else j.value ->> 'name' || ' kube-apiserver not defined.'
@@ -1186,7 +1186,7 @@ query "pod_template_container_argument_service_account_lookup_enabled" {
         when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
         when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c -> 'command') @> '["--service-account-lookup=true"]' then  c ->> 'name' || ' service account lookup enabled.'
+          and (c -> 'command') @> '["--service-account-lookup=true"]' then c ->> 'name' || ' service account lookup enabled.'
         else c ->> 'name' || ' service account lookup disabled.'
       end as reason,
       name as pod_template_name
@@ -1213,7 +1213,7 @@ query "pod_template_container_token_auth_file_not_configured" {
         when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
         when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' not like '%--token-auth-file%') then  c ->> 'name' || ' token auth file not configured.'
+          and (c ->> 'command' not like '%--token-auth-file%') then c ->> 'name' || ' token auth file not configured.'
         else c ->> 'name' || ' token auth file configured.'
       end as reason,
       name as pod_template_name
@@ -1240,7 +1240,7 @@ query "pod_template_container_kubelet_certificate_authority_configured" {
         when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
         when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--kubelet-certificate-authority%') then  c ->> 'name' || ' kubelet certificate authority configured.'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then c ->> 'name' || ' kubelet certificate authority configured.'
         else c ->> 'name' || ' kubelet certificate authority not configured.'
       end as reason,
       name as pod_template_name
@@ -1521,7 +1521,7 @@ query "pod_template_container_no_argument_hostname_override_configured" {
         when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c ->> 'command' like '%--hostname-override%') then c ->> 'name' || ' hostname override set.'
-        else c ->> 'name' || '  hostname override not set.'
+        else c ->> 'name' || ' hostname override not set.'
       end as reason,
       name as pod_template_name
       ${local.tag_dimensions_sql}
