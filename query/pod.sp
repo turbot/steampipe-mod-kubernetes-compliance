@@ -1992,6 +1992,56 @@ query "pod_container_argument_secure_port_not_0" {
   EOQ
 }
 
+query "pod_container_argument_service_account_key_file_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--service-account-key-file=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null or not ((p.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then p.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then p.value ->> 'name' || ' service-account-key-file set appropriate.'
+        else p.value ->> 'name' || ' service-account-key-file set inappropriate.'
+      end as reason,
+      p.pod_name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l
+        on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
+  EOQ
+}
+
 ### KP - end
 
 

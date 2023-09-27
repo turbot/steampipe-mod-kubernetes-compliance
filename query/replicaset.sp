@@ -1970,6 +1970,56 @@ query "replicaset_container_argument_secure_port_not_0" {
   EOQ
 }
 
+query "replicaset_container_argument_service_account_key_file_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        r.name as replicaset
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--service-account-key-file=%'
+    ), container_name_with_replicaset_name as (
+      select
+        r.name as replicaset_name,
+        r.uid as replicaset_uid,
+        r.path as path,
+        r.start_line as start_line,
+        r.context_name as context_name,
+        r.namespace as namespace,
+        r.source_type as source_type,
+        c.*
+      from
+        kubernetes_replicaset as r,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
+        when not ((r.value -> 'command') @> '["kube-apiserver"]') then r.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' like '%.pem') then r.value ->> 'name' || ' service-account-key-file set appropriate.'
+        else r.value ->> 'name' || ' service-account-key-file set inappropriate.'
+      end as reason,
+      r.replicaset_name as replicaset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_replicaset_name as r
+      left join container_list as l 
+        on r.value ->> 'name' = l.container_name and r.replicaset_name = l.replicaset;
+  EOQ
+}
+
 ### KP - end
 
 

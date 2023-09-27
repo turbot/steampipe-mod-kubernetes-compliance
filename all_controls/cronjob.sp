@@ -78,6 +78,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_argument_security_context_deny_enabled,
     control.cronjob_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.cronjob_container_argument_service_account_enabled,
+    control.cronjob_container_argument_service_account_key_file_appropriate,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {

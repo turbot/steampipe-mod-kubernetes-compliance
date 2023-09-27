@@ -560,6 +560,14 @@ control "replicaset_container_argument_secure_port_not_0" {
   tags = local.replicaset_common_tags
 }
 
+control "replicaset_container_argument_service_account_key_file_appropriate" {
+  title       = "ReplicaSet containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the ReplicaSet has the --service-account-key-file argument set as appropriate."
+  query       = query.replicaset_container_argument_service_account_key_file_appropriate
+
+  tags = local.replicaset_common_tags
+}
+
 ### KP - end
 
 

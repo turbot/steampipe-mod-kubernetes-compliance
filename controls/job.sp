@@ -559,6 +559,14 @@ control "job_container_argument_secure_port_not_0" {
   tags = local.job_common_tags
 }
 
+control "job_container_argument_service_account_key_file_appropriate" {
+  title       = "Job containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the Job has the --service-account-key-file argument set as appropriate."
+  query       = query.job_container_argument_service_account_key_file_appropriate
+
+  tags = local.job_common_tags
+}
+
 ### KP - end
 
 

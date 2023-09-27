@@ -567,6 +567,14 @@ control "deployment_container_argument_secure_port_not_0" {
   tags = local.deployment_common_tags
 }
 
+control "deployment_container_argument_service_account_key_file_appropriate" {
+  title       = "Deployment containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the Deployment has the --service-account-key-file argument set as appropriate."
+  query       = query.deployment_container_argument_service_account_key_file_appropriate
+
+  tags = local.deployment_common_tags
+}
+
 ### KP - end
 
 

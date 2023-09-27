@@ -1967,6 +1967,56 @@ query "statefulset_container_argument_secure_port_not_0" {
   EOQ
 }
 
+query "statefulset_container_argument_service_account_key_file_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        s.name as statefulset
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        co like '%--service-account-key-file=%'
+    ), container_name_with_statefulset_name as (
+      select
+        s.name as statefulset_name,
+        s.uid as statefulset_uid,
+        s.path as path,
+        s.start_line as start_line,
+        s.context_name as context_name,
+        s.namespace as namespace,
+        s.source_type as source_type,
+        c.*
+      from
+        kubernetes_stateful_set as s,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(s.statefulset_uid, concat(s.path, ':', s.start_line)) as resource,
+      case
+        when (s.value -> 'command') is null or not ((s.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
+        when not ((s.value -> 'command') @> '["kube-apiserver"]') then s.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (s.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then s.value ->> 'name' || ' service-account-key-file set appropriate.'
+        else s.value ->> 'name' || ' service-account-key-file set inappropriate.'
+      end as reason,
+      s.statefulset_name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_statefulset_name as s
+      left join container_list as l 
+        on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset
+  EOQ
+}
+
 ### KP - end
 
 

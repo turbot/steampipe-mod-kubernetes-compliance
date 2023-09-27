@@ -1968,6 +1968,56 @@ query "daemonset_container_argument_secure_port_not_0" {
   EOQ
 }
 
+query "daemonset_container_argument_service_account_key_file_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        d.name as daemonset
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--service-account-key-file=%'
+    ), container_name_with_daemonset_name as (
+      select
+        d.name as daemonset_name,
+        d.uid as daemonset_uid,
+        d.path as path,
+        d.start_line as start_line,
+        d.context_name as context_name,
+        d.namespace as namespace,
+        d.source_type as source_type,
+        c.*
+      from
+        kubernetes_daemonset as d,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
+      case
+        when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (d.value -> 'command') is null then d.value ->> 'name' || ' command not defined.'
+        when not ((d.value -> 'command') @> '["kube-apiserver"]') then d.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (d.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then d.value ->> 'name' || ' service-account-key-file set appropriate.'
+        else d.value ->> 'name' || ' service-account-key-file set inappropriate.'
+      end as reason,
+      d.daemonset_name as daemonset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_daemonset_name as d
+      left join container_list as l
+        on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+  EOQ
+}
+
 ### KP - end
 
 

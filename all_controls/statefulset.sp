@@ -78,6 +78,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_argument_security_context_deny_enabled,
     control.statefulset_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.statefulset_container_argument_service_account_enabled,
+    control.statefulset_container_argument_service_account_key_file_appropriate,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

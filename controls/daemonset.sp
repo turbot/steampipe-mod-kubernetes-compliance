@@ -559,6 +559,14 @@ control "daemonset_container_argument_secure_port_not_0" {
   tags = local.daemonset_common_tags
 }
 
+control "daemonset_container_argument_service_account_key_file_appropriate" {
+  title       = "DaemonSet containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the DaemonSet has the --service-account-key-file argument set as appropriate."
+  query       = query.daemonset_container_argument_service_account_key_file_appropriate
+
+  tags = local.daemonset_common_tags
+}
+
 ### KP - end
 
 
