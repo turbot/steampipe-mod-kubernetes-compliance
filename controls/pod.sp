@@ -592,6 +592,14 @@ control "pod_container_strong_kubelet_cryptographic_ciphers" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Pod containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Pod has argument rotate kubelet server certificate enabled."
+  query       = query.pod_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.pod_common_tags
+}
+
 ### KP - end
 
 

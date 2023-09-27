@@ -82,6 +82,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_kubernetes_dashboard_not_deployed,
     control.daemonset_container_streaming_connection_idle_timeout_not_zero,
     control.daemonset_container_strong_kubelet_cryptographic_ciphers,
+    control.daemonset_container_argument_rotate_kubelet_server_certificate_enabled,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

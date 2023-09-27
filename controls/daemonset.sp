@@ -591,6 +591,14 @@ control "daemonset_container_strong_kubelet_cryptographic_ciphers" {
   tags = local.daemonset_common_tags
 }
 
+control "daemonset_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "DaemonSet containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument rotate kubelet server certificate enabled."
+  query       = query.daemonset_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.daemonset_common_tags
+}
+
 ### KP - end
 
 

@@ -82,6 +82,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_kubernetes_dashboard_not_deployed,
     control.statefulset_container_streaming_connection_idle_timeout_not_zero,
     control.statefulset_container_strong_kubelet_cryptographic_ciphers,
+    control.statefulset_container_argument_rotate_kubelet_server_certificate_enabled,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

@@ -591,6 +591,14 @@ control "cronjob_container_strong_kubelet_cryptographic_ciphers" {
   tags = local.cronjob_common_tags
 }
 
+control "cronjob_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "CronJob containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the CronJob has argument rotate kubelet server certificate enabled."
+  query       = query.cronjob_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.cronjob_common_tags
+}
+
 ### KP - end
 
 

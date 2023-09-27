@@ -591,6 +591,14 @@ control "replication_controller_container_strong_kubelet_cryptographic_ciphers" 
   tags = local.replication_controller_common_tags
 }
 
+control "replication_controller_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Replication Controller containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument rotate kubelet server certificate enabled."
+  query       = query.replication_controller_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
 ### KP - end
 
 

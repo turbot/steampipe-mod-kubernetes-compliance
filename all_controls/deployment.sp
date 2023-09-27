@@ -82,6 +82,7 @@ benchmark "all_controls_deployment" {
     control.deployment_container_argument_service_account_key_file_appropriate,
     control.deployment_container_kubernetes_dashboard_not_deployed,
     control.deployment_container_strong_kubelet_cryptographic_ciphers,
+    control.deployment_container_argument_rotate_kubelet_server_certificate_enabled,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

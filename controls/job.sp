@@ -591,6 +591,14 @@ control "job_container_strong_kubelet_cryptographic_ciphers" {
   tags = local.job_common_tags
 }
 
+control "job_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Job containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Job has argument rotate kubelet server certificate enabled."
+  query       = query.job_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.job_common_tags
+}
+
 ### KP - end
 
 

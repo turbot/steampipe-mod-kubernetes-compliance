@@ -592,6 +592,14 @@ control "replicaset_container_strong_kubelet_cryptographic_ciphers" {
   tags = local.replicaset_common_tags
 }
 
+control "replicaset_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "ReplicaSet containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument rotate kubelet server certificate enabled."
+  query       = query.replicaset_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.replicaset_common_tags
+}
+
 ### KP - end
 
 

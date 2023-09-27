@@ -82,6 +82,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_kubernetes_dashboard_not_deployed,
     control.replicaset_container_streaming_connection_idle_timeout_not_zero,
     control.replicaset_container_strong_kubelet_cryptographic_ciphers,
+    control.replicaset_container_argument_rotate_kubelet_server_certificate_enabled,
   ]
 
 

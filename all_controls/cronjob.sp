@@ -82,6 +82,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_kubernetes_dashboard_not_deployed,
     control.cronjob_container_streaming_connection_idle_timeout_not_zero,
     control.cronjob_container_strong_kubelet_cryptographic_ciphers,
+    control.cronjob_container_argument_rotate_kubelet_server_certificate_enabled,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {

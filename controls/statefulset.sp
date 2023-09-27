@@ -591,6 +591,14 @@ control "statefulset_container_strong_kubelet_cryptographic_ciphers" {
   tags = local.statefulset_common_tags
 }
 
+control "statefulset_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "StatefulSet containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument rotate kubelet server certificate enabled."
+  query       = query.statefulset_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.statefulset_common_tags
+}
+
 ### KP - end
 
 
