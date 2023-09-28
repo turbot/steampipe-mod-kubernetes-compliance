@@ -485,3 +485,43 @@ control "pod_template_container_argument_secure_port_not_0" {
 
 #   tags = local.pod_template_common_tags
 # }
+
+control "pod_template_container_argument_service_account_key_file_appropriate" {
+  title       = "PodTemplate containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the PodTemplate has the --service-account-key-file argument set as appropriate."
+  query       = query.pod_template_container_argument_service_account_key_file_appropriate
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_service_account_enabled" {
+  title       = "PodTemplate containers argument admission control plugin where ServiceAccount is enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.pod_template_container_argument_service_account_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kube_controller_manager_bind_address_127_0_0_1" {
+  title       = "PodTemplate containers argument kube-controller-manager bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the PodTemplate has argument kube-controller-manager bind address set to 127.0.0.1."
+  query       = query.pod_template_container_argument_kube_controller_manager_bind_address_127_0_0_1
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_kubelet_streaming_connection_idle_timeout_not_zero" {
+  title       = "PodTemplate containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the PodTemplate has --streaming-connection-idle-timeout not set to 0."
+  query       = query.pod_template_container_kubelet_streaming_connection_idle_timeout_not_zero
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_kubernetes_dashboard_not_deployed" {
+  title       = "PodTemplate containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the PodTemplate does not have Kubernetes dashboard deployed."
+  query       = query.pod_template_container_kubernetes_dashboard_not_deployed
+
+  tags = local.pod_template_common_tags
+}
