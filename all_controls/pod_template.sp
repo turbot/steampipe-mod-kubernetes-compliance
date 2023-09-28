@@ -14,7 +14,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_admission_control_plugin_no_always_admit,
     control.pod_template_container_argument_api_server_anonymous_auth_disabled,
     control.pod_template_container_argument_api_server_etcd_certfile_and_keyfile_configured,
-    control.pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured,
+    control.pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.pod_template_container_argument_audit_log_maxage_greater_than_30,
     control.pod_template_container_argument_audit_log_maxbackup_greater_than_10,
     control.pod_template_container_argument_audit_log_maxsize_greater_than_100,

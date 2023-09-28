@@ -2096,7 +2096,7 @@ query "pod_template_container_argument_etcd_certfile_and_keyfile_configured" {
   EOQ
 }
 
-query "pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured" {
+query "pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,

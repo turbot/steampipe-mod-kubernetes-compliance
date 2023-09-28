@@ -540,10 +540,10 @@ control "pod_template_container_argument_etcd_certfile_and_keyfile_configured" {
   tags = local.pod_template_common_tags
 }
 
-control "pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured" {
+control "pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
   title       = "PodTemplate containers should have TLS cert file and TLS private key file configured appropriately"
   description = "This check ensures that the container in the PodTemplate has TLS cert file and TLS private key file configured appropriately."
-  query       = query.pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured
+  query       = query.pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured
 
   tags = local.pod_template_common_tags
 }
