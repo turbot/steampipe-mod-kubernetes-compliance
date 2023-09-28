@@ -39,9 +39,11 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_kube_scheduler_profiling_disabled,
     control.pod_template_container_argument_kubelet_anonymous_auth_disabled,
     control.pod_template_container_argument_kubelet_authorization_mode_no_always_allow,
+    control.pod_template_container_argument_kubelet_client_ca_file_configured,
     control.pod_template_container_argument_kubelet_client_certificate_and_key_configured,
     control.pod_template_container_argument_kubelet_https_enabled,
     control.pod_template_container_argument_kubelet_read_only_port_0,
+    control.pod_template_container_argument_kubelet_terminated_pod_gc_threshold_configured,
     control.pod_template_container_argument_make_iptables_util_chains_enabled,
     control.pod_template_container_argument_namespace_lifecycle_enabled,
     control.pod_template_container_argument_node_restriction_enabled,
@@ -80,8 +82,6 @@ benchmark "all_controls_pod_template" {
     control.pod_template_immutable_container_filesystem,
     control.pod_template_memory_limit,
     control.pod_template_memory_request,
-    control.pod_template_container_argument_kubelet_client_ca_file_configured,
-    control.pod_template_container_argument_kubelet_terminated_pod_gc_threshold_configured
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {
