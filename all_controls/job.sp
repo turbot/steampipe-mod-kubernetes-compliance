@@ -86,7 +86,7 @@ benchmark "all_controls_job" {
     control.job_immutable_container_filesystem,
     control.job_memory_limit,
     control.job_memory_request,
-    control.job_non_root_container,
+    control.job_non_root_container
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

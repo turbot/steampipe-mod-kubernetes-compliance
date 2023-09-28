@@ -86,7 +86,7 @@ benchmark "all_controls_deployment" {
     control.deployment_memory_limit,
     control.deployment_memory_request,
     control.deployment_non_root_container,
-    control.deployment_replica_minimum_3,
+    control.deployment_replica_minimum_3
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {
