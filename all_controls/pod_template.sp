@@ -75,7 +75,10 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_kubernetes_dashboard_not_deployed,
     control.pod_template_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
     control.pod_template_container_argument_etcd_certfile_and_keyfile_configured,
-    control.pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured
+    control.pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured,
+    control.pod_template_container_argument_rotate_kubelet_server_certificate_enabled,
+    control.pod_template_container_strong_kubelet_cryptographic_ciphers,
+    control.pod_template_container_strong_kube_apiserver_cryptographic_ciphers
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

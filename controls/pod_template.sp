@@ -549,3 +549,27 @@ control "pod_template_container_argument_api_server_tls_cert_file_and_tls_privat
 
   tags = local.pod_template_common_tags
 }
+
+control "pod_template_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "PodTemplate containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument rotate kubelet server certificate enabled."
+  query       = query.pod_template_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "PodTemplate containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the PodTemplate has kublet using strong cryptographic ciphers."
+  query       = query.pod_template_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "PodTemplate containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the PodTemplate has kube-apiserver using strong cryptographic ciphers."
+  query       = query.pod_template_container_strong_kube_apiserver_cryptographic_ciphers
+
+  tags = local.pod_template_common_tags
+}
