@@ -20,6 +20,7 @@ benchmark "all_controls" {
     benchmark.all_controls_network_policy,
     benchmark.all_controls_pod,
     benchmark.all_controls_pod_security_policy,
+    benchmark.all_controls_pod_template,
     benchmark.all_controls_replicaset,
     benchmark.all_controls_replication_controller,
     benchmark.all_controls_role,
@@ -27,8 +28,7 @@ benchmark "all_controls" {
     benchmark.all_controls_secret,
     benchmark.all_controls_service,
     benchmark.all_controls_service_account,
-    benchmark.all_controls_statefulset,
-    benchmark.all_controls_pod_template
+    benchmark.all_controls_statefulset
   ]
 
   tags = local.all_controls_common_tags

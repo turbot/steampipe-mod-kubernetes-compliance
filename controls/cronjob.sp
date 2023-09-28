@@ -645,8 +645,8 @@ control "cronjob_container_argument_kubelet_client_ca_file_configured" {
 }
 
 control "cronjob_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
-  title       = "CronJob containers should have kube_apiserver TLS cert file and TLS private key file configured appropriately"
-  description = "This check ensures that the container in the CronJob has kube_apiserver TLS cert file and TLS private key file configured appropriately."
+  title       = "CronJob containers should have kube-apiserver TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the CronJob has kube-apiserver TLS cert file and TLS private key file configured appropriately."
   query       = query.cronjob_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured
 
   tags = local.cronjob_common_tags
