@@ -80,6 +80,8 @@ benchmark "all_controls_pod_template" {
     control.pod_template_immutable_container_filesystem,
     control.pod_template_memory_limit,
     control.pod_template_memory_request,
+    control.pod_template_container_argument_kubelet_client_ca_file_configured,
+    control.pod_template_container_argument_kubelet_terminated_pod_gc_threshold_configured
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

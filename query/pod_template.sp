@@ -2263,3 +2263,103 @@ query "pod_template_container_strong_kube_apiserver_cryptographic_ciphers" {
         on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
   EOQ
 }
+
+query "pod_template_container_argument_kubelet_client_ca_file_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as pod_template
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--client-ca-file=%'
+    ), container_name_with_pod_template_name as (
+      select
+        j.name as pod_template_name,
+        j.uid as pod_template_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.end_line as end_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.pod_template_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kubelet"]') then j.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then j.value ->> 'name' || ' kubelet client ca file configured.'
+        else j.value ->> 'name' || ' kubelet client ca file not configured.'
+      end as reason,
+      j.pod_template_name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_template_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
+  EOQ
+}
+
+query "pod_template_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        j.name as pod_template
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements(c -> 'command') as co
+      where
+        (co)::text LIKE '%--read-only-port=%'
+    ), container_name_with_pod_template_name as (
+      select
+        j.name as pod_template_name,
+        j.uid as pod_template_uid,
+        j.path as path,
+        j.start_line as start_line,
+        j.end_line as end_line,
+        j.context_name as context_name,
+        j.namespace as namespace,
+        j.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod_template as j,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(j.pod_template_uid, concat(j.path, ':', j.start_line)) as resource,
+      case
+        when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kubelet"]') then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]'  and coalesce((l.value)::int, 0) > 0 then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
+        when not ((j.value -> 'command') @> '["kubelet"]') then j.value ->> 'name' || ' kubelet not defined.'
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then j.value ->> 'name' || ' kubelet terminated pod gc threshold is set to ' || (l.value) || '.'
+        else j.value ->> 'name' || ' kubelet terminated pod gc threshold is not set apropriately.'
+      end as reason,
+      j.pod_template_name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_template_name as j
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
+  EOQ
+}

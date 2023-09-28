@@ -571,3 +571,19 @@ control "pod_template_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.pod_template_common_tags
 }
+
+control "pod_template_container_argument_kubelet_client_ca_file_configured" {
+  title       = "PodTemplate containers should have kubelet client ca file configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has kubelet client ca file configured appropriately."
+  query       = query.pod_template_container_argument_kubelet_client_ca_file_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  title       = "PodTemplate containers should have kubelet terminated pod gc threshold configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has kubelet terminated pod gc threshold configured appropriately."
+  query       = query.pod_template_container_argument_kubelet_terminated_pod_gc_threshold_configured
+
+  tags = local.pod_template_common_tags
+}
