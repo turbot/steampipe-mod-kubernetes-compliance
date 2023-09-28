@@ -68,6 +68,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_pod_security_policy_enabled,
     control.pod_template_container_argument_kube_apiserver_profiling_disabled,
     control.pod_template_container_argument_secure_port_not_0,
+    control.pod_template_container_argument_security_context_deny_enabled,
     control.pod_template_container_argument_service_account_key_file_appropriate,
     control.pod_template_container_argument_service_account_enabled,
     control.pod_template_container_argument_kube_controller_manager_bind_address_127_0_0_1,

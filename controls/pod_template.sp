@@ -476,15 +476,13 @@ control "pod_template_container_argument_secure_port_not_0" {
   tags = local.pod_template_common_tags
 }
 
-# TODO - Update needed for the query
+control "pod_template_container_argument_security_context_deny_enabled" {
+  title       = "PodTemplate containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+  query       = query.pod_template_container_argument_security_context_deny_enabled
 
-# control "pod_template_container_argument_security_context_deny_enabled" {
-#   title       = "PodTemplate containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
-#   description = "This check ensures that the container in the PodTemplate has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
-#   query       = query.pod_template_container_argument_security_context_deny_enabled
-
-#   tags = local.pod_template_common_tags
-# }
+  tags = local.pod_template_common_tags
+}
 
 control "pod_template_container_argument_service_account_key_file_appropriate" {
   title       = "PodTemplate containers --service-account-key-file argument should be set as appropriate"
