@@ -415,7 +415,7 @@ control "pod_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_c
 
 control "pod_container_no_argument_hostname_override_configured" {
   title       = "Pod containers argument hostname override should not be configured"
-  description = "This check ensures that the container in the Pod has argument hostname override not configured."
+  description = "This check ensures that the container in the Pod does not have argument hostname override configured."
   query       = query.pod_container_no_argument_hostname_override_configured
 
   tags = local.pod_common_tags
@@ -462,16 +462,16 @@ control "pod_container_argument_kube_controller_manager_service_account_private_
 }
 
 control "pod_container_argument_kubelet_read_only_port_0" {
-  title       = "Pod containers argument kubelet read only port shoule be set 0"
-  description = "This check ensures that the container in the Pod has argument kubelet read only port set to 0."
+  title       = "Pod containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the Pod has argument kubelet read-only port set to 0."
   query       = query.pod_container_argument_kubelet_read_only_port_0
 
   tags = local.pod_common_tags
 }
 
 control "pod_container_argument_kube_controller_manager_root_ca_file_configured" {
-  title       = "Pod containers should have kube controller manager root ca file configured appropriately"
-  description = "This check ensures that the container in the Pod has kube controller manager root ca file configured appropriately."
+  title       = "Pod containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the Pod has kube controller manager root CA file configured appropriately."
   query       = query.pod_container_argument_kube_controller_manager_root_ca_file_configured
 
   tags = local.pod_common_tags
@@ -638,8 +638,8 @@ control "pod_container_argument_kubelet_terminated_pod_gc_threshold_configured" 
 }
 
 control "pod_container_argument_kubelet_client_ca_file_configured" {
-  title       = "Pod containers should have kubelet client ca file configured appropriately"
-  description = "This check ensures that the container in the Pod has kubelet client ca file configured appropriately."
+  title       = "Pod containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the Pod has kubelet client CA file configured appropriately."
   query       = query.pod_container_argument_kubelet_client_ca_file_configured
 
   tags = local.pod_common_tags

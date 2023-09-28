@@ -2204,8 +2204,7 @@ query "pod_template_container_strong_kubelet_cryptographic_ciphers" {
       ${local.common_dimensions_sql}
     from
       container_name_with_pod_template_name as j
-      left join container_list as l
-        on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
   EOQ
 }
 
@@ -2259,8 +2258,7 @@ query "pod_template_container_strong_kube_apiserver_cryptographic_ciphers" {
       ${local.common_dimensions_sql}
     from
       container_name_with_pod_template_name as j
-      left join container_list as l
-        on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
+      left join container_list as l on j.value ->> 'name' = l.container_name and j.pod_template_name = l.pod_template;
   EOQ
 }
 
@@ -2346,7 +2344,7 @@ query "pod_template_container_argument_kubelet_terminated_pod_gc_threshold_confi
       coalesce(j.pod_template_uid, concat(j.path, ':', j.start_line)) as resource,
       case
         when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kubelet"]') then 'ok'
-        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]'  and coalesce((l.value)::int, 0) > 0 then 'ok'
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then 'ok'
         else 'alarm'
       end as status,
       case

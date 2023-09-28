@@ -81,7 +81,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_cpu_request,
     control.pod_template_immutable_container_filesystem,
     control.pod_template_memory_limit,
-    control.pod_template_memory_request,
+    control.pod_template_memory_request
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

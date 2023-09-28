@@ -1371,7 +1371,7 @@ query "daemonset_container_argument_make_iptables_util_chains_enabled" {
         when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c -> 'command') @> '["--make-iptables-util-chains=true"]' then c ->> 'name' || ' make iptables util chain enabled.'
-        else c ->> 'name' || '  make iptables util chain disabled.'
+        else c ->> 'name' || ' make iptables util chain disabled.'
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -1402,8 +1402,8 @@ query "daemonset_container_argument_kubelet_tls_cert_file_and_tls_private_key_fi
           and (
             not (c ->> 'command' like '%--tls-cert-file%')
             or not (c ->> 'command' like '%--tls-private-key-filey%')
-          ) then c ->> 'name' || ' kubelet tls cert file or private key not set.'
-        else c ->> 'name' || ' kubelet tls cert file and private key set.'
+          ) then c ->> 'name' || ' kubelet TLS cert file or private key not set.'
+        else c ->> 'name' || ' kubelet TLS cert file and private key set.'
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -1429,7 +1429,7 @@ query "daemonset_container_no_argument_hostname_override_configured" {
         when not ((c -> 'command') @> '["kubelet"]') then c ->> 'name' || ' kubelet not defined.'
         when (c -> 'command') @> '["kubelet"]'
           and (c ->> 'command' like '%--hostname-override%') then c ->> 'name' || ' hostname override set.'
-        else c ->> 'name' || '  hostname override not set.'
+        else c ->> 'name' || ' hostname override not set.'
       end as reason,
       name as daemonset_name
       ${local.tag_dimensions_sql}
@@ -2024,8 +2024,7 @@ query "daemonset_container_argument_service_account_key_file_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
-      left join container_list as l
-        on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }
 
@@ -2137,8 +2136,7 @@ query "daemonset_container_strong_kubelet_cryptographic_ciphers" {
       ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
-      left join container_list as l
-        on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }
 
@@ -2340,7 +2338,7 @@ query "daemonset_container_argument_kubelet_terminated_pod_gc_threshold_configur
       coalesce(d.daemonset_uid, concat(d.path, ':', d.start_line)) as resource,
       case
         when (d.value -> 'command') is null or not ((d.value -> 'command') @> '["kubelet"]') then 'ok'
-        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]'  and coalesce((l.value)::int, 0) > 0 then 'ok'
+        when l.container_name is not null and (d.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then 'ok'
         else 'alarm'
       end as status,
       case
@@ -2490,7 +2488,6 @@ query "daemonset_container_strong_kube_apiserver_cryptographic_ciphers" {
       ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as d
-      left join container_list as l
-        on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
+      left join container_list as l on d.value ->> 'name' = l.container_name and d.daemonset_name = l.daemonset;
   EOQ
 }

@@ -414,7 +414,7 @@ control "cronjob_container_argument_kubelet_tls_cert_file_and_tls_private_key_fi
 
 control "cronjob_container_no_argument_hostname_override_configured" {
   title       = "CronJob containers argument hostname override should not be configured"
-  description = "This check ensures that the container in the CronJob has argument hostname override not configured."
+  description = "This check ensures that the container in the CronJob does not have argument hostname override configured."
   query       = query.cronjob_container_no_argument_hostname_override_configured
 
   tags = local.cronjob_common_tags
@@ -461,24 +461,24 @@ control "cronjob_container_argument_kube_controller_manager_service_account_priv
 }
 
 control "cronjob_container_argument_kubelet_read_only_port_0" {
-  title       = "CronJob containers argument kubelet read only port shoule be set 0"
-  description = "This check ensures that the container in the CronJob has argument kubelet read only port set to 0."
+  title       = "CronJob containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the CronJob has argument kubelet read-only port set to 0."
   query       = query.cronjob_container_argument_kubelet_read_only_port_0
 
   tags = local.cronjob_common_tags
 }
 
 control "cronjob_container_argument_kube_controller_manager_root_ca_file_configured" {
-  title       = "CronJob containers should have kube controller manager root ca file configured appropriately"
-  description = "This check ensures that the container in the CronJob has kube controller manager root ca file configured appropriately."
+  title       = "CronJob containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the CronJob has kube controller manager root CA file configured appropriately."
   query       = query.cronjob_container_argument_kube_controller_manager_root_ca_file_configured
 
   tags = local.cronjob_common_tags
 }
 
 control "cronjob_container_argument_namespace_lifecycle_enabled" {
-  title       = "CronJob containers argument admission control plugin NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the CronJob has argument admission control plugin NamespaceLifecycle disabled."
+  title       = "CronJob containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the CronJob has argument admission control plugin NamespaceLifecycle enabled."
   query       = query.cronjob_container_argument_namespace_lifecycle_enabled
 
   tags = local.cronjob_common_tags
@@ -582,7 +582,7 @@ control "cronjob_container_streaming_connection_idle_timeout_not_zero" {
 
 control "cronjob_container_strong_kubelet_cryptographic_ciphers" {
   title       = "CronJob containers kubelet should only make use of strong cryptographic ciphers"
-  description = "This check ensures that the container in the CronJob has kublet using strong cryptographic ciphers."
+  description = "This check ensures that the container in the CronJob has kubelet using strong cryptographic ciphers."
   query       = query.cronjob_container_strong_kubelet_cryptographic_ciphers
 
   tags = local.cronjob_common_tags
@@ -637,8 +637,8 @@ control "cronjob_container_argument_kubelet_terminated_pod_gc_threshold_configur
 }
 
 control "cronjob_container_argument_kubelet_client_ca_file_configured" {
-  title       = "CronJob containers should have kubelet client ca file configured appropriately"
-  description = "This check ensures that the container in the CronJob has kubelet client ca file configured appropriately."
+  title       = "CronJob containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the CronJob has kubelet client CA file configured appropriately."
   query       = query.cronjob_container_argument_kubelet_client_ca_file_configured
 
   tags = local.cronjob_common_tags

@@ -414,7 +414,7 @@ control "replication_controller_container_argument_kubelet_tls_cert_file_and_tls
 
 control "replication_controller_container_no_argument_hostname_override_configured" {
   title       = "Replication Controller containers argument hostname override should not be configured"
-  description = "This check ensures that the container in the Replication Controller has argument hostname override not configured."
+  description = "This check ensures that the container in the Replication Controller does not have argument hostname override configured."
   query       = query.replication_controller_container_no_argument_hostname_override_configured
 
   tags = local.replication_controller_common_tags
@@ -461,16 +461,16 @@ control "replication_controller_container_argument_kube_controller_manager_servi
 }
 
 control "replication_controller_container_argument_kubelet_read_only_port_0" {
-  title       = "Replication Controller containers argument kubelet read only port shoule be set 0"
-  description = "This check ensures that the container in the Replication Controller has argument kubelet read only port set to 0."
+  title       = "Replication Controller containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the Replication Controller has argument kubelet read-only port set to 0."
   query       = query.replication_controller_container_argument_kubelet_read_only_port_0
 
   tags = local.replication_controller_common_tags
 }
 
 control "replication_controller_container_argument_kube_controller_manager_root_ca_file_configured" {
-  title       = "Replication Controller containers should have kube controller manager root ca file configured appropriately"
-  description = "This check ensures that the container in the Replication Controller has kube controller manager root ca file configured appropriately."
+  title       = "Replication Controller containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kube controller manager root CA file configured appropriately."
   query       = query.replication_controller_container_argument_kube_controller_manager_root_ca_file_configured
 
   tags = local.replication_controller_common_tags
@@ -637,8 +637,8 @@ control "replication_controller_container_argument_kubelet_terminated_pod_gc_thr
 }
 
 control "replication_controller_container_argument_kubelet_client_ca_file_configured" {
-  title       = "Replication Controller containers should have kubelet client ca file configured appropriately"
-  description = "This check ensures that the container in the Replication Controller has kubelet client ca file configured appropriately."
+  title       = "Replication Controller containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kubelet client CA file configured appropriately."
   query       = query.replication_controller_container_argument_kubelet_client_ca_file_configured
 
   tags = local.replication_controller_common_tags

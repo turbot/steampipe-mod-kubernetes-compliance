@@ -414,7 +414,7 @@ control "statefulset_container_argument_kubelet_tls_cert_file_and_tls_private_ke
 
 control "statefulset_container_no_argument_hostname_override_configured" {
   title       = "StatefulSet containers argument hostname override should not be configured"
-  description = "This check ensures that the container in the StatefulSet has argument hostname override not configured."
+  description = "This check ensures that the container in the StatefulSet does not have argument hostname override configured."
   query       = query.statefulset_container_no_argument_hostname_override_configured
 
   tags = local.statefulset_common_tags
@@ -461,16 +461,16 @@ control "statefulset_container_argument_kube_controller_manager_service_account_
 }
 
 control "statefulset_container_argument_kubelet_read_only_port_0" {
-  title       = "StatefulSet containers argument kubelet read only port shoule be set 0"
-  description = "This check ensures that the container in the StatefulSet has argument kubelet read only port set to 0."
+  title       = "StatefulSet containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the StatefulSet has argument kubelet read-only port set to 0."
   query       = query.statefulset_container_argument_kubelet_read_only_port_0
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_argument_kube_controller_manager_root_ca_file_configured" {
-  title       = "StatefulSet containers should have kube controller manager root ca file configured appropriately"
-  description = "This check ensures that the container in the StatefulSet has kube controller manager root ca file configured appropriately."
+  title       = "StatefulSet containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has kube controller manager root CA file configured appropriately."
   query       = query.statefulset_container_argument_kube_controller_manager_root_ca_file_configured
 
   tags = local.statefulset_common_tags
@@ -486,7 +486,7 @@ control "statefulset_container_argument_etcd_client_cert_auth_enabled" {
 
 control "statefulset_container_argument_namespace_lifecycle_enabled" {
   title       = "StatefulSet containers argument admission control plugin where NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NamespaceLifecycle enabled."
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NamespaceLifecycle is enabled."
   query       = query.statefulset_container_argument_namespace_lifecycle_enabled
 
   tags = local.statefulset_common_tags
@@ -518,7 +518,7 @@ control "statefulset_container_kubelet_certificate_authority_configured" {
 
 control "statefulset_container_argument_node_restriction_enabled" {
   title       = "StatefulSet containers argument admission control plugin where NodeRestriction is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NodeRestriction enabled."
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NodeRestriction is enabled."
   query       = query.statefulset_container_argument_node_restriction_enabled
 
   tags = local.statefulset_common_tags
@@ -582,7 +582,7 @@ control "statefulset_container_streaming_connection_idle_timeout_not_zero" {
 
 control "statefulset_container_strong_kubelet_cryptographic_ciphers" {
   title       = "StatefulSet containers kubelet should only make use of strong cryptographic ciphers"
-  description = "This check ensures that the container in the StatefulSet has kublet using strong cryptographic ciphers."
+  description = "This check ensures that the container in the StatefulSet has kubelet using strong cryptographic ciphers."
   query       = query.statefulset_container_strong_kubelet_cryptographic_ciphers
 
   tags = local.statefulset_common_tags
@@ -637,8 +637,8 @@ control "statefulset_container_argument_kubelet_terminated_pod_gc_threshold_conf
 }
 
 control "statefulset_container_argument_kubelet_client_ca_file_configured" {
-  title       = "StatefulSet containers should have kubelet client ca file configured appropriately"
-  description = "This check ensures that the container in the StatefulSet has kubelet client ca file configured appropriately."
+  title       = "StatefulSet containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the StatefulSet has kubelet client CA file configured appropriately."
   query       = query.statefulset_container_argument_kubelet_client_ca_file_configured
 
   tags = local.statefulset_common_tags

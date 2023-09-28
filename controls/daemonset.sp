@@ -414,7 +414,7 @@ control "daemonset_container_argument_kubelet_tls_cert_file_and_tls_private_key_
 
 control "daemonset_container_no_argument_hostname_override_configured" {
   title       = "DaemonSet containers argument hostname override should not be configured"
-  description = "This check ensures that the container in the DaemonSet has argument hostname override not configured."
+  description = "This check ensures that the container in the DaemonSet does not have argument hostname override configured."
   query       = query.daemonset_container_no_argument_hostname_override_configured
 
   tags = local.daemonset_common_tags
@@ -461,16 +461,16 @@ control "daemonset_container_argument_kube_controller_manager_service_account_pr
 }
 
 control "daemonset_container_argument_kubelet_read_only_port_0" {
-  title       = "DaemonSet containers argument kubelet read only port shoule be set 0"
-  description = "This check ensures that the container in the DaemonSet has argument kubelet read only port set to 0."
+  title       = "DaemonSet containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the DaemonSet has argument kubelet read-only port set to 0."
   query       = query.daemonset_container_argument_kubelet_read_only_port_0
 
   tags = local.daemonset_common_tags
 }
 
 control "daemonset_container_argument_kube_controller_manager_root_ca_file_configured" {
-  title       = "DaemonSet containers should have kube controller manager root ca file configured appropriately"
-  description = "This check ensures that the container in the DaemonSet has kube controller manager root ca file configured appropriately."
+  title       = "DaemonSet containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has kube controller manager root CA file configured appropriately."
   query       = query.daemonset_container_argument_kube_controller_manager_root_ca_file_configured
 
   tags = local.daemonset_common_tags
@@ -485,8 +485,8 @@ control "daemonset_container_argument_etcd_client_cert_auth_enabled" {
 }
 
 control "daemonset_container_argument_namespace_lifecycle_enabled" {
-  title       = "DaemonSet containers argument admission control plugin NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the DaemonSet has argument admission control plugin NamespaceLifecycle disabled."
+  title       = "DaemonSet containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument admission control plugin NamespaceLifecycle enabled."
   query       = query.daemonset_container_argument_namespace_lifecycle_enabled
 
   tags = local.daemonset_common_tags
@@ -582,7 +582,7 @@ control "daemonset_container_streaming_connection_idle_timeout_not_zero" {
 
 control "daemonset_container_strong_kubelet_cryptographic_ciphers" {
   title       = "DaemonSet containers kubelet should only make use of strong cryptographic ciphers"
-  description = "This check ensures that the container in the DaemonSet has kublet using strong cryptographic ciphers."
+  description = "This check ensures that the container in the DaemonSet has kubelet using strong cryptographic ciphers."
   query       = query.daemonset_container_strong_kubelet_cryptographic_ciphers
 
   tags = local.daemonset_common_tags
@@ -637,8 +637,8 @@ control "daemonset_container_argument_kubelet_terminated_pod_gc_threshold_config
 }
 
 control "daemonset_container_argument_kubelet_client_ca_file_configured" {
-  title       = "DaemonSet containers should have kubelet client ca file configured appropriately"
-  description = "This check ensures that the container in the DaemonSet has kubelet client ca file configured appropriately."
+  title       = "DaemonSet containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the DaemonSet has kubelet client CA file configured appropriately."
   query       = query.daemonset_container_argument_kubelet_client_ca_file_configured
 
   tags = local.daemonset_common_tags

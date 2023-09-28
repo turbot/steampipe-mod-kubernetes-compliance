@@ -21,7 +21,7 @@ control "pod_template_container_with_added_capabilities" {
 }
 
 control "pod_template_container_sys_admin_capability_disabled" {
-  title       = "PodTemplate containers should not use CAP_SYS_ADMIN linux capability"
+  title       = "PodTemplate containers should not use CAP_SYS_ADMIN Linux capability"
   description = "This check ensures that the container in the PodTemplate does not use CAP_SYS_ADMIN Linux capability."
   query       = query.pod_template_container_sys_admin_capability_disabled
 
@@ -117,7 +117,7 @@ control "pod_template_container_no_argument_basic_auth_file" {
 }
 
 control "pod_template_container_encryption_providers_configured" {
-  title       = "PodTemplate containers should has encryption providers configured appropriately"
+  title       = "PodTemplate containers should have encryption providers configured appropriately"
   description = "This check ensures that the container in the PodTemplate has encryption providers configured appropriately."
   query       = query.pod_template_container_encryption_providers_configured
 
@@ -301,8 +301,8 @@ control "pod_template_container_readiness_probe" {
 }
 
 control "pod_template_container_argument_namespace_lifecycle_enabled" {
-  title       = "PodTemplate containers argument admission control plugin NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the PodTemplate has argument admission control plugin NamespaceLifecycle disabled."
+  title       = "PodTemplate containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin NamespaceLifecycle enabled."
   query       = query.pod_template_container_argument_namespace_lifecycle_enabled
 
   tags = local.pod_template_common_tags
@@ -365,8 +365,8 @@ control "pod_template_container_argument_kube_controller_manager_profiling_disab
 }
 
 control "pod_template_container_argument_kube_controller_manager_root_ca_file_configured" {
-  title       = "PodTemplate containers should have kube controller manager root ca file configured appropriately"
-  description = "This check ensures that the container in the PodTemplate has kube controller manager root ca file configured appropriately."
+  title       = "PodTemplate containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has kube controller manager root CA file configured appropriately."
   query       = query.pod_template_container_argument_kube_controller_manager_root_ca_file_configured
 
   tags = local.pod_template_common_tags
@@ -398,7 +398,7 @@ control "pod_template_container_argument_kubelet_authorization_mode_no_always_al
 
 control "pod_template_container_no_argument_hostname_override_configured" {
   title       = "PodTemplate containers argument hostname override should not be configured"
-  description = "This check ensures that the container in the PodTemplate has argument hostname override not configured."
+  description = "This check ensures that the container in the PodTemplate does not have argument hostname override configured."
   query       = query.pod_template_container_no_argument_hostname_override_configured
 
   tags = local.pod_template_common_tags
@@ -429,8 +429,8 @@ control "pod_template_container_argument_protect_kernel_defaults_enabled" {
 }
 
 control "pod_template_container_argument_kubelet_read_only_port_0" {
-  title       = "PodTemplate containers argument kubelet read only port shoule be set 0"
-  description = "This check ensures that the container in the PodTemplate has argument kubelet read only port set to 0."
+  title       = "PodTemplate containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the PodTemplate has argument kubelet read-only port set to 0."
   query       = query.pod_template_container_argument_kubelet_read_only_port_0
 
   tags = local.pod_template_common_tags
@@ -573,8 +573,8 @@ control "pod_template_container_strong_kube_apiserver_cryptographic_ciphers" {
 }
 
 control "pod_template_container_argument_kubelet_client_ca_file_configured" {
-  title       = "PodTemplate containers should have kubelet client ca file configured appropriately"
-  description = "This check ensures that the container in the PodTemplate has kubelet client ca file configured appropriately."
+  title       = "PodTemplate containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has kubelet client CA file configured appropriately."
   query       = query.pod_template_container_argument_kubelet_client_ca_file_configured
 
   tags = local.pod_template_common_tags
