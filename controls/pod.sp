@@ -525,9 +525,6 @@ control "pod_container_argument_node_restriction_enabled" {
   tags = local.pod_common_tags
 }
 
-
-### KP - start
-
 control "pod_container_argument_pod_security_policy_enabled" {
   title       = "Pod containers argument admission control plugin PodSecurityPolicy is enabled"
   description = "This check ensures that the container in the Pod has argument admission control plugin where PodSecurityPolicy is enabled."
@@ -600,11 +597,6 @@ control "pod_container_argument_rotate_kubelet_server_certificate_enabled" {
   tags = local.pod_common_tags
 }
 
-### KP - end
-
-
-### PC - start
-
 control "pod_container_argument_etcd_certfile_and_keyfile_configured" {
   title       = "Pod containers should have etcd certfile and keyfile configured appropriately"
   description = "This check ensures that the container in the Pod has etcd certfile and keyfile configured appropriately."
@@ -668,5 +660,3 @@ control "pod_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.pod_common_tags
 }
-
-### PC - end

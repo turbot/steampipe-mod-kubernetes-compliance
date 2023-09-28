@@ -524,9 +524,6 @@ control "daemonset_container_argument_node_restriction_enabled" {
   tags = local.daemonset_common_tags
 }
 
-
-### KP - start
-
 control "daemonset_container_argument_pod_security_policy_enabled" {
   title       = "DaemonSet containers argument admission control plugin PodSecurityPolicy is enabled"
   description = "This check ensures that the container in the DaemonSet has argument admission control plugin where PodSecurityPolicy is enabled."
@@ -599,11 +596,6 @@ control "daemonset_container_argument_rotate_kubelet_server_certificate_enabled"
   tags = local.daemonset_common_tags
 }
 
-### KP - end
-
-
-### PC - start
-
 control "daemonset_container_argument_etcd_certfile_and_keyfile_configured" {
   title       = "DaemonSet containers should have etcd certfile and keyfile configured appropriately"
   description = "This check ensures that the container in the DaemonSet has etcd certfile and keyfile configured appropriately."
@@ -667,4 +659,3 @@ control "daemonset_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.daemonset_common_tags
 }
-### PC - end

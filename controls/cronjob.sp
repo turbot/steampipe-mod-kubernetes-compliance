@@ -524,9 +524,6 @@ control "cronjob_container_argument_node_restriction_enabled" {
   tags = local.cronjob_common_tags
 }
 
-
-### KP - start
-
 control "cronjob_container_argument_pod_security_policy_enabled" {
   title       = "CronJob containers argument admission control plugin PodSecurityPolicy is enabled"
   description = "This check ensures that the container in the CronJob has argument admission control plugin where PodSecurityPolicy is enabled."
@@ -599,11 +596,6 @@ control "cronjob_container_argument_rotate_kubelet_server_certificate_enabled" {
   tags = local.cronjob_common_tags
 }
 
-### KP - end
-
-
-### PC - start
-
 control "cronjob_container_argument_etcd_certfile_and_keyfile_configured" {
   title       = "CronJob containers should have etcd certfile and keyfile configured appropriately"
   description = "This check ensures that the container in the CronJob has etcd certfile and keyfile configured appropriately."
@@ -667,4 +659,3 @@ control "cronjob_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.cronjob_common_tags
 }
-### PC - end

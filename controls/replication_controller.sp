@@ -524,9 +524,6 @@ control "replication_controller_container_argument_node_restriction_enabled" {
   tags = local.replication_controller_common_tags
 }
 
-
-### KP - start
-
 control "replication_controller_container_argument_pod_security_policy_enabled" {
   title       = "Replication Controller containers argument admission control plugin where PodSecurityPolicy is enabled"
   description = "This check ensures that the container in the Replication Controller has argument admission control plugin where PodSecurityPolicy is enabled."
@@ -599,11 +596,6 @@ control "replication_controller_container_argument_rotate_kubelet_server_certifi
   tags = local.replication_controller_common_tags
 }
 
-### KP - end
-
-
-### PC - start
-
 control "replication_controller_container_argument_etcd_certfile_and_keyfile_configured" {
   title       = "Replication Controller containers should have etcd certfile and keyfile configured appropriately"
   description = "This check ensures that the container in the Replication Controller has etcd certfile and keyfile configured appropriately."
@@ -667,5 +659,3 @@ control "replication_controller_container_strong_kube_apiserver_cryptographic_ci
 
   tags = local.replication_controller_common_tags
 }
-
-### PC - end

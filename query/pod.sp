@@ -1883,9 +1883,6 @@ query "pod_container_argument_node_restriction_enabled" {
   EOQ
 }
 
-
-### KP - start
-
 query "pod_container_argument_pod_security_policy_enabled" {
   sql = <<-EOQ
     select
@@ -2179,11 +2176,6 @@ query "pod_container_argument_rotate_kubelet_server_certificate_enabled" {
       jsonb_array_elements(containers) as c;
   EOQ
 }
-
-### KP - end
-
-
-### PC - start
 
 query "pod_container_argument_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
@@ -2507,5 +2499,3 @@ query "pod_container_strong_kube_apiserver_cryptographic_ciphers" {
         on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
   EOQ
 }
-
-### PC - end

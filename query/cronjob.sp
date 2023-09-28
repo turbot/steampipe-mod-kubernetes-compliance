@@ -1861,9 +1861,6 @@ query "cronjob_container_argument_node_restriction_enabled" {
   EOQ
 }
 
-
-### KP - start
-
 query "cronjob_container_argument_pod_security_policy_enabled" {
   sql = <<-EOQ
     select
@@ -2157,11 +2154,6 @@ query "cronjob_container_argument_rotate_kubelet_server_certificate_enabled" {
       jsonb_array_elements(job_template -> 'spec' -> 'template' -> 'spec' -> 'containers') as c;
   EOQ
 }
-
-### KP - end
-
-
-### PC - start
 
 query "cronjob_container_argument_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
@@ -2485,5 +2477,3 @@ query "cronjob_container_strong_kube_apiserver_cryptographic_ciphers" {
         on j.value ->> 'name' = l.container_name and j.cronjob_name = l.cronjob;
   EOQ
 }
-
-### PC - end

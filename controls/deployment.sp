@@ -532,9 +532,6 @@ control "deployment_container_argument_node_restriction_enabled" {
   tags = local.deployment_common_tags
 }
 
-
-### KP - start
-
 control "deployment_container_argument_pod_security_policy_enabled" {
   title       = "Deployment containers argument admission control plugin where PodSecurityPolicy is enabled"
   description = "This check ensures that the container in the Deployment has argument admission control plugin where PodSecurityPolicy is enabled."
@@ -607,11 +604,6 @@ control "deployment_container_argument_rotate_kubelet_server_certificate_enabled
   tags = local.deployment_common_tags
 }
 
-### KP - end
-
-
-### PC - start
-
 control "deployment_container_argument_etcd_certfile_and_keyfile_configured" {
   title       = "Deployment containers should have etcd certfile and keyfile configured appropriately"
   description = "This check ensures that the container in the Deployment has etcd certfile and keyfile configured appropriately."
@@ -675,4 +667,3 @@ control "deployment_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.deployment_common_tags
 }
-### PC - end

@@ -1879,9 +1879,6 @@ query "deployment_container_argument_node_restriction_enabled" {
   EOQ
 }
 
-
-### KP - start
-
 query "deployment_container_argument_pod_security_policy_enabled" {
   sql = <<-EOQ
     select
@@ -2172,11 +2169,6 @@ query "deployment_container_argument_rotate_kubelet_server_certificate_enabled" 
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
-
-### KP - end
-
-
-### PC - start
 
 query "deployment_container_argument_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
@@ -2501,5 +2493,3 @@ query "deployment_container_strong_kube_apiserver_cryptographic_ciphers" {
         on d.value ->> 'name' = l.container_name and d.deployment_name = l.deployment;
   EOQ
 }
-
-### PC - end

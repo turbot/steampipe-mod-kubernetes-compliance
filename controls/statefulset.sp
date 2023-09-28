@@ -524,9 +524,6 @@ control "statefulset_container_argument_node_restriction_enabled" {
   tags = local.statefulset_common_tags
 }
 
-
-### KP - start
-
 control "statefulset_container_argument_pod_security_policy_enabled" {
   title       = "StatefulSet containers argument admission control plugin where PodSecurityPolicy is enabled"
   description = "This check ensures that the container in the StatefulSet has argument admission control plugin where PodSecurityPolicy is enabled."
@@ -599,11 +596,6 @@ control "statefulset_container_argument_rotate_kubelet_server_certificate_enable
   tags = local.statefulset_common_tags
 }
 
-### KP - end
-
-
-### PC - start
-
 control "statefulset_container_argument_etcd_certfile_and_keyfile_configured" {
   title       = "StatefulSet containers should have etcd certfile and keyfile configured appropriately"
   description = "This check ensures that the container in the StatefulSet has etcd certfile and keyfile configured appropriately."
@@ -667,5 +659,3 @@ control "statefulset_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.statefulset_common_tags
 }
-
-### PC - end
