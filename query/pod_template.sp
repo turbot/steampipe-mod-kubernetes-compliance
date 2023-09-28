@@ -597,7 +597,7 @@ query "pod_template_container_argument_etcd_cafile_configured" {
   EOQ
 }
 
-query "pod_template_container_argument_etcd_certfile_and_keyfile_configured" {
+query "pod_template_container_argument_api_server_etcd_certfile_and_keyfile_configured" {
   sql = <<-EOQ
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
@@ -2024,6 +2024,102 @@ query "pod_template_container_kubernetes_dashboard_not_deployed" {
           or labels ->> 'apps' = 'kubernetes-dashboard' 
           or labels ->> 'k8s-app' = 'kubernetes-dashboard' then c ->> 'name' || ' kubernetes dashboard deployed.'
         else c ->> 'name' || ' kubernetes dashboard not deployed.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (
+            not (c ->> 'command' like '%--peer-cert-file%')
+            or not (c ->> 'command' like '%--peer-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and(
+            not (c ->> 'command' like '%--peer-cert-file%')
+            or not (c ->> 'command' like '%--peer-key-file%')
+          ) then c ->> 'name' || ' etcd peer certfile and peer keyfile not set.'
+        else c ->> 'name' || ' etcd peer certfile and peer keyfile set.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_etcd_certfile_and_keyfile_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["etcd"]') then 'ok'
+        when (c -> 'command') @> '["etcd"]'
+          and (
+            not (c ->> 'command' like '%--cert-file%')
+            or not (c ->> 'command' like '%--key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["etcd"]') then c ->> 'name' || ' etcd not defined.'
+        when (c -> 'command') @> '["etcd"]'
+          and(
+            not (c ->> 'command' like '%--cert-file%')
+            or not (c ->> 'command' like '%--key-file%')
+          ) then c ->> 'name' || ' etcd certfile and keyfile not set.'
+        else c ->> 'name' || ' etcd certfile and keyfile set.'
+      end as reason,
+      name as pod_template_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod_template,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'command') is null or not ((c -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (
+            (c ->> 'command' like '%--tls-cert-file%')
+            and (c ->> 'command' like '%--tls-private-key-file%')
+          ) then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not ((c -> 'command') @> '["kube-apiserver"]') then c ->> 'name' || ' kube-apiserver not defined.'
+        when (c -> 'command') @> '["kube-apiserver"]'
+          and not (
+            (c ->> 'command' like '%--tls-cert-file%')
+            and (c ->> 'command' like '%--tls-private-key-file%')
+          ) then c ->> 'name' || ' TLS cert file and private key not set.'
+        else c ->> 'name' || ' TLS cert file and private key set.'
       end as reason,
       name as pod_template_name
       ${local.tag_dimensions_sql}

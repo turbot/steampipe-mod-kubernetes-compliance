@@ -25,7 +25,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_no_argument_basic_auth_file,
     control.pod_template_container_encryption_providers_configured,
     control.pod_template_container_argument_etcd_cafile_configured,
-    control.pod_template_container_argument_etcd_certfile_and_keyfile_configured,
+    control.pod_template_container_argument_api_server_etcd_certfile_and_keyfile_configured,
     control.pod_template_container_no_argument_insecure_bind_address,
     control.pod_template_container_argument_insecure_port_0,
     control.pod_template_container_argument_kubelet_client_certificate_and_key_configured,
@@ -72,7 +72,10 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_service_account_enabled,
     control.pod_template_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.pod_template_container_kubelet_streaming_connection_idle_timeout_not_zero,
-    control.pod_template_container_kubernetes_dashboard_not_deployed
+    control.pod_template_container_kubernetes_dashboard_not_deployed,
+    control.pod_template_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
+    control.pod_template_container_argument_etcd_certfile_and_keyfile_configured,
+    control.pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

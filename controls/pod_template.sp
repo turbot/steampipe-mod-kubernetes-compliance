@@ -132,10 +132,10 @@ control "pod_template_container_argument_etcd_cafile_configured" {
   tags = local.pod_template_common_tags
 }
 
-control "pod_template_container_argument_etcd_certfile_and_keyfile_configured" {
+control "pod_template_container_argument_api_server_etcd_certfile_and_keyfile_configured" {
   title       = "PodTemplate containers argument etcd certfile and keyfile should be configured"
   description = "This check ensures that the container in the PodTemplate has etcd certfile and keyfile argument configured."
-  query       = query.pod_template_container_argument_etcd_certfile_and_keyfile_configured
+  query       = query.pod_template_container_argument_api_server_etcd_certfile_and_keyfile_configured
 
   tags = local.pod_template_common_tags
 }
@@ -522,6 +522,30 @@ control "pod_template_container_kubernetes_dashboard_not_deployed" {
   title       = "PodTemplate containers Kubernetes dashboard should not be deployed"
   description = "This check ensures that the container in the PodTemplate does not have Kubernetes dashboard deployed."
   query       = query.pod_template_container_kubernetes_dashboard_not_deployed
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  title       = "PodTemplate containers should have etcd peer certfile and peer keyfile configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has etcd peer certfile and peer keyfile configured appropriately."
+  query       = query.pod_template_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "PodTemplate containers should have etcd certfile and keyfile configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has etcd certfile and keyfile configured appropriately."
+  query       = query.pod_template_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.pod_template_common_tags
+}
+
+control "pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "PodTemplate containers should have TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the PodTemplate has TLS cert file and TLS private key file configured appropriately."
+  query       = query.pod_template_container_argument_api_server_tls_cert_file_and_tls_private_key_file_configured
 
   tags = local.pod_template_common_tags
 }
