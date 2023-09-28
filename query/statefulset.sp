@@ -1299,6 +1299,7 @@ query "statefulset_container_argument_kube_scheduler_bind_address_127_0_0_1" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -1536,6 +1537,7 @@ query "statefulset_container_argument_kubelet_authorization_mode_no_always_allow
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -1585,6 +1587,7 @@ query "statefulset_container_argument_kube_controller_manager_service_account_pr
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -1634,6 +1637,7 @@ query "statefulset_container_argument_kubelet_read_only_port_0" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -1682,6 +1686,7 @@ query "statefulset_container_argument_kube_controller_manager_root_ca_file_confi
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -1983,7 +1988,7 @@ query "statefulset_container_argument_service_account_key_file_appropriate" {
       from
         kubernetes_stateful_set as s,
         jsonb_array_elements(template -> 'spec' -> 'containers') as c,
-        jsonb_array_elements(c -> 'command') as co
+        jsonb_array_elements_text(c -> 'command') as co
       where
         co like '%--service-account-key-file=%'
     ), container_name_with_statefulset_name as (
@@ -1992,6 +1997,7 @@ query "statefulset_container_argument_service_account_key_file_appropriate" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -2100,6 +2106,7 @@ query "statefulset_container_strong_kubelet_cryptographic_ciphers" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -2244,6 +2251,7 @@ query "statefulset_container_argument_kube_controller_manager_bind_address_127_0
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -2319,6 +2327,7 @@ query "statefulset_container_argument_kubelet_client_ca_file_configured" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -2368,6 +2377,7 @@ query "statefulset_container_argument_kubelet_terminated_pod_gc_threshold_config
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
@@ -2380,13 +2390,13 @@ query "statefulset_container_argument_kubelet_terminated_pod_gc_threshold_config
       coalesce(s.statefulset_uid, concat(s.path, ':', s.start_line)) as resource,
       case
         when (s.value -> 'command') is null or not ((s.value -> 'command') @> '["kubelet"]') then 'ok'
-        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and and coalesce((l.value)::int, 0) > 0 then 'ok'
+        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then 'ok'
         else 'alarm'
       end as status,
       case
         when (s.value -> 'command') is null then s.value ->> 'name' || ' command not defined.'
         when not ((s.value -> 'command') @> '["kubelet"]') then s.value ->> 'name' || ' kubelet not defined.'
-        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and and coalesce((l.value)::int, 0) > 0 then s.value ->> 'name' || ' terminated pod gc threshold is set to ' || (l.value) || '.'
+        when l.container_name is not null and (s.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then s.value ->> 'name' || ' terminated pod gc threshold is set to ' || (l.value) || '.'
         else s.value ->> 'name' || ' terminated pod gc threshold is not set to apropriately.'
       end as reason,
       s.statefulset_name as statefulset_name
@@ -2449,6 +2459,7 @@ query "statefulset_container_strong_kube_apiserver_cryptographic_ciphers" {
         s.uid as statefulset_uid,
         s.path as path,
         s.start_line as start_line,
+        s.end_line as end_line,
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,

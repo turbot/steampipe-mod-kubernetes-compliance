@@ -1301,6 +1301,7 @@ query "replicaset_container_argument_kube_scheduler_bind_address_127_0_0_1" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -1538,6 +1539,7 @@ query "replicaset_container_argument_kubelet_authorization_mode_no_always_allow"
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -1587,6 +1589,7 @@ query "replicaset_container_argument_kube_controller_manager_service_account_pri
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -1636,6 +1639,7 @@ query "replicaset_container_argument_kubelet_read_only_port_0" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -1684,6 +1688,7 @@ query "replicaset_container_argument_kube_controller_manager_root_ca_file_config
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -1994,6 +1999,7 @@ query "replicaset_container_argument_service_account_key_file_appropriate" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -2012,7 +2018,7 @@ query "replicaset_container_argument_service_account_key_file_appropriate" {
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when not ((r.value -> 'command') @> '["kube-apiserver"]') then r.value ->> 'name' || ' kube-apiserver not defined.'
-        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' like '%.pem') then r.value ->> 'name' || ' service-account-key-file set appropriate.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' and ((l.value) like '%.pem') then r.value ->> 'name' || ' service-account-key-file set appropriate.'
         else r.value ->> 'name' || ' service-account-key-file set inappropriate.'
       end as reason,
       r.replicaset_name as replicaset_name
@@ -2102,6 +2108,7 @@ query "replicaset_container_strong_kubelet_cryptographic_ciphers" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -2246,6 +2253,7 @@ query "replicaset_container_argument_kube_controller_manager_bind_address_127_0_
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -2321,6 +2329,7 @@ query "replicaset_container_argument_kubelet_terminated_pod_gc_threshold_configu
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -2356,7 +2365,7 @@ query "replicaset_container_argument_kubelet_client_ca_file_configured" {
     with container_list as (
       select
         c ->> 'name' as container_name,
-        trim('"' from split_part(co::text, '=', 2))::integer as value,
+        trim('"' from split_part(co::text, '=', 2)) as value,
         r.name as replicaset
       from
         kubernetes_replicaset as r,
@@ -2370,6 +2379,7 @@ query "replicaset_container_argument_kubelet_client_ca_file_configured" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
@@ -2451,6 +2461,7 @@ query "replicaset_container_strong_kube_apiserver_cryptographic_ciphers" {
         r.uid as replicaset_uid,
         r.path as path,
         r.start_line as start_line,
+        r.end_line as end_line,
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
