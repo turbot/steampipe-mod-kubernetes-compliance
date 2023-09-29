@@ -348,10 +348,10 @@ control "replication_controller_container_argument_kubelet_client_certificate_an
   tags = local.replication_controller_common_tags
 }
 
-control "replication_controller_container_argument_etcd_certfile_and_keyfile_configured" {
-  title       = "Replication Controller containers argument etcd certfile and keyfile should be configured"
-  description = "This check ensures that the container in the Replication Controller has etcd certfile and keyfile argument configured."
-  query       = query.replication_controller_container_argument_etcd_certfile_and_keyfile_configured
+control "replication_controller_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
+  title       = "Replication Controller containers argument apiserver etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the Replication Controller has apiserver etcd certfile and keyfile argument configured."
+  query       = query.replication_controller_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured
 
   tags = local.replication_controller_common_tags
 }
@@ -365,9 +365,297 @@ control "replication_controller_container_admission_control_plugin_always_pull_i
 }
 
 control "replication_controller_container_admission_control_plugin_no_always_admit" {
-  title       = "Replication Controlle containers admission control plugin should not be set to 'always admit'"
+  title       = "Replication Controller containers admission control plugin should not be set to 'always admit'"
   description = "This check ensures that the container in the Replication Controlle has an admission control plugin not set to 'always admit'."
   query       = query.replication_controller_container_admission_control_plugin_no_always_admit
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "Replication Controller containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the Replication Controller has kube scheduler profiling disabled."
+  query       = query.replication_controller_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_scheduler_bind_address_127_0_0_1" {
+  title       = "Replication Controller containers argument kube-scheduler bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Replication Controller has argument kube-scheduler bind address set to 127.0.0.1."
+  query       = query.replication_controller_container_argument_kube_scheduler_bind_address_127_0_0_1
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_protect_kernel_defaults_enabled" {
+  title       = "Replication Controller containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument protect kernel defaults enabled."
+  query       = query.replication_controller_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_make_iptables_util_chains_enabled" {
+  title       = "Replication Controller containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument make iptables util chains enabled."
+  query       = query.replication_controller_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "Replication Controller containers should have kubelet TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kubelet TLS cert file and TLS private key file configured appropriately."
+  query       = query.replication_controller_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_no_argument_hostname_override_configured" {
+  title       = "Replication Controller containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the Replication Controller does not have argument hostname override configured."
+  query       = query.replication_controller_container_no_argument_hostname_override_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "Replication Controller containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the Replication Controller has kube controller manager profiling disabled."
+  query       = query.replication_controller_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_etcd_auto_tls_disabled" {
+  title       = "Replication Controller containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the Replication Controller has argument etcd auto TLS disabled."
+  query       = query.replication_controller_container_argument_etcd_auto_tls_disabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "Replication Controller containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument kube controller manager service account credentials enabled."
+  query       = query.replication_controller_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "Replication Controller containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the Replication Controller has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.replication_controller_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "Replication Controller containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kube controller manager service account private key file configured appropriately."
+  query       = query.replication_controller_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_read_only_port_0" {
+  title       = "Replication Controller containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the Replication Controller has argument kubelet read-only port set to 0."
+  query       = query.replication_controller_container_argument_kubelet_read_only_port_0
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "Replication Controller containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kube controller manager root CA file configured appropriately."
+  query       = query.replication_controller_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "Replication Controller containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument etcd client cert auth enabled."
+  query       = query.replication_controller_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_namespace_lifecycle_enabled" {
+  title       = "Replication Controller containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin NamespaceLifecycle enabled."
+  query       = query.replication_controller_container_argument_namespace_lifecycle_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_service_account_lookup_enabled" {
+  title       = "Replication Controller containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument service account lookup enabled."
+  query       = query.replication_controller_container_argument_service_account_lookup_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_token_auth_file_not_configured" {
+  title       = "Replication Controller containers token auth file should not be configured"
+  description = "This check ensures that the container in the Replication Controller does not have token auth file configured."
+  query       = query.replication_controller_container_token_auth_file_not_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_kubelet_certificate_authority_configured" {
+  title       = "Replication Controller containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kubelet certificate authority configured appropriately."
+  query       = query.replication_controller_container_kubelet_certificate_authority_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_node_restriction_enabled" {
+  title       = "Replication Controller containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin NodeRestriction enabled."
+  query       = query.replication_controller_container_argument_node_restriction_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_pod_security_policy_enabled" {
+  title       = "Replication Controller containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin PodSecurityPolicy enabled."
+  query       = query.replication_controller_container_argument_pod_security_policy_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_security_context_deny_enabled" {
+  title       = "Replication Controller containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+  query       = query.replication_controller_container_argument_security_context_deny_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "Replication Controller containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the Replication Controller has kube-apiserver profiling disabled."
+  query       = query.replication_controller_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_secure_port_not_0" {
+  title       = "Replication Controller containers argument secure port should not be set to 0"
+  description = "This check ensures that the container in the Replication Controller has secure port not set to 0."
+  query       = query.replication_controller_container_argument_secure_port_not_0
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_service_account_key_file_appropriate" {
+  title       = "Replication Controller containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the Replication Controller has the --service-account-key-file argument set as appropriate."
+  query       = query.replication_controller_container_argument_service_account_key_file_appropriate
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_kubernetes_dashboard_not_deployed" {
+  title       = "Replication Controller containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Replication Controller does not have Kubernetes dashboard deployed."
+  query       = query.replication_controller_container_kubernetes_dashboard_not_deployed
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "Replication Controller containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the Replication Controller has --streaming-connection-idle-timeout not set to 0."
+  query       = query.replication_controller_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Replication Controller containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Replication Controller has kubelet using strong cryptographic ciphers."
+  query       = query.replication_controller_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Replication Controller containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument rotate kubelet server certificate enabled."
+  query       = query.replication_controller_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "Replication Controller containers should have etcd certfile and keyfile configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has etcd certfile and keyfile configured appropriately."
+  query       = query.replication_controller_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  title       = "Replication Controller containers should have etcd peer certfile and peer keyfile configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has etcd peer certfile and peer keyfile configured appropriately."
+  query       = query.replication_controller_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_controller_manager_bind_address_127_0_0_1" {
+  title       = "Replication Controller containers argument kube-controller-manager bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Replication Controller has argument kube-controller-manager bind address set to 127.0.0.1."
+  query       = query.replication_controller_container_argument_kube_controller_manager_bind_address_127_0_0_1
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_service_account_enabled" {
+  title       = "Replication Controller containers argument admission control plugin ServiceAccount should be enabled"
+  description = "This check ensures that the container in the Replication Controller has argument admission control plugin ServiceAccount enabled."
+  query       = query.replication_controller_container_argument_service_account_enabled
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  title       = "Replication Controller containers should have kubelet terminated pod gc threshold configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kubelet terminated pod gc threshold configured appropriately."
+  query       = query.replication_controller_container_argument_kubelet_terminated_pod_gc_threshold_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kubelet_client_ca_file_configured" {
+  title       = "Replication Controller containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kubelet client CA file configured appropriately."
+  query       = query.replication_controller_container_argument_kubelet_client_ca_file_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "Replication Controller containers should have kube-apiserver TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the Replication Controller has kube-apiserver TLS cert file and TLS private key file configured appropriately."
+  query       = query.replication_controller_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "Replication Controller containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Replication Controller has kube-apiserver using strong cryptographic ciphers."
+  query       = query.replication_controller_container_strong_kube_apiserver_cryptographic_ciphers
 
   tags = local.replication_controller_common_tags
 }

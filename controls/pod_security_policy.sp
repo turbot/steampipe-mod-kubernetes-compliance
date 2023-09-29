@@ -65,8 +65,8 @@ control "pod_security_policy_hostpid_hostipc_sharing_disabled" {
 }
 
 control "pod_security_policy_immutable_container_filesystem" {
-  title       = "Pod Security Policy should force containers to run with read only root file system"
-  description = "Pod Security Policy `readOnlyRootFilesystem` controls whether the Pod containers run with read only root file system. ${replace(local.immutable_container_filesystem_desc, "__KIND__", "Pod")}"
+  title       = "Pod Security Policy should force containers to run with read-only root file system"
+  description = "Pod Security Policy `readOnlyRootFilesystem` controls whether the Pod containers run with read-only root file system. ${replace(local.immutable_container_filesystem_desc, "__KIND__", "Pod")}"
   query       = query.pod_security_policy_immutable_container_filesystem
 
   tags = merge(local.pod_security_policy_common_tags, {
