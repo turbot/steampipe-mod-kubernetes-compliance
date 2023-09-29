@@ -16,7 +16,7 @@ variable "common_dimensions" {
   # - namespace
   # - path
   # - source_type
-  default = ["context_name", "namespace", "source_type", "path"]
+  default = ["context_name", "namespace", "path", "source_type"]
 }
 
 variable "tag_dimensions" {
