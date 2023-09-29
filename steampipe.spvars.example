@@ -1,4 +1,4 @@
 # Dimensions
 # Possible values for common_dimensions include "connection_name", "context_name", "namespace", "path" and "source_type"
-common_dimensions = [ "context_name", "namespace", "source_type" ]
+common_dimensions = [ "context_name", "namespace", "path", "source_type" ]
 tag_dimensions    = []

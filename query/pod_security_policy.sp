@@ -103,8 +103,8 @@ query "pod_security_policy_immutable_container_filesystem" {
         else 'alarm'
       end as status,
       case
-        when read_only_root_filesystem then 'Pod security policy ' || name || ' containers running with read only root file system.'
-        else 'Pod security policy ' || name || ' containers not running with read only root file system.'
+        when read_only_root_filesystem then 'Pod security policy ' || name || ' containers running with read-only root file system.'
+        else 'Pod security policy ' || name || ' containers not running with read-only root file system.'
       end as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_non_namespace_sql}

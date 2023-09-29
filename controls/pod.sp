@@ -215,7 +215,7 @@ control "pod_container_capabilities_drop_all" {
 
 control "pod_container_arg_peer_client_cert_auth_enabled" {
   title       = "Pod containers peer client cert auth should be enabled"
-  description = "This check ensures that the Pod container peer client cert auth is enabled."
+  description = "This check ensures that the Pod container peer client cert auth should be enabled."
   query       = query.pod_container_arg_peer_client_cert_auth_enabled
 
   tags = local.pod_common_tags
@@ -349,10 +349,10 @@ control "pod_container_argument_kubelet_client_certificate_and_key_configured" {
   tags = local.pod_common_tags
 }
 
-control "pod_container_argument_etcd_certfile_and_keyfile_configured" {
-  title       = "Pod containers argument etcd certfile and keyfile should be configured"
-  description = "This check ensures that the container in the Pod has etcd certfile and keyfile argument configured."
-  query       = query.pod_container_argument_etcd_certfile_and_keyfile_configured
+control "pod_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured" {
+  title       = "Pod containers argument apiserver etcd certfile and keyfile should be configured"
+  description = "This check ensures that the container in the Pod has apiserver etcd certfile and keyfile argument configured."
+  query       = query.pod_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configured
 
   tags = local.pod_common_tags
 }
@@ -369,6 +369,294 @@ control "pod_container_admission_control_plugin_no_always_admit" {
   title       = "Pod containers admission control plugin should not be set to 'always admit'"
   description = "This check ensures that the container in the Pod has an admission control plugin not set to 'always admit'."
   query       = query.pod_container_admission_control_plugin_no_always_admit
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_scheduler_profiling_disabled" {
+  title       = "Pod containers kube scheduler profiling should be disabled"
+  description = "This check ensures that the container in the Pod has kube scheduler profiling disabled."
+  query       = query.pod_container_argument_kube_scheduler_profiling_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_scheduler_bind_address_127_0_0_1" {
+  title       = "Pod containers argument kube-scheduler bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Pod has argument kube-scheduler bind address set to 127.0.0.1."
+  query       = query.pod_container_argument_kube_scheduler_bind_address_127_0_0_1
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_protect_kernel_defaults_enabled" {
+  title       = "Pod containers argument protect kernel defaults should be enabled"
+  description = "This check ensures that the container in the Pod has argument protect kernel defaults enabled."
+  query       = query.pod_container_argument_protect_kernel_defaults_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_make_iptables_util_chains_enabled" {
+  title       = "Pod containers argument make iptables util chains should be enabled"
+  description = "This check ensures that the container in the Pod has argument make iptables util chains enabled."
+  query       = query.pod_container_argument_make_iptables_util_chains_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "Pod containers should have kubelet TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the Pod has kubelet TLS cert file and TLS private key file configured appropriately."
+  query       = query.pod_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_no_argument_hostname_override_configured" {
+  title       = "Pod containers argument hostname override should not be configured"
+  description = "This check ensures that the container in the Pod does not have argument hostname override configured."
+  query       = query.pod_container_no_argument_hostname_override_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_controller_manager_profiling_disabled" {
+  title       = "Pod containers kube controller manager profiling should be disabled"
+  description = "This check ensures that the container in the Pod has kube controller manager profiling disabled."
+  query       = query.pod_container_argument_kube_controller_manager_profiling_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_etcd_auto_tls_disabled" {
+  title       = "Pod containers argument etcd auto TLS should be disabled"
+  description = "This check ensures that the container in the Pod has argument etcd auto TLS disabled."
+  query       = query.pod_container_argument_etcd_auto_tls_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_controller_manager_service_account_credentials_enabled" {
+  title       = "Pod containers argument kube controller manager service account credentials should be enabled"
+  description = "This check ensures that the container in the Pod has argument kube controller manager service account credentials enabled."
+  query       = query.pod_container_argument_kube_controller_manager_service_account_credentials_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kubelet_authorization_mode_no_always_allow" {
+  title       = "Pod containers argument kubelet authorization mode should not be set to 'always allow'"
+  description = "This check ensures that the container in the Pod has argument kubelet authorization mode not set to 'always allow'."
+  query       = query.pod_container_argument_kubelet_authorization_mode_no_always_allow
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_controller_manager_service_account_private_key_file_configured" {
+  title       = "Pod containers should have kube controller manager service account private key file configured appropriately"
+  description = "This check ensures that the container in the Pod has kube controller manager service account private key file configured appropriately."
+  query       = query.pod_container_argument_kube_controller_manager_service_account_private_key_file_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kubelet_read_only_port_0" {
+  title       = "Pod containers argument kubelet read-only port should be set to 0"
+  description = "This check ensures that the container in the Pod has argument kubelet read-only port set to 0."
+  query       = query.pod_container_argument_kubelet_read_only_port_0
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_controller_manager_root_ca_file_configured" {
+  title       = "Pod containers should have kube controller manager root CA file configured appropriately"
+  description = "This check ensures that the container in the Pod has kube controller manager root CA file configured appropriately."
+  query       = query.pod_container_argument_kube_controller_manager_root_ca_file_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_etcd_client_cert_auth_enabled" {
+  title       = "Pod containers argument etcd client cert auth should be enabled"
+  description = "This check ensures that the container in the Pod has argument etcd client cert auth enabled."
+  query       = query.pod_container_argument_etcd_client_cert_auth_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_namespace_lifecycle_enabled" {
+  title       = "Pod containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin NamespaceLifecycle enabled."
+  query       = query.pod_container_argument_namespace_lifecycle_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_service_account_lookup_enabled" {
+  title       = "Pod containers argument service account lookup should be enabled"
+  description = "This check ensures that the container in the Pod has argument service account lookup enabled."
+  query       = query.pod_container_argument_service_account_lookup_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_token_auth_file_not_configured" {
+  title       = "Pod containers token auth file should not be configured"
+  description = "This check ensures that the container in the Pod does not have token auth file configured."
+  query       = query.pod_container_token_auth_file_not_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_kubelet_certificate_authority_configured" {
+  title       = "Pod containers should have kubelet certificate authority configured appropriately"
+  description = "This check ensures that the container in the Pod has kubelet certificate authority configured appropriately."
+  query       = query.pod_container_kubelet_certificate_authority_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_node_restriction_enabled" {
+  title       = "Pod containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin NodeRestriction enabled."
+  query       = query.pod_container_argument_node_restriction_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_pod_security_policy_enabled" {
+  title       = "Pod containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin PodSecurityPolicy enabled."
+  query       = query.pod_container_argument_pod_security_policy_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_security_context_deny_enabled" {
+  title       = "Pod containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
+  query       = query.pod_container_argument_security_context_deny_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_apiserver_profiling_disabled" {
+  title       = "Pod containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the Pod has kube-apiserver profiling disabled."
+  query       = query.pod_container_argument_kube_apiserver_profiling_disabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_secure_port_not_0" {
+  title       = "Pod containers argument secure port should not be set to 0"
+  description = "This check ensures that the container in the Pod has secure port not set to 0."
+  query       = query.pod_container_argument_secure_port_not_0
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_service_account_key_file_appropriate" {
+  title       = "Pod containers --service-account-key-file argument should be set as appropriate"
+  description = "This check ensures that the container in the Pod has the --service-account-key-file argument set as appropriate."
+  query       = query.pod_container_argument_service_account_key_file_appropriate
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_kubernetes_dashboard_not_deployed" {
+  title       = "Pod containers Kubernetes dashboard should not be deployed"
+  description = "This check ensures that the container in the Pod does not have Kubernetes dashboard deployed."
+  query       = query.pod_container_kubernetes_dashboard_not_deployed
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_streaming_connection_idle_timeout_not_zero" {
+  title       = "Pod containers argument --streaming-connection-idle-timeout should not be set to 0"
+  description = "This check ensures that the container in the Pod has --streaming-connection-idle-timeout not set to 0."
+  query       = query.pod_container_streaming_connection_idle_timeout_not_zero
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_strong_kubelet_cryptographic_ciphers" {
+  title       = "Pod containers kubelet should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Pod has kubelet using strong cryptographic ciphers."
+  query       = query.pod_container_strong_kubelet_cryptographic_ciphers
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_rotate_kubelet_server_certificate_enabled" {
+  title       = "Pod containers argument rotate kubelet server certificate should be enabled"
+  description = "This check ensures that the container in the Pod has argument rotate kubelet server certificate enabled."
+  query       = query.pod_container_argument_rotate_kubelet_server_certificate_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_etcd_certfile_and_keyfile_configured" {
+  title       = "Pod containers should have etcd certfile and keyfile configured appropriately"
+  description = "This check ensures that the container in the Pod has etcd certfile and keyfile configured appropriately."
+  query       = query.pod_container_argument_etcd_certfile_and_keyfile_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_etcd_peer_certfile_and_peer_keyfile_configured" {
+  title       = "Pod containers should have etcd peer certfile and peer keyfile configured appropriately"
+  description = "This check ensures that the container in the Pod has etcd peer certfile and peer keyfile configured appropriately."
+  query       = query.pod_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_controller_manager_bind_address_127_0_0_1" {
+  title       = "Pod containers argument kube-controller-manager bind address should be set to 127.0.0.1"
+  description = "This check ensures that the container in the Pod has argument kube-controller-manager bind address set to 127.0.0.1."
+  query       = query.pod_container_argument_kube_controller_manager_bind_address_127_0_0_1
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_service_account_enabled" {
+  title       = "Pod containers argument admission control plugin ServiceAccount should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin where ServiceAccount is enabled."
+  query       = query.pod_container_argument_service_account_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
+  title       = "Pod containers should have kubelet terminated pod gc threshold configured appropriately"
+  description = "This check ensures that the container in the Pod has kubelet terminated pod gc threshold configured appropriately."
+  query       = query.pod_container_argument_kubelet_terminated_pod_gc_threshold_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kubelet_client_ca_file_configured" {
+  title       = "Pod containers should have kubelet client CA file configured appropriately"
+  description = "This check ensures that the container in the Pod has kubelet client CA file configured appropriately."
+  query       = query.pod_container_argument_kubelet_client_ca_file_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured" {
+  title       = "Pod containers should have kube-apiserver TLS cert file and TLS private key file configured appropriately"
+  description = "This check ensures that the container in the Pod has kube-apiserver TLS cert file and TLS private key file configured appropriately."
+  query       = query.pod_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_strong_kube_apiserver_cryptographic_ciphers" {
+  title       = "Pod containers kube-apiserver should only make use of strong cryptographic ciphers"
+  description = "This check ensures that the container in the Pod has kube-apiserver using strong cryptographic ciphers."
+  query       = query.pod_container_strong_kube_apiserver_cryptographic_ciphers
 
   tags = local.pod_common_tags
 }

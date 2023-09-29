@@ -1,3 +1,18 @@
+## v0.14 [2023-09-29]
+
+_What's new?_
+
+- Added 100+ new controls across all resource types to the `all_controls` benchmark. ([#64](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/64))
+
+_Enhancements_
+
+- Added `path` to default set of `common_dimensions`, so now any file paths will appear by default in the additional dimensions in control results. ([#63](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/63))
+- Added `iac` category to mod definition.
+
+_Dependencies_
+
+- Kubernetes plugin `v0.23.0` or higher is now required.
+
 ## v0.13 [2023-09-25]
 
 _Enhancements_
