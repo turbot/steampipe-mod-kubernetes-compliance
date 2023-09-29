@@ -2,7 +2,7 @@
 
 _What's new?_
 
-- Added 100+ new controls across all resource types to the `all_controls` benchmark. ([#64](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/64))
+- Added 350+ new controls across all resource types to the `all_controls` benchmark. ([#64](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/64))
 
 _Enhancements_
 
