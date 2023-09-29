@@ -2491,3 +2491,26 @@ query "statefulset_container_strong_kube_apiserver_cryptographic_ciphers" {
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
+
+query "statefulset_container_host_port_not_specified" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'ports') is null then 'ok'
+        when (c->>'ports') like '%hostPort%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'ports') is null then c ->> 'name' || ' ports not defined.'
+        when (c->>'ports') like '%hostPort%' then c ->> 'name' || ' host port specified.'
+        else c ->> 'name' || ' host port not specified.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}

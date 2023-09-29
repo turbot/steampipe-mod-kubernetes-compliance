@@ -86,7 +86,8 @@ benchmark "all_controls_statefulset" {
     control.statefulset_immutable_container_filesystem,
     control.statefulset_memory_limit,
     control.statefulset_memory_request,
-    control.statefulset_non_root_container
+    control.statefulset_non_root_container,
+    control.statefulset_container_host_port_not_specified,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

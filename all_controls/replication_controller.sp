@@ -86,7 +86,8 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_immutable_container_filesystem,
     control.replication_controller_memory_limit,
     control.replication_controller_memory_request,
-    control.replication_controller_non_root_container
+    control.replication_controller_non_root_container,
+    control.replication_controller_container_host_port_not_specified,
   ]
 
   tags = merge(local.all_controls_replication_controller_common_tags, {

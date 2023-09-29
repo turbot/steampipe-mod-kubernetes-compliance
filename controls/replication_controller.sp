@@ -659,3 +659,11 @@ control "replication_controller_container_strong_kube_apiserver_cryptographic_ci
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_host_port_not_specified" {
+  title       = "Replication Controller containers ports should not have host port specified"
+  description = "This check ensures that the container ports in the Replication Controller does not have host port specified."
+  query       = query.replication_controller_container_host_port_not_specified
+
+  tags = local.replication_controller_common_tags
+}

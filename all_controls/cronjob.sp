@@ -86,7 +86,8 @@ benchmark "all_controls_cronjob" {
     control.cronjob_immutable_container_filesystem,
     control.cronjob_memory_limit,
     control.cronjob_memory_request,
-    control.cronjob_non_root_container
+    control.cronjob_non_root_container,
+    control.cronjob_container_host_port_not_specified,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {
