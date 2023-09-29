@@ -485,8 +485,8 @@ control "replicaset_container_argument_etcd_client_cert_auth_enabled" {
 }
 
 control "replicaset_container_argument_namespace_lifecycle_enabled" {
-  title       = "ReplicaSet containers argument admission control plugin where NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin where NamespaceLifecycle is enabled."
+  title       = "ReplicaSet containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin NamespaceLifecycle enabled."
   query       = query.replicaset_container_argument_namespace_lifecycle_enabled
 
   tags = local.replicaset_common_tags
@@ -518,23 +518,23 @@ control "replicaset_container_kubelet_certificate_authority_configured" {
 }
 
 control "replicaset_container_argument_node_restriction_enabled" {
-  title       = "ReplicaSet containers argument admission control plugin where NodeRestriction is enabled"
-  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin where NodeRestriction is enabled."
+  title       = "ReplicaSet containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin NodeRestriction enabled."
   query       = query.replicaset_container_argument_node_restriction_enabled
 
   tags = local.replicaset_common_tags
 }
 
 control "replicaset_container_argument_pod_security_policy_enabled" {
-  title       = "ReplicaSet containers argument admission control plugin where PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin where PodSecurityPolicy is enabled."
+  title       = "ReplicaSet containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin PodSecurityPolicy enabled."
   query       = query.replicaset_container_argument_pod_security_policy_enabled
 
   tags = local.replicaset_common_tags
 }
 
 control "replicaset_container_argument_security_context_deny_enabled" {
-  title       = "ReplicaSet containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  title       = "ReplicaSet containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
   description = "This check ensures that the container in the ReplicaSet has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
   query       = query.replicaset_container_argument_security_context_deny_enabled
 
@@ -542,8 +542,8 @@ control "replicaset_container_argument_security_context_deny_enabled" {
 }
 
 control "replicaset_container_argument_kube_apiserver_profiling_disabled" {
-  title       = "ReplicaSet containers kube apiserver profiling should be disabled"
-  description = "This check ensures that the container in the ReplicaSet has kube apiserver profiling disabled."
+  title       = "ReplicaSet containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the ReplicaSet has kube-apiserver profiling disabled."
   query       = query.replicaset_container_argument_kube_apiserver_profiling_disabled
 
   tags = local.replicaset_common_tags
@@ -583,7 +583,7 @@ control "replicaset_container_streaming_connection_idle_timeout_not_zero" {
 
 control "replicaset_container_strong_kubelet_cryptographic_ciphers" {
   title       = "ReplicaSet containers kubelet should only make use of strong cryptographic ciphers"
-  description = "This check ensures that the container in the ReplicaSet has kublet using strong cryptographic ciphers."
+  description = "This check ensures that the container in the ReplicaSet has kubelet using strong cryptographic ciphers."
   query       = query.replicaset_container_strong_kubelet_cryptographic_ciphers
 
   tags = local.replicaset_common_tags
@@ -622,8 +622,8 @@ control "replicaset_container_argument_kube_controller_manager_bind_address_127_
 }
 
 control "replicaset_container_argument_service_account_enabled" {
-  title       = "ReplicaSet containers argument admission control plugin where ServiceAccount is enabled"
-  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin where ServiceAccount is enabled."
+  title       = "ReplicaSet containers argument admission control plugin ServiceAccount should be enabled"
+  description = "This check ensures that the container in the ReplicaSet has argument admission control plugin ServiceAccount enabled."
   query       = query.replicaset_container_argument_service_account_enabled
 
   tags = local.replicaset_common_tags

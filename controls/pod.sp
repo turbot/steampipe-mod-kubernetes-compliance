@@ -215,7 +215,7 @@ control "pod_container_capabilities_drop_all" {
 
 control "pod_container_arg_peer_client_cert_auth_enabled" {
   title       = "Pod containers peer client cert auth should be enabled"
-  description = "This check ensures that the Pod container peer client cert auth is enabled."
+  description = "This check ensures that the Pod container peer client cert auth should be enabled."
   query       = query.pod_container_arg_peer_client_cert_auth_enabled
 
   tags = local.pod_common_tags
@@ -486,8 +486,8 @@ control "pod_container_argument_etcd_client_cert_auth_enabled" {
 }
 
 control "pod_container_argument_namespace_lifecycle_enabled" {
-  title       = "Pod containers argument admission control plugin where NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the Pod has argument admission control plugin where NamespaceLifecycle is enabled."
+  title       = "Pod containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin NamespaceLifecycle enabled."
   query       = query.pod_container_argument_namespace_lifecycle_enabled
 
   tags = local.pod_common_tags
@@ -518,23 +518,23 @@ control "pod_container_kubelet_certificate_authority_configured" {
 }
 
 control "pod_container_argument_node_restriction_enabled" {
-  title       = "Pod containers argument admission control plugin where NodeRestriction is enabled"
-  description = "This check ensures that the container in the Pod has argument admission control plugin where NodeRestriction is enabled."
+  title       = "Pod containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin NodeRestriction enabled."
   query       = query.pod_container_argument_node_restriction_enabled
 
   tags = local.pod_common_tags
 }
 
 control "pod_container_argument_pod_security_policy_enabled" {
-  title       = "Pod containers argument admission control plugin PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the Pod has argument admission control plugin where PodSecurityPolicy is enabled."
+  title       = "Pod containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the Pod has argument admission control plugin PodSecurityPolicy enabled."
   query       = query.pod_container_argument_pod_security_policy_enabled
 
   tags = local.pod_common_tags
 }
 
 control "pod_container_argument_security_context_deny_enabled" {
-  title       = "Pod containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  title       = "Pod containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
   description = "This check ensures that the container in the Pod has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
   query       = query.pod_container_argument_security_context_deny_enabled
 
@@ -542,8 +542,8 @@ control "pod_container_argument_security_context_deny_enabled" {
 }
 
 control "pod_container_argument_kube_apiserver_profiling_disabled" {
-  title       = "Pod containers kube apiserver profiling should be disabled"
-  description = "This check ensures that the container in the Pod has kube apiserver profiling disabled."
+  title       = "Pod containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the Pod has kube-apiserver profiling disabled."
   query       = query.pod_container_argument_kube_apiserver_profiling_disabled
 
   tags = local.pod_common_tags
@@ -583,7 +583,7 @@ control "pod_container_streaming_connection_idle_timeout_not_zero" {
 
 control "pod_container_strong_kubelet_cryptographic_ciphers" {
   title       = "Pod containers kubelet should only make use of strong cryptographic ciphers"
-  description = "This check ensures that the container in the Pod has kublet using strong cryptographic ciphers."
+  description = "This check ensures that the container in the Pod has kubelet using strong cryptographic ciphers."
   query       = query.pod_container_strong_kubelet_cryptographic_ciphers
 
   tags = local.pod_common_tags
@@ -622,7 +622,7 @@ control "pod_container_argument_kube_controller_manager_bind_address_127_0_0_1" 
 }
 
 control "pod_container_argument_service_account_enabled" {
-  title       = "Pod containers argument admission control plugin where ServiceAccount is enabled"
+  title       = "Pod containers argument admission control plugin ServiceAccount should be enabled"
   description = "This check ensures that the container in the Pod has argument admission control plugin where ServiceAccount is enabled."
   query       = query.pod_container_argument_service_account_enabled
 

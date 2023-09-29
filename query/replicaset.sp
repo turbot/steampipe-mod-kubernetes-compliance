@@ -139,8 +139,8 @@ query "replicaset_immutable_container_filesystem" {
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read only root file system.'
-        else c ->> 'name' || ' not running with read only root file system.'
+        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read-only root file system.'
+        else c ->> 'name' || ' not running with read-only root file system.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -1144,8 +1144,8 @@ query "replicaset_container_argument_kube_apiserver_etcd_certfile_and_keyfile_co
           and (
             not (c ->> 'command' like '%--etcd-certfile%')
             or not (c ->> 'command' like '%--etcd-keyfile%')
-          ) then c ->> 'name' || ' kube apiserver etcd certfile and etcd keyfile not set.'
-        else c ->> 'name' || ' kube apiserver etcd certfile and etcd keyfile set.'
+          ) then c ->> 'name' || ' kube-apiserver etcd certfile and etcd keyfile not set.'
+        else c ->> 'name' || ' kube-apiserver etcd certfile and etcd keyfile set.'
       end as reason,
       name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -1658,7 +1658,7 @@ query "replicaset_container_argument_kubelet_read_only_port_0" {
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
-        else r.value ->> 'name' || ' read only port is set to ' || (l.value) || '.'
+        else r.value ->> 'name' || ' read-only port is set to ' || (l.value) || '.'
       end as reason,
       r.replicaset_name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -2037,18 +2037,18 @@ query "replicaset_container_kubernetes_dashboard_not_deployed" {
       case
         when c ->> 'image' is null or c ->> 'image' = '' then 'ok'
         when not pg_typeof(c->>'image') = 'text'::regtype then 'alarm'
-        when c ->> 'image' = 'kubernetes-dashboard' 
-          or c ->> 'image' = 'kubernetesui' 
-          or labels ->> 'apps' = 'kubernetes-dashboard' 
+        when c ->> 'image' = 'kubernetes-dashboard'
+          or c ->> 'image' = 'kubernetesui'
+          or labels ->> 'apps' = 'kubernetes-dashboard'
           or labels ->> 'k8s-app' = 'kubernetes-dashboard' then 'alarm'
         else 'ok'
       end as status,
       case
         when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
         when not pg_typeof(c->>'image') = 'text'::regtype then c ->> 'name' || ' image invalid.'
-        when c ->> 'image' = 'kubernetes-dashboard' 
-          or c ->> 'image' = 'kubernetesui' 
-          or labels ->> 'apps' = 'kubernetes-dashboard' 
+        when c ->> 'image' = 'kubernetes-dashboard'
+          or c ->> 'image' = 'kubernetesui'
+          or labels ->> 'apps' = 'kubernetes-dashboard'
           or labels ->> 'k8s-app' = 'kubernetes-dashboard' then c ->> 'name' || ' kubernetes dashboard deployed.'
         else c ->> 'name' || ' kubernetes dashboard not deployed.'
       end as reason,
@@ -2120,7 +2120,7 @@ query "replicaset_container_strong_kubelet_cryptographic_ciphers" {
       coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
       case
         when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kubelet"]') then 'ok'
-        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' 
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then 'ok'
         else 'alarm'
@@ -2128,7 +2128,7 @@ query "replicaset_container_strong_kubelet_cryptographic_ciphers" {
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
-        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' 
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then r.value ->> 'name' || ' kubelet uses strong cryptographic ciphers.'
         else r.value ->> 'name' || ' kubelet not using strong cryptographic ciphers.'
@@ -2396,8 +2396,8 @@ query "replicaset_container_argument_kubelet_client_ca_file_configured" {
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when not ((r.value -> 'command') @> '["kubelet"]') then r.value ->> 'name' || ' kubelet not defined.'
-        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then r.value ->> 'name' || ' kubelet client ca file configured.'
-        else r.value ->> 'name' || ' kubelet client ca file not configured.'
+        when l.container_name is not null and (r.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then r.value ->> 'name' || ' kubelet client CA file configured.'
+        else r.value ->> 'name' || ' kubelet client CA file not configured.'
       end as reason,
       r.replicaset_name as replicaset_name
       ${local.tag_dimensions_sql}
@@ -2472,7 +2472,7 @@ query "replicaset_container_strong_kube_apiserver_cryptographic_ciphers" {
       coalesce(r.replicaset_uid, concat(r.path, ':', r.start_line)) as resource,
       case
         when (r.value -> 'command') is null or not ((r.value -> 'command') @> '["kube-apiserver"]') then 'ok'
-        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' 
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then 'ok'
         else 'alarm'
@@ -2480,7 +2480,7 @@ query "replicaset_container_strong_kube_apiserver_cryptographic_ciphers" {
       case
         when (r.value -> 'command') is null then r.value ->> 'name' || ' command not defined.'
         when not ((r.value -> 'command') @> '["kube-apiserver"]') then r.value ->> 'name' || ' kube-apiserver not defined.'
-        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]' 
+        when l.container_name is not null and (r.value -> 'command') @> '["kube-apiserver"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then r.value ->> 'name' || ' kube-apiserver uses strong cryptographic ciphers.'
         else r.value ->> 'name' || ' kube-apiserver not using strong cryptographic ciphers.'

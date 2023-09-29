@@ -485,8 +485,8 @@ control "job_container_argument_etcd_client_cert_auth_enabled" {
 }
 
 control "job_container_argument_namespace_lifecycle_enabled" {
-  title       = "Job containers argument admission control plugin where NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the Job has argument admission control plugin where NamespaceLifecycle is enabled."
+  title       = "Job containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin NamespaceLifecycle enabled."
   query       = query.job_container_argument_namespace_lifecycle_enabled
 
   tags = local.job_common_tags
@@ -517,23 +517,23 @@ control "job_container_kubelet_certificate_authority_configured" {
 }
 
 control "job_container_argument_node_restriction_enabled" {
-  title       = "Job containers argument admission control plugin where NodeRestriction is enabled"
-  description = "This check ensures that the container in the Job has argument admission control plugin where NodeRestriction is enabled."
+  title       = "Job containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin NodeRestriction enabled."
   query       = query.job_container_argument_node_restriction_enabled
 
   tags = local.job_common_tags
 }
 
 control "job_container_argument_pod_security_policy_enabled" {
-  title       = "Job containers argument admission control plugin where PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the Job has argument admission control plugin where PodSecurityPolicy is enabled."
+  title       = "Job containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin PodSecurityPolicy enabled."
   query       = query.job_container_argument_pod_security_policy_enabled
 
   tags = local.job_common_tags
 }
 
 control "job_container_argument_security_context_deny_enabled" {
-  title       = "Job containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  title       = "Job containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
   description = "This check ensures that the container in the Job has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
   query       = query.job_container_argument_security_context_deny_enabled
 
@@ -541,8 +541,8 @@ control "job_container_argument_security_context_deny_enabled" {
 }
 
 control "job_container_argument_kube_apiserver_profiling_disabled" {
-  title       = "Job containers kube apiserver profiling should be disabled"
-  description = "This check ensures that the container in the Job has kube apiserver profiling disabled."
+  title       = "Job containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the Job has kube-apiserver profiling disabled."
   query       = query.job_container_argument_kube_apiserver_profiling_disabled
 
   tags = local.job_common_tags
@@ -582,7 +582,7 @@ control "job_container_streaming_connection_idle_timeout_not_zero" {
 
 control "job_container_strong_kubelet_cryptographic_ciphers" {
   title       = "Job containers kubelet should only make use of strong cryptographic ciphers"
-  description = "This check ensures that the container in the Job has kublet using strong cryptographic ciphers."
+  description = "This check ensures that the container in the Job has kubelet using strong cryptographic ciphers."
   query       = query.job_container_strong_kubelet_cryptographic_ciphers
 
   tags = local.job_common_tags
@@ -621,8 +621,8 @@ control "job_container_argument_kube_controller_manager_bind_address_127_0_0_1" 
 }
 
 control "job_container_argument_service_account_enabled" {
-  title       = "Job containers argument admission control plugin where ServiceAccount is enabled"
-  description = "This check ensures that the container in the Job has argument admission control plugin where ServiceAccount is enabled."
+  title       = "Job containers argument admission control plugin ServiceAccount should be enabled"
+  description = "This check ensures that the container in the Job has argument admission control plugin where ServiceAccount should be enabled."
   query       = query.job_container_argument_service_account_enabled
 
   tags = local.job_common_tags

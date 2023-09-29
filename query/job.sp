@@ -137,8 +137,8 @@ query "job_immutable_container_filesystem" {
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read only root file system.'
-        else c ->> 'name' || ' not running with read only root file system.'
+        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read-only root file system.'
+        else c ->> 'name' || ' not running with read-only root file system.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -1144,8 +1144,8 @@ query "job_container_argument_kube_apiserver_etcd_certfile_and_keyfile_configure
           and (
             not (c ->> 'command' like '%--etcd-certfile%')
             or not (c ->> 'command' like '%--etcd-keyfile%')
-          ) then c ->> 'name' || ' kube apiserver etcd certfile and etcd keyfile not set.'
-        else c ->> 'name' || ' kube apiserver etcd certfile and etcd keyfile set.'
+          ) then c ->> 'name' || ' kube-apiserver etcd certfile and etcd keyfile not set.'
+        else c ->> 'name' || ' kube-apiserver etcd certfile and etcd keyfile set.'
       end as reason,
       name as job_name
       ${local.tag_dimensions_sql}
@@ -1658,7 +1658,7 @@ query "job_container_argument_kubelet_read_only_port_0" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when not ((j.value -> 'command') @> '["kubelet"]') then j.value ->> 'name' || ' kubelet not defined.'
-        else j.value ->> 'name' || ' read only port is set to ' || (l.value) || '.'
+        else j.value ->> 'name' || ' read-only port is set to ' || (l.value) || '.'
       end as reason,
       j.job_name as job_name
       ${local.tag_dimensions_sql}
@@ -2026,7 +2026,7 @@ query "job_container_argument_service_account_key_file_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_job_name as j
-      left join container_list as l 
+      left join container_list as l
         on j.value ->> 'name' = l.container_name and j.job_name = l.job;
   EOQ
 }
@@ -2038,18 +2038,18 @@ query "job_container_kubernetes_dashboard_not_deployed" {
       case
         when c ->> 'image' is null or c ->> 'image' = '' then 'ok'
         when not pg_typeof(c->>'image') = 'text'::regtype then 'alarm'
-        when c ->> 'image' = 'kubernetes-dashboard' 
-          or c ->> 'image' = 'kubernetesui' 
-          or labels ->> 'apps' = 'kubernetes-dashboard' 
+        when c ->> 'image' = 'kubernetes-dashboard'
+          or c ->> 'image' = 'kubernetesui'
+          or labels ->> 'apps' = 'kubernetes-dashboard'
           or labels ->> 'k8s-app' = 'kubernetes-dashboard' then 'alarm'
         else 'ok'
       end as status,
       case
         when c ->> 'image' is null or c ->> 'image' = '' then c ->> 'name' || ' no image specified.'
         when not pg_typeof(c->>'image') = 'text'::regtype then c ->> 'name' || ' image invalid.'
-        when c ->> 'image' = 'kubernetes-dashboard' 
-          or c ->> 'image' = 'kubernetesui' 
-          or labels ->> 'apps' = 'kubernetes-dashboard' 
+        when c ->> 'image' = 'kubernetes-dashboard'
+          or c ->> 'image' = 'kubernetesui'
+          or labels ->> 'apps' = 'kubernetes-dashboard'
           or labels ->> 'k8s-app' = 'kubernetes-dashboard' then c ->> 'name' || ' kubernetes dashboard deployed.'
         else c ->> 'name' || ' kubernetes dashboard not deployed.'
       end as reason,
@@ -2121,7 +2121,7 @@ query "job_container_strong_kubelet_cryptographic_ciphers" {
       coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
       case
         when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kubelet"]') then 'ok'
-        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' 
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then 'ok'
         else 'alarm'
@@ -2129,7 +2129,7 @@ query "job_container_strong_kubelet_cryptographic_ciphers" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when not ((j.value -> 'command') @> '["kubelet"]') then j.value ->> 'name' || ' kubelet not defined.'
-        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' 
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then j.value ->> 'name' || ' kubelet uses strong cryptographic ciphers.'
         else j.value ->> 'name' || ' kubelet not using strong cryptographic ciphers.'
@@ -2348,7 +2348,7 @@ query "job_container_argument_kubelet_terminated_pod_gc_threshold_configured" {
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when not ((j.value -> 'command') @> '["kubelet"]') then j.value ->> 'name' || ' kubelet not defined.'
         when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and coalesce((l.value)::int, 0) > 0 then j.value ->> 'name' || ' kubelet terminated pod gc threshold is set to ' || (l.value) || '.'
-        else j.value ->> 'name' || ' kubelet terminated pod gc threshold is not set apropriately.'        
+        else j.value ->> 'name' || ' kubelet terminated pod gc threshold is not set apropriately.'
       end as reason,
       j.job_name as job_name
       ${local.tag_dimensions_sql}
@@ -2397,8 +2397,8 @@ query "job_container_argument_kubelet_client_ca_file_configured" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when not ((j.value -> 'command') @> '["kubelet"]') then j.value ->> 'name' || ' kubelet not defined.'
-        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then j.value ->> 'name' || ' kubelet client ca file configured.'
-        else j.value ->> 'name' || ' kubelet client ca file not configured.'        
+        when l.container_name is not null and (j.value -> 'command') @> '["kubelet"]' and l.value is not null and l.value <> '' then j.value ->> 'name' || ' kubelet client CA file configured.'
+        else j.value ->> 'name' || ' kubelet client CA file not configured.'
       end as reason,
       j.job_name as job_name
       ${local.tag_dimensions_sql}
@@ -2473,7 +2473,7 @@ query "job_container_strong_kube_apiserver_cryptographic_ciphers" {
       coalesce(j.job_uid, concat(j.path, ':', j.start_line)) as resource,
       case
         when (j.value -> 'command') is null or not ((j.value -> 'command') @> '["kube-apiserver"]') then 'ok'
-        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' 
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then 'ok'
         else 'alarm'
@@ -2481,7 +2481,7 @@ query "job_container_strong_kube_apiserver_cryptographic_ciphers" {
       case
         when (j.value -> 'command') is null then j.value ->> 'name' || ' command not defined.'
         when not ((j.value -> 'command') @> '["kube-apiserver"]') then j.value ->> 'name' || ' kube-apiserver not defined.'
-        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]' 
+        when l.container_name is not null and (j.value -> 'command') @> '["kube-apiserver"]'
           and string_to_array(l.value, ',') <@ array['TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256','TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384','TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305','TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_256_GCM_SHA384','TLS_RSA_WITH_AES_128_GCM_SHA256']
         then j.value ->> 'name' || ' kube-apiserver uses strong cryptographic ciphers.'
         else j.value ->> 'name' || ' kube-apiserver not using strong cryptographic ciphers.'

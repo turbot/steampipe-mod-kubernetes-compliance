@@ -517,23 +517,23 @@ control "daemonset_container_kubelet_certificate_authority_configured" {
 }
 
 control "daemonset_container_argument_node_restriction_enabled" {
-  title       = "DaemonSet containers argument admission control plugin NodeRestriction is enabled"
-  description = "This check ensures that the container in the DaemonSet has argument admission control plugin where NodeRestriction is enabled."
+  title       = "DaemonSet containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument admission control plugin NodeRestriction enabled."
   query       = query.daemonset_container_argument_node_restriction_enabled
 
   tags = local.daemonset_common_tags
 }
 
 control "daemonset_container_argument_pod_security_policy_enabled" {
-  title       = "DaemonSet containers argument admission control plugin PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the DaemonSet has argument admission control plugin where PodSecurityPolicy is enabled."
+  title       = "DaemonSet containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument admission control plugin PodSecurityPolicy enabled."
   query       = query.daemonset_container_argument_pod_security_policy_enabled
 
   tags = local.daemonset_common_tags
 }
 
 control "daemonset_container_argument_security_context_deny_enabled" {
-  title       = "DaemonSet containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  title       = "DaemonSet containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
   description = "This check ensures that the container in the DaemonSet has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
   query       = query.daemonset_container_argument_security_context_deny_enabled
 
@@ -541,8 +541,8 @@ control "daemonset_container_argument_security_context_deny_enabled" {
 }
 
 control "daemonset_container_argument_kube_apiserver_profiling_disabled" {
-  title       = "DaemonSet containers kube apiserver profiling should be disabled"
-  description = "This check ensures that the container in the DaemonSet has kube apiserver profiling disabled."
+  title       = "DaemonSet containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the DaemonSet has kube-apiserver profiling disabled."
   query       = query.daemonset_container_argument_kube_apiserver_profiling_disabled
 
   tags = local.daemonset_common_tags
@@ -621,8 +621,8 @@ control "daemonset_container_argument_kube_controller_manager_bind_address_127_0
 }
 
 control "daemonset_container_argument_service_account_enabled" {
-  title       = "DaemonSet containers argument admission control plugin where ServiceAccount is enabled"
-  description = "This check ensures that the container in the DaemonSet has argument admission control plugin where ServiceAccount is enabled."
+  title       = "DaemonSet containers argument admission control plugin ServiceAccount should be enabled"
+  description = "This check ensures that the container in the DaemonSet has argument admission control plugin ServiceAccount enabled."
   query       = query.daemonset_container_argument_service_account_enabled
 
   tags = local.daemonset_common_tags

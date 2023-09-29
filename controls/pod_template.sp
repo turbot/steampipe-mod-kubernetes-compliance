@@ -309,8 +309,8 @@ control "pod_template_container_argument_namespace_lifecycle_enabled" {
 }
 
 control "pod_template_container_argument_node_restriction_enabled" {
-  title       = "PodTemplate containers argument admission control plugin NodeRestriction is enabled"
-  description = "This check ensures that the container in the PodTemplate has argument admission control plugin NodeRestriction disabled."
+  title       = "PodTemplate containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin NodeRestriction enabled."
   query       = query.pod_template_container_argument_node_restriction_enabled
 
   tags = local.pod_template_common_tags
@@ -453,16 +453,16 @@ control "pod_template_container_argument_kube_scheduler_profiling_disabled" {
 }
 
 control "pod_template_container_argument_pod_security_policy_enabled" {
-  title       = "PodTemplate containers argument admission control plugin PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the PodTemplate has argument admission control plugin where PodSecurityPolicy is enabled."
+  title       = "PodTemplate containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin PodSecurityPolicy enabled."
   query       = query.pod_template_container_argument_pod_security_policy_enabled
 
   tags = local.pod_template_common_tags
 }
 
 control "pod_template_container_argument_kube_apiserver_profiling_disabled" {
-  title       = "PodTemplate containers kube apiserver profiling should be disabled"
-  description = "This check ensures that the container in the PodTemplate has kube apiserver profiling disabled."
+  title       = "PodTemplate containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the PodTemplate has kube-apiserver profiling disabled."
   query       = query.pod_template_container_argument_kube_apiserver_profiling_disabled
 
   tags = local.pod_template_common_tags
@@ -477,7 +477,7 @@ control "pod_template_container_argument_secure_port_not_0" {
 }
 
 control "pod_template_container_argument_security_context_deny_enabled" {
-  title       = "PodTemplate containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  title       = "PodTemplate containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
   description = "This check ensures that the container in the PodTemplate has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
   query       = query.pod_template_container_argument_security_context_deny_enabled
 
@@ -493,8 +493,8 @@ control "pod_template_container_argument_service_account_key_file_appropriate" {
 }
 
 control "pod_template_container_argument_service_account_enabled" {
-  title       = "PodTemplate containers argument admission control plugin where ServiceAccount is enabled"
-  description = "This check ensures that the container in the PodTemplate has argument admission control plugin where ServiceAccount is enabled."
+  title       = "PodTemplate containers argument admission control plugin ServiceAccount should be enabled"
+  description = "This check ensures that the container in the PodTemplate has argument admission control plugin where ServiceAccount should be enabled."
   query       = query.pod_template_container_argument_service_account_enabled
 
   tags = local.pod_template_common_tags
@@ -558,7 +558,7 @@ control "pod_template_container_argument_rotate_kubelet_server_certificate_enabl
 
 control "pod_template_container_strong_kubelet_cryptographic_ciphers" {
   title       = "PodTemplate containers kubelet should only make use of strong cryptographic ciphers"
-  description = "This check ensures that the container in the PodTemplate has kublet using strong cryptographic ciphers."
+  description = "This check ensures that the container in the PodTemplate has kubelet using strong cryptographic ciphers."
   query       = query.pod_template_container_strong_kubelet_cryptographic_ciphers
 
   tags = local.pod_template_common_tags

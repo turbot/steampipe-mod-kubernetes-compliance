@@ -485,8 +485,8 @@ control "statefulset_container_argument_etcd_client_cert_auth_enabled" {
 }
 
 control "statefulset_container_argument_namespace_lifecycle_enabled" {
-  title       = "StatefulSet containers argument admission control plugin where NamespaceLifecycle is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NamespaceLifecycle is enabled."
+  title       = "StatefulSet containers argument admission control plugin NamespaceLifecycle should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin NamespaceLifecycle enabled."
   query       = query.statefulset_container_argument_namespace_lifecycle_enabled
 
   tags = local.statefulset_common_tags
@@ -517,23 +517,23 @@ control "statefulset_container_kubelet_certificate_authority_configured" {
 }
 
 control "statefulset_container_argument_node_restriction_enabled" {
-  title       = "StatefulSet containers argument admission control plugin where NodeRestriction is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where NodeRestriction is enabled."
+  title       = "StatefulSet containers argument admission control plugin NodeRestriction should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin NodeRestriction enabled."
   query       = query.statefulset_container_argument_node_restriction_enabled
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_argument_pod_security_policy_enabled" {
-  title       = "StatefulSet containers argument admission control plugin where PodSecurityPolicy is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where PodSecurityPolicy is enabled."
+  title       = "StatefulSet containers argument admission control plugin PodSecurityPolicy should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin PodSecurityPolicy enabled."
   query       = query.statefulset_container_argument_pod_security_policy_enabled
 
   tags = local.statefulset_common_tags
 }
 
 control "statefulset_container_argument_security_context_deny_enabled" {
-  title       = "StatefulSet containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled"
+  title       = "StatefulSet containers argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny should be enabled"
   description = "This check ensures that the container in the StatefulSet has argument admission control plugin where either PodSecurityPolicy or SecurityContextDeny is enabled."
   query       = query.statefulset_container_argument_security_context_deny_enabled
 
@@ -541,8 +541,8 @@ control "statefulset_container_argument_security_context_deny_enabled" {
 }
 
 control "statefulset_container_argument_kube_apiserver_profiling_disabled" {
-  title       = "StatefulSet containers kube apiserver profiling should be disabled"
-  description = "This check ensures that the container in the StatefulSet has kube apiserver profiling disabled."
+  title       = "StatefulSet containers kube-apiserver profiling should be disabled"
+  description = "This check ensures that the container in the StatefulSet has kube-apiserver profiling disabled."
   query       = query.statefulset_container_argument_kube_apiserver_profiling_disabled
 
   tags = local.statefulset_common_tags
@@ -621,8 +621,8 @@ control "statefulset_container_argument_kube_controller_manager_bind_address_127
 }
 
 control "statefulset_container_argument_service_account_enabled" {
-  title       = "StatefulSet containers argument admission control plugin where ServiceAccount is enabled"
-  description = "This check ensures that the container in the StatefulSet has argument admission control plugin where ServiceAccount is enabled."
+  title       = "StatefulSet containers argument admission control plugin ServiceAccount should be enabled"
+  description = "This check ensures that the container in the StatefulSet has argument admission control plugin ServiceAccount enabled."
   query       = query.statefulset_container_argument_service_account_enabled
 
   tags = local.statefulset_common_tags
