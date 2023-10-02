@@ -23,3 +23,33 @@ control "role_with_wildcards_used" {
     cis = "true"
   })
 }
+
+control "role_with_rbac_escalate_permissions" {
+  title       = "ClusterRoles permissions to escalate Roles or ClusterRoles should be minimized."
+  description = "Minimize the permissions granted to ClusterRoles to escalate Roles or ClusterRoles. It is recommended to follow the principle of least privilege to enhance security."
+  query       = query.role_with_rbac_escalate_permissions
+
+  tags = merge(local.role_common_tags, {
+    cis = "true"
+  })
+}
+
+control "role_with_bind_cluster_role_bindings" {
+  title       = "ClusterRoles permissions to bind RoleBindings or ClusterRoleBindings should be minimized."
+  description = "Minimize the permissions granted to ind RoleBindings or ClusterRoleBinding. It is recommended to follow the principle of least privilege to enhance security."
+  query       = query.role_with_bind_cluster_role_bindings
+
+  tags = merge(local.role_common_tags, {
+    cis = "true"
+  })
+}
+
+control "cluster_role_with_validating_or_mutating_admission_webhook_configurations" {
+  title       = "ClusterRoles permissions for managing the configuration of validation or mutation admission webhooks should be minimized."
+  description = "Minimize the permissions granted to ClusterRoles for managing admission webhooks. It is recommended to follow the principle of least privilege to enhance security."
+  query       = query.cluster_role_with_validating_or_mutating_admission_webhook_configurations
+
+  tags = merge(local.role_common_tags, {
+    cis = "true"
+  })
+}

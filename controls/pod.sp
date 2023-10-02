@@ -668,3 +668,12 @@ control "pod_container_host_port_not_specified" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_service_account_token_enabled" {
+  title       = "Pods service account token shoulde be enabled"
+  description = "This check ensures that Pod service account token is enabled."
+  query       = query.pod_service_account_token_enabled
+
+  tags = local.pod_common_tags
+}
+

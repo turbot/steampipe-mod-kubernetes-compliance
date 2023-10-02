@@ -2538,3 +2538,23 @@ query "pod_container_host_port_not_specified" {
       jsonb_array_elements(containers) as c;
   EOQ
 }
+
+query "pod_service_account_token_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb  -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb  -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'name' || ' service account tokens enabled.'
+        else 'name' || ' service account tokens disabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod;
+  EOQ
+}
