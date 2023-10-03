@@ -236,7 +236,7 @@ query "cluster_role_with_validating_or_mutating_admission_webhook_configurations
       end as status,
       case
         when e.num > 0  then name || ' contains ' || e.num || ' RBAC cluster role validating or mutating admission webhook configurations permissions.'
-        else name || ' does not contains any bind role bindings or cluster role validating or mutating admission webhook configurations permissions.'
+        else name || ' does not contain any bind role bindings or cluster role validating or mutating admission webhook configurations permissions.'
       end as reason,
       name as role_name
       ${local.tag_dimensions_sql}
