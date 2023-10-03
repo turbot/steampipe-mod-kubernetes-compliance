@@ -67,7 +67,7 @@ query "ingress_nginx_annotations_snippets_lua_code_not_used" {
       end as status,
       case
         when a.key like '%snippet%' and a.value ~ '(lua_|_lua|_lua_|kubernetes\.io)' then a.key || ' annotation snippet contains lua code execution.'
-        else a.key || ' annotation snippet not containing lua code execution.'
+        else a.key || ' annotation snippet does not contain lua code execution.'
       end as reason,
       name as ingress_name
       ${local.tag_dimensions_sql}
