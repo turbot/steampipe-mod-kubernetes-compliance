@@ -2567,7 +2567,6 @@ query "job_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_job_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.job_name = l.job
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.job_name = l.job;
   EOQ
 }

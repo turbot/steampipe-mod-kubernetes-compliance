@@ -2544,11 +2544,11 @@ query "pod_service_account_token_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb  -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'ok'
+        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'ok'
         else 'alarm'
       end as status,
       case
-        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb  -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'name' || ' service account tokens enabled.'
+        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'name' || ' service account tokens enabled.'
         else 'name' || ' service account tokens disabled.'
       end as reason,
       name as pod_name
@@ -2652,7 +2652,6 @@ query "pod_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_pod_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.pod_name = l.pod
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
   EOQ
 }

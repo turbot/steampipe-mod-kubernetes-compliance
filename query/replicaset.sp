@@ -2566,7 +2566,6 @@ query "replicaset_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_replicaset_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.replicaset_name = l.replicaset
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.replicaset_name = l.replicaset;
   EOQ
 }

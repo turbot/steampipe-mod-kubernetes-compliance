@@ -662,7 +662,7 @@ control "cronjob_container_strong_kube_apiserver_cryptographic_ciphers" {
 
 control "cronjob_container_host_port_not_specified" {
   title       = "CronJob containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the CronJob does not have host port specified."
+  description = "This check ensures that the container ports in the CronJob do not have host port specified."
   query       = query.cronjob_container_host_port_not_specified
 
   tags = local.cronjob_common_tags
@@ -670,7 +670,7 @@ control "cronjob_container_host_port_not_specified" {
 
 control "cronjob_container_host_port_not_specified" {
   title       = "CronJob containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the CronJob does not have host port specified."
+  description = "This check ensures that the container ports in the CronJob do not have host port specified."
   query       = query.cronjob_container_host_port_not_specified
 
   tags = local.cronjob_common_tags

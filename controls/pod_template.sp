@@ -590,7 +590,7 @@ control "pod_template_container_argument_kubelet_terminated_pod_gc_threshold_con
 
 control "pod_template_container_host_port_not_specified" {
   title       = "PodTemplate containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the PodTemplate does not have host port specified."
+  description = "This check ensures that the container ports in the PodTemplate do not have host port specified."
   query       = query.pod_template_container_host_port_not_specified
 
   tags = local.pod_template_common_tags

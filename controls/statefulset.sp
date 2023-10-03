@@ -662,7 +662,7 @@ control "statefulset_container_strong_kube_apiserver_cryptographic_ciphers" {
 
 control "statefulset_container_host_port_not_specified" {
   title       = "StatefulSet containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the StatefulSet does not have host port specified."
+  description = "This check ensures that the container ports in the StatefulSet do not have host port specified."
   query       = query.statefulset_container_host_port_not_specified
 
   tags = local.statefulset_common_tags

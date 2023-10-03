@@ -662,7 +662,7 @@ control "job_container_strong_kube_apiserver_cryptographic_ciphers" {
 
 control "job_container_host_port_not_specified" {
   title       = "Job containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the Job does not have host port specified."
+  description = "This check ensures that the container ports in the Job do not have host port specified."
   query       = query.job_container_host_port_not_specified
 
   tags = local.job_common_tags

@@ -2434,7 +2434,6 @@ query "pod_template_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_pod_template_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.pod_template_name = l.pod_template
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_template_name = l.pod_template;
   EOQ
 }

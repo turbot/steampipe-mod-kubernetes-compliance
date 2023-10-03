@@ -663,7 +663,7 @@ control "pod_container_strong_kube_apiserver_cryptographic_ciphers" {
 
 control "pod_container_host_port_not_specified" {
   title       = "Pod containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the Pod does not have host port specified."
+  description = "This check ensures that the container ports in the Pod do not have host port specified."
   query       = query.pod_container_host_port_not_specified
 
   tags = local.pod_common_tags

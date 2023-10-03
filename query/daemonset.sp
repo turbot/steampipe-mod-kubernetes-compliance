@@ -2564,7 +2564,6 @@ query "daemonset_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_daemonset_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.daemonset_name = l.daemonset
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.daemonset_name = l.daemonset;
   EOQ
 }

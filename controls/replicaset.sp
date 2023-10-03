@@ -663,7 +663,7 @@ control "replicaset_container_strong_kube_apiserver_cryptographic_ciphers" {
 
 control "replicaset_container_host_port_not_specified" {
   title       = "ReplicaSet containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the ReplicaSet does not have host port specified."
+  description = "This check ensures that the container ports in the ReplicaSet do not have host port specified."
   query       = query.replicaset_container_host_port_not_specified
 
   tags = local.replicaset_common_tags

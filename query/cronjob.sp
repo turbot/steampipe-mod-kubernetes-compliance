@@ -2566,7 +2566,6 @@ query "cronjob_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_cronjob_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.cronjob_name = l.cronjob
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.cronjob_name = l.cronjob;
   EOQ
 }

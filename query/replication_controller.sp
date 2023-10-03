@@ -2565,7 +2565,6 @@ query "replication_controller_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_replication_controller_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.replication_controller_name = l.replication_controller
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.replication_controller_name = l.replication_controller;
   EOQ
 }

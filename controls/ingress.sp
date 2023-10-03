@@ -16,7 +16,7 @@ control "ingress_default_namespace_used" {
 
 control "ingress_nginx_annotations_snippets_alias_not_used" {
   title       = "Ingress definition should not have NGINX ingress annotation snippets containing alias statements"
-  description = "This check ensures that the NGINX ingress annotation snippets in the Ingress does not contain alias statements."
+  description = "This check ensures that the NGINX ingress annotation snippets in the Ingress do not contain alias statements."
   query       = query.ingress_nginx_annotations_snippets_alias_not_used
 
   tags = local.ingress_common_tags
@@ -32,7 +32,7 @@ control "ingress_nginx_annotations_all_snippets_not_used" {
 
 control "ingress_nginx_annotations_snippets_lua_code_not_used" {
   title       = "Ingress definition should not have NGINX ingress annotation snippets containing lua code snippets"
-  description = "This check ensures that the NGINX ingress annotation snippets in the Ingress does not contain lua code snippets."
+  description = "This check ensures that the NGINX ingress annotation snippets in the Ingress do not contain lua code snippets."
   query       = query.ingress_nginx_annotations_snippets_lua_code_not_used
 
   tags = local.ingress_common_tags

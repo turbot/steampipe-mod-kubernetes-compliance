@@ -138,7 +138,7 @@ query "role_with_bind_cluster_role_bindings" {
     with role_with_escalate as (
       select
         uid,
-         count(*) as num
+        count(*) as num
       from
         kubernetes_cluster_role,
         jsonb_array_elements(rules) rule
@@ -148,13 +148,13 @@ query "role_with_bind_cluster_role_bindings" {
           rule -> 'resources' @> '["rolebindings"]'
           or rule -> 'resources' @> '["clusterrolebindings"]'
         )
-        and rule -> 'verbs'  @> '["bind"]'
+        and rule -> 'verbs' @> '["bind"]'
       group by
         uid
       union
       select
         uid,
-         count(*) as num
+        count(*) as num
       from
         kubernetes_role,
         jsonb_array_elements(rules) rule
@@ -164,7 +164,7 @@ query "role_with_bind_cluster_role_bindings" {
           rule -> 'resources' @> '["rolebindings"]'
           or rule -> 'resources' @> '["clusterrolebindings"]'
         )
-        and rule -> 'verbs'  @> '["bind"]'
+        and rule -> 'verbs' @> '["bind"]'
       group by
         uid
     ), union_role_and_cluster_role as (
@@ -258,7 +258,7 @@ query "role_with_rbac_approve_certificate_signing_requests" {
         jsonb_array_elements(rules) rule
       where
         rule -> 'apiGroups' @> '["certificates.k8s.io"]'
-        and 
+        and
         ((rule -> 'resources' @> '["certificatesigningrequests/approval"]' and rule -> 'verbs' @> '["update", "patch"]')
         or (rule -> 'resources' @> '["signers"]' and rule -> 'verbs' @> '["approve"]'))
       group by

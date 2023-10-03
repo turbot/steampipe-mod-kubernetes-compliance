@@ -76,7 +76,7 @@ query "service_no_tiller_deployed" {
       end as status,
       case
         when labels ->> 'app' = 'helm' or labels ->> 'name' = 'tiller' then name || ' has tiller deployed.'
-        else  name || ' tiller not deployed.'
+        else  name || ' does not have tiller deployed.'
       end as reason
       ${local.tag_dimensions_sql}
       ${local.common_dimensions_sql}

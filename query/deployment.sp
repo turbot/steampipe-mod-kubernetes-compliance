@@ -2582,7 +2582,6 @@ query "deployment_container_argument_request_timeout_appropriate" {
       ${local.common_dimensions_sql}
     from
       container_name_with_deployment_name as p
-      left join container_list as l
-        on p.value ->> 'name' = l.container_name and p.deployment_name = l.deployment
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.deployment_name = l.deployment;
   EOQ
 }

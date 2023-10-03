@@ -662,7 +662,7 @@ control "daemonset_container_strong_kube_apiserver_cryptographic_ciphers" {
 
 control "daemonset_container_host_port_not_specified" {
   title       = "DaemonSet containers ports should not have host port specified"
-  description = "This check ensures that the container ports in the DaemonSet does not have host port specified."
+  description = "This check ensures that the container ports in the DaemonSet do not have host port specified."
   query       = query.daemonset_container_host_port_not_specified
 
   tags = local.daemonset_common_tags
