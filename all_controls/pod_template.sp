@@ -73,6 +73,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_privilege_escalation_disabled,
     control.pod_template_container_readiness_probe,
     control.pod_template_container_rotate_certificate_enabled,
+    control.pod_template_container_secrets_defined_as_files,
     control.pod_template_container_security_context_exists,
     control.pod_template_container_strong_kube_apiserver_cryptographic_ciphers,
     control.pod_template_container_strong_kubelet_cryptographic_ciphers,

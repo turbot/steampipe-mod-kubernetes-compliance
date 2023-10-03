@@ -683,3 +683,12 @@ control "cronjob_container_argument_request_timeout_appropriate" {
 
   tags = local.cronjob_common_tags
 }
+
+
+control "cronjob_container_secrets_defined_as_files" {
+  title       = "CronJob containers should have secrets defined as files"
+  description = "This check ensures that the container in the CronJob has secrets defined as files."
+  query       = query.cronjob_container_secrets_defined_as_files
+
+  tags = local.cronjob_common_tags
+}

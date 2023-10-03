@@ -72,6 +72,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_container_privilege_port_mapped,
     control.statefulset_container_readiness_probe,
     control.statefulset_container_rotate_certificate_enabled,
+    control.statefulset_container_secrets_defined_as_files,
     control.statefulset_container_security_context_exists,
     control.statefulset_container_streaming_connection_idle_timeout_not_zero,
     control.statefulset_container_strong_kube_apiserver_cryptographic_ciphers,

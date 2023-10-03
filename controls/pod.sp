@@ -692,3 +692,11 @@ control "pod_container_argument_request_timeout_appropriate" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_secrets_defined_as_files" {
+  title       = "Pod containers secrets should be defined as files"
+  description = "This check ensures that the container in the Pod has secrets defined as files."
+  query       = query.pod_container_secrets_defined_as_files
+
+  tags = local.pod_common_tags
+}

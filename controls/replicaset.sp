@@ -676,3 +676,12 @@ control "replicaset_container_argument_request_timeout_appropriate" {
 
   tags = local.replicaset_common_tags
 }
+
+
+control "replicaset_container_secrets_defined_as_files" {
+  title       = "ReplicaSet containers should have secrets defined as files"
+  description = "This check ensures that the container in the ReplicaSet has secrets defined as files."
+  query       = query.replicaset_container_secrets_defined_as_files
+
+  tags = local.replicaset_common_tags
+}

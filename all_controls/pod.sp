@@ -75,6 +75,7 @@ benchmark "all_controls_pod" {
     control.pod_container_readiness_probe,
     control.pod_container_rotate_certificate_enabled,
     control.pod_container_run_as_user_10000,
+    control.pod_container_secrets_defined_as_files,
     control.pod_container_security_context_exists,
     control.pod_container_streaming_connection_idle_timeout_not_zero,
     control.pod_container_strong_kube_apiserver_cryptographic_ciphers,

@@ -72,6 +72,7 @@ benchmark "all_controls_deployment" {
     control.deployment_container_privilege_port_mapped,
     control.deployment_container_readiness_probe,
     control.deployment_container_rotate_certificate_enabled,
+    control.deployment_container_secrets_defined_as_files,
     control.deployment_container_security_context_exists,
     control.deployment_container_streaming_connection_idle_timeout_not_zero,
     control.deployment_container_strong_kube_apiserver_cryptographic_ciphers,

@@ -72,6 +72,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_container_privilege_port_mapped,
     control.cronjob_container_readiness_probe,
     control.cronjob_container_rotate_certificate_enabled,
+    control.cronjob_container_secrets_defined_as_files,
     control.cronjob_container_security_context_exists,
     control.cronjob_container_streaming_connection_idle_timeout_not_zero,
     control.cronjob_container_strong_kube_apiserver_cryptographic_ciphers,

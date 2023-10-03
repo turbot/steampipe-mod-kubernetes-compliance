@@ -675,3 +675,11 @@ control "daemonset_container_argument_request_timeout_appropriate" {
 
   tags = local.daemonset_common_tags
 }
+
+control "daemonset_container_secrets_defined_as_files" {
+  title       = "DaemonSet containers should have secrets defined as files"
+  description = "This check ensures that the container in the DaemonSet has secrets defined as files."
+  query       = query.daemonset_container_secrets_defined_as_files
+
+  tags = local.daemonset_common_tags
+}

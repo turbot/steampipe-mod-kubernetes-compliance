@@ -72,6 +72,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_privilege_port_mapped,
     control.daemonset_container_readiness_probe,
     control.daemonset_container_rotate_certificate_enabled,
+    control.daemonset_container_secrets_defined_as_files,
     control.daemonset_container_security_context_exists,
     control.daemonset_container_streaming_connection_idle_timeout_not_zero,
     control.daemonset_container_strong_kube_apiserver_cryptographic_ciphers,

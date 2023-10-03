@@ -72,6 +72,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_container_privilege_port_mapped,
     control.replicaset_container_readiness_probe,
     control.replicaset_container_rotate_certificate_enabled,
+    control.replicaset_container_secrets_defined_as_files,
     control.replicaset_container_security_context_exists,
     control.replicaset_container_streaming_connection_idle_timeout_not_zero,
     control.replicaset_container_strong_kube_apiserver_cryptographic_ciphers,

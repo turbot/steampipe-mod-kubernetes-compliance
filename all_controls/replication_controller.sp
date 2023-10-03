@@ -72,6 +72,7 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_container_privilege_port_mapped,
     control.replication_controller_container_readiness_probe,
     control.replication_controller_container_rotate_certificate_enabled,
+    control.replication_controller_container_secrets_defined_as_files,
     control.replication_controller_container_security_context_exists,
     control.replication_controller_container_streaming_connection_idle_timeout_not_zero,
     control.replication_controller_container_strong_kube_apiserver_cryptographic_ciphers,

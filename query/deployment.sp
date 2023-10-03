@@ -2585,3 +2585,45 @@ query "deployment_container_argument_request_timeout_appropriate" {
       left join container_list as l on p.value ->> 'name' = l.container_name and p.deployment_name = l.deployment;
   EOQ
 }
+
+query "deployment_container_secrets_defined_as_files" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when env like '%valueFrom%' and env like '%secretKeyRef%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when env like '%valueFrom%' and env like '%secretKeyRef%' then c ->> 'name' || ' container has secrets defined.'
+        else c ->> 'name' || ' container has no secrets defined.'
+      end as reason,
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+      jsonb_array_elements_text(c -> 'env') as env
+
+    union
+
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when env like '%secretRef%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when env like '%secretRef%' then c ->> 'name' || ' container has secrets defined.'
+        else c ->> 'name' || ' container has no secrets defined.'
+      end as reason,
+      name as deployment_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_deployment,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+      jsonb_array_elements_text(c -> 'envFrom') as env;
+  EOQ
+}

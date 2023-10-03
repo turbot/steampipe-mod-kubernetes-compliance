@@ -603,3 +603,12 @@ control "pod_template_container_argument_request_timeout_appropriate" {
 
   tags = local.pod_template_common_tags
 }
+
+
+control "pod_template_container_secrets_defined_as_files" {
+  title       = "PodTemplate containers should have secrets defined as files"
+  description = "This check ensures that the container in the PodTemplate has secrets defined as files."
+  query       = query.pod_template_container_secrets_defined_as_files
+
+  tags = local.pod_template_common_tags
+}

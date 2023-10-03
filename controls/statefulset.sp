@@ -675,3 +675,12 @@ control "statefulset_container_argument_request_timeout_appropriate" {
 
   tags = local.statefulset_common_tags
 }
+
+
+control "statefulset_container_secrets_defined_as_files" {
+  title       = "StatefulSet containers should have secrets defined as files"
+  description = "This check ensures that the container in the StatefulSet has secrets defined as files."
+  query       = query.statefulset_container_secrets_defined_as_files
+
+  tags = local.statefulset_common_tags
+}

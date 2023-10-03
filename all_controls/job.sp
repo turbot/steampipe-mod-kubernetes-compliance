@@ -72,6 +72,7 @@ benchmark "all_controls_job" {
     control.job_container_privilege_port_mapped,
     control.job_container_readiness_probe,
     control.job_container_rotate_certificate_enabled,
+    control.job_container_secrets_defined_as_files,
     control.job_container_security_context_exists,
     control.job_container_streaming_connection_idle_timeout_not_zero,
     control.job_container_strong_kube_apiserver_cryptographic_ciphers,
