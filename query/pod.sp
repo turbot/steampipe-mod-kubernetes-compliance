@@ -2558,3 +2558,47 @@ query "pod_service_account_token_enabled" {
       kubernetes_pod;
   EOQ
 }
+
+query "pod_container_run_as_user_10000" {
+  sql = <<-EOQ
+    with pod_container_run_as_user as (
+      select
+        name,
+        uid,
+        (c -> 'securityContext' ->> 'runAsUser')::int as run_as_user
+      from
+        kubernetes_pod,
+        jsonb_array_elements(containers) as c
+      where
+       (c -> 'securityContext' ->> 'runAsUser') is not null
+    )
+    select
+      coalesce(p.uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when r.uid is null and (p.security_context -> 'runAsUser') is null then 'alarm'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int >= 10000 then 'ok'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int < 10000 then 'alarm'
+        when r.run_as_user < 10000 and (p.security_context -> 'runAsUser') is null then 'alarm'
+        when r.run_as_user >= 10000 and (p.security_context -> 'runAsUser') is null then 'ok'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int >= 10000 then 'alarm'
+        when r.run_as_user >= 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then 'ok'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then 'alarm'
+      end as status,
+      case
+        when r.uid is null and (p.security_context -> 'runAsUser') is null then p.name || ' run as user not set.'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int >= 10000 then p.name || ' run as user set to ' || (p.security_context ->> 'runAsUser') || '.'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int < 10000 then p.name || ' run as user set to ' || (p.security_context ->> 'runAsUser') || '.'
+        when r.run_as_user < 10000 and (p.security_context -> 'runAsUser') is null then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user >= 10000 and (p.security_context -> 'runAsUser') is null then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int >= 10000 then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user >= 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+      end as reason,
+      p.name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod as p
+      left join pod_container_run_as_user as r on r.uid = p.uid;
+  EOQ
+}

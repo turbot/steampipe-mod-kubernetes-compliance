@@ -677,3 +677,11 @@ control "pod_service_account_token_enabled" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_run_as_user_10000" {
+  title       = "Pods containers run as user should be set to 10000 or greater"
+  description = "This check ensures that Pod container has run as user set to 10000 or greater than 10000."
+  query       = query.pod_container_run_as_user_10000
+
+  tags = local.pod_common_tags
+}
+
