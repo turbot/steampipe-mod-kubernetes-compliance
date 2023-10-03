@@ -8,7 +8,11 @@ benchmark "all_controls_role" {
   title       = "Role"
   description = "This section contains recommendations for configuring Role resources."
   children = [
+    control.cluster_role_with_validating_or_mutating_admission_webhook_configurations,
     control.role_default_namespace_used,
+    control.role_with_bind_cluster_role_bindings,
+    control.role_with_rbac_approve_certificate_signing_requests,
+    control.role_with_rbac_escalate_permissions,
     control.role_with_wildcards_used
   ]
 

@@ -2491,3 +2491,121 @@ query "statefulset_container_strong_kube_apiserver_cryptographic_ciphers" {
       left join container_list as l on s.value ->> 'name' = l.container_name and s.statefulset_name = l.statefulset;
   EOQ
 }
+
+query "statefulset_container_host_port_not_specified" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'ports') is null then 'ok'
+        when (c->>'ports') like '%hostPort%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'ports') is null then c ->> 'name' || ' ports not defined.'
+        when (c->>'ports') like '%hostPort%' then c ->> 'name' || ' host port specified.'
+        else c ->> 'name' || ' host port not specified.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c;
+  EOQ
+}
+
+query "statefulset_container_argument_request_timeout_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as statefulset
+      from
+        kubernetes_stateful_set as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--request-timeout=%'
+    ), container_name_with_statefulset_name as (
+      select
+        p.name as statefulset_name,
+        p.uid as statefulset_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.end_line as end_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_stateful_set as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(p.statefulset_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null then 'ok'
+        when (p.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'ok'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) ~ '^(\d{1,2}[h])(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[s])$') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when (p.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  p.value ->> 'name' || ' request-timeout not set.'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then p.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) ~ '^(\d{1,2}[h])(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[s])$') then p.value ->> 'name' || ' request-timeout set appropriate.'
+        else p.value ->> 'name' || ' request-timeout set inappropriate.'
+      end as reason,
+      p.statefulset_name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_statefulset_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.statefulset_name = l.statefulset;
+  EOQ
+}
+
+query "statefulset_container_secrets_defined_as_files" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when env like '%valueFrom%' and env like '%secretKeyRef%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when env like '%valueFrom%' and env like '%secretKeyRef%' then c ->> 'name' || ' container has secrets defined.'
+        else c ->> 'name' || ' container has no secrets defined.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+      jsonb_array_elements_text(c -> 'env') as env
+
+    union
+
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when env like '%secretRef%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when env like '%secretRef%' then c ->> 'name' || ' container has secrets defined.'
+        else c ->> 'name' || ' container has no secrets defined.'
+      end as reason,
+      name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_stateful_set,
+      jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+      jsonb_array_elements_text(c -> 'envFrom') as env;
+  EOQ
+}

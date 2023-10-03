@@ -659,3 +659,28 @@ control "replication_controller_container_strong_kube_apiserver_cryptographic_ci
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_host_port_not_specified" {
+  title       = "Replication Controller containers ports should not have host port specified"
+  description = "This check ensures that the container ports in the Replication Controller do not have host port specified."
+  query       = query.replication_controller_container_host_port_not_specified
+
+  tags = local.replication_controller_common_tags
+}
+
+control "replication_controller_container_argument_request_timeout_appropriate" {
+  title       = "Replication Controller containers argument request timeout should be set as appropriate"
+  description = "This check ensures that the container in the Replication Controller has argument request timeout set as appropriate."
+  query       = query.replication_controller_container_argument_request_timeout_appropriate
+
+  tags = local.replication_controller_common_tags
+}
+
+
+control "replication_controller_container_secrets_defined_as_files" {
+  title       = "Replication Controller containers should have secrets defined as files"
+  description = "This check ensures that the container in the Replication Controller has secrets defined as files."
+  query       = query.replication_controller_container_secrets_defined_as_files
+
+  tags = local.replication_controller_common_tags
+}

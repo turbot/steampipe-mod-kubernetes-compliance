@@ -2515,3 +2515,185 @@ query "pod_container_strong_kube_apiserver_cryptographic_ciphers" {
       left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
   EOQ
 }
+
+query "pod_container_host_port_not_specified" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (c -> 'ports') is null then 'ok'
+        when (c->>'ports') like '%hostPort%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when (c -> 'ports') is null then c ->> 'name' || ' ports not defined.'
+        when (c->>'ports') like '%hostPort%' then c ->> 'name' || ' host port specified.'
+        else c ->> 'name' || ' host port not specified.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) as c;
+  EOQ
+}
+
+query "pod_service_account_token_enabled" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'name' || ' service account tokens enabled.'
+        else 'name' || ' service account tokens disabled.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod;
+  EOQ
+}
+
+query "pod_container_run_as_user_10000" {
+  sql = <<-EOQ
+    with pod_container_run_as_user as (
+      select
+        name,
+        uid,
+        (c -> 'securityContext' ->> 'runAsUser')::int as run_as_user
+      from
+        kubernetes_pod,
+        jsonb_array_elements(containers) as c
+      where
+       (c -> 'securityContext' ->> 'runAsUser') is not null
+    )
+    select
+      coalesce(p.uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when r.uid is null and (p.security_context -> 'runAsUser') is null then 'alarm'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int >= 10000 then 'ok'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int < 10000 then 'alarm'
+        when r.run_as_user < 10000 and (p.security_context -> 'runAsUser') is null then 'alarm'
+        when r.run_as_user >= 10000 and (p.security_context -> 'runAsUser') is null then 'ok'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int >= 10000 then 'alarm'
+        when r.run_as_user >= 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then 'ok'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then 'alarm'
+      end as status,
+      case
+        when r.uid is null and (p.security_context -> 'runAsUser') is null then p.name || ' run as user not set.'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int >= 10000 then p.name || ' run as user set to ' || (p.security_context ->> 'runAsUser') || '.'
+        when r.uid is null and (p.security_context ->> 'runAsUser')::int < 10000 then p.name || ' run as user set to ' || (p.security_context ->> 'runAsUser') || '.'
+        when r.run_as_user < 10000 and (p.security_context -> 'runAsUser') is null then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user >= 10000 and (p.security_context -> 'runAsUser') is null then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int >= 10000 then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user >= 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+        when r.run_as_user < 10000 and (p.security_context ->> 'runAsUser')::int < 10000 then p.name || ' run as user set to ' || (r.run_as_user) || '.'
+      end as reason,
+      p.name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod as p
+      left join pod_container_run_as_user as r on r.uid = p.uid;
+  EOQ
+}
+
+query "pod_container_argument_request_timeout_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as pod
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--request-timeout=%'
+    ), container_name_with_pod_name as (
+      select
+        p.name as pod_name,
+        p.uid as pod_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.end_line as end_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_pod as p,
+        jsonb_array_elements(containers) as c
+    )
+    select
+      coalesce(p.pod_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null then 'ok'
+        when (p.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'ok'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) ~ '^(\d{1,2}[h])(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[s])$') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when (p.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  p.value ->> 'name' || ' request-timeout not set.'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then p.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) ~ '^(\d{1,2}[h])(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[s])$') then p.value ->> 'name' || ' request-timeout set appropriate.'
+        else p.value ->> 'name' || ' request-timeout set inappropriate.'
+      end as reason,
+      p.pod_name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_pod_name as p
+      left join container_list as l on p.value ->> 'name' = l.container_name and p.pod_name = l.pod;
+  EOQ
+}
+
+query "pod_container_secrets_defined_as_files" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when env like '%valueFrom%' and env like '%secretKeyRef%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when env like '%valueFrom%' and env like '%secretKeyRef%' then c ->> 'name' || ' container has secrets defined.'
+        else c ->> 'name' || ' container has no secrets defined.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) c,
+      jsonb_array_elements_text(c -> 'env') as env
+
+    union
+
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      case
+        when env like '%secretRef%' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when env like '%secretRef%' then c ->> 'name' || ' container has secrets defined.'
+        else c ->> 'name' || ' container has no secrets defined.'
+      end as reason,
+      name as pod_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_pod,
+      jsonb_array_elements(containers) c,
+      jsonb_array_elements_text(c -> 'envFrom') as env;
+  EOQ
+}

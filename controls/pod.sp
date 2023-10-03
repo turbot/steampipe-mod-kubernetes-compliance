@@ -660,3 +660,43 @@ control "pod_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.pod_common_tags
 }
+
+control "pod_container_host_port_not_specified" {
+  title       = "Pod containers ports should not have host port specified"
+  description = "This check ensures that the container ports in the Pod do not have host port specified."
+  query       = query.pod_container_host_port_not_specified
+
+  tags = local.pod_common_tags
+}
+
+control "pod_service_account_token_enabled" {
+  title       = "Pods service account token shoulde be enabled"
+  description = "This check ensures that Pod service account token is enabled."
+  query       = query.pod_service_account_token_enabled
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_run_as_user_10000" {
+  title       = "Pods containers run as user should be set to 10000 or greater"
+  description = "This check ensures that Pod container has run as user set to 10000 or greater than 10000."
+  query       = query.pod_container_run_as_user_10000
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_argument_request_timeout_appropriate" {
+  title       = "Pod containers argument request timeout should be set as appropriate"
+  description = "This check ensures that the container in the Pod has argument request timeout set as appropriate."
+  query       = query.pod_container_argument_request_timeout_appropriate
+
+  tags = local.pod_common_tags
+}
+
+control "pod_container_secrets_defined_as_files" {
+  title       = "Pod containers secrets should be defined as files"
+  description = "This check ensures that the container in the Pod has secrets defined as files."
+  query       = query.pod_container_secrets_defined_as_files
+
+  tags = local.pod_common_tags
+}

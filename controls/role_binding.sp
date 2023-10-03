@@ -13,3 +13,11 @@ control "role_binding_default_namespace_used" {
     cis = "true"
   })
 }
+
+control "role_binding_default_service_account_binding_not_active" {
+  title       = "RoleBinding subjects should not actively use default service accounts"
+  description = "Default service accounts should not be used by RoleBinding subjects."
+  query       = query.role_binding_default_service_account_binding_not_active
+
+  tags = local.role_binding_common_tags
+}

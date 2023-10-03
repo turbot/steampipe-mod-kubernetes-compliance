@@ -49,6 +49,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_node_restriction_enabled,
     control.pod_container_argument_pod_security_policy_enabled,
     control.pod_container_argument_protect_kernel_defaults_enabled,
+    control.pod_container_argument_request_timeout_appropriate,
     control.pod_container_argument_rotate_kubelet_server_certificate_enabled,
     control.pod_container_argument_secure_port_not_0,
     control.pod_container_argument_security_context_deny_enabled,
@@ -57,6 +58,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_service_account_lookup_enabled,
     control.pod_container_capabilities_drop_all,
     control.pod_container_encryption_providers_configured,
+    control.pod_container_host_port_not_specified,
     control.pod_container_image_pull_policy_always,
     control.pod_container_image_tag_specified,
     control.pod_container_kubelet_certificate_authority_configured,
@@ -72,6 +74,8 @@ benchmark "all_controls_pod" {
     control.pod_container_privilege_port_mapped,
     control.pod_container_readiness_probe,
     control.pod_container_rotate_certificate_enabled,
+    control.pod_container_run_as_user_10000,
+    control.pod_container_secrets_defined_as_files,
     control.pod_container_security_context_exists,
     control.pod_container_streaming_connection_idle_timeout_not_zero,
     control.pod_container_strong_kube_apiserver_cryptographic_ciphers,
@@ -87,6 +91,7 @@ benchmark "all_controls_pod" {
     control.pod_non_root_container,
     control.pod_service_account_not_exist,
     control.pod_service_account_token_disabled,
+    control.pod_service_account_token_enabled,
     control.pod_volume_host_path
   ]
 

@@ -9,6 +9,7 @@ benchmark "all_controls" {
   description   = "This benchmark contains all controls grouped by component to help you detect resource configurations that do not meet best practices."
   documentation = file("./all_controls/docs/all_controls_overview.md")
   children = [
+    benchmark.all_controls_cluster_role_binding,
     benchmark.all_controls_config_map,
     benchmark.all_controls_cronjob,
     benchmark.all_controls_daemonset,
