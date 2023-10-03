@@ -23,3 +23,11 @@ control "service_default_namespace_used" {
     cis = "true"
   })
 }
+
+control "service_no_tiller_service" {
+  title       = "Services should not tiller service"
+  description = "Services should avoid using Tiller because it is not recommended due to security concerns."
+  query       = query.service_no_tiller_service
+
+  tags = local.service_common_tags
+}

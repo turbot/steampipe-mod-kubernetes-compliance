@@ -57,6 +57,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_service_account_lookup_enabled,
     control.pod_container_capabilities_drop_all,
     control.pod_container_encryption_providers_configured,
+    control.pod_container_host_port_not_specified,
     control.pod_container_image_pull_policy_always,
     control.pod_container_image_tag_specified,
     control.pod_container_kubelet_certificate_authority_configured,
@@ -87,9 +88,8 @@ benchmark "all_controls_pod" {
     control.pod_non_root_container,
     control.pod_service_account_not_exist,
     control.pod_service_account_token_disabled,
-    control.pod_volume_host_path,
-    control.pod_container_host_port_not_specified,
     control.pod_service_account_token_enabled,
+    control.pod_volume_host_path
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {
