@@ -10,6 +10,7 @@ benchmark "all_controls_service" {
   children = [
     control.service_default_namespace_used,
     control.service_no_tiller_service,
+    control.service_no_tiller_deployed,
     control.service_type_forbidden,
   ]
 

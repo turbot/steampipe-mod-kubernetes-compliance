@@ -64,3 +64,23 @@ query "service_no_tiller_service" {
       left join tiller_service as t on t.uid = s.uid;
   EOQ
 }
+
+query "service_no_tiller_deployed" {
+  sql = <<-EOQ
+    select
+      coalesce(uid, concat(path, ':', start_line)) as resource,
+      name,
+      case
+        when labels ->> 'app' = 'helm' or labels ->> 'name' = 'tiller' then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when labels ->> 'app' = 'helm' or labels ->> 'name' = 'tiller' then name || ' has tiller deployed.'
+        else  name || ' tiller not deployed.'
+      end as reason
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      kubernetes_service;
+  EOQ
+}
