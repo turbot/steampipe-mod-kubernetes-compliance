@@ -53,3 +53,11 @@ control "cluster_role_with_validating_or_mutating_admission_webhook_configuratio
     cis = "true"
   })
 }
+
+control "role_with_rbac_approve_certificate_signing_requests" {
+  title       = "ClusterRoles permissions for approving CertificateSigningRequests."
+  description = "Minimize the permissions granted to ClusterRoles for approving CertificateSigningRequests. It is recommended to follow the principle of least privilege to enhance security."
+  query       = query.role_with_rbac_approve_certificate_signing_requests
+
+  tags = local.role_common_tags
+}

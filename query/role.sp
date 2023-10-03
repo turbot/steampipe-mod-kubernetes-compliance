@@ -246,3 +246,39 @@ query "cluster_role_with_validating_or_mutating_admission_webhook_configurations
       left join role_with_escalate as e on e.uid = r.uid;
   EOQ
 }
+
+query "role_with_rbac_approve_certificate_signing_requests" {
+  sql = <<-EOQ
+    with role_with_escalate as (
+      select
+        uid,
+        count(*) as num
+      from
+        kubernetes_cluster_role,
+        jsonb_array_elements(rules) rule
+      where
+        rule -> 'apiGroups' @> '["certificates.k8s.io"]'
+        and 
+        ((rule -> 'resources' @> '["certificatesigningrequests/approval"]' and rule -> 'verbs' @> '["update", "patch"]')
+        or (rule -> 'resources' @> '["signers"]' and rule -> 'verbs' @> '["approve"]'))
+      group by
+        uid
+    )
+    select
+      coalesce(r.uid, concat(r.path, ':', r.start_line)) as resource,
+      case
+        when e.num > 0 then 'alarm'
+        else 'ok'
+      end as status,
+      case
+        when e.num > 0  then name || ' contains ' || e.num || ' RBAC cluster role grant permissions to approve CertificateSigningRequests.'
+        else name || ' does not contains any cluster role granting permissions to approve CertificateSigningRequests.'
+      end as reason,
+      name as role_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_non_namespace_sql}
+    from
+      kubernetes_cluster_role as r
+      left join role_with_escalate as e on e.uid = r.uid;
+  EOQ
+}

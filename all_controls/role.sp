@@ -10,6 +10,7 @@ benchmark "all_controls_role" {
   children = [
     control.role_default_namespace_used,
     control.role_with_wildcards_used,
+    control.role_with_rbac_approve_certificate_signing_requests,
     control.role_with_rbac_escalate_permissions,
     control.role_with_bind_cluster_role_bindings,
     control.cluster_role_with_validating_or_mutating_admission_webhook_configurations,
