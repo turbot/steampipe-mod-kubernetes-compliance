@@ -90,7 +90,7 @@ benchmark "all_controls_pod" {
     control.pod_service_account_not_exist,
     control.pod_service_account_token_disabled,
     control.pod_service_account_token_enabled,
-    control.pod_volume_host_path
+    control.pod_volume_host_path,
     control.pod_container_argument_request_timeout_appropriate,
   ]
 
