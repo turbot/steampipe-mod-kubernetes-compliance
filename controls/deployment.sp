@@ -667,3 +667,28 @@ control "deployment_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.deployment_common_tags
 }
+
+control "deployment_container_host_port_not_specified" {
+  title       = "Deployment containers ports should not have host port specified"
+  description = "This check ensures that the container ports in the Deployment do not have host port specified."
+  query       = query.deployment_container_host_port_not_specified
+
+  tags = local.deployment_common_tags
+}
+
+control "deployment_container_argument_request_timeout_appropriate" {
+  title       = "Deployment containers argument request timeout should be set as appropriate"
+  description = "This check ensures that the container in the Deployment has argument request timeout set as appropriate."
+  query       = query.deployment_container_argument_request_timeout_appropriate
+
+  tags = local.deployment_common_tags
+}
+
+
+control "deployment_container_secrets_defined_as_files" {
+  title       = "Deployment containers should have secrets defined as files"
+  description = "This check ensures that the container in the Deployment has secrets defined as files."
+  query       = query.deployment_container_secrets_defined_as_files
+
+  tags = local.deployment_common_tags
+}

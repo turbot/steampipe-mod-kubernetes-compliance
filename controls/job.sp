@@ -659,3 +659,28 @@ control "job_container_strong_kube_apiserver_cryptographic_ciphers" {
 
   tags = local.job_common_tags
 }
+
+control "job_container_host_port_not_specified" {
+  title       = "Job containers ports should not have host port specified"
+  description = "This check ensures that the container ports in the Job do not have host port specified."
+  query       = query.job_container_host_port_not_specified
+
+  tags = local.job_common_tags
+}
+
+control "job_container_argument_request_timeout_appropriate" {
+  title       = "Job containers argument request timeout should be set as appropriate"
+  description = "This check ensures that the container in the Job has argument request timeout set as appropriate."
+  query       = query.job_container_argument_request_timeout_appropriate
+
+  tags = local.job_common_tags
+}
+
+
+control "job_container_secrets_defined_as_files" {
+  title       = "Job containers should have secrets defined as files"
+  description = "This check ensures that the container in the Job has secrets defined as files."
+  query       = query.job_container_secrets_defined_as_files
+
+  tags = local.job_common_tags
+}
