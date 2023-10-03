@@ -98,6 +98,7 @@ query "role_with_rbac_escalate_permissions" {
         name,
         start_line,
         end_line,
+        source_type,
         context_name
       from
         kubernetes_role
@@ -108,6 +109,7 @@ query "role_with_rbac_escalate_permissions" {
         name,
         start_line,
         end_line,
+        source_type,
         context_name
       from
         kubernetes_cluster_role
@@ -172,6 +174,7 @@ query "role_with_bind_cluster_role_bindings" {
         name,
         start_line,
         end_line,
+        source_type,
         context_name
       from
         kubernetes_role
@@ -182,6 +185,7 @@ query "role_with_bind_cluster_role_bindings" {
         name,
         start_line,
         end_line,
+        source_type,
         context_name
       from
         kubernetes_cluster_role
