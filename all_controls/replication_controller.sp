@@ -88,6 +88,7 @@ benchmark "all_controls_replication_controller" {
     control.replication_controller_memory_request,
     control.replication_controller_non_root_container,
     control.replication_controller_container_host_port_not_specified,
+    control.replication_controller_container_argument_request_timeout_appropriate,
   ]
 
   tags = merge(local.all_controls_replication_controller_common_tags, {

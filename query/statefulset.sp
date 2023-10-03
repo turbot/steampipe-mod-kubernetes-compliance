@@ -2514,3 +2514,57 @@ query "statefulset_container_host_port_not_specified" {
       jsonb_array_elements(template -> 'spec' -> 'containers') as c;
   EOQ
 }
+
+query "statefulset_container_argument_request_timeout_appropriate" {
+  sql = <<-EOQ
+    with container_list as (
+      select
+        c ->> 'name' as container_name,
+        trim('"' from split_part(co::text, '=', 2)) as value,
+        p.name as statefulset
+      from
+        kubernetes_stateful_set as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c,
+        jsonb_array_elements_text(c -> 'command') as co
+      where
+        co like '%--request-timeout=%'
+    ), container_name_with_statefulset_name as (
+      select
+        p.name as statefulset_name,
+        p.uid as statefulset_uid,
+        p.path as path,
+        p.start_line as start_line,
+        p.end_line as end_line,
+        p.context_name as context_name,
+        p.namespace as namespace,
+        p.source_type as source_type,
+        c.*
+      from
+        kubernetes_stateful_set as p,
+        jsonb_array_elements(template -> 'spec' -> 'containers') as c
+    )
+    select
+      coalesce(p.statefulset_uid, concat(p.path, ':', p.start_line)) as resource,
+      case
+        when (p.value -> 'command') is null then 'ok'
+        when (p.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then 'ok'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then 'ok'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) ~ '^(\d{1,2}[h])(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[s])$') then 'ok'
+        else 'alarm'
+      end as status,
+      case
+        when (p.value -> 'command') is null then p.value ->> 'name' || ' command not defined.'
+        when (p.value -> 'command') @> '["kube-apiserver"]' and l.container_name is null then  p.value ->> 'name' || ' request-timeout not set.'
+        when not ((p.value -> 'command') @> '["kube-apiserver"]') then p.value ->> 'name' || ' kube-apiserver not defined.'
+        when l.container_name is not null and (p.value -> 'command') @> '["kube-apiserver"]' and ((l.value) ~ '^(\d{1,2}[h])(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[m])?(\d{1,2}[s])?$|^(\d{1,2}[s])$') then p.value ->> 'name' || ' request-timeout set appropriate.'
+        else p.value ->> 'name' || ' request-timeout set inappropriate.'
+      end as reason,
+      p.statefulset_name as statefulset_name
+      ${local.tag_dimensions_sql}
+      ${local.common_dimensions_sql}
+    from
+      container_name_with_statefulset_name as p
+      left join container_list as l
+        on p.value ->> 'name' = l.container_name and p.statefulset_name = l.statefulset
+  EOQ
+}

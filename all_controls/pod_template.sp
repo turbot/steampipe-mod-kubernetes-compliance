@@ -83,6 +83,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_memory_limit,
     control.pod_template_memory_request,
     control.pod_template_container_host_port_not_specified,
+    control.pod_template_container_argument_request_timeout_appropriate,
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

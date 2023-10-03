@@ -88,6 +88,7 @@ benchmark "all_controls_job" {
     control.job_memory_request,
     control.job_non_root_container,
     control.job_container_host_port_not_specified,
+    control.job_container_argument_request_timeout_appropriate,
   ]
 
   tags = merge(local.all_controls_job_common_tags, {

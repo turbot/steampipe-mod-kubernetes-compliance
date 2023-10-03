@@ -668,3 +668,11 @@ control "replicaset_container_host_port_not_specified" {
 
   tags = local.replicaset_common_tags
 }
+
+control "replicaset_container_argument_request_timeout_appropriate" {
+  title       = "ReplicaSet containers argument request timeout should be set as appropriate"
+  description = "This check ensures that the container in the ReplicaSet has argument request timeout set as appropriate."
+  query       = query.replicaset_container_argument_request_timeout_appropriate
+
+  tags = local.replicaset_common_tags
+}

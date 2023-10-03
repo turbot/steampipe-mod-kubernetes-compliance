@@ -88,6 +88,7 @@ benchmark "all_controls_statefulset" {
     control.statefulset_memory_request,
     control.statefulset_non_root_container,
     control.statefulset_container_host_port_not_specified,
+    control.statefulset_container_argument_request_timeout_appropriate,
   ]
 
   tags = merge(local.all_controls_statefulset_common_tags, {

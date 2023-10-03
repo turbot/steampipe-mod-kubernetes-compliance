@@ -667,3 +667,11 @@ control "replication_controller_container_host_port_not_specified" {
 
   tags = local.replication_controller_common_tags
 }
+
+control "replication_controller_container_argument_request_timeout_appropriate" {
+  title       = "Replication Controller containers argument request timeout should be set as appropriate"
+  description = "This check ensures that the container in the Replication Controller has argument request timeout set as appropriate."
+  query       = query.replication_controller_container_argument_request_timeout_appropriate
+
+  tags = local.replication_controller_common_tags
+}

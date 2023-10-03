@@ -89,6 +89,7 @@ benchmark "all_controls_deployment" {
     control.deployment_non_root_container,
     control.deployment_replica_minimum_3,
     control.deployment_container_host_port_not_specified,
+    control.deployment_container_argument_request_timeout_appropriate,
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

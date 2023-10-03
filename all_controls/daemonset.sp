@@ -88,6 +88,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_memory_request,
     control.daemonset_non_root_container,
     control.daemonset_container_host_port_not_specified,
+    control.daemonset_container_argument_request_timeout_appropriate,
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

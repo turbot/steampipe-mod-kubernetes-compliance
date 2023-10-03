@@ -88,6 +88,7 @@ benchmark "all_controls_cronjob" {
     control.cronjob_memory_request,
     control.cronjob_non_root_container,
     control.cronjob_container_host_port_not_specified,
+    control.cronjob_container_argument_request_timeout_appropriate,
   ]
 
   tags = merge(local.all_controls_cronjob_common_tags, {

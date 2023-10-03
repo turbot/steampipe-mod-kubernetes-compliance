@@ -88,6 +88,7 @@ benchmark "all_controls_replicaset" {
     control.replicaset_memory_request,
     control.replicaset_non_root_container,
     control.replicaset_container_host_port_not_specified,
+    control.replicaset_container_argument_request_timeout_appropriate,
   ]
 
 

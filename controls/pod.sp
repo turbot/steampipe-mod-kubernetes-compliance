@@ -685,3 +685,10 @@ control "pod_container_run_as_user_10000" {
   tags = local.pod_common_tags
 }
 
+control "pod_container_argument_request_timeout_appropriate" {
+  title       = "Pod containers argument request timeout should be set as appropriate"
+  description = "This check ensures that the container in the Pod has argument request timeout set as appropriate."
+  query       = query.pod_container_argument_request_timeout_appropriate
+
+  tags = local.pod_common_tags
+}
