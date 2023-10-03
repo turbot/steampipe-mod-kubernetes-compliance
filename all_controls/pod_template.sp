@@ -14,7 +14,6 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_admission_control_plugin_no_always_admit,
     control.pod_template_container_argument_api_server_anonymous_auth_disabled,
     control.pod_template_container_argument_api_server_etcd_certfile_and_keyfile_configured,
-    control.pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.pod_template_container_argument_audit_log_maxage_greater_than_30,
     control.pod_template_container_argument_audit_log_maxbackup_greater_than_10,
     control.pod_template_container_argument_audit_log_maxsize_greater_than_100,
@@ -31,6 +30,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_event_qps_less_than_5,
     control.pod_template_container_argument_insecure_port_0,
     control.pod_template_container_argument_kube_apiserver_profiling_disabled,
+    control.pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.pod_template_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.pod_template_container_argument_kube_controller_manager_profiling_disabled,
     control.pod_template_container_argument_kube_controller_manager_root_ca_file_configured,
@@ -49,6 +49,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_node_restriction_enabled,
     control.pod_template_container_argument_pod_security_policy_enabled,
     control.pod_template_container_argument_protect_kernel_defaults_enabled,
+    control.pod_template_container_argument_request_timeout_appropriate,
     control.pod_template_container_argument_rotate_kubelet_server_certificate_enabled,
     control.pod_template_container_argument_secure_port_not_0,
     control.pod_template_container_argument_security_context_deny_enabled,
@@ -58,6 +59,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_container_argument_tls_cert_file_and_tls_private_key_file_configured,
     control.pod_template_container_capabilities_drop_all,
     control.pod_template_container_encryption_providers_configured,
+    control.pod_template_container_host_port_not_specified,
     control.pod_template_container_image_pull_policy_always,
     control.pod_template_container_image_tag_specified,
     control.pod_template_container_kubelet_certificate_authority_configured,
@@ -81,9 +83,7 @@ benchmark "all_controls_pod_template" {
     control.pod_template_cpu_request,
     control.pod_template_immutable_container_filesystem,
     control.pod_template_memory_limit,
-    control.pod_template_memory_request,
-    control.pod_template_container_host_port_not_specified,
-    control.pod_template_container_argument_request_timeout_appropriate,
+    control.pod_template_memory_request
   ]
 
   tags = merge(local.all_controls_pod_template_common_tags, {

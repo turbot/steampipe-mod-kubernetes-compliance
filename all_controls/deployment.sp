@@ -49,6 +49,7 @@ benchmark "all_controls_deployment" {
     control.deployment_container_argument_node_restriction_enabled,
     control.deployment_container_argument_pod_security_policy_enabled,
     control.deployment_container_argument_protect_kernel_defaults_enabled,
+    control.deployment_container_argument_request_timeout_appropriate,
     control.deployment_container_argument_rotate_kubelet_server_certificate_enabled,
     control.deployment_container_argument_secure_port_not_0,
     control.deployment_container_argument_security_context_deny_enabled,
@@ -57,6 +58,7 @@ benchmark "all_controls_deployment" {
     control.deployment_container_argument_service_account_lookup_enabled,
     control.deployment_container_capabilities_drop_all,
     control.deployment_container_encryption_providers_configured,
+    control.deployment_container_host_port_not_specified,
     control.deployment_container_image_pull_policy_always,
     control.deployment_container_image_tag_specified,
     control.deployment_container_kubelet_certificate_authority_configured,
@@ -87,9 +89,7 @@ benchmark "all_controls_deployment" {
     control.deployment_memory_limit,
     control.deployment_memory_request,
     control.deployment_non_root_container,
-    control.deployment_replica_minimum_3,
-    control.deployment_container_host_port_not_specified,
-    control.deployment_container_argument_request_timeout_appropriate,
+    control.deployment_replica_minimum_3
   ]
 
   tags = merge(local.all_controls_deployment_common_tags, {

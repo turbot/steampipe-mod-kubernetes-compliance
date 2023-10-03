@@ -29,9 +29,7 @@ control "role_with_rbac_escalate_permissions" {
   description = "Minimize the permissions granted to ClusterRoles to escalate Roles or ClusterRoles. It is recommended to follow the principle of least privilege to enhance security."
   query       = query.role_with_rbac_escalate_permissions
 
-  tags = merge(local.role_common_tags, {
-    cis = "true"
-  })
+  tags = local.role_common_tags
 }
 
 control "role_with_bind_cluster_role_bindings" {
@@ -39,9 +37,7 @@ control "role_with_bind_cluster_role_bindings" {
   description = "Minimize the permissions granted to ind RoleBindings or ClusterRoleBinding. It is recommended to follow the principle of least privilege to enhance security."
   query       = query.role_with_bind_cluster_role_bindings
 
-  tags = merge(local.role_common_tags, {
-    cis = "true"
-  })
+  tags = local.role_common_tags
 }
 
 control "cluster_role_with_validating_or_mutating_admission_webhook_configurations" {
@@ -49,9 +45,7 @@ control "cluster_role_with_validating_or_mutating_admission_webhook_configuratio
   description = "Minimize the permissions granted to ClusterRoles for managing admission webhooks. It is recommended to follow the principle of least privilege to enhance security."
   query       = query.cluster_role_with_validating_or_mutating_admission_webhook_configurations
 
-  tags = merge(local.role_common_tags, {
-    cis = "true"
-  })
+  tags = local.role_common_tags
 }
 
 control "role_with_rbac_approve_certificate_signing_requests" {

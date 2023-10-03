@@ -49,6 +49,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_argument_node_restriction_enabled,
     control.daemonset_container_argument_pod_security_policy_enabled,
     control.daemonset_container_argument_protect_kernel_defaults_enabled,
+    control.daemonset_container_argument_request_timeout_appropriate,
     control.daemonset_container_argument_rotate_kubelet_server_certificate_enabled,
     control.daemonset_container_argument_secure_port_not_0,
     control.daemonset_container_argument_security_context_deny_enabled,
@@ -57,6 +58,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_container_argument_service_account_lookup_enabled,
     control.daemonset_container_capabilities_drop_all,
     control.daemonset_container_encryption_providers_configured,
+    control.daemonset_container_host_port_not_specified,
     control.daemonset_container_image_pull_policy_always,
     control.daemonset_container_image_tag_specified,
     control.daemonset_container_kubelet_certificate_authority_configured,
@@ -86,9 +88,7 @@ benchmark "all_controls_daemonset" {
     control.daemonset_immutable_container_filesystem,
     control.daemonset_memory_limit,
     control.daemonset_memory_request,
-    control.daemonset_non_root_container,
-    control.daemonset_container_host_port_not_specified,
-    control.daemonset_container_argument_request_timeout_appropriate,
+    control.daemonset_non_root_container
   ]
 
   tags = merge(local.all_controls_daemonset_common_tags, {

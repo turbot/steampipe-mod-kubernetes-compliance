@@ -49,6 +49,7 @@ benchmark "all_controls_pod" {
     control.pod_container_argument_node_restriction_enabled,
     control.pod_container_argument_pod_security_policy_enabled,
     control.pod_container_argument_protect_kernel_defaults_enabled,
+    control.pod_container_argument_request_timeout_appropriate,
     control.pod_container_argument_rotate_kubelet_server_certificate_enabled,
     control.pod_container_argument_secure_port_not_0,
     control.pod_container_argument_security_context_deny_enabled,
@@ -90,8 +91,7 @@ benchmark "all_controls_pod" {
     control.pod_service_account_not_exist,
     control.pod_service_account_token_disabled,
     control.pod_service_account_token_enabled,
-    control.pod_volume_host_path,
-    control.pod_container_argument_request_timeout_appropriate,
+    control.pod_volume_host_path
   ]
 
   tags = merge(local.all_controls_pod_common_tags, {
