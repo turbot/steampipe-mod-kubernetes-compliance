@@ -1,3 +1,9 @@
+## v0.15 [2023-10-03]
+
+_What's new?_
+
+- Added 31 new controls across `ClusterRoleBinding`, `CronJob`, `DaemonSet`, `Ingress`, `Job`, `Pod` resource types to the `all_controls` benchmark. ([#68](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/68))
+
 ## v0.14 [2023-09-29]
 
 _What's new?_
