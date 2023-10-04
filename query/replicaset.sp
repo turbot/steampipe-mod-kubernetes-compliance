@@ -673,6 +673,7 @@ query "replicaset_container_argument_audit_log_maxage_greater_than_30" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -725,6 +726,7 @@ query "replicaset_container_argument_audit_log_maxbackup_greater_than_10" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -777,6 +779,7 @@ query "replicaset_container_argument_audit_log_maxsize_greater_than_100" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -881,6 +884,7 @@ query "replicaset_container_argument_authorization_mode_node" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -934,6 +938,7 @@ query "replicaset_container_argument_authorization_mode_no_always_allow" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -984,6 +989,7 @@ query "replicaset_container_argument_authorization_mode_rbac" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -1179,6 +1185,7 @@ query "replicaset_container_admission_control_plugin_always_pull_images" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -1229,6 +1236,7 @@ query "replicaset_container_admission_control_plugin_no_always_admit" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -1305,6 +1313,7 @@ query "replicaset_container_argument_kube_scheduler_bind_address_127_0_0_1" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -1543,6 +1552,7 @@ query "replicaset_container_argument_kubelet_authorization_mode_no_always_allow"
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -1593,6 +1603,7 @@ query "replicaset_container_argument_kube_controller_manager_service_account_pri
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -1643,6 +1654,7 @@ query "replicaset_container_argument_kubelet_read_only_port_0" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -1692,6 +1704,7 @@ query "replicaset_container_argument_kube_controller_manager_root_ca_file_config
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -2003,6 +2016,7 @@ query "replicaset_container_argument_service_account_key_file_appropriate" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -2111,6 +2125,7 @@ query "replicaset_container_strong_kubelet_cryptographic_ciphers" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -2255,6 +2270,7 @@ query "replicaset_container_argument_kube_controller_manager_bind_address_127_0_
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -2331,6 +2347,7 @@ query "replicaset_container_argument_kubelet_terminated_pod_gc_threshold_configu
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -2381,6 +2398,7 @@ query "replicaset_container_argument_kubelet_client_ca_file_configured" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -2463,6 +2481,7 @@ query "replicaset_container_strong_kube_apiserver_cryptographic_ciphers" {
         r.context_name as context_name,
         r.namespace as namespace,
         r.source_type as source_type,
+        r.tags as tags,
         c.*
       from
         kubernetes_replicaset as r,
@@ -2540,6 +2559,7 @@ query "replicaset_container_argument_request_timeout_appropriate" {
         p.context_name as context_name,
         p.namespace as namespace,
         p.source_type as source_type,
+        p.tags as tags,
         c.*
       from
         kubernetes_replicaset as p,
