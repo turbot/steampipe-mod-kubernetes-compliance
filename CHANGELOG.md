@@ -1,3 +1,9 @@
+## v0.16 [2023-10-04]
+
+_Bug fixes_
+
+- Fixed several queries to return correct data for `tags` and `_ctx` columns instead of an error. ([#73](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/73))
+
 ## v0.15 [2023-10-03]
 
 _What's new?_
