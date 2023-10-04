@@ -2,7 +2,7 @@
 
 _What's new?_
 
-- Added 31 new controls for the `ClusterRoleBinding`, `CronJob`, `DaemonSet`, `Ingress`, `Job`, `Pod` resource types to the `all_controls` benchmark. ([#68](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/68))
+- Added 39 new controls for the `ClusterRoleBinding`, `CronJob`, `DaemonSet`, `Ingress`, `Job`, `Pod` resource types to the `all_controls` benchmark. ([#68](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/68))
 
 ## v0.14 [2023-09-29]
 
