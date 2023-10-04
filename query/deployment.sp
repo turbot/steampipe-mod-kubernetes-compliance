@@ -688,6 +688,8 @@ query "deployment_container_argument_audit_log_maxage_greater_than_30" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -740,6 +742,8 @@ query "deployment_container_argument_audit_log_maxbackup_greater_than_10" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -792,6 +796,8 @@ query "deployment_container_argument_audit_log_maxsize_greater_than_100" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -896,6 +902,8 @@ query "deployment_container_argument_authorization_mode_node" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -949,6 +957,8 @@ query "deployment_container_argument_authorization_mode_no_always_allow" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -999,6 +1009,8 @@ query "deployment_container_argument_authorization_mode_rbac" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -1194,6 +1206,8 @@ query "deployment_container_admission_control_plugin_always_pull_images" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -1244,6 +1258,8 @@ query "deployment_container_admission_control_plugin_no_always_admit" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -1320,6 +1336,8 @@ query "deployment_container_argument_kube_scheduler_bind_address_127_0_0_1" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -1558,6 +1576,8 @@ query "deployment_container_argument_kubelet_authorization_mode_no_always_allow"
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -1608,6 +1628,8 @@ query "deployment_container_argument_kube_controller_manager_service_account_pri
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -1658,6 +1680,8 @@ query "deployment_container_argument_kubelet_read_only_port_0" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -1707,6 +1731,8 @@ query "deployment_container_argument_kube_controller_manager_root_ca_file_config
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -2018,6 +2044,8 @@ query "deployment_container_argument_service_account_key_file_appropriate" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -2126,6 +2154,8 @@ query "deployment_container_strong_kubelet_cryptographic_ciphers" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -2271,6 +2301,8 @@ query "deployment_container_argument_kube_controller_manager_bind_address_127_0_
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -2347,6 +2379,8 @@ query "deployment_container_argument_kubelet_terminated_pod_gc_threshold_configu
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -2397,6 +2431,8 @@ query "deployment_container_argument_kubelet_client_ca_file_configured" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -2479,6 +2515,8 @@ query "deployment_container_strong_kube_apiserver_cryptographic_ciphers" {
         d.context_name as context_name,
         d.namespace as namespace,
         d.source_type as source_type,
+        d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as d,
@@ -2556,6 +2594,8 @@ query "deployment_container_argument_request_timeout_appropriate" {
         p.context_name as context_name,
         p.namespace as namespace,
         p.source_type as source_type,
+        p.tags as tags,
+        p._ctx as _ctx,
         c.*
       from
         kubernetes_deployment as p,
