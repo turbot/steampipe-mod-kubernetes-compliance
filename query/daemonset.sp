@@ -672,6 +672,7 @@ query "daemonset_container_argument_audit_log_maxage_greater_than_30" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -725,6 +726,7 @@ query "daemonset_container_argument_audit_log_maxbackup_greater_than_10" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -778,6 +780,7 @@ query "daemonset_container_argument_audit_log_maxsize_greater_than_100" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -883,6 +886,7 @@ query "daemonset_container_argument_authorization_mode_node" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -937,6 +941,7 @@ query "daemonset_container_argument_authorization_mode_no_always_allow" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -988,6 +993,7 @@ query "daemonset_container_argument_authorization_mode_rbac" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -1184,6 +1190,7 @@ query "daemonset_container_admission_control_plugin_always_pull_images" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -1235,6 +1242,7 @@ query "daemonset_container_admission_control_plugin_no_always_admit" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -1312,6 +1320,7 @@ query "daemonset_container_argument_kube_scheduler_bind_address_127_0_0_1" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -1551,6 +1560,7 @@ query "daemonset_container_argument_kubelet_authorization_mode_no_always_allow" 
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -1602,6 +1612,7 @@ query "daemonset_container_argument_kube_controller_manager_service_account_priv
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -1653,6 +1664,7 @@ query "daemonset_container_argument_kubelet_read_only_port_0" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -1703,6 +1715,7 @@ query "daemonset_container_argument_kube_controller_manager_root_ca_file_configu
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -2015,6 +2028,7 @@ query "daemonset_container_argument_service_account_key_file_appropriate" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -2124,6 +2138,7 @@ query "daemonset_container_strong_kubelet_cryptographic_ciphers" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -2269,6 +2284,7 @@ query "daemonset_container_argument_kube_controller_manager_bind_address_127_0_0
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -2346,6 +2362,7 @@ query "daemonset_container_argument_kubelet_terminated_pod_gc_threshold_configur
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -2397,6 +2414,7 @@ query "daemonset_container_argument_kubelet_client_ca_file_configured" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -2480,6 +2498,7 @@ query "daemonset_container_strong_kube_apiserver_cryptographic_ciphers" {
         d.namespace as namespace,
         d.source_type as source_type,
         d.tags as tags,
+        d._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as d,
@@ -2558,6 +2577,7 @@ query "daemonset_container_argument_request_timeout_appropriate" {
         p.namespace as namespace,
         p.source_type as source_type,
         p.tags as tags,
+        p._ctx as _ctx,
         c.*
       from
         kubernetes_daemonset as p,

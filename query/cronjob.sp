@@ -671,6 +671,7 @@ query "cronjob_container_argument_audit_log_maxage_greater_than_30" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -724,6 +725,7 @@ query "cronjob_container_argument_audit_log_maxbackup_greater_than_10" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -777,6 +779,7 @@ query "cronjob_container_argument_audit_log_maxsize_greater_than_100" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -882,6 +885,7 @@ query "cronjob_container_argument_authorization_mode_node" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -936,6 +940,7 @@ query "cronjob_container_argument_authorization_mode_no_always_allow" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -987,6 +992,7 @@ query "cronjob_container_argument_authorization_mode_rbac" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -1183,6 +1189,7 @@ query "cronjob_container_admission_control_plugin_always_pull_images" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -1234,6 +1241,7 @@ query "cronjob_container_admission_control_plugin_no_always_admit" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -1311,6 +1319,7 @@ query "cronjob_container_argument_kube_scheduler_bind_address_127_0_0_1" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -1550,6 +1559,7 @@ query "cronjob_container_argument_kubelet_authorization_mode_no_always_allow" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -1601,6 +1611,7 @@ query "cronjob_container_argument_kube_controller_manager_service_account_privat
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -1652,6 +1663,7 @@ query "cronjob_container_argument_kubelet_read_only_port_0" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -1702,6 +1714,7 @@ query "cronjob_container_argument_kube_controller_manager_root_ca_file_configure
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -2017,6 +2030,7 @@ query "cronjob_container_argument_service_account_key_file_appropriate" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -2126,6 +2140,7 @@ query "cronjob_container_strong_kubelet_cryptographic_ciphers" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -2271,6 +2286,7 @@ query "cronjob_container_argument_kube_controller_manager_bind_address_127_0_0_1
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -2348,6 +2364,7 @@ query "cronjob_container_argument_kubelet_terminated_pod_gc_threshold_configured
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -2399,6 +2416,7 @@ query "cronjob_container_argument_kubelet_client_ca_file_configured" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -2482,6 +2500,7 @@ query "cronjob_container_strong_kube_apiserver_cryptographic_ciphers" {
         j.namespace as namespace,
         j.source_type as source_type,
         j.tags as tags,
+        j._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as j,
@@ -2560,6 +2579,7 @@ query "cronjob_container_argument_request_timeout_appropriate" {
         p.namespace as namespace,
         p.source_type as source_type,
         p.tags as tags,
+        p._ctx as _ctx,
         c.*
       from
         kubernetes_cronjob as p,

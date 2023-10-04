@@ -674,6 +674,7 @@ query "replication_controller_container_argument_audit_log_maxage_greater_than_3
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -727,6 +728,7 @@ query "replication_controller_container_argument_audit_log_maxbackup_greater_tha
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -780,6 +782,7 @@ query "replication_controller_container_argument_audit_log_maxsize_greater_than_
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -885,6 +888,7 @@ query "replication_controller_container_argument_authorization_mode_node" {
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -939,6 +943,7 @@ query "replication_controller_container_argument_authorization_mode_no_always_al
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -990,6 +995,7 @@ query "replication_controller_container_argument_authorization_mode_rbac" {
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -1186,6 +1192,7 @@ query "replication_controller_container_admission_control_plugin_always_pull_ima
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -1237,6 +1244,7 @@ query "replication_controller_container_admission_control_plugin_no_always_admit
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -1314,6 +1322,7 @@ query "replication_controller_container_argument_kube_scheduler_bind_address_127
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -1552,6 +1561,7 @@ query "replication_controller_container_argument_kubelet_authorization_mode_no_a
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -1603,6 +1613,7 @@ query "replication_controller_container_argument_kube_controller_manager_service
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -1654,6 +1665,7 @@ query "replication_controller_container_argument_kubelet_read_only_port_0" {
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -1704,6 +1716,7 @@ query "replication_controller_container_argument_kube_controller_manager_root_ca
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -2016,6 +2029,7 @@ query "replication_controller_container_argument_service_account_key_file_approp
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -2125,6 +2139,7 @@ query "replication_controller_container_strong_kubelet_cryptographic_ciphers" {
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -2270,6 +2285,7 @@ query "replication_controller_container_argument_kube_controller_manager_bind_ad
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -2347,6 +2363,7 @@ query "replication_controller_container_argument_kubelet_terminated_pod_gc_thres
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -2398,6 +2415,7 @@ query "replication_controller_container_argument_kubelet_client_ca_file_configur
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -2481,6 +2499,7 @@ query "replication_controller_container_strong_kube_apiserver_cryptographic_ciph
         r.namespace as namespace,
         r.source_type as source_type,
         r.tags as tags,
+        r._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as r,
@@ -2559,6 +2578,7 @@ query "replication_controller_container_argument_request_timeout_appropriate" {
         p.namespace as namespace,
         p.source_type as source_type,
         p.tags as tags,
+        p._ctx as _ctx,
         c.*
       from
         kubernetes_replication_controller as p,
