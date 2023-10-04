@@ -671,6 +671,8 @@ query "statefulset_container_argument_audit_log_maxage_greater_than_30" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -723,6 +725,8 @@ query "statefulset_container_argument_audit_log_maxbackup_greater_than_10" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -775,6 +779,8 @@ query "statefulset_container_argument_audit_log_maxsize_greater_than_100" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -879,6 +885,8 @@ query "statefulset_container_argument_authorization_mode_node" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -932,6 +940,8 @@ query "statefulset_container_argument_authorization_mode_no_always_allow" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -982,6 +992,8 @@ query "statefulset_container_argument_authorization_mode_rbac" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -1177,6 +1189,8 @@ query "statefulset_container_admission_control_plugin_always_pull_images" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -1227,6 +1241,8 @@ query "statefulset_container_admission_control_plugin_no_always_admit" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -1303,6 +1319,8 @@ query "statefulset_container_argument_kube_scheduler_bind_address_127_0_0_1" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -1541,6 +1559,8 @@ query "statefulset_container_argument_kubelet_authorization_mode_no_always_allow
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -1591,6 +1611,8 @@ query "statefulset_container_argument_kube_controller_manager_service_account_pr
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -1641,6 +1663,8 @@ query "statefulset_container_argument_kubelet_read_only_port_0" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -1690,6 +1714,8 @@ query "statefulset_container_argument_kube_controller_manager_root_ca_file_confi
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -2001,6 +2027,8 @@ query "statefulset_container_argument_service_account_key_file_appropriate" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -2109,6 +2137,8 @@ query "statefulset_container_strong_kubelet_cryptographic_ciphers" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -2253,6 +2283,8 @@ query "statefulset_container_argument_kube_controller_manager_bind_address_127_0
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -2329,6 +2361,8 @@ query "statefulset_container_argument_kubelet_client_ca_file_configured" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -2379,6 +2413,8 @@ query "statefulset_container_argument_kubelet_terminated_pod_gc_threshold_config
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -2461,6 +2497,8 @@ query "statefulset_container_strong_kube_apiserver_cryptographic_ciphers" {
         s.context_name as context_name,
         s.namespace as namespace,
         s.source_type as source_type,
+        s.tags as tags,
+        s._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as s,
@@ -2538,6 +2576,8 @@ query "statefulset_container_argument_request_timeout_appropriate" {
         p.context_name as context_name,
         p.namespace as namespace,
         p.source_type as source_type,
+        p.tags as tags,
+        p._ctx as _ctx,
         c.*
       from
         kubernetes_stateful_set as p,
