@@ -37,7 +37,6 @@ benchmark "cis_v180_1_2" {
   description   = "This section contains recommendations relating to API server configuration flags."
   documentation = file("./cis_v180/docs/cis_v180_1_2.md")
   children = [
-    benchmark.cis_v180_1_2_1,
     benchmark.cis_v180_1_2_2,
     benchmark.cis_v180_1_2_4,
     benchmark.cis_v180_1_2_5,
@@ -66,30 +65,6 @@ benchmark "cis_v180_1_2" {
 
   tags = merge(local.cis_v180_1_common_tags, {
     type = "Benchmark"
-  })
-}
-
-benchmark "cis_v180_1_2_1" {
-  title         = "1.2.1 Ensure that the --anonymous-auth argument is set to false"
-  description   = "Disable anonymous requests to the API server."
-  documentation = file("./cis_v180/docs/cis_v180_1_2_1.md")
-  children = [
-    control.cronjob_container_argument_anonymous_auth_disabled,
-    control.daemonset_container_argument_anonymous_auth_disabled,
-    control.deployment_container_argument_anonymous_auth_disabled,
-    control.job_container_argument_anonymous_auth_disabled,
-    control.pod_container_argument_anonymous_auth_disabled,
-    control.pod_template_container_argument_api_server_anonymous_auth_disabled,
-    control.replicaset_container_argument_anonymous_auth_disabled,
-    control.replication_controller_container_argument_anonymous_auth_disabled,
-    control.statefulset_container_argument_anonymous_auth_disabled
-  ]
-
-  tags = merge(local.cis_v180_1_2_common_tags, {
-    cis_level   = "1"
-    cis_item_id = "1.2.1"
-    cis_type    = "manual"
-    type        = "Benchmark"
   })
 }
 

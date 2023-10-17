@@ -521,7 +521,7 @@ query "daemonset_container_arg_peer_client_cert_auth_enabled" {
         else 'alarm'
       end as status,
       case
-        when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer cldient cert auth enabled.'
+        when (c -> 'args') @> '["--peer-client-cert-auth=true"]' then c ->> 'name' || ' peer client cert auth enabled.'
         else c ->> 'name' || ' peer client cert auth disabled.'
       end as reason,
       name as daemonset_name

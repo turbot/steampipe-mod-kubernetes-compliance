@@ -12,6 +12,7 @@ benchmark "cis_v180" {
   documentation = file("./cis_v180/docs/cis_v180_overview.md")
   children = [
     benchmark.cis_v180_1,
+    benchmark.cis_v180_2,
     benchmark.cis_v180_5,
   ]
 
