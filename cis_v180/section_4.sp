@@ -79,7 +79,7 @@ benchmark "cis_v180_4_2_2" {
     control.pod_template_container_argument_kubelet_authorization_mode_no_always_allow,
     control.replicaset_container_argument_kubelet_authorization_mode_no_always_allow,
     control.replication_controller_container_argument_kubelet_authorization_mode_no_always_allow,
-    control.statefulset_container_argument_kubelet_authorization_mode_no_always_allow,
+    control.statefulset_container_argument_kubelet_authorization_mode_no_always_allow
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {
@@ -103,7 +103,7 @@ benchmark "cis_v180_4_2_3" {
     control.pod_template_container_argument_kubelet_client_ca_file_configured,
     control.replicaset_container_argument_kubelet_client_ca_file_configured,
     control.replication_controller_container_argument_kubelet_client_ca_file_configured,
-    control.statefulset_container_argument_kubelet_client_ca_file_configured,
+    control.statefulset_container_argument_kubelet_client_ca_file_configured
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {
@@ -127,7 +127,7 @@ benchmark "cis_v180_4_2_4" {
     control.pod_template_container_argument_kubelet_read_only_port_0,
     control.replicaset_container_argument_kubelet_read_only_port_0,
     control.replication_controller_container_argument_kubelet_read_only_port_0,
-    control.statefulset_container_argument_kubelet_read_only_port_0,
+    control.statefulset_container_argument_kubelet_read_only_port_0
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {
@@ -150,7 +150,7 @@ benchmark "cis_v180_4_2_5" {
     control.pod_container_streaming_connection_idle_timeout_not_zero,
     control.replicaset_container_streaming_connection_idle_timeout_not_zero,
     control.replication_controller_container_streaming_connection_idle_timeout_not_zero,
-    control.statefulset_container_streaming_connection_idle_timeout_not_zero,
+    control.statefulset_container_streaming_connection_idle_timeout_not_zero
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {
@@ -174,7 +174,7 @@ benchmark "cis_v180_4_2_6" {
     control.pod_template_container_argument_make_iptables_util_chains_enabled,
     control.replicaset_container_argument_make_iptables_util_chains_enabled,
     control.replication_controller_container_argument_make_iptables_util_chains_enabled,
-    control.statefulset_container_argument_make_iptables_util_chains_enabled,
+    control.statefulset_container_argument_make_iptables_util_chains_enabled
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {
@@ -198,7 +198,7 @@ benchmark "cis_v180_4_2_7" {
     control.pod_template_container_no_argument_hostname_override_configured,
     control.replicaset_container_no_argument_hostname_override_configured,
     control.replication_controller_container_no_argument_hostname_override_configured,
-    control.statefulset_container_no_argument_hostname_override_configured,
+    control.statefulset_container_no_argument_hostname_override_configured
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {
@@ -221,7 +221,7 @@ benchmark "cis_v180_4_2_9" {
     control.pod_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured,
     control.replicaset_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured,
     control.replication_controller_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured,
-    control.statefulset_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured,
+    control.statefulset_container_argument_kubelet_tls_cert_file_and_tls_private_key_file_configured
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {
@@ -245,7 +245,7 @@ benchmark "cis_v180_4_2_10" {
     control.pod_template_container_rotate_certificate_enabled,
     control.replicaset_container_rotate_certificate_enabled,
     control.replication_controller_container_rotate_certificate_enabled,
-    control.statefulset_container_rotate_certificate_enabled,
+    control.statefulset_container_rotate_certificate_enabled
   ]
 
   tags = merge(local.cis_v180_4_2_common_tags, {

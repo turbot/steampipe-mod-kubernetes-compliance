@@ -20,7 +20,7 @@ locals {
 
 benchmark "cis_v180_1" {
   title       = "1 Control Plane Components"
-  description = "This section consists of security recommendations for the direct configuration of Kubernetes control plane processes. These recommendations may not be directly applicable for cluster operators in environments where these components are managed by a 3rd party"
+  description = "This section consists of security recommendations for the direct configuration of Kubernetes control plane processes. These recommendations may not be directly applicable for cluster operators in environments where these components are managed by a 3rd party."
   children = [
     benchmark.cis_v180_1_2,
     benchmark.cis_v180_1_3,
@@ -77,8 +77,8 @@ benchmark "cis_v180_1_2_2" {
     control.daemonset_container_token_auth_file_not_configured,
     control.deployment_container_token_auth_file_not_configured,
     control.job_container_token_auth_file_not_configured,
-    control.pod_template_container_token_auth_file_not_configured,
     control.pod_container_token_auth_file_not_configured,
+    control.pod_template_container_token_auth_file_not_configured,
     control.replicaset_container_token_auth_file_not_configured,
     control.replication_controller_container_token_auth_file_not_configured,
     control.statefulset_container_token_auth_file_not_configured
@@ -101,8 +101,8 @@ benchmark "cis_v180_1_2_4" {
     control.daemonset_container_argument_kubelet_client_certificate_and_key_configured,
     control.deployment_container_argument_kubelet_client_certificate_and_key_configured,
     control.job_container_argument_kubelet_client_certificate_and_key_configured,
-    control.pod_template_container_argument_kubelet_client_certificate_and_key_configured,
     control.pod_container_argument_kubelet_client_certificate_and_key_configured,
+    control.pod_template_container_argument_kubelet_client_certificate_and_key_configured,
     control.replicaset_container_argument_kubelet_client_certificate_and_key_configured,
     control.replication_controller_container_argument_kubelet_client_certificate_and_key_configured,
     control.statefulset_container_argument_kubelet_client_certificate_and_key_configured
@@ -125,8 +125,8 @@ benchmark "cis_v180_1_2_5" {
     control.daemonset_container_kubelet_certificate_authority_configured,
     control.deployment_container_kubelet_certificate_authority_configured,
     control.job_container_kubelet_certificate_authority_configured,
-    control.pod_template_container_kubelet_certificate_authority_configured,
     control.pod_container_kubelet_certificate_authority_configured,
+    control.pod_template_container_kubelet_certificate_authority_configured,
     control.replicaset_container_kubelet_certificate_authority_configured,
     control.replication_controller_container_kubelet_certificate_authority_configured,
     control.statefulset_container_kubelet_certificate_authority_configured
@@ -149,8 +149,8 @@ benchmark "cis_v180_1_2_6" {
     control.daemonset_container_argument_authorization_mode_no_always_allow,
     control.deployment_container_argument_authorization_mode_no_always_allow,
     control.job_container_argument_authorization_mode_no_always_allow,
-    control.pod_template_container_argument_authorization_mode_no_always_allow,
     control.pod_container_argument_authorization_mode_no_always_allow,
+    control.pod_template_container_argument_authorization_mode_no_always_allow,
     control.replicaset_container_argument_authorization_mode_no_always_allow,
     control.replication_controller_container_argument_authorization_mode_no_always_allow,
     control.statefulset_container_argument_authorization_mode_no_always_allow
@@ -158,7 +158,7 @@ benchmark "cis_v180_1_2_6" {
 
   tags = merge(local.cis_v180_1_2_common_tags, {
     cis_level   = "1"
-    cis_item_id = "1.2.5"
+    cis_item_id = "1.2.6"
     cis_type    = "automated"
     type        = "Benchmark"
   })
@@ -173,8 +173,8 @@ benchmark "cis_v180_1_2_7" {
     control.daemonset_container_argument_authorization_mode_node,
     control.deployment_container_argument_authorization_mode_node,
     control.job_container_argument_authorization_mode_node,
-    control.pod_template_container_argument_authorization_mode_node,
     control.pod_container_argument_authorization_mode_node,
+    control.pod_template_container_argument_authorization_mode_node,
     control.replicaset_container_argument_authorization_mode_node,
     control.replication_controller_container_argument_authorization_mode_node,
     control.statefulset_container_argument_authorization_mode_node
@@ -197,8 +197,8 @@ benchmark "cis_v180_1_2_8" {
     control.daemonset_container_argument_authorization_mode_rbac,
     control.deployment_container_argument_authorization_mode_rbac,
     control.job_container_argument_authorization_mode_rbac,
-    control.pod_template_container_argument_authorization_mode_rbac,
     control.pod_container_argument_authorization_mode_rbac,
+    control.pod_template_container_argument_authorization_mode_rbac,
     control.replicaset_container_argument_authorization_mode_rbac,
     control.replication_controller_container_argument_authorization_mode_rbac,
     control.statefulset_container_argument_authorization_mode_rbac
@@ -221,8 +221,8 @@ benchmark "cis_v180_1_2_10" {
     control.daemonset_container_admission_control_plugin_no_always_admit,
     control.deployment_container_admission_control_plugin_no_always_admit,
     control.job_container_admission_control_plugin_no_always_admit,
-    control.pod_template_container_admission_control_plugin_no_always_admit,
     control.pod_container_admission_control_plugin_no_always_admit,
+    control.pod_template_container_admission_control_plugin_no_always_admit,
     control.replicaset_container_admission_control_plugin_no_always_admit,
     control.replication_controller_container_admission_control_plugin_no_always_admit,
     control.statefulset_container_admission_control_plugin_no_always_admit
@@ -245,8 +245,8 @@ benchmark "cis_v180_1_2_11" {
     control.daemonset_container_admission_control_plugin_always_pull_images,
     control.deployment_container_admission_control_plugin_always_pull_images,
     control.job_container_admission_control_plugin_always_pull_images,
-    control.pod_template_container_admission_control_plugin_always_pull_images,
     control.pod_container_admission_control_plugin_always_pull_images,
+    control.pod_template_container_admission_control_plugin_always_pull_images,
     control.replicaset_container_admission_control_plugin_always_pull_images,
     control.replication_controller_container_admission_control_plugin_always_pull_images,
     control.statefulset_container_admission_control_plugin_always_pull_images
@@ -269,8 +269,8 @@ benchmark "cis_v180_1_2_13" {
     control.daemonset_container_argument_service_account_enabled,
     control.deployment_container_argument_service_account_enabled,
     control.job_container_argument_service_account_enabled,
-    control.pod_template_container_argument_service_account_enabled,
     control.pod_container_argument_service_account_enabled,
+    control.pod_template_container_argument_service_account_enabled,
     control.replicaset_container_argument_service_account_enabled,
     control.replication_controller_container_argument_service_account_enabled,
     control.statefulset_container_argument_service_account_enabled
@@ -286,15 +286,15 @@ benchmark "cis_v180_1_2_13" {
 
 benchmark "cis_v180_1_2_14" {
   title         = "1.2.14 Ensure that the admission control plugin NamespaceLifecycle is set"
-  description   = "Reject creating objects in a namespace that is undergoing termination"
+  description   = "Reject creating objects in a namespace that is undergoing termination."
   documentation = file("./cis_v180/docs/cis_v180_1_2_14.md")
   children = [
     control.cronjob_container_argument_namespace_lifecycle_enabled,
     control.daemonset_container_argument_namespace_lifecycle_enabled,
     control.deployment_container_argument_namespace_lifecycle_enabled,
     control.job_container_argument_namespace_lifecycle_enabled,
-    control.pod_template_container_argument_namespace_lifecycle_enabled,
     control.pod_container_argument_namespace_lifecycle_enabled,
+    control.pod_template_container_argument_namespace_lifecycle_enabled,
     control.replicaset_container_argument_namespace_lifecycle_enabled,
     control.replication_controller_container_argument_namespace_lifecycle_enabled,
     control.statefulset_container_argument_namespace_lifecycle_enabled
@@ -317,8 +317,8 @@ benchmark "cis_v180_1_2_15" {
     control.daemonset_container_argument_node_restriction_enabled,
     control.deployment_container_argument_node_restriction_enabled,
     control.job_container_argument_node_restriction_enabled,
-    control.pod_template_container_argument_node_restriction_enabled,
     control.pod_container_argument_node_restriction_enabled,
+    control.pod_template_container_argument_node_restriction_enabled,
     control.replicaset_container_argument_node_restriction_enabled,
     control.replication_controller_container_argument_node_restriction_enabled,
     control.statefulset_container_argument_node_restriction_enabled
@@ -341,8 +341,8 @@ benchmark "cis_v180_1_2_16" {
     control.daemonset_container_argument_kube_apiserver_profiling_disabled,
     control.deployment_container_argument_kube_apiserver_profiling_disabled,
     control.job_container_argument_kube_apiserver_profiling_disabled,
-    control.pod_template_container_argument_kube_apiserver_profiling_disabled,
     control.pod_container_argument_kube_apiserver_profiling_disabled,
+    control.pod_template_container_argument_kube_apiserver_profiling_disabled,
     control.replicaset_container_argument_kube_apiserver_profiling_disabled,
     control.replication_controller_container_argument_kube_apiserver_profiling_disabled,
     control.statefulset_container_argument_kube_apiserver_profiling_disabled
@@ -365,8 +365,8 @@ benchmark "cis_v180_1_2_17" {
     control.daemonset_container_argument_audit_log_path_configured,
     control.deployment_container_argument_audit_log_path_configured,
     control.job_container_argument_audit_log_path_configured,
-    control.pod_template_container_argument_audit_log_path_configured,
     control.pod_container_argument_audit_log_path_configured,
+    control.pod_template_container_argument_audit_log_path_configured,
     control.replicaset_container_argument_audit_log_path_configured,
     control.replication_controller_container_argument_audit_log_path_configured,
     control.statefulset_container_argument_audit_log_path_configured
@@ -389,8 +389,8 @@ benchmark "cis_v180_1_2_18" {
     control.daemonset_container_argument_audit_log_maxage_greater_than_30,
     control.deployment_container_argument_audit_log_maxage_greater_than_30,
     control.job_container_argument_audit_log_maxage_greater_than_30,
-    control.pod_template_container_argument_audit_log_maxage_greater_than_30,
     control.pod_container_argument_audit_log_maxage_greater_than_30,
+    control.pod_template_container_argument_audit_log_maxage_greater_than_30,
     control.replicaset_container_argument_audit_log_maxage_greater_than_30,
     control.replication_controller_container_argument_audit_log_maxage_greater_than_30,
     control.statefulset_container_argument_audit_log_maxage_greater_than_30
@@ -405,7 +405,7 @@ benchmark "cis_v180_1_2_18" {
 }
 
 benchmark "cis_v180_1_2_19" {
-  title         = "1.2.19 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate "
+  title         = "1.2.19 Ensure that the --audit-log-maxbackup argument is set to 10 or as appropriate"
   description   = "Retain 10 or an appropriate number of old log files."
   documentation = file("./cis_v180/docs/cis_v180_1_2_19.md")
   children = [
@@ -413,8 +413,8 @@ benchmark "cis_v180_1_2_19" {
     control.daemonset_container_argument_audit_log_maxbackup_greater_than_10,
     control.deployment_container_argument_audit_log_maxbackup_greater_than_10,
     control.job_container_argument_audit_log_maxbackup_greater_than_10,
-    control.pod_template_container_argument_audit_log_maxbackup_greater_than_10,
     control.pod_container_argument_audit_log_maxbackup_greater_than_10,
+    control.pod_template_container_argument_audit_log_maxbackup_greater_than_10,
     control.replicaset_container_argument_audit_log_maxbackup_greater_than_10,
     control.replication_controller_container_argument_audit_log_maxbackup_greater_than_10,
     control.statefulset_container_argument_audit_log_maxbackup_greater_than_10
@@ -437,8 +437,8 @@ benchmark "cis_v180_1_2_20" {
     control.daemonset_container_argument_audit_log_maxsize_greater_than_100,
     control.deployment_container_argument_audit_log_maxsize_greater_than_100,
     control.job_container_argument_audit_log_maxsize_greater_than_100,
-    control.pod_template_container_argument_audit_log_maxsize_greater_than_100,
     control.pod_container_argument_audit_log_maxsize_greater_than_100,
+    control.pod_template_container_argument_audit_log_maxsize_greater_than_100,
     control.replicaset_container_argument_audit_log_maxsize_greater_than_100,
     control.replication_controller_container_argument_audit_log_maxsize_greater_than_100,
     control.statefulset_container_argument_audit_log_maxsize_greater_than_100
@@ -461,8 +461,8 @@ benchmark "cis_v180_1_2_21" {
     control.daemonset_container_argument_request_timeout_appropriate,
     control.deployment_container_argument_request_timeout_appropriate,
     control.job_container_argument_request_timeout_appropriate,
-    control.pod_template_container_argument_request_timeout_appropriate,
     control.pod_container_argument_request_timeout_appropriate,
+    control.pod_template_container_argument_request_timeout_appropriate,
     control.replicaset_container_argument_request_timeout_appropriate,
     control.replication_controller_container_argument_request_timeout_appropriate,
     control.statefulset_container_argument_request_timeout_appropriate
@@ -485,8 +485,8 @@ benchmark "cis_v180_1_2_22" {
     control.daemonset_container_argument_service_account_lookup_enabled,
     control.deployment_container_argument_service_account_lookup_enabled,
     control.job_container_argument_service_account_lookup_enabled,
-    control.pod_template_container_argument_service_account_lookup_enabled,
     control.pod_container_argument_service_account_lookup_enabled,
+    control.pod_template_container_argument_service_account_lookup_enabled,
     control.replicaset_container_argument_service_account_lookup_enabled,
     control.replication_controller_container_argument_service_account_lookup_enabled,
     control.statefulset_container_argument_service_account_lookup_enabled
@@ -509,8 +509,8 @@ benchmark "cis_v180_1_2_23" {
     control.daemonset_container_argument_service_account_key_file_appropriate,
     control.deployment_container_argument_service_account_key_file_appropriate,
     control.job_container_argument_service_account_key_file_appropriate,
-    control.pod_template_container_argument_service_account_key_file_appropriate,
     control.pod_container_argument_service_account_key_file_appropriate,
+    control.pod_template_container_argument_service_account_key_file_appropriate,
     control.replicaset_container_argument_service_account_key_file_appropriate,
     control.replication_controller_container_argument_service_account_key_file_appropriate,
     control.statefulset_container_argument_service_account_key_file_appropriate
@@ -556,11 +556,11 @@ benchmark "cis_v180_1_2_25" {
     control.daemonset_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.deployment_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.job_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
-    control.pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.pod_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
+    control.pod_template_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.replicaset_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
     control.replication_controller_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
-    control.statefulset_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured,
+    control.statefulset_container_argument_kube_apiserver_tls_cert_file_and_tls_private_key_file_configured
   ]
 
   tags = merge(local.cis_v180_1_2_common_tags, {
@@ -580,11 +580,11 @@ benchmark "cis_v180_1_2_27" {
     control.daemonset_container_argument_etcd_cafile_configured,
     control.deployment_container_argument_etcd_cafile_configured,
     control.job_container_argument_etcd_cafile_configured,
-    control.pod_template_container_argument_etcd_cafile_configured,
     control.pod_container_argument_etcd_cafile_configured,
+    control.pod_template_container_argument_etcd_cafile_configured,
     control.replicaset_container_argument_etcd_cafile_configured,
     control.replication_controller_container_argument_etcd_cafile_configured,
-    control.statefulset_container_argument_etcd_cafile_configured,
+    control.statefulset_container_argument_etcd_cafile_configured
   ]
 
   tags = merge(local.cis_v180_1_2_common_tags, {
@@ -596,7 +596,7 @@ benchmark "cis_v180_1_2_27" {
 }
 
 benchmark "cis_v180_1_2_28" {
-  title         = "1.2.28 Ensure that the --encryption-provider-config argument is set as appropriate "
+  title         = "1.2.28 Ensure that the --encryption-provider-config argument is set as appropriate"
   description   = "Encrypt etcd key-value store."
   documentation = file("./cis_v180/docs/cis_v180_1_2_28.md")
   children = [
@@ -604,11 +604,11 @@ benchmark "cis_v180_1_2_28" {
     control.daemonset_container_encryption_providers_configured,
     control.deployment_container_encryption_providers_configured,
     control.job_container_encryption_providers_configured,
-    control.pod_template_container_encryption_providers_configured,
     control.pod_container_encryption_providers_configured,
+    control.pod_template_container_encryption_providers_configured,
     control.replicaset_container_encryption_providers_configured,
     control.replication_controller_container_encryption_providers_configured,
-    control.statefulset_container_encryption_providers_configured,
+    control.statefulset_container_encryption_providers_configured
   ]
 
   tags = merge(local.cis_v180_1_2_common_tags, {
@@ -628,11 +628,11 @@ benchmark "cis_v180_1_2_30" {
     control.daemonset_container_strong_kube_apiserver_cryptographic_ciphers,
     control.deployment_container_strong_kube_apiserver_cryptographic_ciphers,
     control.job_container_strong_kube_apiserver_cryptographic_ciphers,
-    control.pod_template_container_strong_kube_apiserver_cryptographic_ciphers,
     control.pod_container_strong_kube_apiserver_cryptographic_ciphers,
+    control.pod_template_container_strong_kube_apiserver_cryptographic_ciphers,
     control.replicaset_container_strong_kube_apiserver_cryptographic_ciphers,
     control.replication_controller_container_strong_kube_apiserver_cryptographic_ciphers,
-    control.statefulset_container_strong_kube_apiserver_cryptographic_ciphers,
+    control.statefulset_container_strong_kube_apiserver_cryptographic_ciphers
   ]
 
   tags = merge(local.cis_v180_1_2_common_tags, {
@@ -670,11 +670,11 @@ benchmark "cis_v180_1_3_2" {
     control.daemonset_container_argument_kube_controller_manager_profiling_disabled,
     control.deployment_container_argument_kube_controller_manager_profiling_disabled,
     control.job_container_argument_kube_controller_manager_profiling_disabled,
-    control.pod_template_container_argument_kube_controller_manager_profiling_disabled,
     control.pod_container_argument_kube_controller_manager_profiling_disabled,
+    control.pod_template_container_argument_kube_controller_manager_profiling_disabled,
     control.replicaset_container_argument_kube_controller_manager_profiling_disabled,
     control.replication_controller_container_argument_kube_controller_manager_profiling_disabled,
-    control.statefulset_container_argument_kube_controller_manager_profiling_disabled,
+    control.statefulset_container_argument_kube_controller_manager_profiling_disabled
   ]
 
   tags = merge(local.cis_v180_1_3_common_tags, {
@@ -694,23 +694,23 @@ benchmark "cis_v180_1_3_3" {
     control.daemonset_container_argument_kube_controller_manager_service_account_credentials_enabled,
     control.deployment_container_argument_kube_controller_manager_service_account_credentials_enabled,
     control.job_container_argument_kube_controller_manager_service_account_credentials_enabled,
-    control.pod_template_container_argument_kube_controller_manager_service_account_credentials_enabled,
     control.pod_container_argument_kube_controller_manager_service_account_credentials_enabled,
+    control.pod_template_container_argument_kube_controller_manager_service_account_credentials_enabled,
     control.replicaset_container_argument_kube_controller_manager_service_account_credentials_enabled,
     control.replication_controller_container_argument_kube_controller_manager_service_account_credentials_enabled,
-    control.statefulset_container_argument_kube_controller_manager_service_account_credentials_enabled,
+    control.statefulset_container_argument_kube_controller_manager_service_account_credentials_enabled
   ]
 
   tags = merge(local.cis_v180_1_3_common_tags, {
     cis_level   = "1"
-    cis_item_id = "1.3.4"
+    cis_item_id = "1.3.3"
     cis_type    = "automated"
     type        = "Benchmark"
   })
 }
 
 benchmark "cis_v180_1_3_4" {
-  title         = "1.3.4 Ensure that the --service-account-private-key-file argument is set as appropriate "
+  title         = "1.3.4 Ensure that the --service-account-private-key-file argument is set as appropriate"
   description   = "Explicitly set a service account private key file for service accounts on the controller manager."
   documentation = file("./cis_v180/docs/cis_v180_1_3_4.md")
   children = [
@@ -718,11 +718,11 @@ benchmark "cis_v180_1_3_4" {
     control.daemonset_container_argument_kube_controller_manager_service_account_private_key_file_configured,
     control.deployment_container_argument_kube_controller_manager_service_account_private_key_file_configured,
     control.job_container_argument_kube_controller_manager_service_account_private_key_file_configured,
-    control.pod_template_container_argument_kube_controller_manager_service_account_private_key_file_configured,
     control.pod_container_argument_kube_controller_manager_service_account_private_key_file_configured,
+    control.pod_template_container_argument_kube_controller_manager_service_account_private_key_file_configured,
     control.replicaset_container_argument_kube_controller_manager_service_account_private_key_file_configured,
     control.replication_controller_container_argument_kube_controller_manager_service_account_private_key_file_configured,
-    control.statefulset_container_argument_kube_controller_manager_service_account_private_key_file_configured,
+    control.statefulset_container_argument_kube_controller_manager_service_account_private_key_file_configured
   ]
 
   tags = merge(local.cis_v180_1_3_common_tags, {
@@ -742,11 +742,11 @@ benchmark "cis_v180_1_3_5" {
     control.daemonset_container_argument_kube_controller_manager_root_ca_file_configured,
     control.deployment_container_argument_kube_controller_manager_root_ca_file_configured,
     control.job_container_argument_kube_controller_manager_root_ca_file_configured,
-    control.pod_template_container_argument_kube_controller_manager_root_ca_file_configured,
     control.pod_container_argument_kube_controller_manager_root_ca_file_configured,
+    control.pod_template_container_argument_kube_controller_manager_root_ca_file_configured,
     control.replicaset_container_argument_kube_controller_manager_root_ca_file_configured,
     control.replication_controller_container_argument_kube_controller_manager_root_ca_file_configured,
-    control.statefulset_container_argument_kube_controller_manager_root_ca_file_configured,
+    control.statefulset_container_argument_kube_controller_manager_root_ca_file_configured
   ]
 
   tags = merge(local.cis_v180_1_3_common_tags, {
@@ -766,11 +766,11 @@ benchmark "cis_v180_1_3_6" {
     control.daemonset_container_argument_rotate_kubelet_server_certificate_enabled,
     control.deployment_container_argument_rotate_kubelet_server_certificate_enabled,
     control.job_container_argument_rotate_kubelet_server_certificate_enabled,
-    control.pod_template_container_argument_rotate_kubelet_server_certificate_enabled,
     control.pod_container_argument_rotate_kubelet_server_certificate_enabled,
+    control.pod_template_container_argument_rotate_kubelet_server_certificate_enabled,
     control.replicaset_container_argument_rotate_kubelet_server_certificate_enabled,
     control.replication_controller_container_argument_rotate_kubelet_server_certificate_enabled,
-    control.statefulset_container_argument_rotate_kubelet_server_certificate_enabled,
+    control.statefulset_container_argument_rotate_kubelet_server_certificate_enabled
   ]
 
   tags = merge(local.cis_v180_1_3_common_tags, {
@@ -782,7 +782,7 @@ benchmark "cis_v180_1_3_6" {
 }
 
 benchmark "cis_v180_1_3_7" {
-  title         = "1.3.7 Ensure that the --bind-address argument is set to 127.0.0.1 "
+  title         = "1.3.7 Ensure that the --bind-address argument is set to 127.0.0.1"
   description   = "Do not bind the Controller Manager service to non-loopback insecure addresses."
   documentation = file("./cis_v180/docs/cis_v180_1_3_7.md")
   children = [
@@ -790,11 +790,11 @@ benchmark "cis_v180_1_3_7" {
     control.daemonset_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.deployment_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.job_container_argument_kube_controller_manager_bind_address_127_0_0_1,
-    control.pod_template_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.pod_container_argument_kube_controller_manager_bind_address_127_0_0_1,
+    control.pod_template_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.replicaset_container_argument_kube_controller_manager_bind_address_127_0_0_1,
     control.replication_controller_container_argument_kube_controller_manager_bind_address_127_0_0_1,
-    control.statefulset_container_argument_kube_controller_manager_bind_address_127_0_0_1,
+    control.statefulset_container_argument_kube_controller_manager_bind_address_127_0_0_1
   ]
 
   tags = merge(local.cis_v180_1_3_common_tags, {
@@ -827,11 +827,11 @@ benchmark "cis_v180_1_4_1" {
     control.daemonset_container_argument_kube_scheduler_profiling_disabled,
     control.deployment_container_argument_kube_scheduler_profiling_disabled,
     control.job_container_argument_kube_scheduler_profiling_disabled,
-    control.pod_template_container_argument_kube_scheduler_profiling_disabled,
     control.pod_container_argument_kube_scheduler_profiling_disabled,
+    control.pod_template_container_argument_kube_scheduler_profiling_disabled,
     control.replicaset_container_argument_kube_scheduler_profiling_disabled,
     control.replication_controller_container_argument_kube_scheduler_profiling_disabled,
-    control.statefulset_container_argument_kube_scheduler_profiling_disabled,
+    control.statefulset_container_argument_kube_scheduler_profiling_disabled
   ]
 
   tags = merge(local.cis_v180_1_4_common_tags, {

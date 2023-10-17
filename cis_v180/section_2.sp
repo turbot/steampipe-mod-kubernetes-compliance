@@ -11,7 +11,7 @@ benchmark "cis_v180_2" {
     benchmark.cis_v180_2_1,
     benchmark.cis_v180_2_2,
     benchmark.cis_v180_2_3,
-    benchmark.cis_v180_2_4,
+    benchmark.cis_v180_2_4
   ]
 
   tags = merge(local.cis_v180_2_common_tags, {
@@ -32,7 +32,7 @@ benchmark "cis_v180_2_1" {
     control.pod_template_container_argument_etcd_certfile_and_keyfile_configured,
     control.replicaset_container_argument_etcd_certfile_and_keyfile_configured,
     control.replication_controller_container_argument_etcd_certfile_and_keyfile_configured,
-    control.statefulset_container_argument_etcd_certfile_and_keyfile_configured,
+    control.statefulset_container_argument_etcd_certfile_and_keyfile_configured
   ]
 
   tags = merge(local.cis_v180_2_common_tags, {
@@ -56,7 +56,7 @@ benchmark "cis_v180_2_2" {
     control.pod_template_container_argument_etcd_client_cert_auth_enabled,
     control.replicaset_container_argument_etcd_client_cert_auth_enabled,
     control.replication_controller_container_argument_etcd_client_cert_auth_enabled,
-    control.statefulset_container_argument_etcd_client_cert_auth_enabled,
+    control.statefulset_container_argument_etcd_client_cert_auth_enabled
   ]
 
   tags = merge(local.cis_v180_2_common_tags, {
@@ -80,7 +80,7 @@ benchmark "cis_v180_2_3" {
     control.pod_template_container_argument_etcd_auto_tls_disabled,
     control.replicaset_container_argument_etcd_auto_tls_disabled,
     control.replication_controller_container_argument_etcd_auto_tls_disabled,
-    control.statefulset_container_argument_etcd_auto_tls_disabled,
+    control.statefulset_container_argument_etcd_auto_tls_disabled
   ]
 
   tags = merge(local.cis_v180_2_common_tags, {
@@ -104,7 +104,7 @@ benchmark "cis_v180_2_4" {
     control.pod_template_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
     control.replicaset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
     control.replication_controller_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
-    control.statefulset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured,
+    control.statefulset_container_argument_etcd_peer_certfile_and_peer_keyfile_configured
   ]
 
   tags = merge(local.cis_v180_2_common_tags, {
@@ -127,7 +127,7 @@ benchmark "cis_v180_2_5" {
     control.pod_container_arg_peer_client_cert_auth_enabled,
     control.replicaset_container_arg_peer_client_cert_auth_enabled,
     control.replication_controller_container_arg_peer_client_cert_auth_enabled,
-    control.statefulset_container_arg_peer_client_cert_auth_enabled,
+    control.statefulset_container_arg_peer_client_cert_auth_enabled
   ]
 
   tags = merge(local.cis_v180_2_common_tags, {
@@ -137,5 +137,3 @@ benchmark "cis_v180_2_5" {
     type        = "Benchmark"
   })
 }
-
-
