@@ -72,11 +72,11 @@ query "pod_immutable_container_filesystem" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read-only root file system.'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then c ->> 'name' || ' running with read-only root file system.'
         else c ->> 'name' || ' not running with read-only root file system.'
       end as reason,
       name as pod_name
@@ -93,11 +93,11 @@ query "pod_non_root_container" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
+        when (c -> 'securityContext' ->> 'runAsNonRoot')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then c ->> 'name' || ' not running with root privilege.'
+        when (c -> 'securityContext' ->> 'runAsNonRoot')::bool then c ->> 'name' || ' not running with root privilege.'
         else c ->> 'name' || ' running with root privilege.'
       end as reason,
       name as pod_name
@@ -114,11 +114,11 @@ query "pod_container_privilege_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
+        when (c -> 'securityContext' ->> 'privileged')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then c ->> 'name' || ' running with privilege access.'
+        when (c -> 'securityContext' ->> 'privileged')::bool then c ->> 'name' || ' running with privilege access.'
         else c ->> 'name' || ' not running with privilege access.'
       end as reason,
       name as pod_name
@@ -2582,11 +2582,11 @@ query "pod_service_account_token_enabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'ok'
+        when ((annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when (annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken' = 'true' then 'name' || ' service account tokens enabled.'
+        when ((annotations ->> 'kubectl.kubernetes.io/last-applied-configuration')::jsonb -> 'spec' ->> 'automountServiceAccountToken')::bool then 'name' || ' service account tokens enabled.'
         else 'name' || ' service account tokens disabled.'
       end as reason,
       name as pod_name

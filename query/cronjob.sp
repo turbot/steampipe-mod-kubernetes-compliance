@@ -51,11 +51,11 @@ query "cronjob_container_privilege_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
+        when (c -> 'securityContext' ->> 'privileged')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then c ->> 'name' || ' privileged container.'
+        when (c -> 'securityContext' ->> 'privileged')::bool then c ->> 'name' || ' privileged container.'
         else c ->> 'name' || ' not privileged container.'
       end as reason,
       name as cronjob_name
@@ -93,11 +93,11 @@ query "cronjob_immutable_container_filesystem" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read-only root file system.'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then c ->> 'name' || ' running with read-only root file system.'
         else c ->> 'name' || ' not running with read-only root file system.'
       end as reason,
       name as cronjob_name
@@ -114,11 +114,11 @@ query "cronjob_host_network_access_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
+        when (job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork' = 'true' then 'CronJob pods using host network.'
+        when (job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostNetwork')::bool then 'CronJob pods using host network.'
         else 'CronJob pods not using host network.'
       end as reason,
       name as cronjob_name
@@ -239,11 +239,11 @@ query "cronjob_non_root_container" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
+        when (c -> 'securityContext' ->> 'runAsNonRoot')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then c ->> 'name' || ' not running with root privilege.'
+        when (c -> 'securityContext' ->> 'runAsNonRoot')::bool then c ->> 'name' || ' not running with root privilege.'
         else c ->> 'name' || ' running with root privilege.'
       end as reason,
       name as cronjob_name
@@ -281,13 +281,13 @@ query "cronjob_hostpid_hostipc_sharing_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID' = 'true'
-        or job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
+        when (job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID')::bool
+        or (job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostIPC')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID' = 'true' then 'CronJob pods share host pid namespaces.'
-        when job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostIPC' = 'true' then 'CronJob pods share host ipc namespaces.'
+        when (job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostPID')::bool then 'CronJob pods share host pid namespaces.'
+        when (job_template -> 'spec' -> 'template' -> 'spec' ->> 'hostIPC')::bool then 'CronJob pods share host ipc namespaces.'
         else 'CronJob pods cannot share host process namespaces.'
       end as reason,
       name as cronjob_name
