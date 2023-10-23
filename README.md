@@ -10,7 +10,7 @@ Or in a terminal:
 
 Includes support for:
 
-* [v1.0 NSA and CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF)
+* [v1.0 NSA and CISA Cybersecurity Technical Report](https://media.defense.gov/2022/Aug/29/2003066362/-1/-1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF)
 * [CIS Kubernetes v1.20](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls/benchmark.cis_kube_v120)
 * [CIS v1.7.0](https://hub.steampipe.io/mods/turbot/kubernetes_compliance/controls/benchmark.cis_v170) 🚀 New!
 

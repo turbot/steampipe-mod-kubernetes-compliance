@@ -15,7 +15,7 @@ Run individual controls or full compliance benchmarks for `NSA and CISA Kubernet
 
 [Kubernetes](https://kubernetes.io/) also known as K8s, is an open-source system for automating deployment, scaling, and management of containerized applications.
 
-[NSA & CISA Cybersecurity Technical Report](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF) describes the complexities of securely managing Kubernetes an open-source, container-orchestration system used to automate deploying, scaling, and managing containerized applications.
+[NSA & CISA Cybersecurity Technical Report](https://media.defense.gov/2022/Aug/29/2003066362/-1/-1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF) describes the complexities of securely managing Kubernetes an open-source, container-orchestration system used to automate deploying, scaling, and managing containerized applications.
 
 [CIS Kubernetes Benchmarks](https://www.cisecurity.org) provide a predefined set of compliance and security best-practice checks for Kubernetes clusters.
 
