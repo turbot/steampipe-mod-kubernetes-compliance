@@ -233,8 +233,8 @@ benchmark "cis_v180_4_2_9" {
 }
 
 benchmark "cis_v180_4_2_10" {
-  title         = "4.2.10 Ensure that the --tls-cert-file and --tls-private-key-file arguments are set as appropriate"
-  description   = "Setup TLS connection on the Kubelets."
+  title         = "4.2.10 Ensure that the --rotate-certificates argument is not set to false"
+  description   = "Enable kubelet client certificate rotation."
   documentation = file("./cis_v180/docs/cis_v180_4_2_10.md")
   children = [
     control.cronjob_container_rotate_certificate_enabled,

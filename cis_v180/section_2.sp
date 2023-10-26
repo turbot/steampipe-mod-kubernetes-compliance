@@ -44,7 +44,7 @@ benchmark "cis_v180_2_1" {
 }
 
 benchmark "cis_v180_2_2" {
-  title         = "2.2 Ensure that the --client-cert-auth argument is set to true "
+  title         = "2.2 Ensure that the --client-cert-auth argument is set to true"
   description   = "Enable client authentication on etcd service."
   documentation = file("./cis_v180/docs/cis_v180_2_2.md")
   children = [
@@ -116,7 +116,7 @@ benchmark "cis_v180_2_4" {
 }
 
 benchmark "cis_v180_2_5" {
-  title         = "2.5 Ensure that the --peer-client-cert-auth argument is set to true "
+  title         = "2.5 Ensure that the --peer-client-cert-auth argument is set to true"
   description   = "etcd should be configured for peer authentication."
   documentation = file("./cis_v180/docs/cis_v180_2_5.md")
   children = [

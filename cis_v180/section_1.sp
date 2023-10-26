@@ -255,7 +255,7 @@ benchmark "cis_v180_1_2_11" {
   tags = merge(local.cis_v180_1_2_common_tags, {
     cis_level   = "1"
     cis_item_id = "1.2.11"
-    cis_type    = "automated"
+    cis_type    = "manual"
     type        = "Benchmark"
   })
 }
@@ -333,7 +333,7 @@ benchmark "cis_v180_1_2_15" {
 }
 
 benchmark "cis_v180_1_2_16" {
-  title         = "1.2.16 Ensure that the --profiling argument is set to false "
+  title         = "1.2.16 Ensure that the --profiling argument is set to false"
   description   = "Disable profiling, if not needed."
   documentation = file("./cis_v180/docs/cis_v180_1_2_16.md")
   children = [
