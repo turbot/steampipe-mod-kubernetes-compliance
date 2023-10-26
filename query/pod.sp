@@ -1845,7 +1845,7 @@ query "pod_container_argument_service_account_lookup_enabled" {
 query "pod_container_token_auth_file_not_configured" {
   sql = <<-EOQ
     select
-      coalesce(uid, concat(path, ':', start_line)) as resource,
+      coalesce(uid, concat(path, ':', start_line)) as resource,name,
       case
         when (c -> 'command') is null then 'ok'
         when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
@@ -1854,8 +1854,8 @@ query "pod_container_token_auth_file_not_configured" {
         else 'alarm'
       end as status,
       case
-        when (c -> 'command') is null then ' command not defined.'
-        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
           and (c ->> 'command' not like '%--token-auth-file%') then  c ->> 'name' || ' token auth file not configured.'
         else c ->> 'name' || ' token auth file configured.'
