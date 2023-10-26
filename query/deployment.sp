@@ -1850,10 +1850,10 @@ query "deployment_container_token_auth_file_not_configured" {
         else 'alarm'
       end as status,
       case
-        when (c -> 'command') is null then ' command not defined.'
-        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' not like '%--token-auth-file%') then  c ->> 'name' || ' token auth file not configured.'
+          and (c ->> 'command' not like '%--token-auth-file%') then c ->> 'name' || ' token auth file not configured.'
         else c ->> 'name' || ' token auth file configured.'
       end as reason,
       name as deployment_name
@@ -1877,10 +1877,10 @@ query "deployment_container_kubelet_certificate_authority_configured" {
         else 'alarm'
       end as status,
       case
-        when (c -> 'command') is null then ' command not defined.'
-        when not (c -> 'command') @> '["kube-apiserver"]' then ' kube-apiserver not defined.'
+        when (c -> 'command') is null then c ->> 'name' || ' command not defined.'
+        when not (c -> 'command') @> '["kube-apiserver"]' then c ->> 'name' || ' kube-apiserver not defined.'
         when (c -> 'command') @> '["kube-apiserver"]'
-          and (c ->> 'command' like '%--kubelet-certificate-authority%') then  c ->> 'name' || ' kubelet certificate authority configured.'
+          and (c ->> 'command' like '%--kubelet-certificate-authority%') then c ->> 'name' || ' kubelet certificate authority configured.'
         else c ->> 'name' || ' kubelet certificate authority not configured.'
       end as reason,
       name as deployment_name

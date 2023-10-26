@@ -1845,7 +1845,7 @@ query "pod_container_argument_service_account_lookup_enabled" {
 query "pod_container_token_auth_file_not_configured" {
   sql = <<-EOQ
     select
-      coalesce(uid, concat(path, ':', start_line)) as resource,name,
+      coalesce(uid, concat(path, ':', start_line)) as resource,
       case
         when (c -> 'command') is null then 'ok'
         when not (c -> 'command') @> '["kube-apiserver"]' then 'ok'
