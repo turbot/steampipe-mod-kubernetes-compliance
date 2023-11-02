@@ -89,7 +89,7 @@ mod "kubernetes_compliance" {
   }
   requires {
     plugin "kubernetes" {
-      version = "0.23.0"
+      min_version = "0.23.0"
     }
   }
 }
