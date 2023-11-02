@@ -24,11 +24,11 @@ query "statefulset_non_root_container" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then 'ok'
+        when (c -> 'securityContext' ->> 'runAsNonRoot')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'runAsNonRoot' = 'true' then c ->> 'name' || ' not running with root privilege.'
+        when (c -> 'securityContext' ->> 'runAsNonRoot')::bool then c ->> 'name' || ' not running with root privilege.'
         else c ->> 'name' || ' running with root privilege.'
       end as reason,
       name as stateful_set_name
@@ -66,11 +66,11 @@ query "statefulset_immutable_container_filesystem" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read-only root file system.'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then c ->> 'name' || ' running with read-only root file system.'
         else c ->> 'name' || ' not running with read-only root file system.'
       end as reason,
       name as stateful_set_name
@@ -87,11 +87,11 @@ query "statefulset_host_network_access_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'alarm'
+        when (template -> 'spec' ->> 'hostNetwork')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostNetwork' = 'true' then 'StatefulSet pods using host network.'
+        when (template -> 'spec' ->> 'hostNetwork')::bool then 'StatefulSet pods using host network.'
         else 'StatefulSet pods not using host network.'
       end as reason,
       name as stateful_set_name
@@ -281,12 +281,12 @@ query "statefulset_hostpid_hostipc_sharing_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when template -> 'spec' ->> 'hostPID' = 'true' or template -> 'spec' ->> 'hostIPC' = 'true' then 'alarm'
+        when (template -> 'spec' ->> 'hostPID')::bool or (template -> 'spec' ->> 'hostIPC')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when template -> 'spec' ->> 'hostPID' = 'true' then 'StatefulSet pods share host PID namespaces.'
-        when template -> 'spec' ->> 'hostIPC' = 'true' then 'StatefulSet pods share host IPC namespaces.'
+        when (template -> 'spec' ->> 'hostPID')::bool then 'StatefulSet pods share host PID namespaces.'
+        when (template -> 'spec' ->> 'hostIPC')::bool then 'StatefulSet pods share host IPC namespaces.'
         else 'StatefulSet pods cannot share host process namespaces.'
       end as reason,
       name as stateful_set_name
@@ -302,11 +302,11 @@ query "statefulset_container_privilege_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
+        when (c -> 'securityContext' ->> 'privileged')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then c ->> 'name' || ' privileged container.'
+        when (c -> 'securityContext' ->> 'privileged')::bool then c ->> 'name' || ' privileged container.'
         else c ->> 'name' || ' not privileged container.'
       end as reason,
       name as stateful_set_name
