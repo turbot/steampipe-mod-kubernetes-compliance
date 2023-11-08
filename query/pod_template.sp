@@ -1077,11 +1077,11 @@ query "pod_template_container_privilege_disabled" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then 'alarm'
+        when (c -> 'securityContext' ->> 'privileged')::bool then 'alarm'
         else 'ok'
       end as status,
       case
-        when c -> 'securityContext' ->> 'privileged' = 'true' then c ->> 'name' || ' privileged container.'
+        when (c -> 'securityContext' ->> 'privileged')::bool then c ->> 'name' || ' privileged container.'
         else c ->> 'name' || ' not privileged container.'
       end as reason,
       name as pod_template_name
@@ -1098,11 +1098,11 @@ query "pod_template_immutable_container_filesystem" {
     select
       coalesce(uid, concat(path, ':', start_line)) as resource,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then 'ok'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then 'ok'
         else 'alarm'
       end as status,
       case
-        when c -> 'securityContext' ->> 'readOnlyRootFilesystem' = 'true' then c ->> 'name' || ' running with read-only root file system.'
+        when (c -> 'securityContext' ->> 'readOnlyRootFilesystem')::bool then c ->> 'name' || ' running with read-only root file system.'
         else c ->> 'name' || ' not running with read-only root file system.'
       end as reason,
       name as pod_template_name

@@ -1,3 +1,55 @@
+## v0.17 [2023-11-03]
+
+_Breaking changes_
+
+- Updated the plugin dependency section of the mod to use `min_version` instead of `version`. ([#82](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/82))
+
+_Bug fixes_
+
+- Updated the docs to include the correct links for the `nsa_cisa_v1` benchmark. ([#80](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/80)) (Thanks [@aniketh-varma](https://github.com/aniketh-varma) for the contribution!)
+- Fixed the following queries to cast the data to boolean format. ([#79](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/79))
+  - `cronjob_container_privilege_disabled`
+  - `cronjob_host_network_access_disabled`
+  - `cronjob_hostpid_hostipc_sharing_disabled`
+  - `cronjob_immutable_container_filesystem`
+  - `cronjob_non_root_container`
+  - `daemonset_container_privilege_disabled`
+  - `daemonset_host_network_access_disabled`
+  - `daemonset_hostpid_hostipc_sharing_disabled`
+  - `daemonset_immutable_container_filesystem`
+  - `daemonset_non_root_container`
+  - `deployment_container_privilege_disabled`
+  - `deployment_host_network_access_disabled`
+  - `deployment_hostpid_hostipc_sharing_disabled`
+  - `deployment_immutable_container_filesystem`
+  - `deployment_non_root_container`
+  - `job_container_privilege_disabled`
+  - `job_host_network_access_disabled`
+  - `job_hostpid_hostipc_sharing_disabled`
+  - `job_immutable_container_filesystem`
+  - `job_non_root_container`
+  - `pod_container_privilege_disabled`
+  - `pod_immutable_container_filesystem`
+  - `pod_non_root_container`
+  - `pod_service_account_token_enabled`
+  - `pod_template_container_privilege_disabled`
+  - `pod_template_immutable_container_filesystem`
+  - `replicaset_container_privilege_disabled`
+  - `replicaset_host_network_access_disabled`
+  - `replicaset_hostpid_hostipc_sharing_disabled`
+  - `replicaset_immutable_container_filesystem`
+  - `replicaset_non_root_container`
+  - `replication_controller_container_privilege_disabled`
+  - `replication_controller_host_network_access_disabled`
+  - `replication_controller_hostpid_hostipc_sharing_disabled`
+  - `replication_controller_immutable_container_filesystem`
+  - `replication_controller_non_root_container`
+  - `statefulset_container_privilege_disabled`
+  - `statefulset_host_network_access_disabled`
+  - `statefulset_hostpid_hostipc_sharing_disabled`
+  - `statefulset_immutable_container_filesystem`
+  - `statefulset_non_root_container`
+
 ## v0.16 [2023-10-04]
 
 _Bug fixes_
