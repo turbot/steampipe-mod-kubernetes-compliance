@@ -6,7 +6,7 @@ _Breaking changes_
 
 _Bug fixes_
 
-- Updated to docs to include the correct links for the `nsa_cisa_v1` benchmark. ([#80](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/80)) (Thanks [@aniketh-varma](https://github.com/aniketh-varma) for the contribution!)
+- Updated the docs to include the correct links for the `nsa_cisa_v1` benchmark. ([#80](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/80)) (Thanks [@aniketh-varma](https://github.com/aniketh-varma) for the contribution!)
 - Fixed the following queries to cast the data to boolean format. ([#79](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/79))
   - `cronjob_container_privilege_disabled`
   - `cronjob_host_network_access_disabled`
