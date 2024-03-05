@@ -2,17 +2,21 @@
 
 Run individual controls or full compliance benchmarks for `NSA and CISA Kubernetes Hardening Guidance` and `CIS` across all of your Kubernetes clusters.
 
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_compliance_dashboard.png" width="50%" type="thumbnail"/>
+<!-- <img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_compliance_dashboard.png" width="50%" type="thumbnail"/>
 <img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_nsa_csa_v1.png" width="50%" type="thumbnail"/>
 <img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_cis_v120.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console-output.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console-output.png" width="50%" type="thumbnail"/> -->
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_compliance_dashboard.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_nsa_csa_v1.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_cis_v120.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes-compliance-mod-console-output.png" width="50%" type="thumbnail"/>
 
 ## Documentation
 
 - **[Benchmarks and controls →](https://hub.powerpipe.io/mods/turbot/kubernetes_compliance/controls)**
 - **[Named queries →](https://hub.powerpipe.io/mods/turbot/kubernetes_compliance/queries)**
 
-## Getting Started
+### Getting Started
 
 ### Installation
 
@@ -37,7 +41,7 @@ Finally, install the mod:
 mkdir dashboards
 cd dashboards
 powerpipe mod init
-powerpipe mod install github.com/turbot/powerpipe-mod-kubernetes-compliance
+powerpipe mod install github.com/turbot/steampipe-mod-kubernetes-compliance
 ```
 
 ### Browsing Dashboards
@@ -54,7 +58,7 @@ Start the dashboard server:
 powerpipe server
 ```
 
-Browse and view your dashboards at **https://localhost:9033**.
+Browse and view your dashboards at **http://localhost:9033**.
 
 ### Running Checks in Your Terminal
 
@@ -76,7 +80,7 @@ powerpipe benchmark run kubernetes_compliance.benchmark.cis_v170
 Different output formats are also available, for more information please see
 [Output Formats](https://powerpipe.io/docs/reference/cli/benchmark#output-formats).
 
-## Common and Tag Dimensions
+### Common and Tag Dimensions
 
 The benchmark queries use common properties (like `connection_name`, `context_name`, `namespace`, `path` and `source_type`) and tags that are defined in the form of a default list of strings in the `mod.sp` file. These properties can be overwritten in several ways:
 

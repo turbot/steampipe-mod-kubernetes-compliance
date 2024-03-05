@@ -6,10 +6,12 @@
 Multiple checks covering industry defined security best practices for Kubernetes. The mod supports parsing and analyzing Kubernetes manifest files, allowing you to assess compliance directly on your configuration files before deployment. Includes support for CIS, National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
 
 Run checks in a dashboard:
-![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_nsa_csa_v1.png)
+<!-- ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_nsa_csa_v1.png) -->
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_nsa_csa_v1.png)
 
 Or in a terminal:
-![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console-output.png)
+<!-- ![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console-output.png) -->
+![image](https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes-compliance-mod-console-output.png)
 
 ## Documentation
 
@@ -41,7 +43,7 @@ Finally, install the mod:
 mkdir dashboards
 cd dashboards
 powerpipe mod init
-powerpipe mod install github.com/turbot/powerpipe-mod-kubernetes-compliance
+powerpipe mod install github.com/turbot/steampipe-mod-kubernetes-compliance
 ```
 
 ### Browsing Dashboards
@@ -58,7 +60,7 @@ Start the dashboard server:
 powerpipe server
 ```
 
-Browse and view your dashboards at **https://localhost:9033**.
+Browse and view your dashboards at **http://localhost:9033**.
 
 ### Running Checks in Your Terminal
 
