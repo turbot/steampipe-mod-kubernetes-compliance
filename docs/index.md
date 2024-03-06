@@ -2,21 +2,17 @@
 
 Run individual controls or full compliance benchmarks for `NSA and CISA Kubernetes Hardening Guidance` and `CIS` across all of your Kubernetes clusters.
 
-<!-- <img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_compliance_dashboard.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_nsa_csa_v1.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes_cis_v120.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/main/docs/kubernetes-compliance-mod-console-output.png" width="50%" type="thumbnail"/> -->
 <img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_compliance_dashboard.png" width="50%" type="thumbnail"/>
 <img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_nsa_csa_v1.png" width="50%" type="thumbnail"/>
 <img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_cis_v120.png" width="50%" type="thumbnail"/>
-<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes-compliance-mod-console-output.png" width="50%" type="thumbnail"/>
+<img src="https://raw.githubusercontent.com/turbot/steampipe-mod-kubernetes-compliance/add-new-checks/docs/kubernetes_compliance_mod_console_output.png" width="50%" type="thumbnail"/>
 
 ## Documentation
 
 - **[Benchmarks and controls →](https://hub.powerpipe.io/mods/turbot/kubernetes_compliance/controls)**
 - **[Named queries →](https://hub.powerpipe.io/mods/turbot/kubernetes_compliance/queries)**
 
-### Getting Started
+## Getting Started
 
 ### Installation
 
@@ -87,8 +83,8 @@ The benchmark queries use common properties (like `connection_name`, `context_na
 It's easiest to setup your vars file, starting with the sample:
 
 ```sh
-cp powerpipe.ppvar.example powerpipe.ppvars
-vi powerpipe.ppvars
+cp steampipe.spvars.example steampipe.spvars
+vi steampipe.spvars
 ```
 
 Alternatively you can pass variables on the command line:
