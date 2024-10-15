@@ -1,10 +1,5 @@
 # Kubernetes Compliance Mod for Powerpipe
 
-> [!IMPORTANT]
-> [Powerpipe](https://powerpipe.io) is now the preferred way to run this mod! [Migrating from Steampipe →](https://powerpipe.io/blog/migrating-from-steampipe)
->
-> All v0.x versions of this mod will work in both Steampipe and Powerpipe, but v1.0.0 onwards will be in Powerpipe format only.
-
 Multiple checks covering industry defined security best practices for Kubernetes. The mod supports parsing and analyzing Kubernetes manifest files, allowing you to assess compliance directly on your configuration files before deployment. Includes support for CIS, National Security Agency (NSA) and Cybersecurity and Infrastructure Security Agency (CISA) Cybersecurity technical report for Kubernetes hardening.
 
 Run checks in a dashboard:
@@ -89,8 +84,8 @@ The benchmark queries use common properties (like `connection_name`, `context_na
 It's easiest to setup your vars file, starting with the sample:
 
 ```sh
-cp steampipe.spvars.example steampipe.spvars
-vi steampipe.spvars
+cp steampipe.ppvars.example steampipe.ppvars
+vi steampipe.ppvars
 ```
 
 Alternatively you can pass variables on the command line:
