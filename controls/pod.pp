@@ -38,7 +38,9 @@ control "pod_host_network_access_disabled" {
   title       = replace(local.host_network_access_disabled_title, "__KIND__", "Pod")
   description = replace(local.host_network_access_disabled_desc, "__KIND__", "Pod")
   query       = query.pod_host_network_access_disabled
-  tags        = local.nsa_cisa_v1_common_tags
+  tags = merge(local.pod_common_tags, {
+    nsa_cisa_v1 = "true"
+  })
 }
 
 control "pod_hostpid_hostipc_sharing_disabled" {
