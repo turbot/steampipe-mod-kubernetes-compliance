@@ -1,3 +1,9 @@
+## v1.0.2 [2025-04-15]
+
+_Bug fixes_
+
+- Fixed the `pod_host_network_access_disabled` query to include the `Kubernetes/Pod` service tag. ([#94](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/94))
+
 ## v1.0.1 [2024-10-24]
 
 _Bug fixes_
