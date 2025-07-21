@@ -5,7 +5,7 @@ mod "kubernetes_compliance" {
   color         = "#0089D6"
   documentation = file("./docs/index.md")
   icon          = "/images/mods/turbot/kubernetes-compliance.svg"
-  categories    = ["kubernetes", "compliance", "iac", "software development", "security"]
+  categories    = ["kubernetes", "compliance", "cis", "iac", "software development", "security"]
 
   opengraph {
     title       = "Powerpipe Mod for Kubernetes Compliance"
