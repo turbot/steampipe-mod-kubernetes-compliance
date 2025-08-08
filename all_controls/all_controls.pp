@@ -5,7 +5,7 @@ locals {
 }
 
 benchmark "all_controls" {
-  title         = "All Controls"
+  title         = "All Kubernetes Compliance Controls"
   description   = "This benchmark contains all controls grouped by component to help you detect resource configurations that do not meet best practices."
   documentation = file("./all_controls/docs/all_controls_overview.md")
   children = [

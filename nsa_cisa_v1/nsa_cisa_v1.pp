@@ -5,7 +5,7 @@ locals {
 }
 
 benchmark "nsa_cisa_v1" {
-  title         = "NSA and CISA Kubernetes Hardening Guidance v1.0"
+  title         = "Kubernetes NSA and CISA Kubernetes Hardening Guidance v1.0"
   documentation = file("./nsa_cisa_v1/docs/nsa_cisa_v1_overview.md")
   children = [
     benchmark.nsa_cisa_v1_pod_security,
