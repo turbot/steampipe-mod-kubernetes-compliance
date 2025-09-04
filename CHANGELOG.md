@@ -1,3 +1,13 @@
+## v1.1.0 [2025-09-04]
+
+_Enhancements_
+
+- Updated all top-level benchmark titles to include `Kubernetes` for clearer cloud provider identification. ([#98](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/98))
+
+_Bug fixes_
+
+- Fixed the title of `pod_volume_host_path` control to correctly use `Pod containers should not mount hostPath volumes`. ([#100](https://github.com/turbot/steampipe-mod-kubernetes-compliance/pull/100))
+
 ## v1.0.2 [2025-04-15]
 
 _Bug fixes_
