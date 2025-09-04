@@ -11,7 +11,7 @@ locals {
   container_memory_request_title = "__KIND__ containers should have a memory request"
   container_memory_request_desc  = "Containers in a __KIND__ should have memory request. If required Kubernetes will make sure your containers get the memory they requested."
 
-  container_disallow_host_path_title = "__KIND__ containers should not allow privilege escalation"
+  container_disallow_host_path_title = "__KIND__ containers should not mount hostPath volumes"
   container_disallow_host_path_desc  = "Containers in a __KIND__ should not able to access any specific paths of the host file system. There are many ways a container with unrestricted access to the host filesystem can escalate privileges, including reading data from other containers, and abusing the credentials of system services, such as Kubelet."
 
   container_privilege_disabled_title = "__KIND__ containers should not have privileged access"
