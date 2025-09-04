@@ -6,7 +6,7 @@ locals {
 }
 
 benchmark "cis_kube_v120" {
-  title       = "CIS Kubernetes v1.20"
+  title       = "Kubernetes CIS v1.20"
   description = "CIS Kubernetes v1.20 benchmark provides prescriptive guidance for establishing a secure configuration posture for Kubernetes 1.19 - 1.20."
   children = [
     benchmark.cis_kube_v120_v100
